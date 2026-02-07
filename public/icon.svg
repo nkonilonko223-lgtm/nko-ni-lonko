@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="128" fill="#02040a"/>
+  <circle cx="256" cy="256" r="240" stroke="#fbbf24" stroke-opacity="0.1" stroke-width="4"/>
+  <ellipse cx="256" cy="256" rx="200" ry="60" transform="rotate(45 256 256)" stroke="url(#paint0_linear)" stroke-width="16"/>
+  <ellipse cx="256" cy="256" rx="200" ry="60" transform="rotate(-45 256 256)" stroke="url(#paint1_linear)" stroke-width="16"/>
+  <path d="M256 360 C256 360, 180 360, 180 256 C180 152, 332 152, 332 256" stroke="#fbbf24" stroke-width="32" stroke-linecap="round" fill="none"/>
+  <circle cx="256" cy="360" r="16" fill="#fbbf24"/>
+  <defs>
+    <linearGradient id="paint0_linear" x1="56" y1="256" x2="456" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBBF24" stop-opacity="0.2"/>
+      <stop offset="0.5" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#FBBF24" stop-opacity="0.2"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="56" y1="256" x2="456" y2="256" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBBF24" stop-opacity="0.2"/>
+      <stop offset="0.5" stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#FBBF24" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "name": "N'Ko ni Lonko",
+  "short_name": "N'Ko Lonko",
+  "description": "La Science et le Savoir en langue N'Ko",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#02040a",
+  "theme_color": "#fbbf24",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
