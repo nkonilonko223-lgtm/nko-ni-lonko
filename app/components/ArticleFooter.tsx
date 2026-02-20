@@ -195,7 +195,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles }: A
           {!subscribed ? (
             <>
                 <h3 className={`text-lg md:text-xl font-bold text-white mb-4 ${isNko ? 'font-kigelia' : ''}`}>
-                    {isNko ? 'ߕߏ߫ ߞߊ߬ ߟߐ߲ߞߏ ߞߣߐ߫ ߞߎ߲߬ߣߊ߬ߘߊ߬ߟߌ ߞߎߘߊ߫ ߟߎ߬ ߟߊߛߐ߬ߘߐ߲߬ ߞߍ߬' : 'Restez informé de nos prochaines découvertes'}
+                    {isNko ? 'ߕߏ߫ ߞߊ߬ ߟߐ߲ߞߏ ߞߣߐ߫ ߞߎ߲߬ߣߊߞߊ߬ߟߋ߲ ߞߎߘߡߊ߫ ߟߎ߬ ߟߊߛߐ߬ߘߐ߲߬ ߞߍ߬' : 'Restez informé de nos prochaines découvertes'}
                 </h3>
                 <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-3 max-w-md mx-auto">
                     <input 
@@ -239,8 +239,8 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles }: A
             {relatedArticles.map((item, idx) => {
               const itemImageUrl = getSafeUrl(item.image);
               return (
-                <Link href={`/article/${item.slug}`} key={idx} className="group block">
-                  <div className="relative h-48 w-full rounded-xl overflow-hidden mb-4 border border-white/10">
+                <Link href={`/article/${item.slug}`} key={idx} className="group block transition-all duration-500 hover:-translate-y-2">
+                  <div className="relative h-48 w-full rounded-xl overflow-hidden mb-4 border border-white/10 shadow-lg group-hover:shadow-[#fbbf24]/10">
                     {itemImageUrl ? (
                         <Image 
                           src={itemImageUrl} 
@@ -277,7 +277,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles }: A
             // ✨ OPTIMISATION : Padding généreux pour le tactile
             className="group relative flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-b from-gray-800 to-gray-950 border border-[#fbbf24]/40 text-gray-300 shadow-lg hover:border-[#fbbf24] hover:text-white hover:shadow-[0_0_15px_rgba(251,191,36,0.15)] active:scale-95 transition-all duration-300 overflow-hidden touch-manipulation"
           >
-              <i className="ph-bold ph-arrow-up text-[#fbbf24] animate-bounce"></i>
+              <i className="ph-bold ph-arrow-up text-[#fbbf24] transition-transform duration-300 group-hover:-translate-y-1.5"></i>
               <span className={`text-sm font-bold uppercase tracking-widest ${isNko ? 'font-kigelia' : ''}`}>
                   {isNko ? 'ߊ߬ ߞߐߡߊߛߊߦߌ߫ ߛߊ߲ߝߍ߬' : 'Retour en haut'}
               </span>

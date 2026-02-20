@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity';
 
 export default defineType({
   name: 'article',
-  title: 'Articles / ߞߊ߲߬ߞߎߡߊ',
+  title: 'Articles / ߞߎߡߘߊ',
   type: 'document',
   // Icône pour le studio (facultatif mais sympa)
   icon: () => '📄',
