@@ -8,15 +8,31 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    // 🔥 LE GROS CHANGEMENT : MODE STRICT
+    // Cela va peut-être faire apparaître du rouge dans tes fichiers,
+    // c'est normal ! C'est TypeScript qui te montre les failles de sécurité.
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
-    "module": "esnext",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "module": "esnext",
+    // 🚀 MODERNISATION
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
+    // 👆 CORRECTION VITALE : "preserve" laisse Next.js gérer la transformation.
+    // C'est ce qui répare souvent l'erreur "React is not defined".
+    // ✨ CONFORT DE DÉVELOPPEMENT (Alias)
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
     "plugins": [
       {
         "name": "next"
@@ -26,10 +42,11 @@
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts",
-    "**/*.mts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "**/*.mts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

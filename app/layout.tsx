@@ -1,69 +1,112 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Montserrat } from "next/font/google"; // On ajoute une belle police Google pour le Français
+import { Montserrat } from "next/font/google";
+import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+// ✅ IMPORT DU REGISTRY (Il est là, on le garde)
+import StyledComponentsRegistry from './registry'
 
-// 1. CHARGEMENT DE LA POLICE N'KO (KIGELIA)
-// Assure-toi que tes fichiers sont bien dans le dossier public/fonts ou app/fonts
+import { LanguageProvider } from "./components/LanguageProvider";
+
+// =========================================================
+// 1. CONFIGURATION DES POLICES (FONTS) - ON NE TOUCHE PAS
+// =========================================================
+
 const kigelia = localFont({
   src: [
     {
-      path: "./fonts/Kigelia.otf", // Le fichier normal
+      path: "./fonts/Kigelia.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "./fonts/Kigelia1.otf", // Le fichier gras (si tu l'as renommé ainsi)
+      path: "./fonts/Kigelia1.otf",
       weight: "700",
       style: "normal",
     },
   ],
-  variable: "--font-kigelia", // La variable qu'on utilise dans globals.css
+  variable: "--font-kigelia",
   display: "swap",
 });
 
-// 2. CHARGEMENT DE LA POLICE FRANÇAISE (MONTSERRAT)
-// C'est plus propre d'avoir une police dédiée pour les textes latins
 const montserrat = Montserrat({
   subsets: ["latin"],
+  weight: ["400", "500", "700", "800"],
   variable: "--font-fr",
   display: "swap",
 });
 
-// 3. MÉTADONNÉES POUR LES RÉSEAUX SOCIAUX (SEO)
+// =========================================================
+// 2. VIEWPORT - ON NE TOUCHE PAS
+// =========================================================
+export const viewport: Viewport = {
+  themeColor: "#02040a",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
+// =========================================================
+// 3. MÉTADONNÉES - ON NE TOUCHE PAS
+// =========================================================
 export const metadata: Metadata = {
-  // Le titre qui apparait dans l'onglet et sur WhatsApp
   title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
-  
-  // La description sous le lien
   description: "ߖߊ߯ߓߊ ߟߐ߲ߠߌ߲ ߢߌߣߌ߲߫ ߒߞߏ ߘߐ߫. La plateforme de référence pour la science et le savoir en N'Ko.",
-  
-  // Configuration pour le partage (Open Graph)
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "N'Ko ni Lonko",
+  },
   openGraph: {
     title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
     description: "La Science à la portée de tous en N'Ko.",
-    url: "https://nkonilonko.com", // Mettra ton vrai lien plus tard
+    url: "https://nkonilonko.com",
     siteName: "N'Ko ni Lonko",
     locale: "nqo_GN",
     type: "website",
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
+// =========================================================
+// 4. STRUCTURE PRINCIPALE (LAYOUT) - C'EST ICI QU'ON ACTIVE
+// =========================================================
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    // On injecte les DEUX variables de police (N'Ko + FR)
-    <html lang="nqo" dir="rtl" className={`${kigelia.variable} ${montserrat.variable}`}>
-      <head>
-        {/* 🔥 TRÈS IMPORTANT : Le script pour afficher tes icônes Phosphor */}
-        <script src="https://unpkg.com/@phosphor-icons/web" async></script>
-      </head>
-      
-      <body className="font-sans antialiased bg-[#02040a] text-white">
-        {children}
+    <html suppressHydrationWarning>
+      <body 
+        className={`
+          ${kigelia.variable} 
+          ${montserrat.variable} 
+          font-sans antialiased 
+          bg-[#02040a] text-white
+          selection:bg-[#fbbf24] selection:text-black
+        `}
+      >
+        {/* 👇 DÉBUT DE LA PROTECTION (On active le Registry ici) 👇 */}
+        <StyledComponentsRegistry>
+            
+            {/* On garde ton LanguageProvider à l'intérieur, intact */}
+            <LanguageProvider>
+               {children}
+            </LanguageProvider>
+
+        </StyledComponentsRegistry>
+        {/* 👆 FIN DE LA PROTECTION 👆 */}
+
+        <Analytics />
+
+        <Script 
+          src="https://unpkg.com/@phosphor-icons/web" 
+          strategy="afterInteractive" 
+        />
       </body>
     </html>
   );

@@ -1,0 +1,85 @@
+{
+  "metadata": {
+    "title": "N'ko ni Lonko",
+    "description": "Diffusion des sciences en langue N'Ko",
+    "siteName": "N'ko ni Lonko"
+  },
+  "nav": {
+    "home": "Accueil",
+    "articles": "Articles",
+    "about": "À propos",
+    "contact": "Contact",
+    "search": "Rechercher"
+  },
+  "home": {
+    "hero": {
+      "title": "La Science en N'Ko",
+      "subtitle": "Diffusion des connaissances scientifiques avancées en langue N'Ko",
+      "cta": "Découvrir les articles"
+    },
+    "featured": {
+      "title": "Articles récents",
+      "viewAll": "Voir tout"
+    },
+    "categories": {
+      "astronomy": "Astronomie",
+      "physics": "Physique",
+      "biology": "Biologie",
+      "mathematics": "Mathématiques",
+      "chemistry": "Chimie",
+      "geology": "Géologie"
+    }
+  },
+  "article": {
+    "publishedOn": "Publié le",
+    "authors": "Auteurs",
+    "abstract": "Résumé",
+    "keywords": "Mots-clés",
+    "references": "Références",
+    "downloadPdf": "Télécharger le PDF",
+    "cite": "Citer cet article",
+    "share": "Partager",
+    "relatedArticles": "Articles connexes",
+    "tableOfContents": "Table des matières",
+    "readingTime": "Temps de lecture",
+    "minutes": "min",
+    "views": "vues",
+    "downloads": "téléchargements"
+  },
+  "search": {
+    "placeholder": "Rechercher dans les articles...",
+    "results": "Résultats de recherche",
+    "noResults": "Aucun résultat trouvé",
+    "filters": "Filtres"
+  },
+  "footer": {
+    "about": "N'ko ni Lonko est une plateforme de diffusion scientifique en langue N'Ko",
+    "contact": "Contact",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation",
+    "copyright": "© {year} N'ko ni Lonko - Tous droits réservés"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "tryAgain": "Réessayer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "more": "Plus",
+    "less": "Moins",
+    "yes": "Oui",
+    "no": "Non",
+    "close": "Fermer"
+  },
+  "accessibility": {
+    "skipToContent": "Aller au contenu",
+    "Menu": "Menu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "darkMode": "Mode sombre",
+    "lightMode": "Mode clair",
+    "language": "Changer de langue"
+  }
+}
