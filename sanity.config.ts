@@ -1,9 +1,14 @@
+import { latexInput } from 'sanity-plugin-latex-input';
+import { codeInput } from '@sanity/code-input';
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
-import { visionTool } from '@sanity/vision'; // Optionnel mais utile pour tester
+import { visionTool } from '@sanity/vision';
 
-// 👇 OPTIMISATION : On importe le tableau complet depuis l'index
-import { schemaTypes } from './sanity/schemas';
+// 🚀 LE COURT-CIRCUIT 1/1000 : On importe directement les fichiers à la source !
+import author from './sanity/schemas/author';
+import article from './sanity/schemas/article';
+import subscriber from './sanity/schemas/subscriber';
+import message from './sanity/schemas/message';
 
 export default defineConfig({
   name: 'default',
@@ -14,12 +19,14 @@ export default defineConfig({
   basePath: '/studio',
 
   plugins: [
-    structureTool(),
-    visionTool(), // Ajoute un onglet "Vision" pour tester tes requêtes (très utile !)
+    structureTool(), // Mode automatique pour l'instant, on veut juste voir l'onglet !
+    visionTool(),
+    latexInput(),
+    codeInput(),
   ],
 
   schema: {
-    // 👇 C'est ici que la magie opère. Tout est connecté.
-    types: schemaTypes,
+    // 🚀 L'INJECTION DIRECTE : On force le compilateur à lire les 4 fichiers
+    types: [author, article, subscriber, message],
   },
 });

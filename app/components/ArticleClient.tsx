@@ -4,25 +4,24 @@
  * ==============================================================================
  * 📂 FICHIER : app/components/ArticleClient.tsx
  * ------------------------------------------------------------------------------
- * 🎯 RÔLE : Affichage de l'article (Client Component).
- * 🔒 SÉCURITÉ : Typage strict (Zero Any).
- * 📱 MOBILE FIRST : Touch targets optimisés (>44px), overflow sécurisé.
- * 🎨 DESIGN : "Or & Noir" Kiba préservé.
+ * 🎯 RÔLE : Chef d'Orchestre de l'interface de lecture (Client Component).
+ * ⚡ PERFORMANCE : Scroll optimisé à 60 FPS via requestAnimationFrame.
+ * 📳 SENSORIEL : Retour haptique natif, Lightbox de couverture.
+ * 🖨️ IMPRESSION 1/1000 : Sceau officiel, Logo caché, Format "Revue Scientifique".
  * ==============================================================================
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "./LanguageProvider";
-import { urlFor } from "../../sanity/image";
 import Image from "next/image";
 import Link from "next/link";
-import { PortableText, PortableTextComponents, PortableTextComponentProps } from "@portabletext/react";
-import { PortableTextBlock } from "@portabletext/types";
 import ArticleTools from "./ArticleTools"; 
 import ArticleFooter from "./ArticleFooter"; 
+import { PortableTextBlock } from "@portabletext/types";
+import CustomPortableText, { estimateReadingTime, formatDateNko, toNkoDigits } from "./CustomPortableText";
 
 // ==============================================================================
-// 1. TYPAGE STRICT (Zéro Any)
+// 1. TYPAGE STRICT (Zéro Any - Dogme 2)
 // ==============================================================================
 
 interface SocialLink {
@@ -43,92 +42,85 @@ interface ClientArticleData {
   title: string;
   slug: string;
   mainImageUrl: string | null; 
-  // On type l'image brute ou on accepte null/undefined, mais pas 'any'
   mainImageRaw: SanityImage | null; 
   publishedAt: string;
   body: PortableTextBlock[];
   excerpt: string;
   category: string;
-  author: {
+  // 🚀 SYNCHRONISATION 1/1000 : Le tableau d'auteurs et le profil académique
+  authors: Array<{
     name: string;
     nameNko: string | null;
     imageUrl: string | null;
     bio: PortableTextBlock[] | null;
     role: string;
+    institution: string | null;
+    orcid: string | null;
+    expertise: string[];
     socials: SocialLink[];
-  } | null;
+  }>;
 }
 
-// Interface pour les props des composants PortableText personnalisés
-type PortableImageProps = PortableTextComponentProps<SanityImage>;
-
+// 🚀 ARME ANTI-CRASH : Typage strict pour les catégories traduites
+interface TranslationHome {
+  categories?: Record<string, string>;
+}
 // ==============================================================================
-// 2. UTILITAIRES
-// ==============================================================================
-function toNkoDigits(num: number | string): string {
-  const nkoDigits = ['߀', '߁', '߂', '߃', '߄', '߅', '߆', '߇', '߈', '߉'];
-  return num.toString().replace(/[0-9]/g, (w) => nkoDigits[+w]);
-}
-
-function formatDateNko(dateString: string): string {
-  const date = new Date(dateString);
-  const frDate = date.toLocaleDateString("fr-FR");
-  return toNkoDigits(frDate);
-}
-
-function isNko(text: string): boolean {
-  if (!text) return false;
-  return /[\u07C0-\u07FF]/.test(text);
-}
-
-function getBlockText(value: PortableTextBlock): string {
-  if (!value.children) return "";
-  // Typage strict des enfants de bloc
-  return (value.children as { text: string }[]).map((c) => c.text).join("");
-}
-
-function estimateReadingTime(body: PortableTextBlock[]): number {
-  if (!body) return 1;
-  const text = body.map(block => getBlockText(block)).join(" ");
-  const wordCount = text.split(/\s+/).length;
-  return Math.ceil(wordCount / 200) || 1;
-}
-
-// ==============================================================================
-// 3. COMPOSANT PRINCIPAL
+// 2. COMPOSANT PRINCIPAL
 // ==============================================================================
 
 export default function ArticleClient({ article }: { article: ClientArticleData }) {
   const { lang, toggleLanguage, t } = useLanguage(); 
   
-  // --- ÉTATS INTERACTIFS ---
-  const [fontScale, setFontScale] = useState(1.125); // Départ 18px
+  const [fontScale, setFontScale] = useState(1.125); 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [coverLightbox, setCoverLightbox] = useState(false); 
 
-  // --- HANDLERS DU ZOOM ---
-  const handleZoomIn = () => setFontScale(prev => Math.min(prev + 0.125, 2.0)); 
-  const handleZoomOut = () => setFontScale(prev => Math.max(prev - 0.125, 0.875)); 
+  const triggerVibration = useCallback(() => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(50); 
+    }
+  }, []);
+
+  const handleZoomIn = useCallback(() => {
+    triggerVibration();
+    setFontScale(prev => Math.min(prev + 0.125, 2.0));
+  }, [triggerVibration]); 
+
+  const handleZoomOut = useCallback(() => {
+    triggerVibration();
+    setFontScale(prev => Math.max(prev - 0.125, 0.875));
+  }, [triggerVibration]); 
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scroll = windowHeight > 0 ? totalScroll / windowHeight : 0;
-      
-      setScrollProgress(Math.min(Math.max(Number(scroll), 0), 1));
-      setIsScrolled(window.scrollY > 50);
-    }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalScroll = document.documentElement.scrollTop;
+          const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          const scroll = windowHeight > 0 ? totalScroll / windowHeight : 0;
+          
+          setScrollProgress(Math.min(Math.max(Number(scroll), 0), 1));
+          setIsScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleShare = async () => {
+    triggerVibration();
     if (navigator.share) {
       try {
         await navigator.share({
           title: article.title,
-          text: article.excerpt || t.home.hero.subtitle,
+          text: article.excerpt || "Découvrez cet article scientifique.",
           url: window.location.href,
         });
       } catch (error) {
@@ -136,92 +128,16 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
       }
     } else {
       navigator.clipboard.writeText(window.location.href);
-      // Idéalement : Ajouter un petit toast de confirmation ici
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
     }
   };
 
-  // --- CONFIGURATION PORTABLE TEXT (Typée & Optimisée) ---
-  const myPortableTextComponents: PortableTextComponents = {
-    block: {
-      normal: ({ value, children }) => {
-        const textContent = getBlockText(value);
-        if (!textContent || textContent.trim() === "") return null;
-
-        const nko = isNko(textContent);
-        const dir = nko ? "rtl" : "ltr";
-        const fontClass = nko ? "font-kigelia" : ""; 
-        
-        const style = nko 
-            ? { fontSize: '1.3em', lineHeight: '2.1' } 
-            : { fontSize: '1.1em', lineHeight: '1.7' };
-
-        return (
-            <p dir={dir} className={`text-gray-300 ${fontClass} mb-5 md:mb-6 mt-0`} style={style}>
-               {children}
-            </p>
-        );
-      },
-      h1: ({ value, children }) => {
-        const textContent = getBlockText(value);
-        const nko = isNko(textContent);
-        const fontClass = nko ? "font-kigelia" : "";
-        // Ajout de 'text-balance' pour éviter les titres moches sur mobile
-        return <h1 dir={nko ? "rtl" : "ltr"} className={`text-3xl md:text-4xl font-extrabold text-[#fbbf24] mt-8 md:mt-10 pb-0 -mb-2 leading-none text-balance ${fontClass}`}>{children}</h1>;
-      },
-      h2: ({ value, children }) => {
-        const textContent = getBlockText(value);
-        const nko = isNko(textContent);
-        const fontClass = nko ? "font-kigelia" : "";
-        return <h2 dir={nko ? "rtl" : "ltr"} className={`text-2xl md:text-3xl font-bold text-[#fbbf24] mt-8 md:mt-10 pb-0 -mb-2 leading-none text-balance ${fontClass}`}>{children}</h2>;
-      },
-      h3: ({ value, children }) => {
-        const textContent = getBlockText(value);
-        const nko = isNko(textContent);
-        const fontClass = nko ? "font-kigelia" : "";
-        return <h3 dir={nko ? "rtl" : "ltr"} className={`text-xl md:text-2xl font-semibold text-white mt-6 md:mt-8 mb-2 leading-none text-balance ${fontClass}`}>{children}</h3>;
-      },
-      blockquote: ({ value, children }) => {
-        const textContent = getBlockText(value);
-        const nko = isNko(textContent);
-        const fontClass = nko ? "font-kigelia" : "";
-        const style = nko ? { fontSize: '1.2em', lineHeight: '2.0' } : {};
-        return (
-            <blockquote dir={nko ? "rtl" : "ltr"} className={`border-l-4 border-[#fbbf24] pl-4 md:pl-6 py-2 my-8 md:my-10 italic text-[#fbbf24] text-lg ${fontClass}`} style={style}>
-                {children}
-            </blockquote>
-        );
-      }
-    },
-    list: {
-      bullet: ({children}) => <ul className="list-disc pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 space-y-2 md:space-y-3">{children}</ul>,
-      number: ({children}) => <ol className="list-decimal pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 space-y-2 md:space-y-3">{children}</ol>,
-    },
-    types: {
-      image: ({ value }: PortableImageProps) => {
-        if (!value?.asset?._ref) return null;
-        return (
-          // SÉCURITÉ MOBILE : overflow-hidden sur le conteneur pour éviter le scroll horizontal
-          <div className="relative w-full overflow-hidden my-8 md:my-12">
-             <div className="-mx-4 md:-mx-12 relative rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                 <img 
-                   src={urlFor(value)?.url() || ""} 
-                   alt={value.alt || 'Illustration'} 
-                   className="w-full h-auto object-cover" 
-                 />
-                 {value.caption && (
-                    <div className="bg-black/50 p-2 text-center backdrop-blur-md">
-                        <p className={`text-xs md:text-sm text-gray-400 italic ${lang === 'nko' ? 'font-kigelia' : ''}`}>{value.caption}</p>
-                    </div>
-                 )}
-             </div>
-          </div>
-        );
-      }
-    }
+  const handleToggleLanguage = () => {
+    triggerVibration();
+    toggleLanguage();
   };
 
-  // --- VARIABLES D'AFFICHAGE ---
   const dateDisplay = lang === 'nko' 
     ? formatDateNko(article.publishedAt) 
     : new Date(article.publishedAt).toLocaleDateString("fr-FR");
@@ -239,32 +155,64 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
     ? `${toNkoDigits(readingTime)} ${t.article.minutes}` 
     : `${readingTime} min de lecture`;
 
-  // Utilisation de casting sûr pour les catégories dynamiques
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const categoryLabel = article.category ? (t.home.categories as any)[article.category] : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
+  // 🚀 SÉCURITÉ ABSOLUE : Zéro "any"
+  const tHome = t.home as TranslationHome;
+  const categoriesMap = tHome?.categories || {};
+  const categoryLabel = article.category ? categoriesMap[article.category] : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
 
   return (
-    <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black">
+    <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-white print:text-black">
       
-      {/* Scroll Progress */}
-      <div className="fixed top-0 left-0 h-1 bg-[#fbbf24] z-[1001] transition-all duration-100 ease-out shadow-[0_0_10px_#fbbf24]" 
-           style={{ width: `${scrollProgress * 100}%` }}>
+      {/* 🖨️ LE SECRET 1/1000 : Contrôle absolu des marges de l'imprimante et encres forcées */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media print {
+          @page { size: auto; margin: 2cm; }
+          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+      `}} />
+
+      {/* 🖨️ ARME 2 : LE SCEAU SCIENTIFIQUE (Visible UNIQUEMENT à l'impression) */}
+      <div className="hidden print:flex items-center justify-between border-b-2 border-black pb-4 mb-8 pt-4 px-4">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 relative grayscale contrast-200">
+            <Image src="/icon-512x512.png" alt="Logo" fill className="object-contain" />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-kigelia text-2xl font-bold text-black tracking-widest">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
+            <span className="font-sans text-xs text-gray-500 uppercase tracking-widest">N&apos;Ko ni Lonko - Revue Scientifique</span>
+          </div>
+        </div>
+        <div className="text-right">
+          {/* 🚀 BOUCLIER HYDRATATION */}
+          <p suppressHydrationWarning className="font-mono text-xs text-gray-500">{new Date().toLocaleDateString('fr-FR')}</p>
+          <p className="font-mono text-[10px] text-gray-400">nkonilonko.com</p>
+        </div>
       </div>
 
-      {/* Background */}
-      <div className="fixed inset-0 z-[-1]">
+      {/* TOAST DE NOTIFICATION */}
+      <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-500 ease-out print:hidden ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
+        <div className="bg-black/80 backdrop-blur-xl border border-[#fbbf24]/50 text-[#fbbf24] px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(251,191,36,0.2)] flex items-center gap-3">
+          <i className="ph-fill ph-check-circle text-xl"></i>
+          <span className={`text-sm font-bold ${lang === 'nko' ? 'font-kigelia' : ''}`}>
+            {lang === 'nko' ? 'ߛߘߌ߬ߜߋ߲ ߓߘߊ߫ ߓߌ߬ߟߊ߬ ߟߊ߬ߡߙߊ߬ߟߌ ߘߐ߫' : 'Lien copié dans le presse-papiers'}
+          </span>
+        </div>
+      </div>
+
+      <div className="fixed top-0 left-0 h-1 bg-[#fbbf24] z-[1001] transition-transform duration-75 ease-out shadow-[0_0_10px_#fbbf24] origin-left print:hidden" 
+           style={{ transform: `scaleX(${scrollProgress})`, width: '100%' }}>
+      </div>
+
+      <div className="fixed inset-0 z-[-1] print:hidden">
          <div className="absolute inset-0 bg-[#02040a]"></div> 
          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-[#02040a] to-[#02040a]"></div>
       </div>
 
-      <ArticleTools 
-        onZoomIn={handleZoomIn} 
-        onZoomOut={handleZoomOut} 
-        title={article.title}
-      />
+      <div className="print:hidden">
+        <ArticleTools onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} title={article.title} />
+      </div>
 
-      {/* NAV DYNAMIQUE */}
-      <nav className={`fixed top-0 left-0 w-full z-50 px-4 md:px-6 transition-all duration-300 flex justify-between items-center ${
+      <nav className={`fixed top-0 left-0 w-full z-50 px-4 md:px-6 transition-all duration-300 flex justify-between items-center print:hidden ${
           isScrolled 
           ? "bg-[#02040a]/95 backdrop-blur-md border-b border-white/10 py-3 md:py-4 shadow-xl" 
           : "bg-gradient-to-b from-black/90 to-transparent py-4 md:py-6"
@@ -272,7 +220,8 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
         <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 text-[#fbbf24] font-bold font-mono tracking-widest text-sm">
             <div className="flex items-center gap-2">
               <i className="ph-fill ph-calendar-blank text-lg"></i>
-              <span className={lang === 'nko' ? 'font-kigelia' : ''}>{dateDisplay}</span>
+              {/* 🚀 BOUCLIER HYDRATATION */}
+              <span suppressHydrationWarning className={lang === 'nko' ? 'font-kigelia' : ''}>{dateDisplay}</span>
             </div>
             
             <div className="hidden md:flex items-center gap-2 text-gray-400 text-xs">
@@ -288,28 +237,15 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
             )}
         </div>
 
-        {/* Boutons Droite : Optimisés Tactile (Min 40px/44px) */}
         <div className="flex items-center gap-3 md:gap-4">
-            <button 
-                onClick={handleShare}
-                // TACTILE OPTIMISÉ : w-10 h-10 min pour le mobile (au lieu de w-9)
-                className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-[#fbbf24] transition-all backdrop-blur-md active:scale-95 touch-manipulation"
-                title={t.article.share}
-            >
+            <button onClick={handleShare} className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-[#fbbf24] transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
                 <i className="ph-bold ph-share-network text-xl md:text-lg"></i>
             </button>
-
-            <button 
-                onClick={toggleLanguage}
-                // TACTILE OPTIMISÉ : Padding plus large
-                className="border border-gray-600 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold uppercase hover:bg-[#fbbf24] hover:text-black transition-all flex items-center gap-2 backdrop-blur-md active:scale-95 touch-manipulation"
-            >
+            <button onClick={handleToggleLanguage} className="border border-gray-600 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold uppercase hover:bg-[#fbbf24] hover:text-black transition-all flex items-center gap-2 backdrop-blur-md active:scale-95 touch-manipulation">
                 <i className="ph-bold ph-translate text-lg"></i>
                 <span>{lang === 'nko' ? 'FR' : 'ߒߞߏ'}</span>
             </button>
-
             <Link href="/" className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
-                {/* TACTILE OPTIMISÉ : w-10 h-10 min */}
                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
                     <i className={`ph-bold ${lang === 'nko' ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl md:text-lg`}></i>
                 </div>
@@ -317,76 +253,133 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
         </div>
       </nav>
 
-      {/* Header */}
-      <header className="pt-24 md:pt-32 pb-0 px-4 md:px-8 max-w-7xl mx-auto text-center">
-        <span className={`text-[#fbbf24] uppercase tracking-[0.3em] font-bold mb-4 md:mb-6 block ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
+      <header className="pt-24 md:pt-32 print:pt-0 pb-0 px-4 md:px-8 max-w-7xl mx-auto text-center">
+        <span className={`text-[#fbbf24] print:text-gray-600 uppercase tracking-[0.3em] font-bold mb-4 md:mb-6 block ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
             {categoryLabel}
         </span>
-        <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200">
-            {/* DESIGN : text-balance pour équilibrer les titres */}
-            <span dir="rtl" className="block !leading-[1.6] text-[#fbbf24] mb-2 font-kigelia text-balance">
+        <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
+            <span dir="rtl" className="block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 font-kigelia text-balance">
                 {nkoTitle}
             </span>
             {frTitle && (
-                <span dir="ltr" className="block leading-tight text-white/90 text-xl md:text-3xl text-balance">
+                <span dir="ltr" className="block leading-tight text-white/90 print:text-gray-800 text-xl md:text-3xl text-balance">
                     {frTitle}
                 </span>
             )}
         </h1>
-        <div className="md:hidden flex justify-center items-center gap-2 text-gray-400 text-xs mb-6 font-mono">
+        
+        <div className="hidden print:flex justify-center items-center gap-4 text-gray-600 text-sm mb-6 font-mono border-b border-gray-300 pb-4">
+            <span suppressHydrationWarning className={lang === 'nko' ? 'font-kigelia' : ''}>{dateDisplay}</span>
+            <span>•</span>
+            <span className={lang === 'nko' ? 'font-kigelia' : ''}>{readingTimeText}</span>
+        </div>
+
+        <div className="md:hidden flex justify-center items-center gap-2 text-gray-400 text-xs mb-6 font-mono print:hidden">
              <i className="ph-bold ph-clock text-[#fbbf24]"></i>
              <span className={lang === 'nko' ? 'font-kigelia' : ''}>{readingTimeText}</span>
         </div>
+        
         {article.mainImageUrl && (
-          <div className="relative w-full aspect-video rounded-xl md:rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl shadow-[#fbbf24]/10 z-10">
+          <div 
+            className="relative w-full aspect-video rounded-xl md:rounded-[2rem] overflow-hidden border border-white/10 print:border-none shadow-2xl shadow-[#fbbf24]/10 z-10 print:shadow-none cursor-zoom-in group"
+            onClick={() => setCoverLightbox(true)}
+          >
             <Image
               src={article.mainImageUrl}
               alt={article.title}
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-700 group-hover:scale-105 print:scale-100"
               priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
             />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center print:hidden">
+              <i className="ph-bold ph-arrows-out text-white text-5xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-xl"></i>
+            </div>
           </div>
         )}
       </header>
 
-      <div className="relative z-0 text-center mt-4 md:mt-6 mb-10 md:mb-16 flex justify-center">
-         <span className={`inline-block bg-black/40 backdrop-blur-md border border-white/10 px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 italic shadow-[0_0_20px_rgba(251,191,36,0.1)] ${lang === 'nko' ? 'font-kigelia' : ''}`}>
+      <div className="relative z-0 text-center mt-4 md:mt-6 mb-10 md:mb-16 flex justify-center print:mb-8">
+         <span className={`inline-block bg-black/40 print:bg-transparent backdrop-blur-md border border-white/10 print:border-none px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 print:text-gray-600 italic shadow-[0_0_20px_rgba(251,191,36,0.1)] print:shadow-none ${lang === 'nko' ? 'font-kigelia' : ''}`}>
             {captionText}
          </span>
       </div>
 
-      {/* Corps du texte */}
       <article 
-        className="article-content pb-12 md:pb-20 max-w-3xl mx-auto px-4 md:px-6"
+        className="article-content pb-12 md:pb-20 max-w-3xl mx-auto px-4 md:px-6 transition-all duration-300 print:pb-0"
         style={{ fontSize: `${fontScale}rem` }} 
       >
-        <PortableText 
-            value={article.body} 
-            components={myPortableTextComponents}
-        />
+        <CustomPortableText value={article.body} lang={lang} />
       </article>
 
-      <ArticleFooter 
-          lang={lang} 
-          author={article.author ? {
-             name: article.author.name,
-             image: article.author.imageUrl,
-             bio: "",
-             role: article.author.role
-          } : undefined} 
-          tags={categoryLabel ? [categoryLabel] : []}
-          relatedArticles={[]} 
-      />
+{/* 🖨️ PIED DE PAGE D'IMPRESSION INVISIBLE SUR ÉCRAN */}
+      <div className="hidden print:block max-w-3xl mx-auto border-t-2 border-black pt-4 mt-8 text-center px-4">
+        <p className="text-sm font-bold text-black font-kigelia mb-1">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ - N&apos;Ko ni Lonko</p>
+        <p className="text-xs text-gray-600 italic">Document imprimé depuis le site officiel : https://nkonilonko.com/article/{article.slug}</p>
+        {/* 🚀 SÉCURITÉ : Ciblage du 1er auteur pour le Copyright */}
+        <p suppressHydrationWarning className="text-[10px] text-gray-500 mt-2">© {new Date().getFullYear()} {article.authors?.[0]?.name || 'Moustapha CAMARA'}. Tous droits réservés.</p>
+      </div>
+<div className="print:hidden">
+        {/* 🚀 SÉCURITÉ 1/1000 : Transmission intégrale du Dossier Académique */}
+        <ArticleFooter 
+            lang={lang} 
+            author={article.authors && article.authors.length > 0 ? {
+                name: article.authors[0].name,
+                nameNko: article.authors[0].nameNko,
+                image: article.authors[0].imageUrl,
+                bio: article.authors[0].bio,
+                role: article.authors[0].role,
+                institution: article.authors[0].institution,
+                orcid: article.authors[0].orcid,
+                expertise: article.authors[0].expertise,
+                socials: article.authors[0].socials
+            } : undefined} 
+            tags={categoryLabel ? [categoryLabel] : []}
+            relatedArticles={[]} 
+        />
+      </div>
 
-      <footer className="border-t border-white/10 py-8 md:py-12 text-center bg-black/40 backdrop-blur-xl">
-        <div className="flex justify-center items-center gap-2 mb-4 text-[#fbbf24]">
-           <i className="ph-fill ph-seal-check text-xl"></i>
+      <footer className="border-t border-white/10 print:hidden py-12 md:py-16 text-center bg-black/60 backdrop-blur-2xl mt-8 relative overflow-hidden flex flex-col items-center">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-60 bg-[#fbbf24]/5 blur-[80px] rounded-full pointer-events-none"></div>
+        
+        <div className="w-24 h-24 md:w-28 md:h-28 mb-8 relative group flex items-center justify-center p-4 backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl md:rounded-[2rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)] overflow-hidden transition-all duration-500 hover:border-[#fbbf24]/40 hover:shadow-[0_0_50px_rgba(251,191,36,0.25)] hover:scale-[1.02] z-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#fbbf24]/30 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <Image 
+                src="/icon-512x512.png" 
+                alt="Sceau N'Ko ni Lonko" 
+                width={512}
+                height={512}
+                className="w-full h-full object-contain relative z-10 drop-shadow-xl"
+            />
         </div>
-        <p className={`text-gray-600 font-mono text-xs md:text-sm ${lang === 'nko' ? 'font-kigelia' : ''}`}>
+        
+        <p className={`text-[#fbbf24] font-mono text-xs md:text-sm max-w-md mx-auto relative z-10 drop-shadow-sm opacity-90 ${lang === 'nko' ? 'font-kigelia tracking-wider' : 'tracking-widest uppercase'}`}>
           {t.footer.copyright.replace("{year}", lang === 'nko' ? "߂߀߂߆" : "2026")}
         </p>
       </footer>
+
+      {coverLightbox && article.mainImageUrl && (
+        <div 
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-300 p-4 md:p-8 print:hidden"
+          onClick={() => setCoverLightbox(false)}
+        >
+          <button 
+            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer z-50 backdrop-blur-md border border-white/20 hover:border-[#fbbf24]"
+            onClick={(e) => { e.stopPropagation(); setCoverLightbox(false); }}
+          >
+            <i className="ph-bold ph-x text-2xl"></i>
+          </button>
+          <div className="relative w-full max-w-7xl h-full max-h-[85vh] rounded-lg overflow-hidden flex items-center justify-center">
+            <Image 
+              src={article.mainImageUrl} 
+              alt={article.title} 
+              fill
+              className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
+              sizes="100vw"
+            />
+          </div>
+        </div>
+      )}
 
     </main>
   );

@@ -1,30 +1,29 @@
+import Script from "next/script";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Montserrat } from "next/font/google";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-// ✅ IMPORT DU REGISTRY (Il est là, on le garde)
-import StyledComponentsRegistry from './registry'
 
+// ✅ IMPORT DES FOURNISSEURS (PROVIDERS)
+import StyledComponentsRegistry from './registry';
 import { LanguageProvider } from "./components/LanguageProvider";
+import NetworkBoundary from "./components/NetworkBoundary"; 
+import PredictiveProvider from "./components/PredictiveProvider"; 
 
-// =========================================================
-// 1. CONFIGURATION DES POLICES (FONTS) - ON NE TOUCHE PAS
-// =========================================================
+// ============================================================================
+// 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
+// ============================================================================
+// Centraliser l'URL protège le SEO contre les fautes de frappe.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
+// ============================================================================
+// 2. CONFIGURATION DES POLICES (FONTS - DOGME 1)
+// ============================================================================
 const kigelia = localFont({
   src: [
-    {
-      path: "./fonts/Kigelia.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "./fonts/Kigelia1.otf",
-      weight: "700",
-      style: "normal",
-    },
+    { path: "./fonts/Kigelia.otf", weight: "400", style: "normal" },
+    { path: "./fonts/Kigelia1.otf", weight: "700", style: "normal" },
   ],
   variable: "--font-kigelia",
   display: "swap",
@@ -36,23 +35,49 @@ const montserrat = Montserrat({
   variable: "--font-fr",
   display: "swap",
 });
-
-// =========================================================
-// 2. VIEWPORT - ON NE TOUCHE PAS
-// =========================================================
+// ============================================================================
+// 3. VIEWPORT 1/1000 (PWA NATIVE LOCK - DOGME 3)
+// ============================================================================
 export const viewport: Viewport = {
   themeColor: "#02040a",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  // 🚀 CORRECTION : On supprime 'maximumScale' et 'userScalable' 
+  // pour débloquer le 100/100 en Best Practices et Accessibilité.
 };
 
-// =========================================================
-// 3. MÉTADONNÉES - ON NE TOUCHE PAS
-// =========================================================
+// ============================================================================
+// 4. MÉTADONNÉES GLOBALES (L'ARMURE SEO IMPÉRIALE)
+// ============================================================================
 export const metadata: Metadata = {
-  title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+  metadataBase: new URL(SITE_URL),
+  manifest: "/manifest.json",
+  
+  applicationName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ System",
+  generator: "N'Ko ni Lonko Engine v2.0",
+  authors: [{ name: "Moustapha CAMARA", url: SITE_URL }, { name: "ߡߎ߬ߛߝߊ߬ ߞߊ߬ߡߙߊ߬" }],
+  
+  formatDetection: {
+    telephone: false,
+    date: false,
+    email: false,
+    address: false,
+  },
+
+  title: {
+    default: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+    template: "%s | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+  },
   description: "ߖߊ߯ߓߊ ߟߐ߲ߠߌ߲ ߢߌߣߌ߲߫ ߒߞߏ ߘߐ߫. La plateforme de référence pour la science et le savoir en N'Ko.",
+  keywords: ["ߒߞߏ", "N'Ko", "ߟߐ߲ߞߏ", "Science", "Savoir", "Afrique", "Mali", "Moustapha Camara"],
+ alternates: {
+    canonical: SITE_URL,
+    // 🚀 ACTION : On force TypeScript à accepter nos codes de langues mondiaux
+    languages: {
+      'nqo': SITE_URL,
+      'fr-FR': SITE_URL
+    } as Record<string, string>
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -61,27 +86,115 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
     description: "La Science à la portée de tous en N'Ko.",
-    url: "https://nkonilonko.com",
+    url: SITE_URL,
     siteName: "N'Ko ni Lonko",
-    locale: "nqo_GN",
+    locale: "nqo", 
+    alternateLocale: "fr_FR",
     type: "website",
+    images: [
+      {
+        url: "/icon-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Sceau Royal N'Ko ni Lonko",
+      }
+    ]
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icon-192x192.png" }
+    ]
   },
+  robots: { index: true, follow: true }
 };
 
-// =========================================================
-// 4. STRUCTURE PRINCIPALE (LAYOUT) - C'EST ICI QU'ON ACTIVE
-// =========================================================
+// ============================================================================
+// 5. LE SCRIPT DE BLOCAGE ANTI-FLASH (OPTIMISÉ 1/1000)
+// ============================================================================
+// Exécution unique et ultra-légère avant le rendu React. Fini les ralentissements.
+const themeInitScript = `
+  (function() {
+    try {
+      var savedLang = localStorage.getItem('preferred-lang');
+      var lang = (savedLang === 'fr' || savedLang === 'nko') ? savedLang : 'nko';
+      var dir = lang === 'nko' ? 'rtl' : 'ltr';
+      
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', dir);
+      document.body.setAttribute('dir', dir);
+    } catch (e) {}
+  })();
+`;
+
+// ============================================================================
+// 6. STRUCTURE PRINCIPALE (LAYOUT)
+// ============================================================================
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html suppressHydrationWarning>
+
+  const globalJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        "url": SITE_URL,
+        "name": "N'Ko ni Lonko | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+        "inLanguage": "nqo",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": `${SITE_URL}/search?q={search_term_string}`
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        "name": "N'Ko ni Lonko",
+        "alternateName": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+        "url": SITE_URL,
+        "logo": {
+          "@type": "ImageObject",
+          "url": `${SITE_URL}/icon-512x512.png`,
+          "width": 512,
+          "height": 512
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "Moustapha CAMARA",
+          "alternateName": "ߡߎ߬ߛߝߊ߬ ߞߊ߬ߡߙߊ߬"
+        },
+        "sameAs": [
+          "https://www.youtube.com/@nkonilonko",
+          "https://www.tiktok.com/@nkonilonko223",
+          "https://x.com/nkonilonko"
+        ]
+      }
+    ]
+  };
+
+return (
+    <html lang="nqo" dir="rtl" translate="no" suppressHydrationWarning> 
+      <head>
+        {/* Restauration de la connexion rapide au CDN */}
+        <link rel="preconnect" href="https://unpkg.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://unpkg.com" />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      
       <body 
+        suppressHydrationWarning
         className={`
           ${kigelia.variable} 
           ${montserrat.variable} 
@@ -90,19 +203,23 @@ export default function RootLayout({
           selection:bg-[#fbbf24] selection:text-black
         `}
       >
-        {/* 👇 DÉBUT DE LA PROTECTION (On active le Registry ici) 👇 */}
-        <StyledComponentsRegistry>
-            
-            {/* On garde ton LanguageProvider à l'intérieur, intact */}
-            <LanguageProvider>
-               {children}
-            </LanguageProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalJsonLd) }}
+        />
 
+        <StyledComponentsRegistry>
+            <LanguageProvider>
+              <NetworkBoundary>
+                {children}
+              </NetworkBoundary>
+            </LanguageProvider>
         </StyledComponentsRegistry>
-        {/* 👆 FIN DE LA PROTECTION 👆 */}
 
         <Analytics />
+        <PredictiveProvider />
 
+        {/* Restauration du composant Script Next.js pour Phosphor */}
         <Script 
           src="https://unpkg.com/@phosphor-icons/web" 
           strategy="afterInteractive" 

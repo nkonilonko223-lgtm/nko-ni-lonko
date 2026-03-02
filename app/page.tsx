@@ -1,37 +1,38 @@
 import { client } from "../sanity/client";
 import { urlFor } from "../sanity/image";
 import HomeClient from "./components/HomeClient";
-import { LanguageProvider } from "./components/LanguageProvider";
-import { PortableTextBlock } from "@portabletext/types";
 import { Metadata } from "next";
 
 // ==============================================================================
-// 1. DÉFINITIONS STRICTES
+// CONSTANTE GLOBALE (Sécurité SEO)
 // ==============================================================================
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
+// ==============================================================================
+// 1. DÉFINITIONS STRICTES (Zéro "any")
+// ==============================================================================
 interface SanityImageRaw {
   asset: {
     _ref: string;
   };
 }
 
-// Ce que Sanity renvoie (Brut)
 interface SanityHomeArticleRaw {
   title: string;
   slug: { current: string };
   mainImage: SanityImageRaw;
   publishedAt: string;
-  excerpt?: string; 
-  body?: PortableTextBlock[]; 
-  // ✅ CORRECTION : Adapté au schéma 'string' (plus de tableau d'objets)
+  excerpt: string; 
+  bodyLength?: number; 
   category?: string; 
-  author?: {
+  // 🚀 SYNCHRONISATION 1/1000 : On attend un tableau d'auteurs (Multi-Paternité)
+  authors?: Array<{
     name: string;
+    nameNko?: string;
     image?: SanityImageRaw;
-  };
+  }>;
 }
 
-// Ce que le Client reçoit (Propre)
 export interface SafeHomeArticle {
   title: string;
   slug: string;
@@ -40,74 +41,76 @@ export interface SafeHomeArticle {
   excerpt: string;
   category: string;
   authorName: string;
+  authorNameNko: string | null;
   authorImageUrl: string | null;
-  body: PortableTextBlock[]; 
+  readingTime: number; 
+  // 🚀 OPTIMISATION : Propriété 'body' supprimée car inutile pour la page d'accueil (gain de RAM)
 }
 
 // ==============================================================================
-// 2. SEO (Le détail Master Class)
+// 2. SEO (Armure Globale de la Page d'Accueil)
 // ==============================================================================
 export const metadata: Metadata = {
-  title: "N'Ko ni Lonko | Science et Savoir pour tous",
-  description: "La première plateforme scientifique bilingue (Français / N'Ko). Astronomie, Biologie, Physique et Technologie accessibles à tous.",
+  title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+  description: "ߖߊ߯ߓߊ ߟߐ߲ߠߌ߲ ߢߌߣߌ߲߫ ߒߞߏ ߘߐ߫. La première plateforme scientifique mondiale bilingue (N'Ko / Français).",
   alternates: {
-    canonical: 'https://nkonilonko.com',
+    canonical: SITE_URL,
   }
 };
 
 // ==============================================================================
-// 3. FACTORY DE SÉCURITÉ
+// 3. FACTORY DE SÉCURITÉ (Bouclier Anti-Crash)
 // ==============================================================================
 function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArticle {
   
-  // ✅ CORRECTION : Récupération directe de la String
-  const category = raw.category || "Science";
+  const category = raw.category || "ߟߐ߲ߞߏ | Science";
+  
+  const charCount = raw.bodyLength || 0;
+  const calculatedReadingTime = Math.max(1, Math.ceil((charCount / 5) / 150));
 
-  // Gestion de l'extrait (Fallback intelligent)
-  let excerptText = raw.excerpt || "";
-  if (!excerptText && raw.body) {
-    const firstBlock = raw.body.find(b => b._type === 'block' && b.children);
-    if (firstBlock && firstBlock.children) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      excerptText = (firstBlock.children as any[]).map(c => c.text).join(" ").substring(0, 150) + "...";
-    }
-  }
+  // 🚀 LOGIQUE MULTI-AUTEURS : On cible le premier auteur pour l'affichage de la carte
+  const primaryAuthor = raw.authors?.[0];
 
   return {
-    title: raw.title || "Sans titre",
+    title: raw.title || "ߛߊ߲߬ߕߊ߫ ߕߍ߫ | Sans titre",
     slug: raw.slug.current,
     mainImageUrl: raw.mainImage ? urlFor(raw.mainImage)?.url() || null : null,
     publishedAt: raw.publishedAt || new Date().toISOString(),
-    excerpt: excerptText,
+    excerpt: raw.excerpt || "", 
     category: category,
-    authorName: raw.author?.name || "N'Ko ni Lonko",
-    authorImageUrl: raw.author?.image ? urlFor(raw.author.image)?.url() || null : null,
-    body: raw.body || []
+    authorName: primaryAuthor?.name || "N'Ko ni Lonko",
+    authorNameNko: primaryAuthor?.nameNko || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+    authorImageUrl: primaryAuthor?.image ? urlFor(primaryAuthor.image)?.url() || null : null,
+    readingTime: calculatedReadingTime,
   };
 }
 
 // ==============================================================================
-// 4. RÉCUPÉRATION (ISR)
+// 4. RÉCUPÉRATION (Edge Computing & Hybrid Cache)
 // ==============================================================================
 async function getArticles(): Promise<SafeHomeArticle[]> {
-  // ✅ CORRECTION GROQ : On demande 'category' (string) au lieu de 'categories[]->'
+  // 🚀 REQUÊTE GROQ 1/1000 : Extraction optimisée avec "authors[]->"
   const query = `*[_type == "article"] | order(publishedAt desc) {
     title,
     slug,
     mainImage,
     publishedAt,
-    excerpt, 
-    body,
+    "excerpt": coalesce(excerpt, pt::text(body)[0..150] + "..."), 
+    "bodyLength": length(pt::text(body)), 
     category,
-    author->{
+    authors[]->{
       name,
+      nameNko,
       image
     }
   }`;
   
   try {
-    // Revalidation toutes les 60 secondes (ISR)
-    const rawArticles = await client.fetch<SanityHomeArticleRaw[]>(query, {}, { next: { revalidate: 60 } });
+    const rawArticles = await client.fetch<SanityHomeArticleRaw[]>(
+      query, 
+      {}, 
+      { next: { tags: ["article", "home-articles"], revalidate: 3600 } }
+    );
     return rawArticles.map(transformSafeHomeArticle);
   } catch (error) {
     console.error("Erreur Fetch Home:", error);
@@ -122,8 +125,6 @@ export default async function Home() {
   const articles = await getArticles();
 
   return (
-    <LanguageProvider>
-      <HomeClient articles={articles} />
-    </LanguageProvider>
+    <HomeClient articles={articles} />
   );
 }

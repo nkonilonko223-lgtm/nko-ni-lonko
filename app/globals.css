@@ -269,7 +269,7 @@
     inset: -5%;
     width: 110%;
     height: 110%;
-    background: url('/arriere-plan.png') center / 250px repeat;
+    background: url('/arriere-plan.webp') center / 250px repeat;
     filter: invert(1) brightness(300%) contrast(150%);
     mix-blend-mode: screen;
     opacity: 0.3;
@@ -813,7 +813,7 @@ nav {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('/arriere-plan.png') center / 300px repeat;
+    background: url('/arriere-plan.webp') center / 300px repeat;
     opacity: 0.05;
     pointer-events: none;
     mix-blend-mode: screen;

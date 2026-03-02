@@ -7,6 +7,7 @@ const config: Config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./sanity/**/*.{ts,tsx}", // 🚀 Sécurité : On s'assure que Tailwind scanne aussi le studio
   ],
   theme: {
     container: {
@@ -24,7 +25,7 @@ const config: Config = {
         tech: ["var(--font-tech)", "monospace"],
       },
       
-      // 2. COULEURS
+      // 2. COULEURS (Intactes)
       colors: {
         border: "var(--color-border)",
         input: "var(--color-border)",
@@ -44,7 +45,7 @@ const config: Config = {
         },
       },
 
-      // 3. GÉOMÉTRIE
+      // 3. GÉOMÉTRIE (Intacte)
       borderRadius: {
         lg: "var(--radius-lg)",
         md: "var(--radius-md)",
@@ -52,14 +53,27 @@ const config: Config = {
         full: "var(--radius-full)",
       },
 
-      // 4. IMAGES DE FOND
+      // 4. OMBRES MAGNÉTIQUES (🚀 NOUVEAU : Centralisation des Glows)
+      boxShadow: {
+        'glow-sm': '0 0 10px rgba(251, 191, 36, 0.2)',
+        'glow-md': '0 0 20px rgba(251, 191, 36, 0.4)',
+        'glow-lg': '0 0 40px rgba(251, 191, 36, 0.15)',
+      },
+
+      // 5. IMAGES DE FOND
       backgroundImage: {
         "gradient-panel": "var(--gradient-panel)",
         "gradient-footer": "var(--gradient-footer)",
         "gradient-gold": "var(--gradient-text-gold)",
       },
 
-      // 5. ANIMATIONS
+      // 6. DYNAMIQUE CINÉMATIQUE (🚀 NOUVEAU : Courbes de Bézier 1/1000)
+      transitionTimingFunction: {
+        'cinematic': 'cubic-bezier(0.22, 1, 0.36, 1)', // Ultra-fluide
+        'bounce-soft': 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Rebond organique
+      },
+
+      // 7. ANIMATIONS (Enrichies)
       keyframes: {
         "accordion-down": {
           from: { height: "0" },
@@ -72,12 +86,23 @@ const config: Config = {
         shimmer: {
           "0%": { backgroundPosition: "200% 0" },
           "100%": { backgroundPosition: "-200% 0" },
+        },
+        // 🚀 NOUVELLES ANIMATIONS
+        "float": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        "pulse-gold": {
+          "0%, 100%": { opacity: "1", transform: "scale(1)" },
+          "50%": { opacity: "0.8", transform: "scale(1.05)" },
         }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "shimmer": "shimmer 8s infinite linear",
+        "float": "float 6s ease-in-out infinite",
+        "pulse-gold": "pulse-gold 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
     },
   },

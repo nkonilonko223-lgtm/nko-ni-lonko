@@ -1,6 +1,28 @@
-// sanity/schemas/index.ts
-import article from './article'
-import author from './author'
+import { type SchemaTypeDefinition } from 'sanity';
 
-// On exporte un tableau qui contient TOUS tes schémas
-export const schemaTypes = [article, author]
+import article from './article';
+import author from './author';
+import subscriber from './subscriber';
+
+// ============================================================================
+// MATRICE DES DONNÉES : N'KO NI LONKO
+// ============================================================================
+// Architecture stricte : Tous les schémas doivent être typés et compartimentés.
+// ============================================================================
+
+export const schemaTypes: SchemaTypeDefinition[] = [
+  // --------------------------------------------------------------------------
+  // 1. ENTITÉS FONDAMENTALES (Core)
+  // --------------------------------------------------------------------------
+  author,
+
+  // --------------------------------------------------------------------------
+  // 2. CONTENU ÉDITORIAL & PUBLICATIONS
+  // --------------------------------------------------------------------------
+  article,
+
+  // --------------------------------------------------------------------------
+  // 3. INFRASTRUCTURE & EXTENSIONS FUTURES (API Newsletter)
+  // --------------------------------------------------------------------------
+  subscriber,
+];

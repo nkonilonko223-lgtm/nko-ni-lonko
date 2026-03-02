@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
@@ -8,25 +8,23 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    // 🔥 LE GROS CHANGEMENT : MODE STRICT
-    // Cela va peut-être faire apparaître du rouge dans tes fichiers,
-    // c'est normal ! C'est TypeScript qui te montre les failles de sécurité.
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    // 🚀 L'ÉLITE TRIAD 1/1000 (Hygiène de code stricte)
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,
     "module": "esnext",
-    // 🚀 MODERNISATION
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    // 🛠️ CORRECTION VITALE APPLIQUÉE : Standard Next.js
     "jsx": "react-jsx",
-    // 👆 CORRECTION VITALE : "preserve" laisse Next.js gérer la transformation.
-    // C'est ce qui répare souvent l'erreur "React is not defined".
-    // ✨ CONFORT DE DÉVELOPPEMENT (Alias)
     "baseUrl": ".",
     "paths": {
       "@/*": [
@@ -44,9 +42,9 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
     "**/*.mts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "sanity/**/*.ts"
   ],
   "exclude": [
     "node_modules"

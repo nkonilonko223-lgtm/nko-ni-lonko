@@ -1,8 +1,20 @@
 import type { NextConfig } from "next";
+import withSerwistInit from "@serwist/next";
+
+// =========================================================
+// CONFIGURATION PWA (SERWIST)
+// =========================================================
+const withSerwist = withSerwistInit({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+  disable: process.env.NODE_ENV === "development",
+  // 🛡️ CRITIQUE : Le Fallback Explicite (Empêche la page '/' de disparaître)
+  additionalPrecacheEntries: [{ url: "/offline", revision: null }],
+});
 
 const nextConfig: NextConfig = {
   // =========================================================
-  // 1. OPTIMISATION DES IMAGES (Performance Afrique)
+  // 1. OPTIMISATION DES IMAGES (Performance & World Class)
   // =========================================================
   images: {
     remotePatterns: [
@@ -10,8 +22,19 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'cdn.sanity.io',
       },
+      // 🚀 NOUVEAU : Autorisation stricte pour les miniatures YouTube
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+      },
     ],
     formats: ['image/avif', 'image/webp'],
+    // 🚀 AMÉLIORATION 1/1000 : Mise en cache agressive (30 jours)
+    minimumCacheTTL: 2592000, 
   },
 
   // =========================================================
@@ -22,14 +45,15 @@ const nextConfig: NextConfig = {
   },
 
   // =========================================================
-  // 3. BUILD
+  // 3. BUILD (DOGME 2 : ZÉRO BUG)
   // =========================================================
   typescript: {
-    ignoreBuildErrors: true,
+    // 🚨 CORRECTION 1/1000 : On ne ferme plus les yeux sur les erreurs de typage.
+    ignoreBuildErrors: false, 
   },
   
   // =========================================================
-  // 4. SÉCURITÉ
+  // 4. SÉCURITÉ (Bouclier & Compatibilité Studio)
   // =========================================================
   async headers() {
     return [
@@ -41,12 +65,23 @@ const nextConfig: NextConfig = {
             value: 'nosniff',
           },
           {
+            // 🚀 CORRECTION : SAMEORIGIN permet à l'aperçu Sanity de fonctionner
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN',
           },
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
+          },
+          // 🛡️ NOUVEAU BOUCLIER 1 : Force le HTTPS strict (HSTS)
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          // 🛡️ NOUVEAU BOUCLIER 2 : Protection anti-injections
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
           },
         ],
       },
@@ -68,9 +103,9 @@ const nextConfig: NextConfig = {
   },
 
   // =========================================================
-  // 6. CONFIGURATION TURBOPACK (Laissez-passer)
+  // 6. CONFIGURATION TURBOPACK
   // =========================================================
   turbopack: {},
-}; // <-- C'est cette accolade finale qui manquait !
+};
 
-export default nextConfig;
+export default withSerwist(nextConfig);

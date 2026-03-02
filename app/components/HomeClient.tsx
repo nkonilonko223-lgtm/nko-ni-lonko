@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import ArticleCard from "./ArticleCard";
 import SiteFooter from "./SiteFooter";
 import { useLanguage } from "./LanguageProvider";
-import { PortableTextBlock } from "@portabletext/types";
+
 
 // ==============================================================================
 // 1. CONFIGURATION VISUELLE
@@ -36,7 +38,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 const ARTICLES_PER_PAGE = 6;
 
 // ==============================================================================
-// 2. TYPAGE
+// 2. TYPAGE STRICT (Standard 1/1000 - Zéro 'any')
 // ==============================================================================
 interface HomeArticle {
   title: string;
@@ -46,35 +48,40 @@ interface HomeArticle {
   excerpt: string;
   category: string;
   authorName: string;
+  authorNameNko: string | null; // 🚀 NOUVEAU : Synchronisé avec la base de données
   authorImageUrl: string | null;
-  body: PortableTextBlock[];
+  readingTime: number; // 🚀 NOUVEAU : Synchronisé pour le temps de lecture
+  // 🚀 OPTIMISATION : 'body' a été supprimé pour correspondre à page.tsx et alléger la mémoire
 }
 
+interface TranslationData {
+  metadata?: { siteName?: string };
+  home?: {
+    allCategories?: string;
+    loadMore?: string;
+    hero: { title: string; subtitle: string; cta: string };
+    featured: { title: string; viewAll: string };
+    categories: Record<string, string>;
+  };
+  search?: { placeholder?: string; noResults?: string; noArticles?: string };
+  nav: { home: string; articles: string; about: string; contact: string };
+}
 // ==============================================================================
 // 3. HOOKS UTILITAIRES
 // ==============================================================================
 
-/**
- * Debounce une valeur avec un délai configurable.
- */
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
-
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedValue(value), delay);
     return () => clearTimeout(handler);
   }, [value, delay]);
-
   return debouncedValue;
 }
 
-/**
- * Gère la détection de scroll avec throttle via RAF.
- */
 function useScrollDetection(threshold: number = 50): boolean {
   const [scrolled, setScrolled] = useState(false);
   const rafRef = useRef<number>(0);
-
   useEffect(() => {
     const handleScroll = () => {
       if (rafRef.current) return;
@@ -83,20 +90,15 @@ function useScrollDetection(threshold: number = 50): boolean {
         rafRef.current = 0;
       });
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       window.removeEventListener("scroll", handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [threshold]);
-
   return scrolled;
 }
 
-/**
- * Parallaxe via useRef + RAF. Zéro manipulation DOM directe.
- */
 function useParallax() {
   const spaceRef = useRef<HTMLDivElement>(null);
   const patternRef = useRef<HTMLDivElement>(null);
@@ -104,46 +106,31 @@ function useParallax() {
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    // Pas de parallaxe sur mobile/tactile
     const mediaQuery = window.matchMedia("(min-width: 900px) and (hover: hover)");
     if (!mediaQuery.matches) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-
       rafRef.current = requestAnimationFrame(() => {
         const x = (window.innerWidth - e.pageX) / 100;
         const y = (window.innerHeight - e.pageY) / 100;
-
-        if (spaceRef.current) {
-          spaceRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.05)`;
-        }
-        if (patternRef.current) {
-          patternRef.current.style.transform = `translate3d(${x * 1.5}px, ${y * 1.5}px, 0)`;
-        }
-        if (baobabRef.current) {
-          baobabRef.current.style.transform = `translate3d(${x * 0.5}px, ${y * 0.5}px, 0)`;
-        }
+        if (spaceRef.current) spaceRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.05)`;
+        if (patternRef.current) patternRef.current.style.transform = `translate3d(${x * 1.5}px, ${y * 1.5}px, 0)`;
+        if (baobabRef.current) baobabRef.current.style.transform = `translate3d(${x * 0.5}px, ${y * 0.5}px, 0)`;
         rafRef.current = 0;
       });
     };
-
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
-
   return { spaceRef, patternRef, baobabRef };
 }
 
-/**
- * IntersectionObserver stable — ne se recrée pas à chaque filtrage.
- */
 function useRevealObserver() {
   const observerRef = useRef<IntersectionObserver | null>(null);
-
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -156,80 +143,101 @@ function useRevealObserver() {
       },
       { threshold: 0.1 }
     );
-
     return () => observerRef.current?.disconnect();
   }, []);
 
-  // Callback pour observer de nouveaux éléments après un rendu
   const observeElements = useCallback(() => {
-    // Petit délai pour laisser le DOM se mettre à jour
     requestAnimationFrame(() => {
       document.querySelectorAll(".reveal:not(.active)").forEach((el) => {
         observerRef.current?.observe(el);
       });
     });
   }, []);
-
   return observeElements;
 }
 
 // ==============================================================================
-// 4. COMPOSANT MOBILE OVERLAY
+// 4A. L'ARME SECRÈTE 0.1/1000 : LE LOGO MAGNÉTIQUE (VERSION PURE)
+// ==============================================================================
+interface MagneticLogoProps {
+  siteName: string;
+  isNko: boolean;
+}
+
+function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
+  const router = useRouter();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handlePointerDown = () => {
+    // 🚀 Le Secret du Bâtisseur : Redirection directe vers la vraie page About
+    timerRef.current = setTimeout(() => {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([100, 50, 100]);
+      router.push("/about");
+      timerRef.current = null;
+    }, 600);
+  };
+
+  const handlePointerUp = () => {
+    // Clic standard : Remonte doucement en haut de la page d'accueil
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+      if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  return (
+    <div 
+      className="brand group flex items-center gap-2 cursor-pointer touch-none select-none"
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
+      onPointerLeave={handlePointerUp}
+      aria-label="Retour à l'accueil"
+      role="button"
+      tabIndex={0}
+    >
+      <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
+        <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
+        <Image 
+          src="/icon-192x192.png" 
+          alt={siteName} 
+          width={34} 
+          height={34} 
+          className="rounded-md relative z-10 transition-transform group-active:scale-90"
+          priority
+        />
+      </div>
+      <span className={`transition-colors group-hover:text-[#fbbf24] ${isNko ? "font-kigelia" : ""}`}>
+        {siteName}
+      </span>
+    </div>
+  );
+}
+
+// ==============================================================================
+// 4B. COMPOSANT MOBILE OVERLAY
 // ==============================================================================
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  nav: {
-    home: string;
-    articles: string;
-    about: string;
-    contact: string;
-  };
+  nav: { home: string; articles: string; about: string; contact: string };
+  showInstallBtn?: boolean;
+  onInstallClick?: () => void;
+  isNko?: boolean;
 }
-
-function MobileMenu({ isOpen, onClose, nav }: MobileMenuProps) {
+function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNko }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Focus trap : piège le focus dans le menu quand ouvert
   useEffect(() => {
     if (!isOpen || !menuRef.current) return;
-
-    const menu = menuRef.current;
-    const focusableElements = menu.querySelectorAll<HTMLElement>(
-      'a, button, [tabindex]:not([tabindex="-1"])'
-    );
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-
-    // Focus le bouton fermer à l'ouverture
-    firstElement?.focus();
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-        return;
-      }
-      if (e.key !== "Tab") return;
-
-      if (e.shiftKey) {
-        if (document.activeElement === firstElement) {
-          e.preventDefault();
-          lastElement?.focus();
-        }
-      } else {
-        if (document.activeElement === lastElement) {
-          e.preventDefault();
-          firstElement?.focus();
-        }
-      }
-    };
-
-    // Empêche le scroll du body
+    const handleKeyDown = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
     document.addEventListener("keydown", handleKeyDown);
-
     return () => {
       document.body.style.overflow = "";
+      document.body.style.touchAction = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
@@ -240,44 +248,61 @@ function MobileMenu({ isOpen, onClose, nav }: MobileMenuProps) {
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
-      className={`mobile-overlay ${isOpen ? "mobile-overlay--open" : ""}`}
-      // Clic sur le fond ferme le menu
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
+      className={`fixed inset-0 z-[9999] flex flex-col overscroll-contain bg-[#02040a]/95 backdrop-blur-3xl transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        isOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
+      }`}
     >
       <button
-        className="mobile-overlay__close"
+        className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[#fbbf24] hover:text-black hover:border-[#fbbf24] transition-all duration-300"
         onClick={onClose}
         aria-label="Fermer le menu"
       >
-        <i className="ph-bold ph-x" aria-hidden="true"></i>
+        <i className="ph-bold ph-x text-2xl" aria-hidden="true"></i>
       </button>
 
-      <nav aria-label="Menu principal mobile">
-        <ul className="mobile-overlay__links">
-          <li>
-            <Link href="/" onClick={onClose}>
-              {nav.home}
-            </Link>
-          </li>
-          <li>
-            <a href="#articles" onClick={onClose}>
-              {nav.articles}
-            </a>
-          </li>
-          <li>
-            <Link href="/about" onClick={onClose}>
-              {nav.about}
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact" onClick={onClose}>
-              {nav.contact}
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <div className="flex flex-col items-center justify-center h-full w-full px-8 pb-12">
+        <div className="w-24 h-24 mb-10 relative flex items-center justify-center p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
+            <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 rounded-full animate-pulse"></div>
+            <Image src="/icon-192x192.png" alt="Sceau N'Ko ni Lonko" width={96} height={96} className="relative z-10 drop-shadow-lg" />
+        </div>
+
+        <nav aria-label="Menu principal mobile" className="w-full max-w-sm">
+          <ul className="flex flex-col gap-6 text-center w-full">
+            {showInstallBtn && onInstallClick && (
+              <li className="mb-4 pb-6 border-b border-white/10">
+                <button 
+                  onClick={() => { onInstallClick(); onClose(); }}
+                  className="w-full group relative px-6 py-4 rounded-2xl bg-[#fbbf24]/10 border border-[#fbbf24]/30 hover:bg-[#fbbf24] transition-all duration-500 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)] overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-[#fbbf24]/20 blur-xl animate-pulse group-hover:opacity-0 transition-opacity"></div>
+                  <i className="ph-bold ph-download-simple text-3xl text-[#fbbf24] group-hover:text-black mb-2 relative z-10" aria-hidden="true"></i>
+                  <span className={`text-[#fbbf24] group-hover:text-black font-bold text-lg relative z-10 ${isNko ? "font-kigelia" : ""}`}>
+                    {isNko ? "ߊ߬ ߟߊߖߌ߰ ߜߋߟߋ߲ߜߋߟߋ߲ ߞߣߐ߫" : "Installer l'application"}
+                  </span>
+                </button>
+              </li>
+            )}
+            {[
+              { href: "/", label: nav.home, active: true },
+              { href: "#articles", label: nav.articles },
+              { href: "/about", label: nav.about },
+              { href: "/contact", label: nav.contact }
+            ].map((link, i) => (
+              <li key={i} className="w-full">
+                {link.href.startsWith('#') ? (
+                  <a href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-[#fbbf24] font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-[#fbbf24] font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                    {link.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 }
@@ -288,37 +313,51 @@ function MobileMenu({ isOpen, onClose, nav }: MobileMenuProps) {
 export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   const { t, lang, toggleLanguage } = useLanguage();
   const isNko = lang === "nko";
+  
+  const typedT = t as unknown as TranslationData;
 
-  // --- ÉTATS ---
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
 
-  // --- HOOKS CUSTOM ---
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
   const scrolled = useScrollDetection(50);
   const { spaceRef, patternRef, baobabRef } = useParallax();
   const observeElements = useRevealObserver();
   const debouncedQuery = useDebounce(searchQuery, 300);
 
-  // ==========================================================================
-  // EVENT HANDLERS — Remplacent le useEffect(setState) interdit par ESLint
-  // ==========================================================================
-
-  /**
-   * Change la catégorie active ET reset la pagination.
-   * Utilisé par les boutons de catégories + le SiteFooter.
-   */
-  const handleCategoryChange = useCallback((key: string) => {
-    setActiveCategory(key);
-    setVisibleCount(ARTICLES_PER_PAGE);
+  const triggerVibration = useCallback(() => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
   }, []);
 
-  /**
-   * Met à jour la recherche ET reset la pagination.
-   * Utilisé par l'input de recherche.
-   */
+  const scrollToArticlesGrid = useCallback(() => {
+    setTimeout(() => {
+      const articlesSection = document.getElementById('articles');
+      if (articlesSection) {
+        const offset = 100;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = articlesSection.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+      }
+    }, 50);
+  }, []);
+
+  const handleCategoryChange = useCallback((key: string) => {
+    triggerVibration();
+    setActiveCategory(key);
+    setVisibleCount(ARTICLES_PER_PAGE);
+    scrollToArticlesGrid();
+  }, [scrollToArticlesGrid, triggerVibration]);
+
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(e.target.value);
@@ -327,25 +366,40 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
     []
   );
 
-  /**
-   * Efface la recherche ET reset la pagination.
-   * Utilisé par le bouton X de la barre de recherche.
-   */
   const handleSearchClear = useCallback(() => {
+    triggerVibration();
     setSearchQuery("");
     setVisibleCount(ARTICLES_PER_PAGE);
+    scrollToArticlesGrid();
+  }, [scrollToArticlesGrid, triggerVibration]);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
   }, []);
 
-  // --- FILTRAGE ---
+  const handleInstallClick = async () => {
+    triggerVibration();
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      setShowInstallBtn(false);
+    }
+    setDeferredPrompt(null);
+  };
+
   const filteredArticles = useMemo(() => {
     const normalizedSearch = debouncedQuery.toLowerCase().trim();
-
     return articles.filter((article) => {
-      // Filtre catégorie
       let matchesCategory = true;
       if (activeCategory !== "all") {
-      
-        const categoriesMap = (t.home?.categories || {}) as Record<string, string>;
+        const categoriesMap = typedT.home?.categories || {};
         const activeLabel = categoriesMap[activeCategory];
         const artCat = (article.category || "").toLowerCase().trim();
         const targetLabel = (activeLabel || "").toLowerCase().trim();
@@ -353,22 +407,17 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         matchesCategory =
           artCat === targetLabel || artCat === targetKey || artCat.includes(targetKey);
       }
-
-      // Filtre recherche
       let matchesSearch = true;
       if (normalizedSearch) {
         matchesSearch =
           article.title.toLowerCase().includes(normalizedSearch) ||
           article.excerpt.toLowerCase().includes(normalizedSearch);
       }
-
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, debouncedQuery, articles, t]);
+  }, [activeCategory, debouncedQuery, articles, typedT.home?.categories]);
 
-  // --- PRELOADER INTELLIGENT ---
   useEffect(() => {
-    // Se ferme dès que les articles sont prêts OU après 2s max (safety net)
     if (articles.length > 0) {
       const timer = setTimeout(() => setLoading(false), 400);
       return () => clearTimeout(timer);
@@ -377,105 +426,141 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
     return () => clearTimeout(maxTimer);
   }, [articles]);
 
-  // --- OBSERVER les éléments .reveal après chaque changement de liste ---
   useEffect(() => {
     observeElements();
   }, [filteredArticles, visibleCount, observeElements]);
 
-  // --- HELPERS ---
   const getCategoryIconClass = useCallback((key: string) => {
     const normalizedKey = key.toLowerCase();
-    const iconKey =
-      Object.keys(CATEGORY_ICONS).find((k) => normalizedKey.includes(k)) || "default";
+    const iconKey = Object.keys(CATEGORY_ICONS).find((k) => normalizedKey.includes(k)) || "default";
     return CATEGORY_ICONS[iconKey] || CATEGORY_ICONS["default"];
   }, []);
 
-  // Utilisation de 'as any' pour éviter les erreurs TypeScript sur siteName
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const siteName = (t.metadata as any)?.siteName || "Kiba";
-  
-  const categories = (t.home?.categories || {}) as Record<string, string>;
+  const siteName = typedT.metadata?.siteName || "Kiba";
+  const categories = typedT.home?.categories || {};
   const visibleArticles = filteredArticles.slice(0, visibleCount);
   const hasMore = visibleCount < filteredArticles.length;
 
   return (
     <>
-      {/* ===== SKIP-TO-CONTENT (Accessibilité clavier) ===== */}
       <a href="#articles" className="skip-to-content">
-        {isNko ? "ߞߎ߲ߘߍ߲ ߡߊ߫ ߞߐ߲ߛߐ߲" : "Aller au contenu"}
+        {isNko ? "ߥߊ߫ ߞߣߐߘߐ ߝߟߍ߫" : "Aller au contenu"}
       </a>
 
-      {/* ===== PRELOADER ===== */}
       <div
         id="preloader"
         role="status"
         aria-live="polite"
-        aria-label={isNko ? "ߛߎ߲ߞߎ߲ ߦߋ߫ ..." : "Chargement en cours..."}
+        aria-label={isNko ? "ߟߊߖߛߐߟߌ ߦߋ߫ ߞߊ߬ ߞߍ߫..." : "Chargement en cours..."}
         data-loaded={!loading}
       >
-        <div className="loader-symbol" aria-hidden="true">
-          ߒ
-        </div>
+        <div className="loader-symbol" aria-hidden="true">ߒ</div>
         <div className="loader-line" aria-hidden="true"></div>
         <span className="sr-only">
-          {isNko ? "ߛߎ߲ߞߎ߲ ߦߋ߫ ..." : "Chargement en cours..."}
+          {isNko ? "ߟߊߖߛߐߟߌ ߦߋ߫ ߞߊ߬ ߞߍ߫..." : "Chargement en cours..."}
         </span>
       </div>
 
-      {/* ===== BACKGROUND COSMIQUE (useRef, pas getElementById) ===== */}
+      {/* 🚀 L'INJECTION DU RÉACTEUR (Optimisation Image 1/1000) */}
       <div className="cosmic-background" aria-hidden="true">
-        <div className="bg-layer-space" ref={spaceRef}></div>
+        
+        {/* 1. Jams Webb : On annule le CSS lourd et on injecte Next Image */}
+        <div className="bg-layer-space" ref={spaceRef} style={{ backgroundImage: 'none' }}>
+          <Image 
+            src="/jams-webb.png" 
+            alt="Espace cosmique" 
+            fill 
+            priority 
+            quality={85}
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+
+        {/* 2. Le motif répétitif (Généralement léger, on le laisse gérer par le CSS pour le repeat) */}
         <div className="bg-layer-pattern" ref={patternRef}></div>
-        <div className="bg-layer-baobab" ref={baobabRef}></div>
+
+        {/* 3. Le Baobab : Optimisation totale tout en gardant le mask-image du CSS parent */}
+        <div className="bg-layer-baobab" ref={baobabRef} style={{ backgroundImage: 'none' }}>
+          <Image 
+            src="/le-baobaob.png" 
+            alt="Baobab de la connaissance" 
+            fill 
+            priority 
+            quality={85}
+            sizes="100vw"
+            className="object-cover"
+          />
+        </div>
+
         <div className="bg-overlay"></div>
       </div>
 
-      {/* ===== NAVIGATION ===== */}
       <nav
         className={scrolled ? "scrolled" : ""}
         role="navigation"
-        aria-label={isNko ? "ߛߌ߲ߘߐ ߓߟߏ" : "Navigation principale"}
+        aria-label={isNko ? "ߛߏ߯ߓߊߟߌߟߊ ߢߣߊߡߊ" : "Navigation principale"}
       >
-        <Link href="/" className="brand">
-          <i className="ph-fill ph-diamond" aria-hidden="true"></i>
-          <span className={isNko ? "font-kigelia" : ""}>{siteName}</span>
-        </Link>
+        {/* 🚀 L'INJECTION DU LOGO MAGNÉTIQUE ICI */}
+        <MagneticLogo 
+          siteName={siteName} 
+          isNko={isNko} 
+        />
 
-        {/* MENU DESKTOP */}
         <ul className="nav-links">
           <li className="nav-item">
-            <Link href="/" aria-current="page">
-              {t.nav.home}
-            </Link>
+            <Link href="/" aria-current="page">{typedT.nav.home}</Link>
           </li>
           <li className="nav-item">
-            <a href="#articles">{t.nav.articles}</a>
+            <a href="#articles">{typedT.nav.articles}</a>
           </li>
           <li className="nav-item">
-            <Link href="/about">{t.nav.about}</Link>
+            <Link href="/about">{typedT.nav.about}</Link>
           </li>
           <li className="nav-item">
-            <Link href="/contact">{t.nav.contact}</Link>
+            <Link href="/contact">{typedT.nav.contact}</Link>
           </li>
         </ul>
 
         <div className="nav-actions">
+          {showInstallBtn && (
+            <button
+              className="btn-lang relative group overflow-hidden"
+              onClick={handleInstallClick}
+              aria-label={isNko ? "ߊ߬ ߟߊߖߌ߰" : "Installer l'application"}
+              style={{ color: "var(--color-gold)", borderColor: "var(--color-gold)" }}
+            >
+              <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-20 group-hover:opacity-40 animate-pulse transition-opacity pointer-events-none"></div>
+              <i className="ph-bold ph-download-simple relative z-10" aria-hidden="true"></i>
+              <span className={`relative z-10 ml-1.5 ${isNko ? "font-kigelia" : ""}`}>
+                {isNko ? "ߊ߬ ߟߊߖߌ߰" : "Installer"}
+              </span>
+            </button>
+          )}
+
           <button
-            className="btn-lang"
-            onClick={toggleLanguage}
-            aria-label={
-              isNko
-                ? "Changer la langue en Français"
-                : "ߞߊ߲ ߡߊߝߟߍ ߒߞߏ ߡߊ߬"
-            }
+            className="btn-lang group relative flex items-center gap-2 overflow-hidden transition-all duration-500 hover:border-[#fbbf24]/50 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(251,191,36,0.2)]"
+            onClick={() => { triggerVibration(); toggleLanguage(); }}
+            aria-label={isNko ? "Changer la langue en Français" : "ߞߊ߲ ߦߟߍ߬ߡߊ ߒߞߏ ߘߐ߫"}
           >
-            <i className="ph ph-translate" aria-hidden="true"></i>
-            <span>{isNko ? "FR" : "ߒߞߏ"}</span>
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full"></div>
+            <i 
+              className={`ph ph-translate transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isNko ? 'rotate-[360deg] scale-110 text-[#fbbf24]' : 'rotate-0 scale-100'}`} 
+              aria-hidden="true"
+            ></i>
+            <div className="relative flex h-[20px] w-[35px] items-center justify-center">
+               <span className={`absolute transition-all duration-500 ${isNko ? 'opacity-0 scale-50 -translate-y-4' : 'opacity-100 scale-100 translate-y-0'}`}>
+                 FR
+               </span>
+               <span className={`absolute font-kigelia font-bold text-[#fbbf24] transition-all duration-500 ${isNko ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-4'}`}>
+                 ߒߞߏ
+               </span>
+            </div>
           </button>
 
           <button
             className="mobile-toggle"
-            onClick={() => setMobileMenuOpen(true)}
+            onClick={() => { triggerVibration(); setMobileMenuOpen(true); }}
             aria-label={isNko ? "ߡߍߣߎ ߟߊߝߍ" : "Ouvrir le menu"}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-menu"
@@ -485,199 +570,141 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         </div>
       </nav>
 
-      {/* ===== MENU MOBILE (composant séparé, focus trap, dialog) ===== */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
-        nav={t.nav}
+        nav={typedT.nav}
+        showInstallBtn={showInstallBtn}
+        onInstallClick={handleInstallClick}
+        isNko={isNko}
       />
 
-      {/* ===== HERO ===== */}
       <header className="hero">
         <h1 className={`reveal ${isNko ? "font-kigelia" : ""}`}>
-          {t.home.hero.title}
+          {typedT.home?.hero?.title}
         </h1>
         <p className="reveal" style={{ transitionDelay: "0.15s" }}>
-          {t.home.hero.subtitle}
+          {typedT.home?.hero?.subtitle}
         </p>
         <a
           href="#articles"
           className="cta-btn reveal"
           style={{ transitionDelay: "0.3s" }}
+          onClick={triggerVibration}
         >
-          <span>{t.home.hero.cta}</span>
+          <span>{typedT.home?.hero?.cta}</span>
           <i className="ph-bold ph-arrow-down" aria-hidden="true"></i>
         </a>
       </header>
 
-      {/* ===== SEARCH ===== */}
-      <section
-        className="search-container reveal"
-        aria-label={isNko ? "ߢߌ߬ߣߌ߲ ߓߊ߯ߙߊ" : "Barre de recherche"}
-      >
+      <section className="search-container reveal" aria-label={isNko ? "ߢߌߣߌ߲ ߞߊߟߊ߫" : "Barre de recherche"}>
         <div className="search-bar">
-          <i
-            className="ph ph-magnifying-glass"
-            aria-hidden="true"
-            style={{ fontSize: "1.3rem", color: "var(--color-gold)", flexShrink: 0 }}
-          ></i>
+          <i className="ph ph-magnifying-glass" aria-hidden="true" style={{ fontSize: "1.3rem", color: "var(--color-gold)", flexShrink: 0 }}></i>
           <input
             type="search"
             className="search-input"
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            placeholder={(t.search as any)?.placeholder || (isNko ? "ߢߌ߬ߣߌ߲..." : "Rechercher...")}
+            placeholder={typedT.search?.placeholder || (isNko ? "ߢߌ߬ߣߌ߲..." : "Rechercher...")}
             dir={isNko ? "rtl" : "ltr"}
             value={searchQuery}
             onChange={handleSearchChange}
-            aria-label={isNko ? "ߢߌ߬ߣߌ߲ ߞߎ߲ߘߍ߲ ߘߐ߫" : "Rechercher des articles"}
+            aria-label={isNko ? " ߞߎߡߘߊ ߢߌ߲ߣߌ߫" : "Rechercher des articles"}
           />
           {searchQuery && (
             <button
               onClick={handleSearchClear}
-              className="search-btn"
-              aria-label={isNko ? "ߢߌ߬ߣߌ߲ ߝߊ߬ߘߌ" : "Effacer la recherche"}
-              style={{
-                background: "transparent",
-                color: "var(--color-text-muted)",
-                width: "44px",
-                height: "44px",
-              }}
+              className="search-btn animate-in fade-in zoom-in duration-300"
+              aria-label={isNko ? "ߢߌ߲ߣߌ߲ߠߌ ߝߘߏ߬" : "Effacer la recherche"}
+              style={{ background: "transparent", color: "var(--color-text-muted)", width: "44px", height: "44px" }}
             >
-              <i className="ph-fill ph-x-circle" aria-hidden="true"></i>
+              <i className="ph-fill ph-x-circle hover:text-[#fbbf24] transition-colors" aria-hidden="true"></i>
             </button>
           )}
-          <button
-            className="search-btn"
-            aria-label={isNko ? "ߢߌ߬ߣߌ߲" : "Rechercher"}
-          >
-            <i
-              className={`ph-bold ${isNko ? "ph-arrow-left" : "ph-arrow-right"}`}
-              aria-hidden="true"
-            ></i>
+          <button className="search-btn" aria-label={isNko ? "ߢߊߢߌ߬ߣߌ߲߫" : "Rechercher"} onClick={triggerVibration}>
+            <i className={`ph-bold ${isNko ? "ph-arrow-left" : "ph-arrow-right"}`} aria-hidden="true"></i>
           </button>
         </div>
       </section>
 
-      {/* ===== CATÉGORIES ===== */}
       <div
-        className="categories-wrapper reveal"
+        className="categories-wrapper reveal flex overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible md:pb-0"
         role="group"
-        aria-label={isNko ? "ߓߐ߬ߟߐ ߝߊ߬ߣߊ ߟߎ" : "Filtrer par catégorie"}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+        aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
       >
-        {/* Bouton TOUT */}
         <button
-          className={`category-pill ${activeCategory === "all" ? "active" : ""}`}
+          className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === "all" ? "active" : ""}`}
           onClick={() => handleCategoryChange("all")}
           aria-pressed={activeCategory === "all"}
         >
           <i className="ph-bold ph-squares-four" aria-hidden="true"></i>
-          {/* Correction TypeScript : on cast t.home en any pour accéder à allCategories */}
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <span>{(t.home as any)?.allCategories || (isNko ? "ߓߍ߯" : "Tout")}</span>
+          <span>{typedT.home?.allCategories || (isNko ? "ߓߍ߯" : "Tout")}</span>
         </button>
 
         {Object.entries(categories).map(([key, label]) => (
           <button
             key={key}
-            className={`category-pill ${activeCategory === key ? "active" : ""}`}
+            className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === key ? "active" : ""}`}
             onClick={() => handleCategoryChange(key)}
             aria-pressed={activeCategory === key}
           >
-            <i
-              className={`ph-bold ${getCategoryIconClass(key)}`}
-              aria-hidden="true"
-            ></i>
+            <i className={`ph-bold ${getCategoryIconClass(key)}`} aria-hidden="true"></i>
             <span className={isNko ? "font-kigelia" : ""}>{label}</span>
           </button>
         ))}
       </div>
 
-      {/* ===== SECTION HEADER ===== */}
       <div className="section-header" id="articles">
-        <h2 className="section-title reveal">{t.home.featured.title}</h2>
-        {/* Lien fonctionnel ou retiré — pas de href="#" mort */}
+        <h2 className="section-title reveal">{typedT.home?.featured?.title}</h2>
         <Link href="/articles" className="reveal link-gold">
-          {t.home.featured.viewAll}
+          {typedT.home?.featured?.viewAll}
         </Link>
       </div>
 
-      {/* ===== GRILLE ARTICLES ===== */}
       <div className="grid-container" id="articles-grid">
         {visibleArticles.map((article, index) => (
-          <div
-            key={article.slug}
-            className="reveal"
-            style={{ transitionDelay: `${index * 0.08}s` }}
-          >
+          <div key={article.slug} className="reveal" style={{ transitionDelay: `${index * 0.08}s` }}>
             <ArticleCard article={article} />
           </div>
         ))}
 
-        {/* Message "aucun résultat" */}
         {filteredArticles.length === 0 && (
-          <div
-            className="empty-state"
-            style={{
-              gridColumn: "1 / -1",
-              textAlign: "center",
-              padding: "80px 20px",
-              color: "var(--color-text-subtle)",
-            }}
-          >
-            <i
-              className="ph ph-magnifying-glass"
-              aria-hidden="true"
-              style={{ fontSize: "3rem", display: "block", marginBottom: "16px", opacity: 0.5 }}
-            ></i>
+          <div className="empty-state animate-in fade-in duration-500" style={{ gridColumn: "1 / -1", textAlign: "center", padding: "80px 20px", color: "var(--color-text-subtle)" }}>
+            <div className="relative inline-block mb-6">
+              <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-10 rounded-full animate-pulse"></div>
+              <i className="ph-fill ph-magnifying-glass relative z-10 animate-[bounce_3s_infinite]" aria-hidden="true" style={{ fontSize: "4rem", color: "var(--color-gold)", opacity: 0.8 }}></i>
+            </div>
             <p style={{ fontSize: "1.1rem" }}>
-              {/* Correction TypeScript : Utilisation de (t.search as any) */}
               {debouncedQuery
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ? (t.search as any)?.noResults
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  ? (t.search as any).noResults.replace("{query}", debouncedQuery)
+                ? typedT.search?.noResults
+                  ? typedT.search.noResults.replace("{query}", debouncedQuery)
                   : isNko
                     ? `ߝߋ߲߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬ "${debouncedQuery}" ߞߏ ߘߐ߫.`
                     : `Aucun résultat pour "${debouncedQuery}"`
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                : (t.search as any)?.noArticles ||
-                  (isNko
-                    ? "ߞߎߡߘߊ߫ ߛߌ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬."
-                    : "Aucun article trouvé.")}
+                : typedT.search?.noArticles || (isNko ? "ߞߎߡߘߊ߫ ߛߌ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬." : "Aucun article trouvé.")}
             </p>
           </div>
         )}
       </div>
 
-      {/* ===== BOUTON "VOIR PLUS" ===== */}
       {hasMore && (
         <div style={{ textAlign: "center", marginBottom: "80px" }}>
           <button
-            className="cta-btn"
-            onClick={() => setVisibleCount((prev) => prev + ARTICLES_PER_PAGE)}
+            className="cta-btn touch-manipulation"
+            onClick={() => { triggerVibration(); setVisibleCount((prev) => prev + ARTICLES_PER_PAGE); }}
             style={{
-              background: "var(--gradient-panel)",
-              color: "var(--color-gold)",
-              border: "1px solid var(--color-border)",
-              fontSize: "1rem",
-              padding: "16px 40px",
+              background: "var(--gradient-panel)", color: "var(--color-gold)",
+              border: "1px solid var(--color-border)", fontSize: "1rem", padding: "16px 40px",
             }}
           >
-            <span>
-              {/* Correction TypeScript : (t.home as any) pour loadMore */}
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-              {(t.home as any)?.loadMore || (isNko ? "ߕߎ߲ ߘߐ" : "Voir plus")}
+            <span className={isNko ? "font-kigelia" : ""}>
+              {typedT.home?.loadMore || (isNko ? "ߘߏ߫ ߜߘߍ߫ ߟߎ߫ ߦߋ߫ " : "Voir plus")}
             </span>
             <i className="ph-bold ph-caret-down" aria-hidden="true"></i>
           </button>
         </div>
       )}
 
-      {/* ===== FOOTER ===== */}
-      <SiteFooter
-        activeCategory={activeCategory}
-        setActiveCategory={handleCategoryChange}
-      />
+      <SiteFooter activeCategory={activeCategory} setActiveCategory={handleCategoryChange} />
     </>
   );
 }

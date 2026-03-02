@@ -1,6 +1,17 @@
 "use client";
 
-import { useState } from "react";
+/**
+ * ==============================================================================
+ * 📂 FICHIER : app/components/ArticleTools.tsx
+ * ------------------------------------------------------------------------------
+ * 🎯 RÔLE : Cockpit de lecture interactif (Dynamic Island & Sommaire).
+ * ⚡ INTELLIGENCE : Surlignage Cognitif (Popup au surlignage) & Boussole (Scroll Spy).
+ * 📳 SENSORIEL : Retour haptique natif sur chaque interaction.
+ * 🛡️ INGÉNIERIE : MutationObserver, URL Canoniques, Z-Index Masterclass, Polyfill Safari.
+ * ==============================================================================
+ */
+
+import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "./LanguageProvider";
 
 interface ArticleToolsProps {
@@ -13,47 +24,233 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
   const { lang } = useLanguage();
   const isNko = lang === 'nko';
   
-  // États pour le feedback visuel (succès de copie)
+  // États de l'Île Dynamique
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [showToc, setShowToc] = useState(false);
+  
+  // États de Fonctionnalités
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCite, setCopiedCite] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // --- 1. PARTAGE INTELLIGENT ---
-  const handleShare = async () => {
-    if (typeof window === 'undefined') return;
+  // États de la Boussole (Sommaire)
+  const [headings, setHeadings] = useState<{id: string, text: string, level: string}[]>([]);
+  const [activeHeadingId, setActiveHeadingId] = useState<string>('');
 
-    const shareData = {
-      title: title,
-      text: isNko 
-        ? `ߞߎߡߘߊ ߣߌ߲߬ ߘߐߜߍ߫ N'Ko ni Lonko ߞߊ߲߬: ${title}` 
-        : `Découvrez cet article sur N'Ko ni Lonko : ${title}`,
-      url: window.location.href,
+  // États du Surlignage Cognitif
+  const [selection, setSelection] = useState({ show: false, text: '', x: 0, y: 0 });
+  const [copiedSelection, setCopiedSelection] = useState(false);
+
+  // 🚀 L'Illusion Physique (Haptique)
+  const triggerVibration = useCallback(() => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  }, []);
+
+  // 🚀 UTILITAIRE 1/1000 : URL Canonique absolue
+  const getCanonicalUrl = useCallback(() => {
+    if (typeof window === 'undefined') return '';
+    return window.location.origin + window.location.pathname;
+  }, []);
+
+  // ==============================================================================
+  // 🧠 ALGORITHME 1 : LA BOUSSOLE SCIENTIFIQUE (MutationObserver & Scroll Spy)
+  // ==============================================================================
+  useEffect(() => {
+    const generateHeadings = () => {
+      const elements = Array.from(document.querySelectorAll('.article-content h2, .article-content h3'));
+      const hData = elements.map((el, i) => {
+        if (!el.id) el.id = `heading-autogen-${i}`; // Injection d'ID si manquant
+        return { id: el.id, text: el.textContent || '', level: el.tagName.toLowerCase() };
+      });
+      setHeadings(hData);
     };
 
-    if (navigator.share) {
-      try {
-        await navigator.share(shareData);
-      } catch (err) {
-        console.warn("Partage annulé", err);
+    generateHeadings();
+
+    const targetNode = document.querySelector('.article-content');
+    let observer: MutationObserver | null = null;
+    if (targetNode) {
+      observer = new MutationObserver(() => generateHeadings());
+      observer.observe(targetNode, { childList: true, subtree: true });
+    }
+
+    const handleScroll = () => {
+      const elements = Array.from(document.querySelectorAll('.article-content h2, .article-content h3'));
+      let current = '';
+      for (const el of elements) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 150) {
+          current = el.id;
+        }
+      }
+      if (current) setActiveHeadingId(current);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      if (observer) observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const scrollToHeading = (id: string) => {
+    triggerVibration();
+    const element = document.getElementById(id);
+    if (element) {
+      const y = element.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+    if (window.innerWidth < 768) setShowToc(false);
+  };
+
+  // ==============================================================================
+  // 🧠 ALGORITHME 2 : LE SURLIGNAGE COGNITIF (Menu Magnétique Bilingue)
+  // ==============================================================================
+  useEffect(() => {
+    const handleSelection = () => {
+      const sel = window.getSelection();
+      if (sel && !sel.isCollapsed && sel.toString().trim().length > 10) {
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        
+        setSelection({
+          show: true,
+          text: sel.toString().trim(),
+          x: rect.left + rect.width / 2,
+          y: rect.top,
+        });
+      } else {
+        if (selection.show) setSelection(s => ({ ...s, show: false }));
+      }
+    };
+
+    document.addEventListener('mouseup', handleSelection);
+    document.addEventListener('touchend', handleSelection);
+    return () => {
+      document.removeEventListener('mouseup', handleSelection);
+      document.removeEventListener('touchend', handleSelection);
+    };
+  }, [selection.show]);
+
+  // 🚀 L'ARME SÉMANTIQUE : Partage 100% N'Ko quand la langue est N'Ko
+  const shareSelectionOnX = () => {
+    triggerVibration();
+    const textToShare = isNko 
+      ? `"${selection.text}" — ߊ߬ ߘߐߞߊ߬ߙߊ߲߬ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߞߊ߲߬\n\n${getCanonicalUrl()}`
+      : `"${selection.text}" — lu sur N'Ko ni Lonko\n\n${getCanonicalUrl()}`;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(textToShare)}`, '_blank');
+    setSelection(s => ({ ...s, show: false }));
+  };
+
+  const shareSelectionOnWhatsApp = () => {
+    triggerVibration();
+    const textToShare = isNko 
+      ? `"${selection.text}" — ߊ߬ ߘߐߞߊ߬ߙߊ߲߬ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߞߊ߲߬\n\n${getCanonicalUrl()}`
+      : `"${selection.text}" — lu sur N'Ko ni Lonko\n\n${getCanonicalUrl()}`;
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`, '_blank');
+    setSelection(s => ({ ...s, show: false }));
+  };
+
+  const copySelection = async () => {
+    triggerVibration();
+    try {
+      await navigator.clipboard.writeText(`"${selection.text}" - ${title} (${getCanonicalUrl()})`);
+      setCopiedSelection(true);
+      setTimeout(() => {
+        setCopiedSelection(false);
+        setSelection(s => ({ ...s, show: false }));
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // ==============================================================================
+  // INIT & OUTILS CLASSIQUES
+  // ==============================================================================
+  
+  // 🚀 SÉCURITÉ HYDRATATION & LINTER : Décalage asynchrone (0ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const slug = window.location.pathname;
+      const bookmarks = JSON.parse(localStorage.getItem('nko_bookmarks') || '[]');
+      setIsBookmarked(bookmarks.includes(slug));
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    // 🚀 Support Safari/iOS
+    document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleBookmark = () => {
+    triggerVibration();
+    const slug = window.location.pathname;
+    let bookmarks = JSON.parse(localStorage.getItem('nko_bookmarks') || '[]');
+    if (bookmarks.includes(slug)) {
+      bookmarks = bookmarks.filter((b: string) => b !== slug);
+      setIsBookmarked(false);
+    } else {
+      bookmarks.push(slug);
+      setIsBookmarked(true);
+    }
+    localStorage.setItem('nko_bookmarks', JSON.stringify(bookmarks));
+  };
+
+  // 🚀 L'ARME SAFARI : Polyfill pour que le Plein Écran marche sur Mac et iPhone
+  const toggleZenMode = () => {
+    triggerVibration();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const docEl = document.documentElement as any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const doc = document as any;
+
+    if (!doc.fullscreenElement && !doc.webkitFullscreenElement) {
+      if (docEl.requestFullscreen) {
+        docEl.requestFullscreen().catch(() => {});
+      } else if (docEl.webkitRequestFullscreen) { 
+        docEl.webkitRequestFullscreen(); 
       }
     } else {
-      try {
-        await navigator.clipboard.writeText(window.location.href);
-        setCopiedLink(true);
-        setTimeout(() => setCopiedLink(false), 2000);
-      } catch (err) {
-        console.error("Erreur copie", err);
+      if (doc.exitFullscreen) {
+        doc.exitFullscreen();
+      } else if (doc.webkitExitFullscreen) { 
+        doc.webkitExitFullscreen(); 
       }
     }
   };
 
-  // --- 2. CITATION ACADÉMIQUE ---
+  const handleShare = async () => {
+    triggerVibration();
+    const cleanUrl = getCanonicalUrl();
+    if (navigator.share) {
+      navigator.share({ title, url: cleanUrl }).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(cleanUrl);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2000);
+    }
+  };
+
   const handleCite = async () => {
+    triggerVibration();
     if (typeof window === 'undefined') return;
 
     const year = new Date().getFullYear();
+    const cleanUrl = getCanonicalUrl();
     const citation = isNko
-        ? `"${title}". ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ, ${year}. ߓߟߐߟߐ. ${window.location.href}`
-        : `"${title}". N'Ko ni Lonko, ${year}. Web. ${window.location.href}`;
+        ? `"${title}". ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ, ${year}. ߓߟߐߟߐ. ${cleanUrl}`
+        : `"${title}". N'Ko ni Lonko, ${year}. Web. ${cleanUrl}`;
 
     try {
       await navigator.clipboard.writeText(citation);
@@ -64,93 +261,216 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
     }
   };
 
-  // --- 3. IMPRESSION ---
   const handlePrint = () => {
-    if (typeof window !== 'undefined') {
-      window.print();
-    }
+    triggerVibration();
+    if (typeof window !== 'undefined') window.print();
   };
 
+  const wrapZoomIn = () => { triggerVibration(); onZoomIn(); };
+  const wrapZoomOut = () => { triggerVibration(); onZoomOut(); };
+
   return (
-    // 'print:hidden' cache la barre sur papier
-    // Animation d'entrée : fade-in + slide-up pour un effet 'World Class'
-    <aside className="fixed bottom-6 right-6 md:bottom-auto md:top-1/3 md:right-8 z-40 print:hidden animate-in fade-in slide-in-from-bottom-8 duration-700">
-      <div className="flex flex-col gap-4 p-3 rounded-full bg-[#02040a]/80 backdrop-blur-md border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-transform hover:scale-105">
-        
-        {/* BOUTON PARTAGER */}
-        <button 
-            onClick={handleShare} 
-            // MOBILE : w-11 h-11 (44px) pour l'accessibilité tactile
-            // DESKTOP : w-10 h-10 (40px) pour la finesse
-            className="group relative w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
-            title={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
-            aria-label="Share"
+    <>
+      {/* 🚀 ARME 2 (UI) : LA PILULE MAGNÉTIQUE DE SÉLECTION */}
+      {selection.show && (
+        <div 
+          className="fixed z-[9990] flex items-center gap-1 p-1 bg-black/90 backdrop-blur-xl border border-white/20 shadow-[0_10px_40px_rgba(251,191,36,0.3)] rounded-full animate-in fade-in zoom-in duration-200"
+          style={{ 
+            left: `${selection.x}px`, 
+            top: `${selection.y}px`, 
+            transform: 'translate(-50%, -120%)'
+          }}
         >
-          {copiedLink ? (
-             <i className="ph-bold ph-check text-green-400 text-xl"></i>
+          {copiedSelection ? (
+            <div className="flex items-center gap-2 px-3 py-1.5 text-green-400">
+              <i className="ph-bold ph-check"></i>
+              <span className={`text-xs font-bold ${isNko ? 'font-kigelia' : ''}`}>{isNko ? 'ߊ߬ ߓߘߊ߫ ߡߌ߬ߣߊ߬' : 'Copié !'}</span>
+            </div>
           ) : (
-             <i className="ph-bold ph-share-network text-xl"></i>
+            <>
+              {/* 🚀 TRADUCTIONS ET ACCESSIBILITÉ IMPLÉMENTÉES */}
+              <button 
+                onClick={shareSelectionOnX} 
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#fbbf24] transition-colors" 
+                title={isNko ? "ߞߎߡߦߊ ߣߌ߲߬ ߟߊߦߟߍ߬ ߕߎ߳ߌߕߍߙ ߞߊ߲߬" : "Tweeter cette phrase"}
+                aria-label={isNko ? "ߞߎߡߦߊ ߣߌ߲߬ ߟߊߦߟߍ߬ ߕߎ߳ߌߕߍߙ ߞߊ߲߬" : "Tweeter cette phrase"}
+              >
+                <i className="ph-fill ph-x-logo text-sm"></i>
+              </button>
+              <button 
+                onClick={shareSelectionOnWhatsApp} 
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#25D366] transition-colors" 
+                title={isNko ? "ߊ߬ ߟߊߖߍ߲ߛߍ߲ ߥߊߕߑߛߊߔ ߞߊ߲߬" : "Partager sur WhatsApp"}
+                aria-label={isNko ? "ߊ߬ ߟߊߖߍ߲ߛߍ߲ ߥߊߕߑߛߊߔ ߞߊ߲߬" : "Partager sur WhatsApp"}
+              >
+                <i className="ph-fill ph-whatsapp-logo text-sm"></i>
+              </button>
+              <div className="w-[1px] h-4 bg-white/20 mx-1"></div>
+              <button 
+                onClick={copySelection} 
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#fbbf24] transition-colors" 
+                title={isNko ? "ߞߊ߲ߕߏ߲ ߡߌ߬ߣߊ߬" : "Copier la citation"}
+                aria-label={isNko ? "ߞߊ߲ߕߏ߲ ߡߌ߬ߣߊ߬" : "Copier la citation"}
+              >
+                <i className="ph-bold ph-quotes text-sm"></i>
+              </button>
+            </>
           )}
+          <div className="absolute top-full left-1/2 -translate-x-1/2 border-[6px] border-transparent border-t-black/90"></div>
+        </div>
+      )}
+
+      {/* 🚀 L'ÎLE DYNAMIQUE (Cockpit + Sommaire) */}
+      <aside className="fixed bottom-6 right-6 md:bottom-auto md:top-1/4 md:right-8 z-[9995] print:hidden flex flex-col items-end gap-3">
+        
+        {/* BOUTON TOGGLE MOBILE */}
+        <button 
+          onClick={() => { triggerVibration(); setIsExpanded(!isExpanded); setShowToc(false); }}
+          className={`md:hidden flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-xl shadow-2xl border transition-all duration-300 z-50 ${
+            isExpanded ? 'bg-[#fbbf24] text-black border-[#fbbf24] rotate-90' : 'bg-black/80 text-[#fbbf24] border-white/10 rotate-0'
+          }`}
+          aria-label={isNko ? "ߢߍߥߟߊ ߟߊߞߊ߬" : "Ouvrir le menu"}
+        >
+          <i className={`ph-bold ${isExpanded ? 'ph-x' : 'ph-dots-three-outline-vertical'} text-2xl`}></i>
+        </button>
+
+        <div className="flex flex-row md:flex-col items-end gap-4">
           
-          {/* Tooltip */}
-          {copiedLink && (
-            <span className="absolute right-14 md:right-12 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded whitespace-nowrap animate-in fade-in slide-in-from-right-2 shadow-lg">
-                {isNko ? "ߛߌ߬ߘߌ߬ߜߋ߲ ߓߘߊ߫ ߡߌ߬ߣߊ߬" : "Lien copié !"}
-            </span>
-          )}
-        </button>
+          {/* LE PANNEAU DE SOMMAIRE (Radar) */}
+          <div className={`overflow-hidden transition-all duration-500 ease-in-out origin-bottom-right md:origin-top-right backdrop-blur-2xl bg-black/85 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl ${
+            showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
+          }`}>
+            <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+              <h4 className={`text-[#fbbf24] font-bold ${isNko ? 'font-kigelia tracking-widest' : 'tracking-wider uppercase text-sm'}`}>
+                {isNko ? 'ߞߎߡߘߊ ߢߍߛߓߍ' : 'Sommaire'}
+              </h4>
+              <button onClick={() => setShowToc(false)} className="text-gray-400 hover:text-white transition-colors" aria-label="Fermer le sommaire">
+                <i className="ph-bold ph-x"></i>
+              </button>
+            </div>
+            {headings.length === 0 ? (
+              <p className="text-gray-500 text-sm italic text-center py-4">Aucun chapitre</p>
+            ) : (
+              <ul className="space-y-3 relative before:absolute before:inset-y-0 before:left-1.5 before:w-[2px] before:bg-white/10">
+                {headings.map((h, i) => (
+                  <li key={i} className="relative z-10 pl-6 cursor-pointer group" onClick={() => scrollToHeading(h.id)}>
+                    <div className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 transition-all duration-300 ${
+                      activeHeadingId === h.id ? 'bg-[#fbbf24] border-[#fbbf24] shadow-[0_0_10px_#fbbf24]' : 'bg-black border-white/30 group-hover:border-[#fbbf24]'
+                    }`}></div>
+                    
+                    <span className={`block transition-all duration-300 line-clamp-2 leading-tight ${
+                      activeHeadingId === h.id ? 'text-[#fbbf24] font-bold' : 'text-gray-400 group-hover:text-white'
+                    } ${isNko ? 'font-kigelia text-sm' : 'text-xs'} ${h.level === 'h3' ? 'opacity-80 text-[0.85em]' : ''}`}>
+                      {h.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
-        {/* BOUTON CITER */}
-        <button 
-            onClick={handleCite} 
-            className="group relative w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
-            title={isNko ? "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫" : "Citer cet article"}
-            aria-label="Cite"
-        >
-          {copiedCite ? <i className="ph-bold ph-check text-green-400 text-xl"></i> : <i className="ph-bold ph-quotes text-xl"></i>}
-          
-          {copiedCite && (
-            <span className="absolute right-14 md:right-12 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded whitespace-nowrap animate-in fade-in slide-in-from-right-2 shadow-lg">
-                {isNko ? "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ" : "Citation copiée !"}
-            </span>
-          )}
-        </button>
+          {/* LE COCKPIT D'OUTILS */}
+          <div className={`flex flex-col gap-3 md:gap-4 p-2 md:p-3 rounded-[2rem] bg-black/70 backdrop-blur-xl border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-500 origin-bottom md:origin-center ${
+            isExpanded ? 'scale-100 opacity-100 translate-y-0' : 'scale-75 opacity-0 translate-y-10 pointer-events-none md:scale-100 md:opacity-100 md:translate-y-0 md:pointer-events-auto'
+          }`}>
+            
+            {/* BOUTON BOUSSOLE (SOMMAIRE) */}
+            {headings.length > 0 && (
+              <button 
+                  onClick={() => { triggerVibration(); setShowToc(!showToc); }} 
+                  className={`group relative w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showToc ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
+                  title={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
+                  aria-label={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
+              >
+                <i className="ph-bold ph-list-dashes text-xl"></i>
+              </button>
+            )}
 
-        {/* BOUTON IMPRIMER (Caché sur mobile car souvent inutile) */}
-        <button 
-            onClick={handlePrint} 
-            className="hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
-            title={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
-            aria-label="Print"
-        >
-          <i className="ph-bold ph-printer text-xl"></i>
-        </button>
+            {/* BOUTON SIGNET */}
+            <button 
+                onClick={toggleBookmark} 
+                className="group relative w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                title={isNko ? "ߊ߬ ߟߊߡߙߊ߬" : "Sauvegarder l'article"}
+                aria-label={isNko ? "ߊ߬ ߟߊߡߙߊ߬" : "Sauvegarder l'article"}
+            >
+              <i className={`${isBookmarked ? 'ph-fill text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'ph-bold text-gray-400'} ph-bookmark-simple text-xl transition-all duration-300`}></i>
+            </button>
 
-        {/* SÉPARATEUR */}
-        <div className="w-6 h-[1px] bg-white/10 mx-auto"></div>
+            {/* BOUTON MODE ZEN */}
+            <button 
+                onClick={toggleZenMode} 
+                className="hidden md:flex group relative w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
+                title={isNko ? "ߘߊ߬ߣߊ߲߬ߥߟߊ ߟߝߊ" : "Mode Zen (Plein Écran)"}
+                aria-label={isNko ? "ߘߊ߬ߣߊ߲߬ߥߟߊ ߟߝߊ" : "Mode Zen (Plein Écran)"}
+            >
+              <i className={`ph-bold ${isFullscreen ? 'ph-corners-in text-[#fbbf24]' : 'ph-corners-out'} text-xl transition-all duration-300`}></i>
+            </button>
 
-        {/* ZOOM + */}
-        <button 
-            onClick={onZoomIn} 
-            className="w-11 h-11 md:w-10 md:h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-white hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
-            title={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
-            aria-label="Zoom In"
-        >
-          <span className="text-sm font-bold leading-none mb-[2px]">A</span>
-          <i className="ph-bold ph-caret-up text-[10px] text-[#fbbf24]"></i>
-        </button>
+            {/* SÉPARATEUR */}
+            <div className="w-6 h-[1px] bg-white/10 mx-auto"></div>
 
-        {/* ZOOM - */}
-        <button 
-            onClick={onZoomOut} 
-            className="w-11 h-11 md:w-10 md:h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-white hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
-            title={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
-            aria-label="Zoom Out"
-        >
-          <span className="text-xs font-bold leading-none mb-[2px]">A</span>
-          <i className="ph-bold ph-caret-down text-[10px] text-gray-500"></i>
-        </button>
-      </div>
-    </aside>
+            {/* BOUTON PARTAGER */}
+            <button 
+                onClick={handleShare} 
+                className="group relative w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                title={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
+                aria-label={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
+            >
+              {copiedLink ? <i className="ph-bold ph-check text-green-400 text-xl"></i> : <i className="ph-bold ph-share-network text-xl"></i>}
+            </button>
+
+            {/* BOUTON CITER */}
+            <button 
+                onClick={handleCite} 
+                className="group relative w-11 h-11 md:w-10 md:h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                title={isNko ? "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫" : "Citer cet article"}
+                aria-label={isNko ? "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫" : "Citer cet article"}
+            >
+              {copiedCite ? <i className="ph-bold ph-check text-green-400 text-xl"></i> : <i className="ph-bold ph-quotes text-xl"></i>}
+              {copiedCite && (
+                <span className="absolute right-14 md:right-12 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded whitespace-nowrap animate-in fade-in slide-in-from-right-2 shadow-lg">
+                    {isNko ? "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ" : "Citation copiée !"}
+                </span>
+              )}
+            </button>
+
+            {/* BOUTON IMPRIMER (Caché sur mobile) */}
+            <button 
+                onClick={handlePrint} 
+                className="hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
+                title={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
+                aria-label={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
+            >
+              <i className="ph-bold ph-printer text-xl"></i>
+            </button>
+
+            {/* SÉPARATEUR */}
+            <div className="w-6 h-[1px] bg-white/10 mx-auto"></div>
+
+            {/* ZOOM + */}
+            <button 
+                onClick={wrapZoomIn} 
+                className="w-11 h-11 md:w-10 md:h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                title={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
+                aria-label={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
+            >
+              <span className="text-sm font-bold leading-none mb-[2px]">A</span>
+              <i className="ph-bold ph-caret-up text-[10px] text-[#fbbf24]"></i>
+            </button>
+
+            {/* ZOOM - */}
+            <button 
+                onClick={wrapZoomOut} 
+                className="w-11 h-11 md:w-10 md:h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                title={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
+                aria-label={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
+            >
+              <span className="text-xs font-bold leading-none mb-[2px]">A</span>
+              <i className="ph-bold ph-caret-down text-[10px] text-gray-500"></i>
+            </button>
+          </div>
+        </div>
+      </aside>
+    </>
   );
 }

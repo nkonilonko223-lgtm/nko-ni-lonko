@@ -1,28 +1,26 @@
 import { client } from "../../../sanity/client";
 import { urlFor } from "../../../sanity/image";
 import ArticleClient from "../../components/ArticleClient";
-import { LanguageProvider } from "../../components/LanguageProvider";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
 
 // ==============================================================================
-// 1. TYPES UTILITAIRES (Pour tuer les 'any')
+// CONSTANTE GLOBALE (Sécurité SEO)
 // ==============================================================================
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
-// Structure standard d'une image Sanity
+// ==============================================================================
+// 1. TYPES UTILITAIRES
+// ==============================================================================
 interface SanityImage {
   _type: 'image';
-  asset: {
-    _ref: string;
-    _type: 'reference';
-  };
+  asset: { _ref: string; _type: 'reference'; };
   alt?: string;
   hotspot?: { x: number; y: number; height: number; width: number };
   crop?: { top: number; bottom: number; left: number; right: number };
 }
 
-// Structure d'un lien social (selon votre schéma Sanity probable)
 interface SocialLink {
   _key: string;
   platform: string;
@@ -32,91 +30,131 @@ interface SocialLink {
 // ==============================================================================
 // 2. DÉFINITIONS STRICTES (Architecture "Zero Trust")
 // ==============================================================================
-
-// Données brutes (Raw) venant de Sanity
 interface SanityArticleRaw {
   title: string;
   slug: string;
-  // ✅ CORRECTION : Typage strict de l'image
   mainImage: SanityImage | null;
   publishedAt: string;
   body: PortableTextBlock[]; 
   excerpt?: string;
   category?: string;
   categories?: { title: string }[];
-  author?: {
+  // 🚀 SYNCHRONISATION 1/1000 : Multi-Paternité et Données Scientifiques
+  authors?: Array<{
     name: string;
     nameNko?: string;
-    // ✅ CORRECTION : Typage strict de l'image auteur
     image?: SanityImage | null;
     bio?: PortableTextBlock[]; 
     role?: string;
-    // ✅ CORRECTION : Typage strict des réseaux sociaux
+    institution?: string;
+    orcid?: string;
+    expertise?: string[];
     socials?: SocialLink[];
-  };
+  }>;
 }
 
-// Données sécurisées (Safe) pour le Client
 export interface SafeArticleData {
   title: string;
   slug: string;
   mainImageUrl: string | null;
-  // ✅ CORRECTION : On garde la référence typée
   mainImageRaw: SanityImage | null; 
   publishedAt: string;
   body: PortableTextBlock[];
   excerpt: string;
   category: string;
-  author: {
+  readingTime: number; 
+  wordCount: number;
+  // 🚀 NOUVEAU CONTRAT : Un tableau robuste d'auteurs
+  authors: Array<{
     name: string;
     nameNko: string | null;
     imageUrl: string | null;
     bio: PortableTextBlock[] | null;
     role: string;
-    // ✅ CORRECTION : Tableau typé
+    institution: string | null;
+    orcid: string | null;
+    expertise: string[];
     socials: SocialLink[];
-  } | null; 
+  }>; 
 }
 
 // ==============================================================================
-// 3. FACTORY DE SÉCURITÉ (Le Sas de Décontamination)
+// 3. FACTORY DE SÉCURITÉ & ANALYSEUR LEXICAL
 // ==============================================================================
+function safeUrlFor(source: SanityImage | null | undefined): string | null {
+  if (!source) return null;
+  try { return urlFor(source)?.url() || null; } 
+  catch { return null; } 
+}
+
+function calculateReadingMetrics(blocks: PortableTextBlock[]): { wordCount: number; readingTime: number } {
+  if (!blocks || blocks.length === 0) return { wordCount: 0, readingTime: 1 };
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const textString = blocks.map((block: any) => {
+    if (block._type !== 'block' || !block.children) return '';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return block.children.map((child: any) => child.text).join('');
+  }).join(' ');
+
+  const wordCount = textString.split(/\s+/).filter(word => word.length > 0).length;
+  const readingTime = Math.ceil(wordCount / 150) || 1; 
+
+  return { wordCount, readingTime };
+}
+
 function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
   if (!raw) throw new Error("Données article manquantes");
 
-  // 🛡️ Logique Auteur
-  let safeAuthor = null;
-  if (raw.author && raw.author.name) {
-    safeAuthor = {
-      name: raw.author.name,
-      nameNko: raw.author.nameNko || null,
-      imageUrl: raw.author.image ? urlFor(raw.author.image)?.url() || null : null,
-      bio: raw.author.bio || null,
-      role: raw.author.role || "Contributeur",
-      socials: raw.author.socials || []
-    };
-  }
+  // 🚀 SÉCURITÉ : Mapping du tableau d'auteurs
+  const safeAuthors = (raw.authors || []).map(author => ({
+    name: author.name || "N'Ko ni Lonko",
+    nameNko: author.nameNko || null,
+    imageUrl: safeUrlFor(author.image),
+    bio: author.bio || null,
+    role: author.role || "ߛߓߍߦߟߊ | Chercheur",
+    institution: author.institution || null,
+    orcid: author.orcid || null,
+    expertise: author.expertise || [],
+    socials: author.socials || []
+  }));
 
-  // Logique Catégorie
-  const category = raw.category || (raw.categories && raw.categories[0]?.title) || "Savoir";
+  const category = raw.category || (raw.categories && raw.categories[0]?.title) || "ߟߐ߲ߞߏ | Science";
+  const metrics = calculateReadingMetrics(raw.body || []);
 
   return {
-    title: raw.title || "Sans titre",
+    title: raw.title || "ߛߊ߲߬ߕߊ߫ ߕߍ߫ | Sans titre",
     slug: raw.slug, 
-    mainImageUrl: raw.mainImage ? urlFor(raw.mainImage)?.url() || null : null,
+    mainImageUrl: safeUrlFor(raw.mainImage),
     mainImageRaw: raw.mainImage || null,
     publishedAt: raw.publishedAt || new Date().toISOString(),
     body: raw.body || [],
     excerpt: raw.excerpt || "",
     category: category,
-    author: safeAuthor
+    readingTime: metrics.readingTime,
+    wordCount: metrics.wordCount,
+    authors: safeAuthors
   };
 }
 
 // ==============================================================================
-// 4. RÉCUPÉRATION (Fetching & Transformation)
+// 4. RÉCUPÉRATION & PRÉ-GÉNÉRATION STATIQUE
 // ==============================================================================
+export async function generateStaticParams() {
+  const query = `*[_type == "article"]{ "slug": slug.current }`;
+  try {
+    const slugs = await client.fetch<{slug: string}[]>(query);
+    return slugs.map((article) => ({
+      slug: article.slug,
+    }));
+  } catch (error) {
+    console.error("Erreur generateStaticParams:", error);
+    return [];
+  }
+}
+
 async function getArticle(slug: string): Promise<SafeArticleData | null> {
+  // 🚀 REQUÊTE 1/1000 : On télécharge le tableau complet des auteurs et leurs données scientifiques
   const query = `*[_type == "article" && slug.current == $slug][0] {
     title,
     mainImage,
@@ -126,18 +164,17 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     category,
     categories[]->{title},
     "slug": slug.current,
-    author->{
-      name,
-      nameNko,
-      image,
-      bio,
-      role,
-      socials
+    authors[]->{
+      name, nameNko, image, bio, role, institution, orcid, expertise, socials
     }
   }`;
   
   try {
-    const rawArticle = await client.fetch<SanityArticleRaw>(query, { slug }, { next: { revalidate: 60 } });
+    const rawArticle = await client.fetch<SanityArticleRaw>(
+      query, 
+      { slug }, 
+      { next: { tags: ["article", `article-${slug}`], revalidate: 3600 } }
+    );
     if (!rawArticle) return null;
     return transformSafeArticle(rawArticle);
   } catch (error) {
@@ -147,39 +184,68 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
 }
 
 // ==============================================================================
-// 5. MÉTADONNÉES (SEO World Class)
+// 5. MÉTADONNÉES (SEO World Class & Google Scholar)
 // ==============================================================================
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string }> }
+): Promise<Metadata> {
   const { slug } = await params;
   const article = await getArticle(slug);
 
-  if (!article) {
-    return { title: "Article introuvable | N'Ko ni Lonko" };
-  }
+  if (!article) return { title: "ߞߎߡߘߊ ߡߊ߫ ߛߐ߬ߘߐ߲߬ | Article introuvable" };
 
-  const ogImage = article.mainImageUrl || "https://nkonilonko.com/images/og-default.jpg";
+  const ogImage = article.mainImageUrl || `${SITE_URL}/images/og-default.jpg`;
+  const articleUrl = `${SITE_URL}/article/${slug}`;
+  
+  const siteLanguages = {
+    'nqo': articleUrl,
+    'fr-FR': articleUrl
+  } as Record<string, string>;
+
+  const dynamicKeywords = [
+    "ߒߞߏ", "N'Ko", "ߟߐ߲ߞߏ", "Science", "Afrique", "Mali", "Recherche",
+    article.category,
+    ...(article.title ? article.title.split(' ').filter(w => w.length > 4) : []),
+    ...(article.authors.flatMap(a => a.expertise)) // Ajout de l'expertise aux mots-clés SEO
+  ];
 
   return {
-    title: article.title,
-    description: article.excerpt || "Une exploration scientifique et culturelle sur la plateforme N'Ko ni Lonko.",
-    metadataBase: new URL('https://nkonilonko.com'), 
+    title: `${article.title} | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ`,
+    description: article.excerpt || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | Publication Scientifique.",
+    metadataBase: new URL(SITE_URL), 
     alternates: {
-      canonical: `/article/${slug}`, 
+      canonical: articleUrl,
+      languages: siteLanguages 
     },
-    keywords: [
-        "Science", "Afrique", "Mali", "N'Ko", "Technologie", "Culture", 
-        "Savoir", "Innovation", "Éducation", article.category
-    ], 
+    keywords: dynamicKeywords, 
+    robots: { 
+      index: true, 
+      follow: true,
+      googleBot: {
+        index: true, follow: true,
+        'max-image-preview': 'large', 
+        'max-snippet': -1,
+      },
+    },
+    // 🚀 LE BOUCLIER GOOGLE SCHOLAR (Highwire Press Tags)
+    other: {
+      "citation_title": article.title,
+      "citation_publication_date": new Date(article.publishedAt).getFullYear().toString(),
+      "citation_journal_title": "N'Ko ni Lonko",
+      "citation_language": "nqo",
+      "citation_author": article.authors.map(a => a.name), // Génère une balise par auteur
+    },
     openGraph: {
       title: article.title,
-      description: article.excerpt || "Science et Savoir en N'Ko.",
-      url: `/article/${slug}`,
+      description: article.excerpt || "Science et Savoir en N'Ko | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+      url: articleUrl,
       siteName: "N'Ko ni Lonko",
       images: [{ url: ogImage, width: 1200, height: 630, alt: article.title }],
-      locale: "fr_FR",
+      locale: "nqo", 
+      alternateLocale: "fr_FR", 
       type: "article",
       publishedTime: article.publishedAt,
-      authors: [article.author?.name || "N'Ko ni Lonko"],
+      authors: article.authors.map(a => a.name), 
     },
     twitter: {
       card: "summary_large_image",
@@ -187,40 +253,53 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description: article.excerpt,
       images: [ogImage],
     },
-    robots: { index: true, follow: true, nocache: true },
   };
 }
 
 // ==============================================================================
-// 6. LA PAGE (Point d'Entrée)
+// 6. LA PAGE (Point d'Entrée Serveur)
 // ==============================================================================
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await getArticle(slug);
 
-  if (!article) {
-    return notFound(); 
-  }
+  if (!article) return notFound(); 
 
-  // JSON-LD (Rich Snippets Google)
+  // 🚀 JSON-LD MULTI-AUTEURS (Indexation Google parfaite)
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": "ScholarlyArticle",
+    "@id": `${SITE_URL}/article/${slug}#article`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/article/${slug}`
+    },
+    "inLanguage": "nqo",
     "headline": article.title,
-    "image": article.mainImageUrl || "",
+    "wordCount": article.wordCount, 
+    "timeRequired": `PT${article.readingTime}M`, 
+    "image": [
+      article.mainImageUrl || `${SITE_URL}/icon-512x512.png` 
+    ],
     "datePublished": article.publishedAt,
     "dateModified": article.publishedAt,
-    "author": {
+    "author": article.authors.map(author => ({
       "@type": "Person",
-      "name": article.author?.name || "N'Ko ni Lonko",
-      "jobTitle": article.author?.role
-    },
+      "name": author.name,
+      "alternateName": author.nameNko || undefined,
+      "jobTitle": author.role,
+      "affiliation": author.institution ? {
+        "@type": "Organization",
+        "name": author.institution
+      } : undefined,
+      "url": author.orcid ? `https://orcid.org/${author.orcid}` : `${SITE_URL}/about`
+    })),
     "publisher": {
       "@type": "Organization",
-      "name": "N'Ko ni Lonko",
+      "name": "N'Ko ni Lonko | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://nkonilonko.com/logo.png"
+        "url": `${SITE_URL}/icon-512x512.png`
       }
     }
   };
@@ -231,9 +310,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <LanguageProvider>
-        <ArticleClient article={article} />
-      </LanguageProvider>
+      
+      {/* Transmission du nouvel objet robuste vers le composant d'affichage */}
+      <ArticleClient article={article} />
     </>
   );
 }
