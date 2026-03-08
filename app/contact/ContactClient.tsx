@@ -220,10 +220,7 @@ export default function ContactClient() {
           </span>
         </div>
 
-        {/* L'Indicateur Clavier (Échap + Backspace) */}
-        <div className="hidden lg:flex items-center justify-center mx-1 px-1.5 py-0.5 rounded bg-black/40 border border-white/10 text-[9px] font-mono text-gray-500 group-hover:text-[#fbbf24] transition-colors">
-          Esc / ⌫
-        </div>
+        
       </button>
 
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#fbbf24] rounded-full blur-[120px] opacity-10 pointer-events-none animate-pulse duration-[5000ms] z-[-1]"></div>

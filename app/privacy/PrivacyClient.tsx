@@ -152,10 +152,7 @@ export default function PrivacyClient() {
           </span>
         </div>
 
-        {/* L'Indicateur Clavier (Échap + Backspace) */}
-        <div className="hidden lg:flex items-center justify-center mx-1 px-1.5 py-0.5 rounded bg-black/40 border border-white/10 text-[9px] font-mono text-gray-500 group-hover:text-[#fbbf24] transition-colors">
-          Esc / ⌫
-        </div>
+        
       </button>
 
       {/* 🚀 JAUGE DE PROGRESSION DE LECTURE */}

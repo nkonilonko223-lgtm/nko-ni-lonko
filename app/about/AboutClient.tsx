@@ -1,6 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
+import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
+
 export default function AboutClient() {
   // 🚀 1. LE FOCUS COGNITIF (Bilinguisme intelligent)
   const [focusedLang, setFocusedLang] = useState<'none' | 'fr' | 'nko'>('none');
@@ -10,12 +13,45 @@ export default function AboutClient() {
   const [quoteVibrated, setQuoteVibrated] = useState(false);
 
   // 🚀 3. LA CASCADE CINÉMATIQUE (Intersection Observer)
-  const [visibleSections, setVisibleSections] = useState<Set<number>>(new Set());
-  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [visibleSections, setVisibleSections] = useState<Set<number>>(new Set());
+  const sectionRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const triggerVibration = useCallback(() => {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
-  }, []);
+  // 🚀 INTELLIGENCE LINGUISTIQUE & NAVIGATION (Nouveau)
+  const router = useRouter();
+  const { lang } = useLanguage();
+  const isNko = lang === "nko";
+
+  const triggerVibration = useCallback(() => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
+  }, []);
+
+  // 🚀 L'ALGORITHME DE REPLI PWA (Le Bouton Retour 1/10000)
+  const handleBack = useCallback(() => {
+    triggerVibration();
+    if (window.history.length > 2) {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  }, [router, triggerVibration]);
+
+  // 🚀 DÉTECTION "POWER USER" 1/10000 (Échap + Retour Arrière Sécurisé - 100% Invisible)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleBack();
+      }
+      if (e.key === 'Backspace') {
+        const activeElement = document.activeElement;
+        const isTyping = activeElement?.tagName === 'INPUT' || activeElement?.tagName === 'TEXTAREA';
+        if (!isTyping) {
+          handleBack();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleBack]);
 
   useEffect(() => {
     const cascadeObserver = new IntersectionObserver((entries) => {
@@ -66,9 +102,31 @@ export default function AboutClient() {
   ];
 
   return (
-    <div className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black overflow-hidden">
-      
-      {/* 🚀 Aura bleue vibrante et visible pour un vrai contraste */}
+    <div className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black overflow-hidden">
+      
+      {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Version Épurée 1/10000) */}
+      <button
+        onClick={handleBack}
+        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-[#02040a]/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-[#02040a]/80 hover:border-[#fbbf24]/50 transition-all duration-500 touch-manipulation print:hidden ${
+          isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
+        }`}
+        aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}
+        dir={isNko ? "rtl" : "ltr"}
+      >
+        {/* L'Icône */}
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 group-hover:bg-[#fbbf24] transition-colors duration-300 shrink-0 shadow-inner">
+          <i className={`ph-bold ${isNko ? 'ph-arrow-right' : 'ph-arrow-left'} text-base text-gray-300 group-hover:text-black transition-colors`}></i>
+        </div>
+        
+        {/* Le Texte */}
+        <div className="hidden md:flex flex-col items-start pr-2">
+          <span className={`font-bold text-[#fbbf24] text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+            {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
+          </span>
+        </div>
+      </button>
+
+      {/* 🚀 Aura bleue vibrante et visible pour un vrai contraste */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] md:w-[700px] h-[350px] md:h-[700px] bg-blue-500 rounded-full blur-[130px] opacity-20 pointer-events-none animate-pulse duration-[7000ms] z-[-1]"></div>
 
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center animate-in fade-in slide-in-from-bottom-10 duration-1000 fill-mode-forwards">
