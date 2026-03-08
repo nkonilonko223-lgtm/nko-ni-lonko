@@ -12,6 +12,9 @@ import { useLanguage } from "./LanguageProvider";
 // ==============================================================================
 // 1. CONFIGURATION VISUELLE
 // ==============================================================================
+// ==============================================================================
+// 1. CONFIGURATION VISUELLE & PONT DE TRADUCTION
+// ==============================================================================
 const CATEGORY_ICONS: Record<string, string> = {
   astronomy: "ph-star",
   astronomie: "ph-star",
@@ -33,6 +36,19 @@ const CATEGORY_ICONS: Record<string, string> = {
   "santé": "ph-heartbeat",
   science: "ph-flask",
   default: "ph-hash",
+};
+
+// 🚀 LE PONT INVERSE (Traduit le N'Ko de Sanity vers la clé JSON)
+const CATEGORY_REVERSE_MAP: Record<string, string> = {
+  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
+  'ߘߐ߬ߞߏ': 'physics',
+  'ߣߌߡߊߞߊߙߊ߲': 'biology',
+  'ߘߡߊ߬ߟߐ߲': 'mathematics',
+  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
+  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
+  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
+  'ߘߐ߬ߝߐ': 'history',
+  'ߞߍ߲ߘߍߦߊ': 'health',
 };
 
 const ARTICLES_PER_PAGE = 6;
@@ -400,13 +416,11 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
     return articles.filter((article) => {
       let matchesCategory = true;
       if (activeCategory !== "all") {
-        const categoriesMap = typedT.home?.categories || {};
-        const activeLabel = categoriesMap[activeCategory];
-        const artCat = (article.category || "").toLowerCase().trim();
-        const targetLabel = (activeLabel || "").toLowerCase().trim();
-        const targetKey = activeCategory.toLowerCase().trim();
-        matchesCategory =
-          artCat === targetLabel || artCat === targetKey || artCat.includes(targetKey);
+        const artCatRaw = (article.category || "").trim();
+        // On convertit le N'Ko de Sanity en clé universelle (ex: "astronomy")
+        const artCatKey = CATEGORY_REVERSE_MAP[artCatRaw] || artCatRaw.toLowerCase();
+        // On compare cette clé avec la catégorie cliquée
+        matchesCategory = artCatKey === activeCategory.toLowerCase();
       }
       let matchesSearch = true;
       if (normalizedSearch) {
@@ -416,7 +430,7 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
       }
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, debouncedQuery, articles, typedT.home?.categories]);
+  }, [activeCategory, debouncedQuery, articles]);
 
   useEffect(() => {
     if (articles.length > 0) {

@@ -1,11 +1,17 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
-import type { TurnstileInstance } from '@marsidev/react-turnstile'; // 🚀 TYPAGE STRICT
+import type { TurnstileInstance } from '@marsidev/react-turnstile'; // 🚀 RESTAURATION DU TYPAGE STRICT (La clé de VS Code)
+import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
 
 export default function ContactClient() {
-  // 🚀 ÉTATS DU FORMULAIRE & INTELLIGENCE SENSORIELLE
+  // 🚀 INTELLIGENCE LINGUISTIQUE (Pour le bouton de retour)
+  const { lang } = useLanguage();
+  const isNko = lang === "nko";
+
+  // 🚀 ÉTATS DU FORMULAIRE & INTELLIGENCE SENSORIELLE
   const [formData, setFormData] = useState({ name: "", email: "", message: "", botField: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -49,12 +55,46 @@ export default function ContactClient() {
     };
   }, []);
 
-  // 🚀 RETOUR HAPTIQUE
-  const triggerVibration = useCallback(() => {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
-  }, []);
+  // 🚀 MOTEUR DE NAVIGATION INTELLIGENT
+  const router = useRouter();
 
-  const triggerSuccessVibration = useCallback(() => {
+  // 🚀 RETOUR HAPTIQUE
+  const triggerVibration = useCallback(() => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(50);
+  }, []);
+
+  // 🚀 L'ALGORITHME DE REPLI PWA (Le Bouton Retour 1/10000)
+  const handleBack = useCallback(() => {
+    triggerVibration();
+    // S'il y a un historique local, on recule. Sinon, on force le retour à l'accueil.
+    if (window.history.length > 2) {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  }, [router, triggerVibration]);
+
+  // 🚀 DÉTECTION "POWER USER" 1/10000 (Échap + Retour Arrière Sécurisé)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // 1. Touche Échap ferme toujours la page
+      if (e.key === 'Escape') {
+        handleBack();
+      }
+      // 2. Touche "Retour Arrière (Backspace)" ferme la page UNIQUEMENT si on n'écrit pas dans un formulaire
+      if (e.key === 'Backspace') {
+        const activeElement = document.activeElement;
+        const isTyping = activeElement?.tagName === 'INPUT' || activeElement?.tagName === 'TEXTAREA';
+        if (!isTyping) {
+          handleBack();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleBack]);
+
+  const triggerSuccessVibration = useCallback(() => {
     if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([30, 50, 30]);
   }, []);
 
@@ -156,10 +196,37 @@ export default function ContactClient() {
   };
 
 
-  return (
-    <div className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black">
-      
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#fbbf24] rounded-full blur-[120px] opacity-10 pointer-events-none animate-pulse duration-[5000ms] z-[-1]"></div>
+ return (
+    <div className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black">
+      
+      {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Taille Affinée 1/10000) */}
+      <button
+        onClick={handleBack}
+        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-[#02040a]/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-[#02040a]/80 hover:border-[#fbbf24]/50 transition-all duration-500 touch-manipulation ${
+          isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
+        }`}
+        aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}
+        dir={isNko ? "rtl" : "ltr"}
+      >
+        {/* L'Icône (Plus subtile, taille réduite) */}
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 group-hover:bg-[#fbbf24] transition-colors duration-300 shrink-0 shadow-inner">
+          <i className={`ph-bold ${isNko ? 'ph-arrow-right' : 'ph-arrow-left'} text-base text-gray-300 group-hover:text-black transition-colors`}></i>
+        </div>
+        
+        {/* Le Texte (Taille réduite pour PC) */}
+        <div className="hidden md:flex flex-col items-start">
+          <span className={`font-bold text-[#fbbf24] text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+            {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
+          </span>
+        </div>
+
+        {/* L'Indicateur Clavier (Échap + Backspace) */}
+        <div className="hidden lg:flex items-center justify-center mx-1 px-1.5 py-0.5 rounded bg-black/40 border border-white/10 text-[9px] font-mono text-gray-500 group-hover:text-[#fbbf24] transition-colors">
+          Esc / ⌫
+        </div>
+      </button>
+
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-[#fbbf24] rounded-full blur-[120px] opacity-10 pointer-events-none animate-pulse duration-[5000ms] z-[-1]"></div>
 
       <div className="relative z-10 max-w-6xl w-full mx-auto flex flex-col items-center animate-in fade-in slide-in-from-bottom-10 duration-1000 fill-mode-forwards">
         

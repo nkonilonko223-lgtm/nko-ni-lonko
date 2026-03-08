@@ -36,21 +36,24 @@ const ICON_MAP: Record<string, string> = {
   'science': "ph-flask"
 };
 
-// --- 2. SECOURS N'KO (FALLBACK) ---
-const NKO_HARD_TRANSLATIONS: Record<string, string> = {
-  'Science': 'ߟߐ߲ߞߏ', 'science': 'ߟߐ߲ߞߏ',
-  'Astronomie': 'ߛߊ߲ߡߊߛߓߍ', 'astronomy': 'ߛߊ߲ߡߊߛߓߍ',
-  'Physique': 'ߘߐ߬ߞߏ', 'physics': 'ߘߐ߬ߞߏ', 'Physique Quantique': 'ߘߐ߬ߞߏ ߢߊ߰ߙߊ',
-  'Biologie': 'ߢߣߊߡߦߊ', 'biology': 'ߢߣߊߡߦߊ',
-  'Chimie': 'ߖߎ߲߯ߛߊ', 'chemistry': 'ߖߎ߲߯ߛߊ',
-  'Mathématiques': 'ߘߊ߲߬ߠߊ߬ߕߍ߰ߟߌ', 'mathematics': 'ߘߊ߲߬ߠߊ߬ߕߍ߰ߟߌ',
-  'Technologie': 'ߛߋߒߞߏߟߦߊ', 'technology': 'ߛߋߒߞߏߟߦߊ',
-  'Histoire': 'ߘߐ߬ߝߐ', 'history': 'ߘߐ߬ߝߐ',
-  'Géologie': 'ߘߎ߰ߘߐ߬ߛߓߍ', 'geology': 'ߘߎ߰ߘߐ߬ߛߓߍ',
-  'Santé': 'ߞߍ߲ߘߍߦߊ', 'health': 'ߞߍ߲ߘߍߦߊ'
+// --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
+// Traduit le N'Ko brut de Sanity vers la clé universelle du JSON
+// --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
+const CATEGORY_REVERSE_MAP: Record<string, string> = {
+  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
+  'ߘߐ߬ߞߏ': 'physics',
+  'ߣߌߡߊߞߊߙߊ߲': 'biology',
+  'ߘߡߊ߬ߟߐ߲': 'mathematics',
+  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
+  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
+  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
+  'ߘߐ߬ߝߐ': 'history',
+  'ߞߍ߲ߘߍߦߊ': 'health',
+  'Science': 'science',
+  'ߟߐ߲ߞߏ': 'science'
 };
 
-// --- 3. CONFIGURATION DATE N'KO ---
+// Les fonctions de date restent intactes
 const NKO_MONTHS = [
   "ߓߌ߲ߠߊߥߎߟߋ߲", "ߞߏ߲ߞߏߜߍ", "ߕߙߊߓߊ", "ߞߏ߲ߞߏߘߌ߬ߓߌ", 
   "ߘߓߊ߬ߕߊ", "ߘߓߊ߬ߓߌߟߊ", "ߞߐ߬ߓߊ߬ߟߏ߲", "ߘߓߊ߬ߗߍ", 
@@ -75,14 +78,6 @@ function getCategoryIcon(category: string): string {
   const normalizedKey = category.toLowerCase().trim();
   const foundKey = Object.keys(ICON_MAP).find(key => normalizedKey.includes(key));
   return foundKey ? ICON_MAP[foundKey] : "ph-star";
-}
-
-function getNkoCategory(raw: string, dictMap: Record<string, string> | undefined): string {
-  const dictKey = Object.keys(dictMap || {}).find(k => k.toLowerCase() === raw.toLowerCase());
-  if (dictKey && dictMap) return dictMap[dictKey];
-  const hardKey = Object.keys(NKO_HARD_TRANSLATIONS).find(k => k.toLowerCase() === raw.toLowerCase());
-  if (hardKey) return NKO_HARD_TRANSLATIONS[hardKey];
-  return raw;
 }
 
 // ==============================================================================
@@ -132,8 +127,11 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
   const slugCurrent = typeof article.slug === 'string' ? article.slug : article.slug.current;
 
   const categoriesMap = (t.home?.categories || {}) as Record<string, string>;
-  const rawCategory = article.category || 'Science';
-  const displayCategory = isNko ? getNkoCategory(rawCategory, categoriesMap) : rawCategory; 
+  const rawCategory = article.category || 'Science';
+  // 1. On trouve la clé système (ex: astronomy)
+  const categoryKey = CATEGORY_REVERSE_MAP[rawCategory.trim()] || rawCategory.toLowerCase();
+  // 2. On affiche le mot du dictionnaire actif
+  const displayCategory = categoriesMap[categoryKey] || rawCategory;
 
   const isNew = useMemo(() => {
     if (!article.publishedAt) return false;
@@ -224,10 +222,11 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                   ? 'font-kigelia text-sm px-4 py-1.5' 
                   : 'text-[10px] font-bold uppercase tracking-widest px-3 py-1.5'} 
               `}>
-                <i className={`ph-fill ${getCategoryIcon(rawCategory)}`}></i>
+                <i className={`ph-fill ${getCategoryIcon(categoryKey)}`}></i>
                 {displayCategory}
               </span>
             </div>
+
           </div>
 
 <div className="flex flex-1 flex-col p-6">
@@ -291,7 +290,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                     {isNko ? 'ߛߓߍߦߟߊ' : 'Auteur'}
                   </span>
                   
-                  <div className="flex flex-col gap-[2px]">
+                  <div className="flex flex-col gap-[8px]">
                     {/* Le Nom Principal (s'adapte à la langue de l'interface) */}
                     <span className={`font-bold transition-colors duration-300 group-hover/card:text-white leading-none ${isNko ? 'font-kigelia text-sm text-[#fbbf24]' : 'text-xs text-slate-200'}`}>
                       {isNko ? (article.authorNameNko || article.authorName) : article.authorName}

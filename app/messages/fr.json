@@ -27,7 +27,10 @@
       "biology": "Biologie",
       "mathematics": "Mathématiques",
       "chemistry": "Chimie",
-      "geology": "Géologie"
+      "geology": "Géologie",
+      "technology": "Technologie",
+      "history": "Histoire",
+      "health": "Santé"
     }
   },
   "article": {

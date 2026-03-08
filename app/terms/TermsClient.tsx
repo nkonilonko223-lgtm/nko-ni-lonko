@@ -1,15 +1,50 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
+import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
 
 export default function TermsClient() {
-  const [activeSection, setActiveSection] = useState("acceptation");
-  const [focusedLang, setFocusedLang] = useState<'none' | 'fr' | 'nko'>('none');
-  const [scrollProgress, setScrollProgress] = useState(0);
+  // 🚀 INTELLIGENCE LINGUISTIQUE & NAVIGATION
+  const router = useRouter();
+  const { lang } = useLanguage();
+  const isNko = lang === "nko";
 
-  const triggerVibration = useCallback(() => {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);
-  }, []);
+  const [activeSection, setActiveSection] = useState("acceptation");
+  const [focusedLang, setFocusedLang] = useState<'none' | 'fr' | 'nko'>('none');
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const triggerVibration = useCallback(() => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);
+  }, []);
+
+  // 🚀 L'ALGORITHME DE REPLI PWA (Le Bouton Retour 1/10000)
+  const handleBack = useCallback(() => {
+    triggerVibration();
+    if (window.history.length > 2) {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  }, [router, triggerVibration]);
+
+  // 🚀 DÉTECTION "POWER USER" 1/10000 (Échap + Retour Arrière Sécurisé)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleBack();
+      }
+      if (e.key === 'Backspace') {
+        const activeElement = document.activeElement;
+        const isTyping = activeElement?.tagName === 'INPUT' || activeElement?.tagName === 'TEXTAREA';
+        if (!isTyping) {
+          handleBack();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleBack]);
 
 const clauses = [
     {
@@ -127,9 +162,36 @@ useEffect(() => {
   };
 
   return (
-    <div className="relative text-white flex flex-col items-center justify-start px-6 pt-32 pb-24 selection:bg-[#fbbf24] selection:text-black overflow-hidden print:bg-white print:text-black print:p-0">
-      
-      {/* 🚀 JAUGE DE PROGRESSION DE LECTURE */}
+    <div className="relative text-white flex flex-col items-center justify-start px-6 pt-32 pb-24 selection:bg-[#fbbf24] selection:text-black overflow-hidden print:bg-white print:text-black print:p-0">
+      
+      {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Taille Affinée 1/10000) */}
+      <button
+        onClick={handleBack}
+        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-[#02040a]/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-[#02040a]/80 hover:border-[#fbbf24]/50 transition-all duration-500 touch-manipulation print:hidden ${
+          isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
+        }`}
+        aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}
+        dir={isNko ? "rtl" : "ltr"}
+      >
+        {/* L'Icône (Plus subtile, taille réduite) */}
+        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 group-hover:bg-[#fbbf24] transition-colors duration-300 shrink-0 shadow-inner">
+          <i className={`ph-bold ${isNko ? 'ph-arrow-right' : 'ph-arrow-left'} text-base text-gray-300 group-hover:text-black transition-colors`}></i>
+        </div>
+        
+        {/* Le Texte (Taille réduite pour PC) */}
+        <div className="hidden md:flex flex-col items-start">
+          <span className={`font-bold text-[#fbbf24] text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+            {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
+          </span>
+        </div>
+
+        {/* L'Indicateur Clavier (Échap + Backspace) */}
+        <div className="hidden lg:flex items-center justify-center mx-1 px-1.5 py-0.5 rounded bg-black/40 border border-white/10 text-[9px] font-mono text-gray-500 group-hover:text-[#fbbf24] transition-colors">
+          Esc / ⌫
+        </div>
+      </button>
+
+      {/* 🚀 JAUGE DE PROGRESSION DE LECTURE */}
       <div className="fixed top-0 left-0 h-1 bg-[#fbbf24] z-50 print:hidden transition-all duration-300 ease-out shadow-[0_0_10px_rgba(251,191,36,0.8)]" style={{ width: `${scrollProgress}%` }}></div>
 
       {/* 🚀 L'AURA COSMIQUE */}
@@ -155,20 +217,29 @@ useEffect(() => {
                 <p className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
             </div>
         </div>
-{/* 🚀 NAVIGATION MOBILE (Swipeable Pills) */}
+{/* 🚀 NAVIGATION MOBILE (Swipeable Pills Bilingues 1/10000) */}
         <div className="lg:hidden sticky top-[80px] z-40 bg-[#02040a]/90 backdrop-blur-xl border-y border-white/10 -mx-6 px-6 py-4 mb-12 flex overflow-x-auto hide-scrollbar touch-pan-x shadow-[0_10px_30px_rgba(0,0,0,0.5)] print:hidden">
             <div className="flex gap-3">
                 {clauses.map((clause) => (
                     <button
                         key={`mob-${clause.id}`}
                         onClick={() => scrollToSection(clause.id)}
-                        className={`whitespace-nowrap px-5 py-2.5 rounded-full border transition-all duration-300 font-bold text-sm touch-manipulation flex flex-col items-center justify-center gap-1 ${
+                        className={`px-5 py-2 rounded-full border transition-all duration-300 touch-manipulation flex flex-col justify-center gap-1 shrink-0 ${
+                            isNko ? 'items-end' : 'items-start'
+                        } ${
                             activeSection === clause.id 
-                            ? "bg-[#fbbf24] border-[#fbbf24] text-black shadow-[0_0_15px_rgba(251,191,36,0.3)]" 
-                            : "bg-white/5 border-white/10 text-gray-400"
+                            ? "bg-[#fbbf24] border-[#fbbf24] shadow-[0_0_15px_rgba(251,191,36,0.3)]" 
+                            : "bg-white/5 border-white/10 hover:bg-white/10"
                         }`}
+                        dir={isNko ? "rtl" : "ltr"}
                     >
-                        <span className={`font-kigelia ${activeSection === clause.id ? "text-black" : "text-[#fbbf24]"}`}>{clause.titleNko}</span>
+                        {/* 🚀 BDI (Bi-Directional Isolation) empêche la ponctuation de briser le RTL */}
+                        <span className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-[#fbbf24] font-bold"}`} dir="rtl">
+                            <bdi>{clause.titleNko}</bdi>
+                        </span>
+                        <span className={`text-[9px] uppercase tracking-widest whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black/70 font-bold" : "text-white/60 font-light"}`} dir="ltr">
+                            <bdi>{clause.titleFr}</bdi>
+                        </span>
                     </button>
                 ))}
             </div>
