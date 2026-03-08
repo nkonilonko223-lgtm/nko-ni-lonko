@@ -461,9 +461,10 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
     }
   }, [triggerVibration]);
   
+  // 🚀 RADAR 1/1000 : On ajoute "lang" pour qu'il relance les animations à chaque traduction
   useEffect(() => {
     observeElements();
-  }, [filteredArticles, visibleCount, observeElements]);
+  }, [filteredArticles, visibleCount, observeElements, lang]);
 
   const getCategoryIconClass = useCallback((key: string) => {
     const normalizedKey = key.toLowerCase();
@@ -628,15 +629,17 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
       </div>
 
       <header className="hero pt-24 pb-2 md:py-0 flex flex-col justify-center min-h-[40vh] md:min-h-[70vh]">
-  {/* Titre avec marges réduites (mb-1) */}
-  <h1 className={`reveal mb-1 md:mb-6 ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
-    {typedT.home?.hero?.title}
-  </h1>
-  {/* Sous-titre avec marges réduites (mb-4 au lieu de mb-6) */}
-  <p className="reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10" style={{ transitionDelay: "0.15s" }}>
-    {typedT.home?.hero?.subtitle}
-  </p>
+        {/* 🚀 MODIF 1/1000 : Clé "key" pour forcer la réanimation fluide sans bug fantôme */}
+        <h1 key={`title-${lang}`} className={`reveal mb-1 md:mb-6 ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
+          {typedT.home?.hero?.title}
+        </h1>
+        
+        <p key={`sub-${lang}`} className="reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10" style={{ transitionDelay: "0.15s" }}>
+          {typedT.home?.hero?.subtitle}
+        </p>
+        
         <a
+          key={`btn-${lang}`}
           href="#articles"
           className="cta-btn reveal"
           style={{ transitionDelay: "0.3s" }}

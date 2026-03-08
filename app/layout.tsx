@@ -27,6 +27,7 @@ const kigelia = localFont({
   ],
   variable: "--font-kigelia",
   display: "swap",
+  fallback: ["system-ui", "sans-serif"], // 🚀 ARMURE 1/1000 : Sécurité anti-blocage
 });
 
 const montserrat = Montserrat({
@@ -34,6 +35,7 @@ const montserrat = Montserrat({
   weight: ["400", "500", "700", "800"],
   variable: "--font-fr",
   display: "swap",
+  fallback: ["system-ui", "sans-serif"], // 🚀 ARMURE 1/1000 : Sécurité anti-blocage
 });
 
 // ============================================================================

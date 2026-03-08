@@ -44,9 +44,7 @@
     --color-border: rgba(251, 191, 36, 0.15);
     --glow-gold: 0 0 20px rgba(251, 191, 36, 0.15);
 
-    /* POLICES — Fallbacks robustes même si Next.js échoue */
-    --font-fr: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    --font-kigelia: 'Kigelia', 'Noto Sans NKo', 'Noto Sans NKo Unjoined', sans-serif;
+    /* POLICES — Gérées intégralement par le moteur Next.js (layout.tsx) */
     --font-tech: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
     /* ESPACEMENTS & RAYONS */
