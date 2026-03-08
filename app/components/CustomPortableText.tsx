@@ -281,10 +281,12 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         const isFirst = blockValue._key === firstTextBlockKey;
         
         const dropCapNko = isFirst && nko 
-          ? "first-letter:text-[5em] md:first-letter:text-[6.5em] first-letter:text-[#fbbf24] first-letter:float-right first-letter:ml-3 md:first-letter:ml-4 first-letter:-mt-4 md:first-letter:-mt-6 first-letter:-mb-3 md:first-letter:-mb-5 first-letter:leading-[0.5] first-letter:drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] print:first-letter:text-black" 
+          /* 🚀 MODIF : first-letter:text-[4em] (mobile) et md:first-letter:text-[5em] (PC) */
+          ? "first-letter:text-[4em] md:first-letter:text-[5em] first-letter:text-[#fbbf24] first-letter:float-right first-letter:ml-3 md:first-letter:ml-4 first-letter:-mt-4 md:first-letter:-mt-6 first-letter:-mb-3 md:first-letter:-mb-5 first-letter:leading-[0.5] first-letter:drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] print:first-letter:text-black" 
           : "";
         const dropCapFr = isFirst && !nko 
-          ? "first-letter:text-[5em] md:first-letter:text-[6.5em] first-letter:text-[#fbbf24] first-letter:float-left first-letter:mr-3 md:first-letter:mr-4 first-letter:-mt-2 md:first-letter:-mt-10 first-letter:-mb-3 md:first-letter:-mb-5 first-letter:leading-[0.5] first-letter:drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] print:first-letter:text-black" 
+          /* 🚀 MODIF : first-letter:text-[4em] (mobile) et md:first-letter:text-[5em] (PC) */
+          ? "first-letter:text-[4em] md:first-letter:text-[5em] first-letter:text-[#fbbf24] first-letter:float-left first-letter:mr-3 md:first-letter:mr-4 first-letter:-mt-2 md:first-letter:-mt-10 first-letter:-mb-3 md:first-letter:-mb-5 first-letter:leading-[0.5] first-letter:drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] print:first-letter:text-black" 
           : "";
 
         const style = nko 

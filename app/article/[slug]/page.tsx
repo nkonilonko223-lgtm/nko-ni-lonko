@@ -201,7 +201,14 @@ export async function generateMetadata(
 
   if (!article) return { title: "ߞߎߡߘߊ ߡߊ߫ ߛߐ߬ߘߐ߲߬ | Article introuvable" };
 
-  const ogImage = article.mainImageUrl || `${SITE_URL}/images/og-default.jpg`;
+  // 🚀 CORRECTION CRITIQUE : "let" au lieu de "const"
+  let ogImage = article.mainImageUrl || `${SITE_URL}/og-accueil.jpg`;
+
+  // 🛡️ LE BOUCLIER ANTI-TIMEOUT (Ingénierie 1/10000)
+  if (ogImage.includes('cdn.sanity.io')) {
+    ogImage = `${ogImage}?w=1200&h=630&fit=crop&fm=jpg&q=80`;
+  }
+
   const articleUrl = `${SITE_URL}/article/${slug}`;
   
   const siteLanguages = {
@@ -213,12 +220,15 @@ export async function generateMetadata(
     "ߒߞߏ", "N'Ko", "ߟߐ߲ߞߏ", "Science", "Afrique", "Mali", "Recherche",
     article.category,
     ...(article.title ? article.title.split(' ').filter(w => w.length > 4) : []),
-    ...(article.authors.flatMap(a => a.expertise)) // Ajout de l'expertise aux mots-clés SEO
+    ...(article.authors.flatMap(a => a.expertise))
   ];
+
+  // 👑 BILINGUISME ABSOLU : Si pas de résumé, N'Ko d'abord, Français ensuite.
+  const metaDescription = article.excerpt || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. Découvrez cet article scientifique exclusif sur N'Ko ni Lonko.";
 
   return {
     title: `${article.title} | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ`,
-    description: article.excerpt || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | Publication Scientifique.",
+    description: metaDescription,
     metadataBase: new URL(SITE_URL), 
     alternates: {
       canonical: articleUrl,
@@ -240,11 +250,12 @@ export async function generateMetadata(
       "citation_publication_date": new Date(article.publishedAt).getFullYear().toString(),
       "citation_journal_title": "N'Ko ni Lonko",
       "citation_language": "nqo",
-      "citation_author": article.authors.map(a => a.name), // Génère une balise par auteur
+      "citation_author": article.authors.map(a => a.name),
     },
+    // 🚀 L'ARMURE SOCIALE DYNAMIQUE (WhatsApp, LinkedIn, Telegram)
     openGraph: {
       title: article.title,
-      description: article.excerpt || "Science et Savoir en N'Ko | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+      description: metaDescription,
       url: articleUrl,
       siteName: "N'Ko ni Lonko",
       images: [{ url: ogImage, width: 1200, height: 630, alt: article.title }],
@@ -254,11 +265,12 @@ export async function generateMetadata(
       publishedTime: article.publishedAt,
       authors: article.authors.map(a => a.name), 
     },
+    // 🚀 LE BOUCLIER TWITTER CARDS (X)
     twitter: {
       card: "summary_large_image",
       title: article.title,
-      description: article.excerpt,
-      images: [ogImage],
+      description: metaDescription,
+      images: [ogImage], // 🚀 L'image dynamique s'injecte ici
     },
   };
 }

@@ -91,9 +91,11 @@ export const metadata: Metadata = {
     title: "N'Ko ni Lonko",
   },
 
+  // 🚀 L'ARMURE SOCIALE 1/10000 (WhatsApp, X, LinkedIn, Telegram)
   openGraph: {
     title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
-    description: "ߟߐ߲ߞߏ ߓߟߏߦߊ ߒߞߏ ߘߐ߫. La Science à la portée de tous en N'Ko.",
+    // 👑 N'Ko is King : Le texte N'Ko apparaît en premier dans l'aperçu du message, suivi du Français.
+    description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫ ߟߐ߲ߞߏ ߟߊߛߋߟߌ ߞߊߡߊ߬. Plateforme de référence pour la science et le savoir.",
     url: SITE_URL,
     siteName: "N'Ko ni Lonko",
     locale: "nqo", 
@@ -101,12 +103,27 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/icon-512x512.png",
+        url: `${SITE_URL}/og-accueil.jpg`, // 🚀 Ton chef-d'œuvre JPG (1200x630)
+        width: 1200,
+        height: 630,
+        alt: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ - Le Baobab Cosmique",
+      },
+      {
+        url: `${SITE_URL}/icon-512x512.png`, // 🚀 Le Sceau Royal de secours
         width: 512,
         height: 512,
         alt: "Sceau Royal N'Ko ni Lonko",
       }
     ]
+  },
+
+  // 🚀 LE BOUCLIER TWITTER CARDS (X et Telegram)
+  twitter: {
+    card: "summary_large_image",
+    title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+    description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. La plateforme scientifique de référence.",
+    images: [`${SITE_URL}/og-accueil.jpg`], // 🚀 Ton chef-d'œuvre JPG
+    creator: "@nkonilonko",
   },
 
   icons: {

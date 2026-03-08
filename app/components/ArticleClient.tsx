@@ -308,7 +308,8 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
       </div>
 
       <article 
-        className="article-content pb-12 md:pb-20 max-w-3xl mx-auto px-4 md:px-6 transition-all duration-300 print:pb-0"
+        /* 🚀 L'ARME SECRÈTE (flow-root) : Restaure la cage BFC pour maintenir la lettrine en or parfaitement à sa place ! */
+        className="article-content flow-root pb-12 md:pb-20 max-w-3xl mx-auto px-4 md:px-6 transition-all duration-300 print:pb-0"
         style={{ fontSize: `${fontScale}rem` }} 
       >
         <CustomPortableText value={article.body} lang={lang} />
