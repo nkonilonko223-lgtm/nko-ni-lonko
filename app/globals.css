@@ -82,7 +82,7 @@
      ========================================= */
   /* Tailwind Preflight gère box-sizing, margin reset, etc. */
 
-  html {
+ html {
     overflow-x: hidden;
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
@@ -98,7 +98,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
-
   /* =========================================
      LAYER 1.2 — HARMONISATION BILINGUE
      ========================================= */
@@ -172,28 +171,27 @@
     color: #fff;
   }
 
-  /* Scrollbar personnalisée (Chromium) */
-  ::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: var(--color-void);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgba(251, 191, 36, 0.3);
-    border-radius: 4px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(251, 191, 36, 0.5);
-  }
-
-  /* Firefox scrollbar */
-  html {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(251, 191, 36, 0.3) var(--color-void);
+  /* 🚀 LE BOUCLIER 1/10000 : On cache les "fausses" barres de défilement aux téléphones. 
+     'hover: hover' garantit que ces styles en or ne s'appliquent QU'AUX ordinateurs.
+     Sur mobile, le téléphone récupère sa vraie barre, qu'on peut enfin attraper au doigt ! */
+  @media (hover: hover) and (pointer: fine) {
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--color-void);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(251, 191, 36, 0.3);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(251, 191, 36, 0.5);
+    }
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(251, 191, 36, 0.3) var(--color-void);
+    }
   }
 }
 

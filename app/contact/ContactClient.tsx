@@ -1,18 +1,29 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
+import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
+import type { TurnstileInstance } from '@marsidev/react-turnstile'; // 🚀 TYPAGE STRICT
 
 export default function ContactClient() {
   // 🚀 ÉTATS DU FORMULAIRE & INTELLIGENCE SENSORIELLE
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", botField: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
   // 🚀 CORRECTION LINTER : Initialisation douce
-  // On présume qu'on est en ligne par défaut pour le rendu Serveur (SSR)
   const [isOnline, setIsOnline] = useState(true); 
   const [isValidEmail, setIsValidEmail] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [formLoadTime, setFormLoadTime] = useState<number>(0);
+
+  // 🚀 ÉTAT DU COFFRE-FORT CLOUDFLARE
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileInstance>(null);
+
+  // ⏱️ DÉMARRAGE DU CHRONOMÈTRE BIOMÉTRIQUE
+  useEffect(() => {
+    setFormLoadTime(Date.now());
+  }, []);
 
   // 🚀 ÉCOUTE DU RÉSEAU (Conscience hors-ligne)
   useEffect(() => {
@@ -77,13 +88,19 @@ export default function ContactClient() {
 
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (!isOnline || !formData.name || !isValidEmail || !formData.message) return;
+    
+    // 🚀 VERROUILLAGE ABSOLU : On exige le Jeton Cloudflare avant d'autoriser le clic
+    if (!isOnline || !formData.name || !isValidEmail || !formData.message || !turnstileToken) {
+      if (!turnstileToken) alert("ߡߊ߬ߞߐ߬ߣߐ߲߬ߠߌ߲ ߞߍ߫ ߣߍ߲ߞߍ߫ / Analyse de sécurité en cours, veuillez patienter une seconde.");
+      return;
+    }
 
     triggerVibration();
     setIsSubmitting(true);
 
+    const timeToFill = Date.now() - formLoadTime;
+
     try {
-      // 🚀 LE FRAPPE RÉSEAU VÉRITABLE (Connexion à l'API)
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -91,7 +108,9 @@ export default function ContactClient() {
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          // honeypot vide pour tromper les bots
+          botField: formData.botField, 
+          timeToFill: timeToFill,      
+          turnstileToken: turnstileToken, // 🚀 ENVOI DU JETON MILITAIRE AU SERVEUR
         }),
       });
 
@@ -105,8 +124,12 @@ export default function ContactClient() {
       setIsSubmitting(false);
       setIsSuccess(true);
       triggerSuccessVibration();
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ name: "", email: "", message: "", botField: "" });
       setIsValidEmail(false);
+      
+      // 🚀 RÉARMEMENT DU BOUCLIER
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
       
       if (textareaRef.current) textareaRef.current.style.height = "auto";
 
@@ -116,6 +139,11 @@ export default function ContactClient() {
       // 🔴 GESTION D'ERREUR ÉLÉGANTE
       console.error("Erreur d'envoi:", error);
       setIsSubmitting(false);
+      
+      // 🚀 RÉARMEMENT DU BOUCLIER EN CAS D'ÉCHEC
+      setTurnstileToken(null);
+      turnstileRef.current?.reset();
+      
       alert(error instanceof Error ? error.message : "Une erreur de connexion est survenue.");
     }
   };
@@ -296,13 +324,36 @@ export default function ContactClient() {
                             ></textarea>
                         </div>
                         
+                        {/* 🪤 HONEYPOT INVISIBLE (Le piège fatal pour les robots spammeurs) */}
+                        <div aria-hidden="true" className="absolute opacity-0 -z-50 pointer-events-none h-0 w-0 overflow-hidden">
+                            <input 
+                              type="text" 
+                              name="botField" 
+                              tabIndex={-1} 
+                              value={formData.botField} 
+                              onChange={handleChange} 
+                              autoComplete="off" 
+                            />
+                        </div>
+
+                        {/* 🛡️ GÉNÉRATEUR DE JETON CLOUDFLARE INVISIBLE */}
+                        <div className="hidden">
+                           <Turnstile
+                             siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+                             ref={turnstileRef}
+                             onSuccess={(token) => setTurnstileToken(token)}
+                             onError={() => setTurnstileToken(null)}
+                             onExpire={() => setTurnstileToken(null)}
+                           />
+                        </div>
+                        
                         <button 
                             type="submit"
-                            disabled={isSubmitting || !isOnline || !isValidEmail || !formData.name || !formData.message}
+                            disabled={isSubmitting || !isOnline || !isValidEmail || !formData.name || !formData.message || !turnstileToken}
                             className={`group mt-auto relative w-full py-4 rounded-xl transition-all duration-500 flex flex-col items-center justify-center overflow-hidden touch-manipulation ${
                               isSubmitting 
                                 ? 'bg-white/10 text-gray-400 cursor-wait' 
-                                : !isOnline || !isValidEmail || !formData.name || !formData.message
+                                : !isOnline || !isValidEmail || !formData.name || !formData.message || !turnstileToken
                                   ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
                                   : 'bg-[#fbbf24] text-black hover:bg-white shadow-[0_0_20px_rgba(251,191,36,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]'
                             }`}

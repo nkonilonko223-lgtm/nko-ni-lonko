@@ -8,7 +8,7 @@ import { visionTool } from '@sanity/vision';
 import author from './sanity/schemas/author';
 import article from './sanity/schemas/article';
 import subscriber from './sanity/schemas/subscriber';
-import message from './sanity/schemas/message';
+// 👻 Le schéma 'message' a été purifié pour l'architecture Fantôme
 
 export default defineConfig({
   name: 'default',
@@ -26,7 +26,7 @@ export default defineConfig({
   ],
 
   schema: {
-    // 🚀 L'INJECTION DIRECTE : On force le compilateur à lire les 4 fichiers
-    types: [author, article, subscriber, message],
+    // 🚀 L'INJECTION DIRECTE : On force le compilateur à lire les 3 fichiers restants
+    types: [author, article, subscriber],
   },
 });

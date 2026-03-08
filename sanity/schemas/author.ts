@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import React from 'react'; // 🚀 IMPORT VITAL : Moteur d'interface RTL
 
 // ============================================================================
 // MATRICE DES DONNÉES : N'KO NI LONKO - SCHÉMA AUTEUR (1/1000 SCIENTIFIQUE)
@@ -29,11 +30,16 @@ export default defineType({
       validation: (Rule) => Rule.required().error('ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le nom est obligatoire'),
     }),
     
-    defineField({
+   defineField({
       name: 'nameNko',
       title: "Nom complet (N'Ko) / ߒߞߏ ߕߐ߮",
       type: 'string',
       group: 'profile',
+      // 🚀 BIDI ENGINE : Force l'alignement à droite dans le Studio
+      components: {
+        input: (props: import('sanity').StringInputProps) => 
+          React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+      }
     }),
     
     defineField({
@@ -52,13 +58,25 @@ export default defineType({
         })
         .error('ߛߟߐߜ߭ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le slug est obligatoire'),
     }),
-    
-    defineField({
+   defineField({
       name: 'role',
       title: 'Rôle ou Titre / ߗߋߘߊ',
       description: "Ex: Chercheur en Physique, Astrophysicien...",
       type: 'string',
       group: 'profile',
+    }),
+
+    // 🚀 NOUVEAU : Rôle traduit en N'Ko (Dogme 1)
+    defineField({
+      name: 'roleNko',
+      title: 'Rôle (N\'Ko) / ߒߞߏ ߗߋߘߊ',
+      description: "Ex: ߘߐ߬ߞߏ ߟߐ߲ߞߏߕߌ߮...",
+      type: 'string',
+      group: 'profile',
+      components: {
+        input: (props: import('sanity').StringInputProps) => 
+          React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+      }
     }),
 
     // 🚀 NOUVEAU : Champ Institution (100% Optionnel)
@@ -106,19 +124,37 @@ export default defineType({
       group: 'profile',
       options: { hotspot: true },
     }),
-
-    // =========================================================================
+// =========================================================================
     // ✍️ ONGLET : BIOGRAPHIE (BIO)
     // =========================================================================
-    defineField({
+   defineField({
       name: 'bio',
-      title: 'Biographie courte / ߞߊ߲߬ߛߓߍ ߞߎߟߎ߲ߣߍ߲',
-      description: "Une brève présentation de l'auteur (Texte simple pour une vitesse d'affichage optimale)",
+      title: 'Biographie courte (Français) / ߞߊ߲߬ߛߓߍ',
+      description: "Une brève présentation de l'auteur (Max 200 caractères).",
       type: 'text',
       group: 'bio',
       rows: 3,
-      // 🚀 Le Bouclier Visuel (Protège le design)
-      validation: (Rule) => Rule.max(200).warning('ߞߊ߲߬ߛߓߍ ߞߊߣߊ߬ ߕߊ߬ߡߌ߲߬ ߛߓߍߘߋ߲߫ ߂߀߀ ߟߊ߫ / La biographie ne doit pas dépasser 200 caractères pour le design.'),
+      validation: (Rule) => Rule.max(200).warning('La biographie ne doit pas dépasser 200 caractères pour le design.'),
+      // 🚀 BIDI ENGINE : Verrouillage strict de l'alignement à gauche (LTR) pour le Français
+      components: {
+        input: (props: import('sanity').StringInputProps) => 
+          React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props))
+      }
+    }),
+
+    // 🚀 NOUVEAU : Biographie en N'Ko (Dogme 1)
+    defineField({
+      name: 'bioNko',
+      title: 'Biographie (N\'Ko) / ߒߞߏ ߞߊ߲߬ߛߓߍ',
+      description: "ߛߓߍߦߟߊ ߟߊ߫ ߞߊ߲߬ߛߓߍ ߞߎߟߎ߲ߣߍ߲",
+      type: 'text',
+      group: 'bio',
+      rows: 3,
+      validation: (Rule) => Rule.max(200).warning('ߞߊ߲߬ߛߓߍ ߞߊߣߊ߬ ߕߊ߬ߡߌ߲߬ ߛߓߍߘߋ߲߫ ߂߀߀ ߟߊ߫'),
+      components: {
+        input: (props: import('sanity').StringInputProps) => 
+          React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+      }
     }),
 
     // =========================================================================
@@ -145,7 +181,11 @@ export default defineType({
                   { title: 'LinkedIn', value: 'linkedin' },
                   { title: 'YouTube', value: 'youtube' },
                   { title: 'Instagram', value: 'instagram' },
-                  { title: 'GitHub', value: 'github' }
+                  { title: 'GitHub', value: 'github' },
+                  // 🚀 NOUVEAU : Canaux de diffusion massifs
+                  { title: 'WhatsApp', value: 'whatsapp' },
+                  { title: 'TikTok', value: 'tiktok' },
+                  { title: 'Telegram', value: 'telegram' }
                 ]
               },
               validation: (Rule) => Rule.required().error('ߞߣߍ ߛߎߥߊ߲ߘߌ߫ / Veuillez choisir une plateforme')
@@ -153,11 +193,12 @@ export default defineType({
             { 
               name: 'url', 
               title: 'Lien (URL) / ߛߘߌ߬ߜߋ߲', 
+              description: "ATTENTION : Le lien doit OBLIGATOIREMENT commencer par https:// (Ex: https://wa.me/223... ou https://www.tiktok.com/...)", // 🚀 NOUVEAU : La notice anti-erreur
               type: 'url',
               // 🚀 Le Verrouillage de Sécurité URL
               validation: (Rule) => Rule.uri({
                 scheme: ['http', 'https']
-              }).required().error('ߛߘߌ߬ߜߋ߲ ߓߍ߲߬ߣߍ߲߫ ߕߍ߫ / URL invalide ou non sécurisée')
+              }).required().error('ߛߘߌ߬ߜߋ߲ ߓߍ߲߬ߣߍ߲߫ ߕߍ߫ / URL invalide, n\'oubliez pas le https://')
             }
           ]
         }

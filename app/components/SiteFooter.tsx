@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation"; 
 import { useLanguage } from "./LanguageProvider";
+import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
 
 interface SiteFooterProps {
   activeCategory: string;
@@ -30,6 +31,9 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [emailSubscribed, setEmailSubscribed] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // 🛡️ ÉTAT DU SÉSAME
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const turnstileRef = useRef<any>(null); // 🛡️ TÉLÉCOMMANDE DE RÉARMEMENT
   const formRef = useRef<HTMLFormElement>(null);
   const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
 
@@ -39,7 +43,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   }, []);
 
   const triggerSuccessVibration = useCallback(() => {
-    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([30, 50, 30]); // Double tact rapide
+    if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([30, 50, 30]); 
   }, []);
 
   // 🚀 LOGIQUE DE NAVIGATION BLINDÉE
@@ -84,40 +88,39 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
-    // Regex de validation d'email standard
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(value));
   };
 
-  // 🚀 Moteur Glow-Tracking (Suivi de Souris)
   const handleFormMouseMove = (e: React.MouseEvent<HTMLFormElement>) => {
     if (!formRef.current) return;
     const rect = formRef.current.getBoundingClientRect();
     setGlowPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
-// 🚀 MOTEUR DE L'API NEWSLETTER (1/1000)
+  // 🚀 MOTEUR DE L'API NEWSLETTER (1/1000)
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValidEmail || isLoading) return; // Sécurité anti-forcing et anti-spam de clics
+    // Sécurité stricte : On exige le token Cloudflare avant l'envoi
+    if (!isValidEmail || isLoading || !turnstileToken) return; 
     
     setIsLoading(true);
     setErrorMessage("");
-    triggerVibration(); // Vibration d'engagement
+    triggerVibration(); 
 
     try {
-      // 1. Préparation du "Payload" (Les données enrichies pour le traçage)
+      // 1. Préparation du Payload Sécurisé
       const payload = {
         email: email,
-        honeypot: "", // Toujours vide pour prouver qu'on est humain
-        source_url: pathname, // Ex: "/article/astronomie"
-        category: activeCategory || "global" // Ex: "physique"
+        honeypot: "", 
+        source_url: pathname,
+        category: activeCategory || "global",
+        turnstileToken: turnstileToken // 🛡️ INJECTION DU SÉSAME POUR LE BACKEND
       };
 
-      // 2. Frappe Réseau vers notre API Edge
       const response = await fetch('/api/newsletter', {
         method: 'POST',
         headers: {
@@ -135,27 +138,29 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
       // 3. Le Triomphe
       triggerSuccessVibration();
       setEmailSubscribed(true);
-      setEmail(""); // Réinitialise le champ
+      setEmail(""); 
       setIsValidEmail(false);
       
-      // On retire le message de succès après 5 secondes
       setTimeout(() => setEmailSubscribed(false), 5000);
 
-} catch (error) {
-      // 4. Gestion de la défaite (Erreur) - Typage strict 1/1000
+    } catch (error) {
       console.error("Erreur Newsletter:", error);
       const message = error instanceof Error ? error.message : "Impossible de s'abonner pour le moment.";
       setErrorMessage(message);
-      // On efface l'erreur après 4 secondes pour garder le design propre
       setTimeout(() => setErrorMessage(""), 4000);
     } finally {
       setIsLoading(false);
+      // 🛡️ RÉARMEMENT AUTOMATIQUE : On forge un nouveau jeton pour le prochain essai
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
+        setTurnstileToken(null);
+      }
     }
   };
+
   return (
     <footer className="relative mt-16 md:mt-32 border-t border-white/10 bg-[#02040a]/90 backdrop-blur-2xl shadow-[0_-10px_30px_rgba(251,191,36,0.03)] z-10 print:hidden overflow-hidden">
       
-      {/* 🚀 ARME 1 : Le Filigrane Impérial (Sceau géant en arrière-plan) blindé en z-index négatif */}
       <div className="absolute inset-0 pointer-events-none -z-10 flex items-center justify-center opacity-[0.02] md:opacity-[0.03]">
         <Image 
           src="/icon-512x512.png" 
@@ -169,9 +174,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
       <div className="relative z-10 mx-auto max-w-8xl px-6 pt-6 pb-16 lg:px-8">
        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           
-          {/* ========================================== */}
-          {/* COLONNE 1 : Branding & Newsletter */}
-          {/* ========================================== */}
           <div className="flex flex-col gap-5">
             <Link href="/" onClick={triggerVibration} className="group relative flex items-center gap-3 touch-manipulation w-fit">
               <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
@@ -198,6 +200,15 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                  onSubmit={handleNewsletterSubmit} 
                  className="relative flex items-center w-full rounded-xl bg-[#0b1121]/50 border border-white/10 overflow-hidden p-1 group transition-colors focus-within:border-white/30 focus-within:bg-[#0b1121]"
                >
+                 {/* 🛡️ INJECTION INVISIBLE DU RADAR CLOUDFLARE */}
+                 <div className="hidden">
+                    <Turnstile
+                      ref={turnstileRef}
+                      siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                      onSuccess={(token) => setTurnstileToken(token)}
+                    />
+                 </div>
+
                   <div 
                     className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{ background: `radial-gradient(80px circle at ${glowPos.x}px ${glowPos.y}px, rgba(251,191,36,0.15), transparent)` }}
@@ -213,13 +224,13 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   
                   <button 
                     type="submit"
-                    disabled={!isValidEmail || emailSubscribed || isLoading}
+                    disabled={!isValidEmail || emailSubscribed || isLoading || !turnstileToken}
                     className={`relative z-10 rounded-lg w-12 h-[36px] shrink-0 flex items-center justify-center transition-all duration-500 touch-manipulation
                       ${emailSubscribed 
                         ? 'bg-green-500 text-black shadow-[0_0_15px_rgba(34,197,94,0.4)]' 
                         : isLoading
                           ? 'bg-[#fbbf24]/50 text-black cursor-wait'
-                          : isValidEmail 
+                          : isValidEmail && turnstileToken
                             ? 'bg-[#fbbf24] text-black shadow-[0_0_15px_rgba(251,191,36,0.3)] hover:scale-105 active:scale-95 cursor-pointer' 
                             : 'bg-white/5 text-gray-500 cursor-not-allowed'
                       }
@@ -231,12 +242,11 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                     ) : emailSubscribed ? (
                       <i className="ph-bold ph-check animate-in zoom-in duration-300"></i>
                     ) : (
-                      <i className={`ph-bold ${isNko ? 'ph-arrow-left' : 'ph-arrow-right'} ${isValidEmail ? 'animate-pulse' : ''}`}></i>
+                      <i className={`ph-bold ${isNko ? 'ph-arrow-left' : 'ph-arrow-right'} ${isValidEmail && turnstileToken ? 'animate-pulse' : ''}`}></i>
                     )}
                   </button>
                </form>
                
-               {/* Message de Succès */}
                <div className={`overflow-hidden transition-all duration-300 ${emailSubscribed ? 'h-6 opacity-100 mt-1' : 'h-0 opacity-0 mt-0'}`}>
                  <p className="text-sm text-green-400 flex items-center gap-1 font-medium">
                    <i className="ph-fill ph-check-circle"></i>
@@ -244,7 +254,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                  </p>
                </div>
 
-               {/* Message d'Erreur */}
                <div className={`overflow-hidden transition-all duration-300 ${errorMessage ? 'h-auto opacity-100 mt-1' : 'h-0 opacity-0 mt-0'}`}>
                  <p className="text-xs text-red-400 flex items-center gap-1">
                    <i className="ph-fill ph-warning-circle"></i>
@@ -254,9 +263,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </div>
           </div>
 
-          {/* ========================================== */}
-          {/* COLONNE 2 : Articles (Navigation Rapide) */}
-          {/* ========================================== */}
           <div className="flex flex-col items-start">
             <h3 className={`mb-5 font-bold uppercase tracking-widest text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
                 {typedT?.nav?.articles || "Articles"}
@@ -276,9 +282,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </ul>
           </div>
 
-          {/* ========================================== */}
-          {/* COLONNE 3 : Menu */}
-          {/* ========================================== */}
           <div className="flex flex-col items-start">
             <h3 className={`mb-5 font-bold uppercase tracking-widest text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
               {isNko ? 'ߝߙߍ' : 'Menu'}
@@ -300,9 +303,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </ul>
           </div>
 
-          {/* ========================================== */}
-          {/* COLONNE 4 : Contact & Info */}
-          {/* ========================================== */}
           <div className="flex flex-col items-start">
             <h3 className={`mb-5 font-bold uppercase tracking-widest text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
                 {isNko ? 'ߟߊߛߘߐ߬ߢߊ' : 'Contact'}
@@ -339,9 +339,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
         </div>
       </div>
 
-      {/* ========================================== */}
-      {/* COPYRIGHT & RÉSEAUX SOCIAUX */}
-      {/* ========================================== */}
       <div className="relative z-10 border-t border-white/5 bg-black/50">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-8 md:flex-row lg:px-8">
           
@@ -370,6 +367,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                { href: "https://facebook.com/nkonilonko", icon: "facebook-logo", label: "Facebook" },
                { href: "https://twitter.com/nkonilonko", icon: "twitter-logo", label: "Twitter / X" },
                { href: "https://instagram.com/nkonilonko", icon: "instagram-logo", label: "Instagram" },
+               { href: "https://tiktok.com/@nkonilonko223", icon: "tiktok-logo", label: "TikTok" },
                { href: "https://wa.me/22300000000", icon: "whatsapp-logo", label: "WhatsApp" },
                { href: "https://t.me/nkonilonko", icon: "telegram-logo", label: "Telegram" }
              ].map((social, i) => (

@@ -47,13 +47,15 @@ interface ClientArticleData {
   body: PortableTextBlock[];
   excerpt: string;
   category: string;
-  // 🚀 SYNCHRONISATION 1/1000 : Le tableau d'auteurs et le profil académique
+  references: Array<{ title: string; url: string }>; // 🚀 NOUVEAU : Réception des references
   authors: Array<{
     name: string;
     nameNko: string | null;
     imageUrl: string | null;
-    bio: PortableTextBlock[] | null;
-    role: string;
+    bio: PortableTextBlock[] | string | null;    // 🚀 FIX : Accepte le texte simple
+    bioNko: PortableTextBlock[] | string | null; // 🚀 NOUVEAU : Réception de la Bio N'Ko
+    role: string | null; 
+    roleNko: string | null;                      // 🚀 NOUVEAU : Réception du Rôle N'Ko
     institution: string | null;
     orcid: string | null;
     expertise: string[];
@@ -71,7 +73,7 @@ interface TranslationHome {
 
 export default function ArticleClient({ article }: { article: ClientArticleData }) {
   const { lang, toggleLanguage, t } = useLanguage(); 
-  
+  // 🚀 RADAR 2 : Vérifie si la page Client a bien reçu la donnée
   const [fontScale, setFontScale] = useState(1.125); 
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -320,15 +322,17 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
         <p suppressHydrationWarning className="text-[10px] text-gray-500 mt-2">© {new Date().getFullYear()} {article.authors?.[0]?.name || 'Moustapha CAMARA'}. Tous droits réservés.</p>
       </div>
 <div className="print:hidden">
-        {/* 🚀 SÉCURITÉ 1/1000 : Transmission intégrale du Dossier Académique */}
+        {/* 🚀 SÉCURITÉ 1/1000 : Transmission intégrale du Dossier Académique ET DES references */}
         <ArticleFooter 
             lang={lang} 
-            author={article.authors && article.authors.length > 0 ? {
+           author={article.authors && article.authors.length > 0 ? {
                 name: article.authors[0].name,
                 nameNko: article.authors[0].nameNko,
                 image: article.authors[0].imageUrl,
                 bio: article.authors[0].bio,
-                role: article.authors[0].role,
+                bioNko: article.authors[0].bioNko, // 🚀 NOUVEAU : Branchement de la Bio N'Ko
+                role: article.authors[0].role || undefined,
+                roleNko: article.authors[0].roleNko || undefined, // 🚀 NOUVEAU : Branchement du Rôle N'Ko
                 institution: article.authors[0].institution,
                 orcid: article.authors[0].orcid,
                 expertise: article.authors[0].expertise,
@@ -336,24 +340,46 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
             } : undefined} 
             tags={categoryLabel ? [categoryLabel] : []}
             relatedArticles={[]} 
+            references={article.references} // 🚀 LE TUYAU EST CONNECTÉ ! Les references vont s'afficher.
         />
       </div>
+{/* 🚀 1/1000 : LE SCEAU DE FIN DE LECTURE */}
+      <footer className="border-t border-white/5 print:hidden py-16 md:py-24 text-center bg-gradient-to-b from-[#02040a] to-black backdrop-blur-3xl mt-12 relative overflow-hidden flex flex-col items-center">
+        {/* 🌌 Lueur abyssale arrière */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#fbbf24]/5 blur-[100px] rounded-full pointer-events-none"></div>
 
-      <footer className="border-t border-white/10 print:hidden py-12 md:py-16 text-center bg-black/60 backdrop-blur-2xl mt-8 relative overflow-hidden flex flex-col items-center">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-60 h-60 bg-[#fbbf24]/5 blur-[80px] rounded-full pointer-events-none"></div>
-        
-        <div className="w-24 h-24 md:w-28 md:h-28 mb-8 relative group flex items-center justify-center p-4 backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl md:rounded-[2rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)] overflow-hidden transition-all duration-500 hover:border-[#fbbf24]/40 hover:shadow-[0_0_50px_rgba(251,191,36,0.25)] hover:scale-[1.02] z-10">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#fbbf24]/30 to-transparent blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+       {/* 🛡️ LE SCEAU HOLOGRAPHIQUE (Navigation Intuitive & Poids Optimisé) */}
+        <Link 
+            href="/"
+            onClick={triggerVibration}
+            className="w-24 h-24 md:w-28 md:h-28 mb-8 relative group flex items-center justify-center p-5 backdrop-blur-2xl bg-[#0b0f19]/80 border border-white/10 rounded-[2rem] shadow-[inset_0_0_30px_rgba(251,191,36,0.03)] overflow-hidden transition-all duration-700 hover:border-[#fbbf24]/50 hover:shadow-[0_20px_60px_-10px_rgba(251,191,36,0.25)] hover:-translate-y-2 z-10 touch-manipulation"
+            title={lang === 'nko' ? 'ߞߐߛߊߦߌ߫ ߢߍߝߍ߬' : 'Retour à l\'accueil'}
+        >
+            {/* Reflet dynamique au survol */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#fbbf24]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            
             <Image 
                 src="/icon-512x512.png" 
                 alt="Sceau N'Ko ni Lonko" 
                 width={512}
                 height={512}
-                className="w-full h-full object-contain relative z-10 drop-shadow-xl"
+                quality={90} // 🚀 OPTIMISATION : Qualité visuelle parfaite mais fichier allégé pour les forfaits mobiles
+                className="w-full h-full object-contain relative z-10 drop-shadow-2xl transition-transform duration-700 group-hover:scale-110"
             />
-        </div>
-        
-        <p className={`text-[#fbbf24] font-mono text-xs md:text-sm max-w-md mx-auto relative z-10 drop-shadow-sm opacity-90 ${lang === 'nko' ? 'font-kigelia tracking-wider' : 'tracking-widest uppercase'}`}>
+        </Link>
+
+        {/* ➖ Ligne d'ancrage */}
+        <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-[#fbbf24]/30 to-transparent mb-6"></div>
+
+        {/* 📜 LE COPYRIGHT IMPÉRIAL (Alignement & Typographie Parfaits) */}
+        <p 
+          className={`text-[#fbbf24]/70 hover:text-[#fbbf24] transition-colors duration-300 relative z-10 drop-shadow-sm px-4 ${
+            lang === 'nko' 
+            ? 'font-kigelia text-sm md:text-base tracking-wide' 
+            : 'font-mono text-xs md:text-sm tracking-widest uppercase'
+          }`}
+          dir={lang === 'nko' ? 'rtl' : 'ltr'}
+        >
           {t.footer.copyright.replace("{year}", lang === 'nko' ? "߂߀߂߆" : "2026")}
         </p>
       </footer>

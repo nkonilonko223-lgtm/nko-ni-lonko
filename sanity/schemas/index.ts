@@ -25,4 +25,8 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   // 3. INFRASTRUCTURE & EXTENSIONS FUTURES (API Newsletter)
   // --------------------------------------------------------------------------
   subscriber,
+
+  // --------------------------------------------------------------------------
+  // 4. COMMUNICATIONS & INTERACTIONS (Contact)
+  // --------------------------------------------------------------------------
 ];

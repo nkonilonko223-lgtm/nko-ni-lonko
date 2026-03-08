@@ -25,13 +25,13 @@ import 'katex/dist/katex.min.css';
 // ==============================================================================
 // 1. TYPAGES STRICTS & INTERFACES (Zéro 'any')
 // ==============================================================================
-
 export interface SanityImage {
   asset: {
     _ref: string;
   };
   alt?: string;
-  caption?: string;
+  captionNko?: string; // 🚀 DOGME 1 : Légende N'Ko
+  caption?: string;    // 🚀 Légende Française
 }
 
 interface YouTubeBlock {
@@ -55,7 +55,8 @@ type PortableCalloutProps = PortableTextComponentProps<CalloutBlock>;
 interface LightboxState {
   url: string;
   alt: string;
-  caption?: string;
+  captionNko?: string; // 🚀 Transport de la Légende N'Ko vers le plein écran
+  caption?: string;    // 🚀 Transport de la Légende Française
 }
 
 // ==============================================================================
@@ -223,7 +224,11 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
   }, [lightbox]);
 
   const firstTextBlockKey = useMemo(() => {
-    return value?.find(b => b._type === 'block' && (!b.style || b.style === 'normal'))?._key;
+    return value?.find(b => 
+      b._type === 'block' && 
+      (!b.style || b.style === 'normal') && 
+      getBlockText(b as PortableTextBlock).trim().length > 0 // 🚀 IGNORER LES LIGNES VIDES
+    )?._key;
   }, [value]);
 
   const components: PortableTextComponents = useMemo(() => ({
@@ -298,13 +303,47 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         const nko = isNko(getBlockText(blockValue));
         return <FadeInBlock><h1 dir={nko ? "rtl" : "ltr"} className={`text-3xl md:text-4xl font-extrabold text-[#fbbf24] print:text-black mt-10 md:mt-14 pb-0 -mb-2 leading-none text-balance ${nko ? "font-kigelia" : "font-sans"}`}>{children}</h1></FadeInBlock>;
       },
-      h2: ({ value: blockValue, children }) => {
+     h2: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
-        return <FadeInBlock><h2 dir={nko ? "rtl" : "ltr"} className={`text-2xl md:text-3xl font-bold text-[#fbbf24] print:text-black mt-10 md:mt-14 pb-0 -mb-2 leading-none text-balance ${nko ? "font-kigelia" : "font-sans"}`}>{children}</h2></FadeInBlock>;
+        if (nko) {
+          return (
+            <FadeInBlock>
+              {/* 🚀 MODIF : pr-8 md:pr-12 pour le léger décalage vers le centre */}
+              <h2 dir="rtl" className="text-2xl md:text-3xl font-bold text-[#fbbf24] print:text-black mt-12 md:mt-16 mb-4 md:mb-6 py-2 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia">
+                {children}
+              </h2>
+            </FadeInBlock>
+          );
+        } else {
+          return (
+            <FadeInBlock>
+              {/* 🚀 MODIF : pl-8 md:pl-12 pour le léger décalage vers le centre */}
+              <h2 dir="ltr" className="text-xl md:text-2xl font-bold text-[#fbbf24] print:text-black mt-12 md:mt-16 mb-4 md:mb-6 py-2 pl-8 md:pl-12 bg-gradient-to-r from-white/5 to-transparent border-l-2 border-white/40 leading-tight text-balance font-sans">
+                {children}
+              </h2>
+            </FadeInBlock>
+          );
+        }
       },
       h3: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
-        return <FadeInBlock><h3 dir={nko ? "rtl" : "ltr"} className={`text-xl md:text-2xl font-semibold text-white print:text-black mt-8 md:mt-10 mb-2 leading-none text-balance ${nko ? "font-kigelia" : "font-sans"}`}>{children}</h3></FadeInBlock>;
+        if (nko) {
+          return (
+            <FadeInBlock>
+              <h3 dir="rtl" className="text-xl md:text-2xl font-semibold text-white print:text-black mt-10 md:mt-12 mb-3 pr-6 md:pr-10 border-r-2 border-[#fbbf24]/50 leading-snug text-balance font-kigelia">
+                {children}
+              </h3>
+            </FadeInBlock>
+          );
+        } else {
+          return (
+            <FadeInBlock>
+              <h3 dir="ltr" className="text-lg md:text-xl font-semibold text-white print:text-black mt-10 md:mt-12 mb-3 pl-6 md:pl-10 border-l-2 border-white/30 leading-snug text-balance font-sans">
+                {children}
+              </h3>
+            </FadeInBlock>
+          );
+        }
       },
       blockquote: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
@@ -330,32 +369,50 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
 
         return (
           <FadeInBlock>
-            <div className="relative w-full overflow-hidden my-8 md:my-12 group cursor-zoom-in print:block print:opacity-100" 
-                 onClick={() => setLightbox({ url: imageUrl, alt: imageValue.alt || '', caption: imageValue.caption })}>
-               <div className="-mx-4 md:-mx-12 relative rounded-xl md:rounded-2xl overflow-hidden border border-white/10 print:border-gray-300 shadow-2xl bg-black/50 print:bg-transparent">
-                   
-                   <Image 
-                     src={imageUrl} 
-                     alt={imageValue.alt || 'Illustration scientifique'} 
-                     width={1200} 
-                     height={800} 
-                     className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105 print:scale-100" 
-                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-                   />
-                   
-                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center print:hidden">
-                      <i className="ph-bold ph-arrows-out text-white text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"></i>
-                   </div>
+            <figure className="my-10 md:my-14 print:block print:opacity-100">
+              <div 
+                className="relative w-full overflow-hidden group cursor-zoom-in rounded-xl md:rounded-2xl border border-white/10 print:border-gray-300 shadow-2xl bg-[#02040a] print:bg-transparent"
+                onClick={() => setLightbox({ url: imageUrl, alt: imageValue.alt || '', captionNko: imageValue.captionNko, caption: imageValue.caption })}
+              >
+                 <Image 
+                   src={imageUrl} 
+                   alt={imageValue.alt || 'Illustration scientifique'} 
+                   width={1200} 
+                   height={800} 
+                   className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02] print:scale-100" 
+                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                 />
+                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center print:hidden pointer-events-none">
+                    <i className="ph-bold ph-arrows-out text-white text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"></i>
+                 </div>
+              </div>
 
-                   {imageValue.caption && (
-                      <div className="bg-black/60 print:bg-transparent print:static print:translate-y-0 p-3 text-center backdrop-blur-md absolute bottom-0 w-full border-t border-white/10 print:border-none translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                          <p className={`text-xs md:text-sm text-gray-300 print:text-gray-600 italic ${lang === 'nko' ? 'font-kigelia' : 'font-sans'}`}>
-                            {imageValue.caption}
-                          </p>
-                      </div>
-                   )}
-               </div>
-            </div>
+              {/* 🚀 LÉGENDE "WORLD CLASS 1/10000" (Dual-Stack & Ratio de Taille) */}
+              {(imageValue.captionNko || imageValue.caption) && (
+                <figcaption className="mt-5 px-2 md:px-4 flex flex-col gap-3">
+                  
+                  {/* 1. N'Ko en Majesté : 15px/16px (Dominant & Doré) */}
+                  {imageValue.captionNko && (
+                    <p dir="rtl" className="leading-relaxed text-[#fbbf24] font-kigelia text-right text-[15px] md:text-[16px] drop-shadow-sm">
+                      {imageValue.captionNko}
+                    </p>
+                  )}
+                  
+                  {/* 2. Le Séparateur Nette et Fluide */}
+                  {imageValue.captionNko && imageValue.caption && (
+                    <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto my-1 rounded-full"></div>
+                  )}
+
+                  {/* 3. Français Subordonné : 13px/14px (Discret, Blanc/Gris & Italique) */}
+                  {imageValue.caption && (
+                    <p dir="ltr" className="leading-relaxed text-white/70 font-sans text-left text-[13px] md:text-[14px] italic">
+                      {imageValue.caption}
+                    </p>
+                  )}
+                  
+                </figcaption>
+              )}
+            </figure>
           </FadeInBlock>
         );
       },
@@ -410,42 +467,69 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         );
       }
     }
-  }), [firstTextBlockKey, lang]);
+ // 🚀 FIX VS CODE : Ajout de setLightbox dans les dépendances
+  }), [firstTextBlockKey, setLightbox]);
 
   return (
     <>
       <PortableText value={value} components={components} />
 
-      {/* 🚀 LA LOUPE CINÉMATIQUE (Z-index 999999 pour régner en maître absolu) */}
+      {/* 🚀 LA LOUPE CINÉMATIQUE (Plein écran scrolable) */}
       {lightbox && (
         <div 
-          className="fixed inset-0 z-[999999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-300 p-4 md:p-8 print:hidden"
-          onClick={() => setLightbox(null)}
+          className="fixed inset-0 z-[999999] flex flex-col bg-black/98 backdrop-blur-2xl transition-all duration-300 print:hidden"
         >
-          <button 
-            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer z-50 backdrop-blur-md border border-white/20 hover:border-[#fbbf24]"
-            onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
-            aria-label={lang === 'nko' ? "ߊ߬ ߘߊߕߎ߲߯" : "Fermer l'image"}
-          >
-            <i className="ph-bold ph-x text-2xl"></i>
-          </button>
-
-          <div className="relative w-full max-w-6xl h-full max-h-[80vh] rounded-lg overflow-hidden flex items-center justify-center">
-            <Image 
-              src={lightbox.url} 
-              alt={lightbox.alt} 
-              fill
-              className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
-              sizes="100vw"
-            />
+          <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/80 to-transparent z-50 flex items-center justify-end px-6 pointer-events-none">
+            <button 
+              className="w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer backdrop-blur-md border border-white/20 hover:border-[#fbbf24] pointer-events-auto"
+              onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
+              aria-label={lang === 'nko' ? "ߊ߬ ߘߊߕߎ߲߯" : "Fermer l'image"}
+            >
+              <i className="ph-bold ph-x text-2xl"></i>
+            </button>
           </div>
 
-          {lightbox.caption && (
-             <div className="mt-6 md:mt-8 max-w-3xl text-center">
-                <p className={`text-lg md:text-2xl text-[#fbbf24] font-bold tracking-wide ${lang === 'nko' ? 'font-kigelia' : 'font-sans'}`}>
-                  {lightbox.caption}
-                </p>
-             </div>
+          <div 
+            className="flex-1 w-full flex items-center justify-center p-4 md:p-8 min-h-[50vh]"
+            onClick={() => setLightbox(null)}
+          >
+            <div className="relative w-full h-full max-w-7xl max-h-[75vh] flex items-center justify-center cursor-zoom-out">
+              <Image 
+                src={lightbox.url} 
+                alt={lightbox.alt} 
+                fill
+                className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
+                sizes="100vw"
+              />
+            </div>
+          </div>
+
+          {/* 🚀 LÉGENDE SCROLLABLE "DUAL-STACK" POUR LE LIGHTBOX */}
+          {(lightbox.captionNko || lightbox.caption) && (
+            <div className="w-full max-h-[40vh] overflow-y-auto bg-black/90 backdrop-blur-xl border-t border-white/10 px-4 py-6 md:px-8 md:py-8 overscroll-contain shadow-[0_-20px_50px_rgba(0,0,0,0.8)]" onClick={(e) => e.stopPropagation()}>
+              <div className="max-w-4xl mx-auto flex flex-col gap-4 md:gap-5">
+                
+                {/* 1. N'Ko en Plein Écran : 17px/19px */}
+                {lightbox.captionNko && (
+                  <div dir="rtl" className="text-[#fbbf24] font-kigelia text-right text-[17px] md:text-[19px] leading-relaxed drop-shadow-md">
+                    {lightbox.captionNko}
+                  </div>
+                )}
+                
+                {/* 2. Ligne de Lumière (Plus large en plein écran) */}
+                {lightbox.captionNko && lightbox.caption && (
+                  <div className="w-32 h-[1.5px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto rounded-full my-2"></div>
+                )}
+
+                {/* 3. Français en Support : 14px/15px */}
+                {lightbox.caption && (
+                  <div dir="ltr" className="text-white/70 font-sans text-left text-[14px] md:text-[15px] italic leading-relaxed">
+                    {lightbox.caption}
+                  </div>
+                )}
+
+              </div>
+            </div>
           )}
         </div>
       )}

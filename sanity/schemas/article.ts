@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import React from 'react'; // 🚀 IMPORT VITAL POUR RÉPARER LE CRASH DU STUDIO
 
 export default defineType({
   name: 'article',
@@ -84,6 +85,29 @@ export default defineType({
       of: [
         {
           type: 'block',
+          // 🚀 BIDI ENGINE 1/1000 : Synchrone, ultra-rapide et Zéro "any"
+          components: {
+            block: (props: import('sanity').BlockProps) => {
+              // Extraction 100% Type-Safe sans aucun 'any'
+              const blockValue = props.value as unknown as { children?: Array<{ text?: string }> };
+              const children = blockValue?.children || [];
+              const textContent = children.map((child) => child.text || '').join('');
+              const isNko = /[\u07C0-\u07FF]/.test(textContent);
+              
+              // 🚀 CORRECTION FATALE : Utilisation du vrai React.createElement (Plus de Promesse !)
+              return React.createElement(
+                'div',
+                {
+                  dir: isNko ? 'rtl' : 'ltr',
+                  style: {
+                    textAlign: isNko ? 'right' : 'left',
+                    paddingBottom: '0.3em',
+                  }
+                },
+                props.renderDefault(props)
+              );
+            }
+          },
           marks: {
             annotations: [
               // 1. LE LIEN STANDARD 
@@ -125,11 +149,31 @@ export default defineType({
           title: 'Image intégrée / ߖߌ߬ߦߊ߬ߓߍ',
           options: { hotspot: true },
           fields: [
+            // 🚀 DOGME 1 : Légende N'Ko (Prioritaire & Alignée à droite)
             {
-              name: 'caption',
-              type: 'string',
-              title: 'Légende / ߖߌ߬ߦߊ߬ߓߍ ߞߘߐߟߊ߫ ߛߓߍ',
+              name: 'captionNko',
+              type: 'text', // On passe en "text" pour avoir un champ plus grand (multiligne)
+              title: 'Légende (N\'Ko) / ߖߌ߬ߦߊ߬ߓߍ ߞߘߐߟߊ߫ ߛߓߍ',
+              description: "Description scientifique de l'image en N'Ko.",
+              rows: 2,
               options: { isHighlighted: true },
+              components: {
+                input: (props: import('sanity').StringInputProps) => 
+                  React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+              }
+            },
+            // 🚀 Légende Française (Support & Alignée à gauche)
+            {
+              name: 'caption', // On garde le nom "caption" pour ne pas perdre tes anciennes légendes
+              type: 'text',
+              title: 'Légende (Français)',
+              description: "Traduction française de la légende.",
+              rows: 2,
+              options: { isHighlighted: true },
+              components: {
+                input: (props: import('sanity').StringInputProps) => 
+                  React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props))
+              }
             },
             {
               name: 'alt',
@@ -219,11 +263,12 @@ export default defineType({
               type: 'string', 
               validation: (rule) => rule.required().error('ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre de la source est requis') 
             },
-            { 
+           { 
               name: 'url', 
-              title: 'Lien (URL optionnel) / ߛߘߌ߬ߜߋ߲', 
+              title: 'Lien Numérique (Optionnel) / ߛߘߌ߬ߜߋ߲', 
+              description: "💡 Laissez ce champ TOTALEMENT VIDE s'il s'agit d'un livre physique ou d'un manuscrit. / ߊ߬ ߕߏ߫ ߘߊ߲߬ߠߊ߫ ߣߴߊ߬ ߦߋ߫ ߞߊ߬ߝߊ ߘߌ߫",
               type: 'url',
-              validation: (rule) => rule.uri({ scheme: ['http', 'https'] }).warning("ߛߘߌ߬ߜߋ߲ ߓߍ߲߬ߣߍ߲߫ ߕߍ߫ / L'URL n'est pas sécurisée (doit commencer par http/https)")
+              validation: (rule) => rule.uri({ scheme: ['http', 'https'], allowRelative: true }).warning("ߛߘߌ߬ߜߋ߲ ߓߍ߲߬ߣߍ߲߫ ߕߍ߫ / Si vous mettez un lien, il doit commencer par http/https")
             }
           ]
         }

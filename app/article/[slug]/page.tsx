@@ -39,13 +39,15 @@ interface SanityArticleRaw {
   excerpt?: string;
   category?: string;
   categories?: { title: string }[];
-  // 🚀 SYNCHRONISATION 1/1000 : Multi-Paternité et Données Scientifiques
+  references?: Array<{ title: string; url: string }>;
   authors?: Array<{
     name: string;
     nameNko?: string;
     image?: SanityImage | null;
-    bio?: PortableTextBlock[]; 
+    bio?: PortableTextBlock[] | string; 
+    bioNko?: PortableTextBlock[] | string; // 🚀 FIX : Déclaration officielle de la Bio N'Ko
     role?: string;
+    roleNko?: string;                      // 🚀 FIX : Déclaration officielle du Rôle N'Ko
     institution?: string;
     orcid?: string;
     expertise?: string[];
@@ -64,13 +66,15 @@ export interface SafeArticleData {
   category: string;
   readingTime: number; 
   wordCount: number;
-  // 🚀 NOUVEAU CONTRAT : Un tableau robuste d'auteurs
-  authors: Array<{
+  references: Array<{ title: string; url: string }>; // 🚀 NOUVEAU : Transmission sécurisée
+ authors: Array<{
     name: string;
     nameNko: string | null;
     imageUrl: string | null;
-    bio: PortableTextBlock[] | null;
-    role: string;
+    bio: PortableTextBlock[] | string | null;    // 🚀 FIX : La douane accepte désormais le texte simple (string)
+    bioNko: PortableTextBlock[] | string | null; // 🚀 FIX : Idem pour le N'Ko
+    role: string | null; 
+    roleNko: string | null;
     institution: string | null;
     orcid: string | null;
     expertise: string[];
@@ -106,13 +110,14 @@ function calculateReadingMetrics(blocks: PortableTextBlock[]): { wordCount: numb
 function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
   if (!raw) throw new Error("Données article manquantes");
 
-  // 🚀 SÉCURITÉ : Mapping du tableau d'auteurs
   const safeAuthors = (raw.authors || []).map(author => ({
     name: author.name || "N'Ko ni Lonko",
     nameNko: author.nameNko || null,
     imageUrl: safeUrlFor(author.image),
     bio: author.bio || null,
-    role: author.role || "ߛߓߍߦߟߊ | Chercheur",
+    bioNko: author.bioNko || null,     // 🚀 NOUVEAU : Transmission
+    role: author.role || null, 
+    roleNko: author.roleNko || null,   // 🚀 NOUVEAU : Transmission // 🚀 DESTRUCTION DU MOT "Chercheur" CODÉ EN DUR
     institution: author.institution || null,
     orcid: author.orcid || null,
     expertise: author.expertise || [],
@@ -133,6 +138,7 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     category: category,
     readingTime: metrics.readingTime,
     wordCount: metrics.wordCount,
+    references: raw.references || [], // 🚀 NOUVEAU : Transmission des references à l'interface
     authors: safeAuthors
   };
 }
@@ -154,7 +160,7 @@ export async function generateStaticParams() {
 }
 
 async function getArticle(slug: string): Promise<SafeArticleData | null> {
-  // 🚀 REQUÊTE 1/1000 : On télécharge le tableau complet des auteurs et leurs données scientifiques
+  // 🚀 REQUÊTE 1/1000 : Branchement du tuyau pour les references
   const query = `*[_type == "article" && slug.current == $slug][0] {
     title,
     mainImage,
@@ -163,17 +169,18 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     excerpt,
     category,
     categories[]->{title},
+    references[]{title, url},
     "slug": slug.current,
     authors[]->{
-      name, nameNko, image, bio, role, institution, orcid, expertise, socials
+      name, nameNko, image, bio, bioNko, role, roleNko, institution, orcid, expertise, socials
     }
   }`;
-  
   try {
     const rawArticle = await client.fetch<SanityArticleRaw>(
       query, 
       { slug }, 
-      { next: { tags: ["article", `article-${slug}`], revalidate: 3600 } }
+      // 🚀 DESTRUCTION DU CACHE : On force la lecture en temps réel (0 seconde)
+      { next: { tags: ["article", `article-${slug}`], revalidate: 0 } }
     );
     if (!rawArticle) return null;
     return transformSafeArticle(rawArticle);
@@ -287,7 +294,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       "@type": "Person",
       "name": author.name,
       "alternateName": author.nameNko || undefined,
-      "jobTitle": author.role,
+      "jobTitle": author.roleNko || author.role || undefined, // 🚀 NOUVEAU : Le rôle N'Ko est prioritaire pour le SEO local
       "affiliation": author.institution ? {
         "@type": "Organization",
         "name": author.institution
@@ -303,7 +310,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       }
     }
   };
-
+// 🚀 RADAR 1 : Vérifie si le serveur a bien la donnée avant de l'envoyer
   return (
     <>
       <script

@@ -318,6 +318,7 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
 
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showVerifyToast, setShowVerifyToast] = useState(false); // 🚀 NOUVEAU : Le déclencheur du Toast
   
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
@@ -426,6 +427,26 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
     return () => clearTimeout(maxTimer);
   }, [articles]);
 
+  // 🚀 RADAR 1/1000 : Intercepte la confirmation sans alerter ESLint
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("verified") === "true") {
+        // Le délai de 10ms empêche le bug "cascading render" de React
+        setTimeout(() => {
+          triggerVibration();
+          setShowVerifyToast(true);
+        }, 10);
+        
+        // Nettoyage : On efface "?verified=true" de l'URL silencieusement
+        window.history.replaceState(null, "", window.location.pathname);
+        
+        // Disparition après 6 secondes
+        setTimeout(() => setShowVerifyToast(false), 6000);
+      }
+    }
+  }, [triggerVibration]);
+  
   useEffect(() => {
     observeElements();
   }, [filteredArticles, visibleCount, observeElements]);
@@ -525,7 +546,7 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         <div className="nav-actions">
           {showInstallBtn && (
             <button
-              className="btn-lang relative group overflow-hidden"
+              className="hidden md:flex btn-lang relative group overflow-hidden" // 🚀 MODIF 1/1000: "hidden md:flex" (Caché sur mobile, visible PC)
               onClick={handleInstallClick}
               aria-label={isNko ? "ߊ߬ ߟߊߖߌ߰" : "Installer l'application"}
               style={{ color: "var(--color-gold)", borderColor: "var(--color-gold)" }}
@@ -538,18 +559,21 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
             </button>
           )}
 
-          <button
-            className="btn-lang group relative flex items-center gap-2 overflow-hidden transition-all duration-500 hover:border-[#fbbf24]/50 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(251,191,36,0.2)]"
+         <button
+            className="btn-lang group relative flex items-center gap-2 overflow-hidden transition-all duration-500 hover:border-[#fbbf24]/50 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(251,191,36,0.2)] active:text-[#fbbf24]"
             onClick={() => { triggerVibration(); toggleLanguage(); }}
             aria-label={isNko ? "Changer la langue en Français" : "ߞߊ߲ ߦߟߍ߬ߡߊ ߒߞߏ ߘߐ߫"}
           >
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full"></div>
+            
+            {/* 🚀 MODIF 1/1000 : L'icône a maintenant "text-[#fbbf24]" EN PERMANENCE */}
             <i 
-              className={`ph ph-translate transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${isNko ? 'rotate-[360deg] scale-110 text-[#fbbf24]' : 'rotate-0 scale-100'}`} 
+              className={`ph ph-translate transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] text-[#fbbf24] ${isNko ? 'rotate-[360deg] scale-110' : 'rotate-0 scale-100'}`} 
               aria-hidden="true"
             ></i>
+
             <div className="relative flex h-[20px] w-[35px] items-center justify-center">
-               <span className={`absolute transition-all duration-500 ${isNko ? 'opacity-0 scale-50 -translate-y-4' : 'opacity-100 scale-100 translate-y-0'}`}>
+               <span className={`absolute transition-all duration-500 font-bold ${isNko ? 'opacity-0 scale-50 -translate-y-4' : 'opacity-100 scale-100 translate-y-0 text-[#fbbf24]'}`}>
                  FR
                </span>
                <span className={`absolute font-kigelia font-bold text-[#fbbf24] transition-all duration-500 ${isNko ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-4'}`}>
@@ -579,13 +603,25 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         isNko={isNko}
       />
 
-      <header className="hero">
-        <h1 className={`reveal ${isNko ? "font-kigelia" : ""}`}>
-          {typedT.home?.hero?.title}
-        </h1>
-        <p className="reveal" style={{ transitionDelay: "0.15s" }}>
-          {typedT.home?.hero?.subtitle}
-        </p>
+      {/* 🚀 TOAST DE TRIOMPHE (Abonnement Confirmé) */}
+      <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
+        <div className="bg-black/95 backdrop-blur-xl border border-green-500/50 text-green-400 px-6 py-4 rounded-full shadow-[0_10px_40px_rgba(34,197,94,0.2)] flex items-center gap-3">
+          <i className="ph-fill ph-check-circle text-2xl animate-pulse"></i>
+          <span className={`text-sm md:text-base font-bold tracking-wide ${isNko ? 'font-kigelia text-lg' : ''}`}>
+            {isNko ? 'ߌ ߣߌ߫ ߗߋ߫ ߸ ߌ ߓߘߊ߫ ߟߊߜߊ߲ߞߎ߲߫ ߞߏߢߊ߬ !' : 'Félicitations, votre abonnement est confirmé !'}
+          </span>
+        </div>
+      </div>
+
+      <header className="hero pt-24 pb-2 md:py-0 flex flex-col justify-center min-h-[40vh] md:min-h-[70vh]">
+  {/* Titre avec marges réduites (mb-1) */}
+  <h1 className={`reveal mb-1 md:mb-6 ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
+    {typedT.home?.hero?.title}
+  </h1>
+  {/* Sous-titre avec marges réduites (mb-4 au lieu de mb-6) */}
+  <p className="reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10" style={{ transitionDelay: "0.15s" }}>
+    {typedT.home?.hero?.subtitle}
+  </p>
         <a
           href="#articles"
           className="cta-btn reveal"
@@ -602,9 +638,10 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
           <i className="ph ph-magnifying-glass" aria-hidden="true" style={{ fontSize: "1.3rem", color: "var(--color-gold)", flexShrink: 0 }}></i>
           <input
             type="search"
-            className="search-input"
+            // 🚀 MODIF 1/1000: Cache la croix native + Alignement Intelligent (Auto-detect)
+            className="search-input [&::-webkit-search-cancel-button]:hidden"
             placeholder={typedT.search?.placeholder || (isNko ? "ߢߌ߬ߣߌ߲..." : "Rechercher...")}
-            dir={isNko ? "rtl" : "ltr"}
+            dir={searchQuery ? (/[\u07C0-\u07FA]/.test(searchQuery) ? "rtl" : "ltr") : (isNko ? "rtl" : "ltr")}
             value={searchQuery}
             onChange={handleSearchChange}
             aria-label={isNko ? " ߞߎߡߘߊ ߢߌ߲ߣߌ߫" : "Rechercher des articles"}
@@ -616,6 +653,7 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
               aria-label={isNko ? "ߢߌ߲ߣߌ߲ߠߌ ߝߘߏ߬" : "Effacer la recherche"}
               style={{ background: "transparent", color: "var(--color-text-muted)", width: "44px", height: "44px" }}
             >
+              {/* C'est ta croix personnalisée (la seule visible désormais) */}
               <i className="ph-fill ph-x-circle hover:text-[#fbbf24] transition-colors" aria-hidden="true"></i>
             </button>
           )}
@@ -625,37 +663,57 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         </div>
       </section>
 
-      <div
-        className="categories-wrapper reveal flex overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible md:pb-0"
-        role="group"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
-        aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
-      >
-        <button
-          className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === "all" ? "active" : ""}`}
-          onClick={() => handleCategoryChange("all")}
-          aria-pressed={activeCategory === "all"}
+{/* 🚀 MODIF 1/1000: Wrapper relatif pour les masques de scroll */}
+      <div className="relative w-full md:w-auto">
+        {/* Masques de dégradé pour suggérer le scroll (Visibles uniquement sur mobile) */}
+        <div className="absolute left-0 top-0 bottom-4 w-8 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none md:hidden"></div>
+        <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none md:hidden"></div>
+
+        <div
+          className="categories-wrapper reveal flex overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible md:pb-0 scrollbar-hide"
+          role="group"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+          aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
         >
-          <i className="ph-bold ph-squares-four" aria-hidden="true"></i>
-          <span>{typedT.home?.allCategories || (isNko ? "ߓߍ߯" : "Tout")}</span>
-        </button>
-
-        {Object.entries(categories).map(([key, label]) => (
           <button
-            key={key}
-            className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === key ? "active" : ""}`}
-            onClick={() => handleCategoryChange(key)}
-            aria-pressed={activeCategory === key}
+            className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === "all" ? "active" : ""}`}
+            onClick={() => handleCategoryChange("all")}
+            aria-pressed={activeCategory === "all"}
           >
-            <i className={`ph-bold ${getCategoryIconClass(key)}`} aria-hidden="true"></i>
-            <span className={isNko ? "font-kigelia" : ""}>{label}</span>
+            <i className="ph-bold ph-squares-four" aria-hidden="true"></i>
+            <span>{typedT.home?.allCategories || (isNko ? "ߓߍ߯" : "Tout")}</span>
           </button>
-        ))}
-      </div>
 
-      <div className="section-header" id="articles">
-        <h2 className="section-title reveal">{typedT.home?.featured?.title}</h2>
-        <Link href="/articles" className="reveal link-gold">
+          {Object.entries(categories).map(([key, label]) => (
+            <button
+              key={key}
+              className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === key ? "active" : ""}`}
+              onClick={() => handleCategoryChange(key)}
+              aria-pressed={activeCategory === key}
+            >
+              <i className={`ph-bold ${getCategoryIconClass(key)}`} aria-hidden="true"></i>
+              <span className={isNko ? "font-kigelia" : ""}>{label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+<div className="section-header items-baseline" id="articles">
+        {/* 🚀 MODIF 1/1000 : Écart réduit (Léger)
+            - Français : text-xl
+            - N'Ko : text-2xl (Juste un cran au-dessus pour la compensation optique)
+        */}
+        <h2 className={`reveal font-bold mb-0 ${isNko ? "font-kigelia text-2xl md:text-4xl leading-normal" : "text-xl md:text-3xl"}`}>
+          {typedT.home?.featured?.title}
+        </h2>
+        
+        {/* 🚀 MODIF 1/1000 : Écart réduit (Léger)
+            - Français : text-sm
+            - N'Ko : text-base (Taille standard, juste au-dessus de sm)
+        */}
+        <Link 
+          href="/articles" 
+          className={`reveal text-[#fbbf24]/90 hover:text-[#fbbf24] transition-colors font-normal ml-4 ${isNko ? "font-kigelia text-base tracking-wider" : "text-sm tracking-wide"}`}
+        >
           {typedT.home?.featured?.viewAll}
         </Link>
       </div>

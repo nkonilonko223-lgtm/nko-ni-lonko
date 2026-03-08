@@ -35,6 +35,7 @@ const montserrat = Montserrat({
   variable: "--font-fr",
   display: "swap",
 });
+
 // ============================================================================
 // 3. VIEWPORT 1/1000 (PWA NATIVE LOCK - DOGME 3)
 // ============================================================================
@@ -47,7 +48,7 @@ export const viewport: Viewport = {
 };
 
 // ============================================================================
-// 4. MÉTADONNÉES GLOBALES (L'ARMURE SEO IMPÉRIALE)
+// 4. MÉTADONNÉES GLOBALES (L'ARMURE SEO IMPÉRIALE - HYBRIDE)
 // ============================================================================
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -55,7 +56,7 @@ export const metadata: Metadata = {
   
   applicationName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ System",
   generator: "N'Ko ni Lonko Engine v2.0",
-  authors: [{ name: "Moustapha CAMARA", url: SITE_URL }, { name: "ߡߎ߬ߛߝߊ߬ ߞߊ߬ߡߙߊ߬" }],
+  authors: [{ name: "Moustapha CAMARA", url: SITE_URL }, { name: "ߡߎ߬ߛߊߝߊ߬ ߞߊ߬ߡߙߊ߬" }],
   
   formatDetection: {
     telephone: false,
@@ -64,32 +65,39 @@ export const metadata: Metadata = {
     address: false,
   },
 
+  // 🚀 STRATÉGIE HYBRIDE : N'Ko d'abord, Français ensuite.
   title: {
-    default: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+    default: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko - Science & Savoir",
     template: "%s | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
   },
-  description: "ߖߊ߯ߓߊ ߟߐ߲ߠߌ߲ ߢߌߣߌ߲߫ ߒߞߏ ߘߐ߫. La plateforme de référence pour la science et le savoir en N'Ko.",
-  keywords: ["ߒߞߏ", "N'Ko", "ߟߐ߲ߞߏ", "Science", "Savoir", "Afrique", "Mali", "Moustapha Camara"],
- alternates: {
+  // 🚀 DESCRIPTION HYBRIDE : Pour que Google serve les deux audiences.
+  description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫ ߟߐ߲ߞߏ ߣߌ߫ ߟߐ߲ߠߌ߲ ߟߊߛߋߟߌ ߞߊߡߊ߬ ߝߘߊ߬ߝߌ߲߬ߠߊ. N'Ko ni Lonko est la plateforme de référence pour la science et le savoir en Afrique.",
+  
+  keywords: ["ߒߞߏ", "N'Ko", "ߛߊ߲ߡߊߛߓߍ","ߛߋߞߏߟߦߊ","ߟߐ߲ߞߏ","ߘߎ߰ߘߐ߬ߛߓߍ","ߊ߲ ߠߊ߫ ߖߊ߯ߓߊߟߌ", "Science", "Savoir", "Afrique", "Mali", "Moustapha Camara", "Education", "astronomie", "kanté solomana", "Notre planète" , "physique" , "mathematiques"],
+
+  alternates: {
     canonical: SITE_URL,
-    // 🚀 ACTION : On force TypeScript à accepter nos codes de langues mondiaux
+    // 🚀 ACTION : On force TypeScript à accepter le code 'nqo' via un casting explicite
     languages: {
       'nqo': SITE_URL,
-      'fr-FR': SITE_URL
-    } as Record<string, string>
+      'fr': SITE_URL,
+      'x-default': SITE_URL
+    } as Record<string, string>,
   },
+
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "N'Ko ni Lonko",
   },
+
   openGraph: {
-    title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
-    description: "La Science à la portée de tous en N'Ko.",
+    title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+    description: "ߟߐ߲ߞߏ ߓߟߏߦߊ ߒߞߏ ߘߐ߫. La Science à la portée de tous en N'Ko.",
     url: SITE_URL,
     siteName: "N'Ko ni Lonko",
     locale: "nqo", 
-    alternateLocale: "fr_FR",
+    alternateLocale: ["fr_FR"],
     type: "website",
     images: [
       {
@@ -100,6 +108,7 @@ export const metadata: Metadata = {
       }
     ]
   },
+
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -147,8 +156,10 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
         "url": SITE_URL,
-        "name": "N'Ko ni Lonko | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
-        "inLanguage": "nqo",
+        "name": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ", // Nom N'Ko en priorité absolue
+        "alternateName": ["N'Ko ni Lonko", "N'Ko Science"],
+        "inLanguage": ["nqo", "fr"], // 🚀 DÉCLARATION BILINGUE OFFICIELLE
+        "description": "ߓߟߐߟߐ ߞߣߍ ߦߌߟߡߊߛߙߋߡߊ ߡߍ߲ ߖߊ߯ߓߊ ߟߐ߲ߞߏ ߟߎ߬ ߟߊߛߋߟߊ߫ ߒߞߏ ߘߐ߫ . La plateforme de référence pour la science et le savoir en N'Ko.",
         "potentialAction": {
           "@type": "SearchAction",
           "target": {
@@ -173,7 +184,7 @@ export default function RootLayout({
         "founder": {
           "@type": "Person",
           "name": "Moustapha CAMARA",
-          "alternateName": "ߡߎ߬ߛߝߊ߬ ߞߊ߬ߡߙߊ߬"
+          "alternateName": "ߡߎ߬ߛߊߝߊ߬ ߞߊ߬ߡߙߊ߬"
         },
         "sameAs": [
           "https://www.youtube.com/@nkonilonko",
@@ -185,7 +196,7 @@ export default function RootLayout({
   };
 
 return (
-    <html lang="nqo" dir="rtl" translate="no" suppressHydrationWarning> 
+    <html lang="nqo" dir="rtl" translate="no" suppressHydrationWarning data-scroll-behavior="smooth"> 
       <head>
         {/* Restauration de la connexion rapide au CDN */}
         <link rel="preconnect" href="https://unpkg.com" crossOrigin="anonymous" />

@@ -50,7 +50,7 @@ export default function PrivacyClient() {
       id: "collecte",
       titleNko: "ߘߎ߲߬ߘߎ߬ߡߊ߬ ߞߎ߲ߣߊߝߏߣߌ߲ ߠߎ߬ ߟߊߘߍ߭",
       titleFr: "1. Collecte des Données",
-      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐ: ߊ߲ ߧߋ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߡߌ߬ߘߊ߬ ߟߊ߫ ߡߍ߲ ߡߊߞߏ ߦߴߊ߲ ߠߊ߫ ߖߋ߬ߓߌ߬ߟߌ ߘߐ߫ ߘߐߙߐ߲߫.",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊ߲ ߧߋ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߡߌ߬ߘߊ߬ ߟߊ߫ ߡߍ߲ ߡߊߞߏ ߦߴߊ߲ ߠߊ߫ ߖߋ߬ߓߌ߬ߟߌ ߘߐߙߐ߲߫ ߠߋ߬ ߘߌ߫ .",
       tldrFr: "En clair : Nous collectons uniquement ce qui est strictement nécessaire pour vous répondre.",
       textNko: "ߊ߲ ߠߊ߫ ߟߐ߲ߞߏ ߟߊߖߍ߲ߛߍ߲ ߗߋߦߊ ߞߣߐ߫߸ ߊ߲ ߧߋ߫ ߘߎ߲߬ߘߎ߬ߡߊ߬ ߞߎ߲ߣߊߝߏߣߌ߲ ߠߎ߬ ߟߊߘߍ߭ ߘߊ߲߬ߛߌ߰ߟߊ߫ ߞߊ߬ ߓߍ߲߬ ߡߊ߬ߞߏ߬ ߢߣߊߡߊ ߟߎ߬ ߘߐߙߐ߲ ߔߋ߫ ߟߋ߬ ߡߊ߬. ߏ߬ ߦߋ߫ ߞߍ߫ ߟߊ߫ ߟߋ߬ ߣߴߊߟߎ߫ ߞߵߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߛߌߟߊ ߟߊߓߊ߯ߙߊ߫߸ ߊ߲ ߧߴߊ߬ߟߎ߫ ߕߐ߮ ߣߴߊߟߎ߫ ߟߊ߫ ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ ߊ߬ ߣߴߊ߬ߟߎ߫ ߟߊ߫ ߗߋߛߓߍ ߘߐߙߐ߲߫ ߠߋ߬ ߡߌ߬ߘߊ߬ ߟߊ߫ ߛߴߊ߲ ߘߌ߫ ߛߋ߫ ߊߟߎ߫ ߖߋ߬ߓߌ߬ ߟߊ߫߸ ߏ߬ ߘߐ߫߹",
       textFr: "Dans le cadre de notre mission de vulgarisation scientifique, nous limitons la collecte de données au strict minimum. Lorsque vous utilisez notre formulaire de contact, nous recueillons uniquement votre nom, votre adresse e-mail et le contenu de votre message afin de pouvoir vous répondre."
@@ -59,7 +59,7 @@ export default function PrivacyClient() {
       id: "utilisation",
       titleNko: "ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߓߊ߯ߙߊߢߊ",
       titleFr: "2. Utilisation des Informations",
-      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐ: ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߦߋ߫ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ ߘߐߙߐ߲߫ ߠߋ߬ ߘߐ߫.",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߦߋ߫ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ ߘߐߙߐ߲߫ ߠߋ߬ ߘߐ߫.",
       tldrFr: "En clair : Vos informations ne servent qu'à la communication. Pas de publicité, pas de ciblage.",
       textNko: "ߊߟߎ߫ ߦߴߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߡ߲ ߠߎ߬ ߟߊߕߊ߬ߡߌ߲߬ߠߊ߫ ߊ߲ ߡߊ߬߸ ߏ߬ ߟߎ߬ ߦߋ߫ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߎ߲߬ ߞߋߟߋ߲߫ ߔߋ߫ ߘߐߙߐ߲߫ ߠߋ߬ ߘߐ߫ ߊ߲ ߓߟߏ߫߹ ߣߴߏߴ ߦߴߊ߲ ߓߍ߫ ߛߋ߫ ߞߊ߬ ߢߐ߲߯ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߡߌ߲ ߡߊ߬߹ ߞߊ߬ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ߬ߦߊ߫߹ ߣߴߏ߬ ߕߍ߫ ߊ߲ ߕߴߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߖߎ߬ߟߊ߬ߦߊ߬ ߟߊ߬ߛߙߋ߬ߦߊ߬ߟߌ ߣߴߊ߬ ߕߣߐ߬ߓߐ߬ ߛߌߙߊ߫ ߛߌ߫ ߞߊ߲߬߹ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߟߐ߲ߠߌ߲ ߝߏߟߏ߲ߝߊߟߊ߲ ߠߋ߬ ߘߌ߫߸ ߊ߬ ߕߍ߫ ߖߎ߬ߟߊ߬ߦߊ߬ ߘߊߞߎ߲߫ ߛߌ߫ ߘߐ߫ ߡߎ߬ߡߍ߫߹",
       textFr: "Les informations que vous nous confiez sont utilisées dans un seul but : la communication directe avec vous. Nous n'utilisons pas vos données pour vous envoyer des publicités non sollicitées, ni pour du profilage marketing. Le sanctuaire N'Ko ni Lonko est un espace de savoir, pas un espace commercial."
@@ -68,7 +68,7 @@ export default function PrivacyClient() {
       id: "protection",
       titleNko: "ߟߊ߬ߞߊ߲߬ߘߊ߬ߟߌ ߣߌ߫ ߞߣߐ߬ߜߍ߲߬ߠߌ߲",
       titleFr: "3. Sécurité de l'Architecture",
-      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐ: ߊ߲ ߧߋ߫ ߛߋߒߞߏߟߦߊ ߞߎ߲߬ߕߍߡߊ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߵߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߞߊ߲ߘߊ߫.",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊ߲ ߧߋ߫ ߛߋߒߞߏߟߦߊ ߞߎ߲߬ߕߍߡߊ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߵߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߞߊ߲ߘߊ߫.",
       tldrFr: "En clair : Nous utilisons un cryptage de haut niveau pour sécuriser vos échanges.",
       textNko: "ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߞߊ߲ߘߊ ߦߴߊ߲ ߡߊ߬ߞߏ߬ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. ߊ߲ ߠߊ߫ ߓߟߐߟߐ ߞߐߜߍ ߦߋ߫ ߘߞߏ߬ߓߛߍ ߟߊߞߊ߲ߘߊ߫ ߛߋߞߏߦߊ ߟߎ߬ ߓߍ߯ ߘߐ߫ ߞߟߏߜߍߟߍ߲߫ ߠߎ߬ ߟߋ߬ ߕߍ߫ ߡߊ߬ ߓߌ߬߸ ߥߟߊ߫ ߛߊ߫ ߞߴߊ߲ ߟߊ߫ ߓߊ߯ߙߊߛߌ߮ ߟߎ߬ ߣߌ߫ ߊ߬ߟߎ߬ ߟߊ߫ ߓߟߐߟߐ ߛߏ߯ߓߊߟߌߟߊ ߟߎ߬ ߣߌ߫ ߢߐ߲߯ ߕߍ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊߦߊ ߛߘߌ߬ߜߋ߲߫ ߠߎ߬ ߟߊߞߊ߲ߘߊ߫߸ ߊ߬ ߢߊ ߓߘߍߓߘߍ߫ ߡߊ߬߸ ߏ߬ ߘߐ߫ ߊ߲ ߠߊ߫ ߟߐ߲ߞߏ ߞߋߛߓߍ ߟߎ߬ ߘߌ߫ ߕߏ߫ ߜߎ߲߬ߘߏ ߊ߬ ߣߌ߫ ߘߎ߲߬ߘߎ߬ߡߊ߬ߦߊ ߘߝߊߣߍ߲ ߘߐ߫.",
       textFr: "La sécurité de vos données est une priorité absolue. Notre architecture utilise les technologies de cryptage les plus avancées pour protéger les échanges entre votre navigateur et nos serveurs, garantissant ainsi que vos communications scientifiques restent strictement confidentielles."
@@ -77,7 +77,7 @@ export default function PrivacyClient() {
       id: "partage",
       titleNko: "ߟߊ߬ߖߍ߲߬ߛߍ߲߬ߓߊߟߌߦߊ ߣߌ߫ ߜߎ߲߬ߘߏ߬ߦߊ",
       titleFr: "4. Confidentialité Absolue",
-      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐ: ߊ߲ ߕߍߣߊ߬ ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߝߙߋ߬ ߟߊ߫ ߥߟߴߊ߬ ߘߌ߫ ߟߊ߫ ߡߐ߰ ߜߘߍ߫ ߡߊ߬ ߡߎ߰ߡߍ߫.",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊ߲ ߕߍߣߊ߬ ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߝߙߋ߬ ߟߊ߫ ߥߟߴߊ߬ ߘߌ߫ ߟߊ߫ ߡߐ߰ ߜߘߍ߫ ߡߊ߬ ߡߎ߰ߡߍ߫.",
       tldrFr: "En clair : N'Ko ni Lonko ne vendra et ne cédera jamais vos données à des tiers.",
       textNko: "ߊ߲ ߧߴߊ߲ ߞߎߡߊߞߊ߲ ߘߌ߫ ߟߊ߫߸ ߞߵߊ߲ ߞߎ߲߬ ߘߏ߲߬ ߊ߬ ߞߘߐ߫߸ ߊ߲ ߕߍߣߊ߬ ߊߟߎ߫ ߟߊ߫ ߘߎ߲߬ߘߎ߬ߡߊ߬ ߞߎ߲ߣߊߝߏߣߌ߲ ߠߎ߬ ߛߌ߲ߞߊ߫ ߟߊ߫߸ߊ߬ ߝߙߋ߬ ߟߊ߫ ߥߟߴߊ߬ ߘߏ߲߬ߠߊ߫ ߡߐ߰ ߜߘߍ߫ ߓߟߏ߫ ߡߎ߰ߡߍ߫߹ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߡߍ߲ ߠߎ߬ ߦߋ߫ ߘߏ߲߬ ߠߊ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߝߏߟߏ߲ߝߊߟߊ߲ ߞߣߐ߫߸ ߏ߬ ߟߎ߬ ߦߋ߫ ߕߏ߫ ߟߴߊ߲ ߠߊ߫ ߞߣߐ߬ߜߍ߲߬ߠߌ߲ ߘߊߞߎ߲ ߠߋ߬ ߘߐ߫ ߞߘߊߎ߫߹ ߏ߬ ߟߎ߬ ߕߍ߫ ߘߌߟߊ߫ ߛߌ߲߬ߝߏ߲߬ߘߊ ߜߘߍ߫ ߛߌ߫ ߡߊ߬߹",
       textFr: "Nous prenons l'engagement solennel de ne jamais vendre, louer ou céder vos données personnelles à des tiers. Les informations que vous partagez avec N'Ko ni Lonko restent au sein de notre infrastructure et ne sont accessibles qu'à l'équipe d'administration pour répondre à vos requêtes."
@@ -86,7 +86,7 @@ export default function PrivacyClient() {
       id: "droits",
       titleNko: "ߟߊߓߊ߯ߙߊߟߊ ߟߊ߫ ߤߊߞߍ ߟߎ߬",
       titleFr: "5. Droits Numériques",
-      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐ: ߊߟߎ߫ ߤߊߞߍ ߦߴߊߟߎ߫ ߓߟߏ߫ ߞߊ߬ ߢߌ߬ߣߌ߲߬ߞߊ߬ߟߌ ߞߍ߫ ߞߵߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߖߐ߬ߛߌ߬.",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊߟߎ߫ ߤߊߞߍ ߦߴߊߟߎ߫ ߓߟߏ߫ ߞߊ߬ ߢߌ߬ߣߌ߲߬ߞߊ߬ߟߌ ߞߍ߫ ߞߵߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߖߐ߬ߛߌ߬.",
       tldrFr: "En clair : Vous restez le seul maître de vos informations personnelles.",
       textNko: "ߞߊ߬ ߓߍ߲߬ ߞߊ߬ ߞߢߊ߫ ߘߎߢߊ߫ ߝߘߏ߬ߓߊ߬ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߞߊ߲ߘߊ ߞߎ߬ߙߎ߲߬ߘߎ ߖߍ߬ߘߍ ߞߊ߫ ߟߊ߬ߛߋ߬ߟߌ ߟߎ߬ ߡߊ߬߸ ߊߟߎ߫ ߟߊ߫ ߤߊߞߍ ߟߎ߬ ߓߍ߯ ߘߝߊߣߍ߲ ߧߴߊߟߎ߫ ߓߟ߫ ߟߋ߬ ߕߎ߬ߡߊ߬ ߓߍ߫߹ ߊ߬ߟߎ߫ ߟߊ߫ ߤߊߞߍ ߦߴߊߟߎ߫ ߓߟߏ߫ ߞߊ߬ ߢߌ߬ߣߌ߲߬ߞߊ߬ߟߌ ߞߍ߫ ߛߊ߫ ߞߵߊ߬ߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߘߌߟߋ߲߫ ߠߎ߬ ߟߊߛߐ߲߬ߘߐ߲߬߸ ߞߵߊ߬ߟߎ߬ ߡߊߦߟߍ߬ߡߊ߲ ߥߟߊ߫ ߞߵߊ߬ ߖߐ߬ߛߌ߬ ߔߋߎ߫߸ ߞߊ߬ ߛߌߟߊ߫ ߕߍ߰ ߊ߲ ߣߌ߫ ߊ߬ߟߎ߫ ߕߍ߫߹ ߣߴߊߟߎ߫ ߡߊߞߏ ߟߐ߬ߘߊ߫ ߣߌ߲߬ ߞߏ߫ ߘߏ߫ ߘߐ߫ ߞߋߟߋ߲߫ ߠߊ߫ ߊߟߎ߫ ߘߌ߫ ߛߋ߫ ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߞߋߛߓߍ߫ ߥߟߊ߫ ߜߋ߲ߟߋ߲ߜߋߟߋ߲ ߝߙߍߕߍ ߞߊ߲߬ ߝߍ߬߹",
       textFr: "Conformément aux standards mondiaux de protection des données, vous conservez le contrôle total sur vos informations. Vous avez le droit de demander l'accès, la modification ou la suppression définitive de toute correspondance que vous nous auriez envoyée, en nous contactant directement."

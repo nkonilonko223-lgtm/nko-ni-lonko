@@ -1,12 +1,14 @@
 import { MetadataRoute } from 'next';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nkonilonko.com';
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/private/', // Exemple de dossier caché
+      disallow: ['/studio/', '/api/'], // 🛡️ Interdit à Google d'indexer l'API ou le panneau d'administration
     },
-    sitemap: 'https://nkonilonko.com/sitemap.xml', // On mettra ton vrai domaine plus tard
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }

@@ -1,0 +1,150 @@
+
+ANALYSE D’INFRASTRUCTURE
+« WORLD CLASS » & AFRIQUE DE L’OUEST
+
+Plateforme N’Ko Souverain
+
+Hébergement optimal pour une plateforme éducative et scientifique bilingue
+Français / N’Ko — Next.js 15+ · Sanity CMS · Tailwind CSS
+
+Février 2026
+Version 1.0 — Document confidentiel
+ 
+TABLE DES MATIÈRES
+
+
+ 
+1. Contexte & Problématique
+N’Ko Souverain est une plateforme éducative et scientifique bilingue (Français / N’Ko) destinée prioritairement aux communautés Mandigué-phones d’Afrique de l’Ouest. L’audience principale se situe à Bamako (Mali), Conakry (Guinée) et Dakar (Sénégal), des zones caractérisées par une connectivité 3G/4G instable et un coût de data mobile élevé.
+La stack technique repose sur Next.js 15+ (App Router), Sanity CMS (Headless) et Tailwind CSS, actuellement déployée sur Vercel. Ce rapport analyse si Vercel est le choix optimal ou si une architecture alternative garantirait de meilleures performances pour l’Afrique de l’Ouest sans dégrader la qualité de service internationale.
+1.1 Les quatre exigences fondamentales
+Exigence	Description
+Performance Afrique	Temps de chargement minimal pour Bamako, Conakry, Dakar
+Sobriété Data	Optimisation maximale pour économiser les forfaits mobiles des utilisateurs
+Sécurité & Souveraineté	Protection DDoS, zéro pub injectée, indépendance technique
+World Class	Zéro dégradation pour les utilisateurs internationaux (Europe, USA)
+
+ 
+2. Cartographie des Serveurs Edge en Afrique
+La présence physique de serveurs (PoPs — Points of Presence) sur le continent africain est le facteur décisif pour la performance. Chaque kilomètre entre l’utilisateur et le serveur se traduit en millisecondes de latence incompressibles.
+2.1 Comparaison des réseaux
+⚡ Cloudflare opère environ 32 PoPs en Afrique, dont 6 en Afrique de l’Ouest.
+⚠️ Vercel (via AWS CloudFront) : 5 PoPs CDN en Afrique, 1 seule région compute.
+❌ Netlify : zéro PoP africain sur les plans standard (Free, Pro, Business).
+
+Fournisseur	PoPs Afrique (total)	PoPs Afrique Ouest	Compute Edge
+Cloudflare	~32 PoPs	6 (Dakar, Lagos, Accra, Abidjan, Ouagadougou, Yamoussoukro)	Oui — Workers/Pages à chaque PoP
+Vercel	5 PoPs CDN	1 seul (Lagos)	Non — compute au Cap uniquement (af-south-1)
+Netlify	0 (plans standard)	Aucun	Non — compute USA/Europe uniquement
+
+2.2 Distance physique vers les villes cibles
+Ville cible	Cloudflare (PoP proche)	Vercel / CloudFront	Netlify (standard)
+Dakar	Dakar — LOCAL ✅	Lagos (~2 800 km)	Frankfurt (~4 400 km)
+Bamako	Ouagadougou (~850 km)	Lagos (~1 700 km)	Frankfurt (~4 500 km)
+Conakry	Dakar (~600 km)	Lagos (~2 500 km)	Frankfurt (~5 000 km)
+
+Pour du contenu mis en cache, Cloudflare sert un utilisateur dakarois avec un TTFB inférieur à 20 ms depuis le PoP local. Le même contenu via Vercel transite par Lagos (50–100 ms optimiste) et via Netlify par Frankfurt (100–200 ms). Le blog Cloudflare documente des baisses de latence de 300 ms à 3 ms après l’activation de PoPs africains.
+ 
+3. Next.js 15+ hors Vercel : Risques & Compatibilité
+Vercel est le créateur de Next.js. Quitter Vercel signifie utiliser des adaptateurs tiers. Le risque principal n’est pas la perte de fonctionnalités mais la dépendance à des APIs internes non documentées que Vercel peut modifier sans préavis.
+3.1 Cloudflare Workers via @opennextjs/cloudflare
+L’ancien package @cloudflare/next-on-pages a été archivé le 29 septembre 2025. L’adaptateur recommandé est désormais @opennextjs/cloudflare (v1.0 mai 2025, v1.2 juin 2025).
+Fonctionnalités supportées
+App Router, SSR, SSG, ISR (via R2 bucket), Server Components, Server Actions, Middleware, Streaming, Image Optimization (via Cloudflare Images), API Routes.
+Fonctionnalités non supportées
+Composable Caching («use cache»), Edge Runtime (seul le runtime Node.js est supporté via nodejs_compat). Taille des Workers limitée à 3 MiB (gratuit) / 10 MiB (payant) compressé.
+3.2 Netlify via @opennextjs/netlify
+Netlify est l’alternative la plus mature à Vercel pour Next.js. Son adaptateur prétend supporter 100% des fonctionnalités. Netlify exécute quotidiennement plus de 1 700 tests e2e tirés du repo Next.js. Le bémol : son réseau CDN en Afrique est quasi inexistant.
+3.3 Auto-hébergement Docker / Coolify
+La documentation Next.js officielle affirme : « Les déploiements Node.js supportent toutes les fonctionnalités Next.js. » Le mode output: ‘standalone’ produit un serveur autonome déployable en Docker (~180 Mo). Toutes les fonctionnalités fonctionnent, avec deux réserves : le cache ISR est stocké localement et le Middleware s’exécute à l’origin.
+3.4 Ce qui reste exclusif à Vercel
+Vercel bénéficie du flag interne NEXT_MINIMAL, de Speed Insights, Web Analytics, Vercel Toolbar et du Partial Prerendering optimisé. Aucun n’est indispensable pour une plateforme éducative.
+
+Fonctionnalité	Vercel	Cloudflare	Netlify	VPS/Coolify
+App Router / SSR / SSG	✅ 100%	✅ Oui	✅ Oui	✅ Oui
+ISR (revalidation)	✅ 100%	✅ via R2	✅ Oui	✅ Local
+Server Components	✅ 100%	✅ Oui	✅ Oui	✅ Oui
+Server Actions	✅ 100%	✅ Oui	✅ Oui	✅ Oui
+Image Optimization	✅ Natif	✅ CF Images	✅ Oui	✅ sharp
+Middleware	✅ Edge	✅ Workers	✅ Edge	⚠️ Origin
+Streaming / Suspense	✅ 100%	✅ Oui	✅ Oui	✅ Oui
+«use cache» (Composable)	✅ Oui	❌ Non	✅ Oui	✅ Oui
+Partial Prerendering	✅ Optimisé	⚠️ Partiel	⚠️ Partiel	⚠️ Partiel
+ 
+4. Garantie Zéro Publicité
+Aucun des trois fournisseurs n’injecte de publicité dans les sites hébergés, que ce soit en plan gratuit ou payant. Aucun bandeau de marque, aucun script tiers, aucune modification du HTML.
+
+Critère	Vercel	Cloudflare Pages	Netlify
+Injection de pubs	❌ Aucune	❌ Aucune	❌ Aucune
+Usage commercial gratuit	❌ Interdit (Hobby)	✅ Autorisé	✅ Autorisé
+Bande passante gratuite	100 Go/mois	ILLIMITÉE	100 Go/mois
+Risque factures surprises	Moyen	NUL	ÉLEVÉ (cas à 100K$+)
+
+Point critique : le plan Hobby de Vercel interdit l’usage commercial. Si N’Ko Souverain intègre un jour des donations ou du contenu sponsorisé, le passage au plan Pro (20 $/mois) est obligatoire. Cloudflare Pages offre la liberté la plus totale à coût zéro.
+ 
+5. Les Quatre Options Stratégiques
+Option A — Rester sur Vercel seul
+Avantages : Intégration Next.js parfaite, DX excellent, déploiement trivial (git push), support prioritaire des nouvelles fonctionnalités.
+Limites pour l’Afrique : le compute SSR le plus proche est au Cap ou à Paris. Le CDN ne couvre que Lagos en Afrique de l’Ouest. Plan Hobby interdit l’usage commercial. Pro coûte 20 $/mois avec 100 Go de bande passante et surcoûts possibles.
+Verdict : Insuffisant pour l’Afrique de l’Ouest. Pire option géographiquement.
+Option B — Vercel + Proxy Cloudflare en façade
+Principe : Vercel gère l’application Next.js, Cloudflare se place en proxy DNS devant pour cacher les assets statiques aux PoPs africains (Dakar, Accra, Lagos, Abidjan).
+Avantages : Assets statiques servis depuis les PoPs CF africains (< 20 ms TTFB), protection DDoS Cloudflare gratuite, compatible avec le plan Hobby Vercel.
+Limites : Officiellement découragé par Vercel (« We do not recommend stacking proxies. »). Double réseau pour le SSR. Purge de cache non synchronisée. Conflits SSL possibles. Géolocalisation perdue (Vercel voit l’IP Cloudflare). Configuration Full (Strict) requise.
+Verdict : Viable pour un site majoritairement statique mais complexe.
+Option C — Migration totale vers Cloudflare Pages
+Principe : Déploiement direct sur Cloudflare Workers via l’adaptateur @opennextjs/cloudflare. Le contenu est servi depuis les 6 PoPs ouest-africains avec du compute edge à chaque point.
+Avantages : TTFB < 20 ms à Dakar, bande passante illimitée et gratuite, Workers Paid à 5 $/mois (10 MiB, 10M requêtes), DDoS + WAF inclus, zéro pub, usage commercial autorisé.
+Limites : Adaptateur OpenNext encore jeune (v1.0 depuis mai 2025). Limite de taille Workers (3 MiB gratuit). Pas de support «use cache». Certaines dépendances npm incompatibles avec le runtime Workers.
+Verdict : Meilleur rapport performance Afrique / coût / simplicité.
+Option D — VPS auto-hébergé + Coolify + Cloudflare CDN
+Principe : VPS chez OVH France (Gravelines/Roubaix, ~6–8 €/mois) ou Hetzner Allemagne (~3,50 €/mois) avec Coolify comme PaaS open-source. Cloudflare en DNS/CDN proxy gratuit cache les assets aux PoPs africains.
+Avantages : 100% de compatibilité Next.js 15+ native. Bande passante illimitée (OVH/Hetzner). Souveraineté technique totale. Aucune dépendance à un adaptateur tiers. Git-push deploy via Coolify. Mêmes PoPs Cloudflare africains pour le cache statique.
+Limites : Maintenance serveur (mises à jour, sécurité, monitoring). Pas de scaling serverless. Middleware à l’origin. Pas de preview branches automatiques sans configuration Coolify avancée.
+Verdict : Souveraineté maximale pour une équipe technique.
+ 
+6. Tableau Comparatif Global
+Ce tableau synthétise les quatre options sur tous les critères décisionnels pour le projet N’Ko Souverain.
+
+Critère	A — Vercel	B — Vercel+CF	C — CF Pages	D — VPS+CF
+TTFB Dakar (cache)	80–150 ms	< 20 ms ✅	< 20 ms ✅	< 20 ms ✅
+TTFB Bamako (cache)	100–200 ms	30–50 ms	30–50 ms	30–50 ms
+TTFB SSR (cache miss)	150–300 ms	200–400 ms	50–150 ms ✅	150–250 ms
+Vitesse Europe/USA	Excellente	Très bonne	Excellente	Bonne
+Compatibilité Next.js	100%	100%	~90–95%	~98%
+Complexité setup	⭐ Triviale	⭐⭐⭐ Élevée	⭐⭐ Modérée	⭐⭐⭐ Élevée
+Maintenance continue	Nulle	Moyenne	Faible	Élevée
+Coût mensuel	0$ / 20$ Pro	20$ + 0$	0–5 $/mois ✅	3,50–8 €/mois
+Bande passante	100 Go / 1 To	Illimitée (CF)	Illimitée ✅	Illimitée
+Protection DDoS	Bonne	Excellente	Excellente	Excellente (CF)
+Souveraineté technique	Faible	Faible-Moy.	Moyenne	Maximale ✅
+Usage commercial gratuit	❌ Non	❌ Non	✅ Oui	✅ Oui
+Risque factures	Moyen	Faible	Nul ✅	Nul ✅
+ 
+7. Optimisations Spécifiques Afrique de l’Ouest
+Le contexte ouest-africain impose des contraintes dures : connexions 3G/4G instables, data mobile coûteuse, appareils à 1–2 Go de RAM, et coupures de connectivité fréquentes. Chaque kilo-octet compte.
+7.1 Compression & Images
+La compression Brotli (15–25% plus efficace que gzip) est activée automatiquement par les trois plateformes. Pour les images, configurer formats: [‘image/avif’, ‘image/webp’] dans next.config.js est essentiel. AVIF offre 50% de réduction par rapport au JPEG. Cloudflare Polish (plan Pro à 20 $/mois) automatise la conversion WebP mais le composant Next.js Image suffit.
+Cloudflare Rocket Loader (gratuit) diffère le chargement de tout le JavaScript pour afficher le contenu textuel d’abord. Cloudflare Mirage a été déprécié en septembre 2025, remplacé par l’attribut HTML natif loading=«lazy».
+7.2 PWA Offline-First
+Pour les zones à connectivité instable, une Progressive Web App est critique. Utiliser Serwist (successeur maintenu de next-pwa) ou @ducanh2912/next-pwa, tous deux compatibles avec l’App Router Next.js 15.
+Stratégie de cache recommandée
+Cache First pour les assets statiques (CSS, polices N’Ko, images, JS). Stale While Revalidate pour le contenu pédagogique (cours, leçons). Network First pour les données dynamiques (progression utilisateur, quiz). Precaching de l’app shell au premier chargement. Background Sync pour différer les soumissions jusqu’au retour de la connectivité.
+Un bouton « Sauvegarder pour étude hors-ligne » permettant de télécharger un module dans IndexedDB serait un différenciateur majeur. La détection navigator.connection.saveData active un mode ultra-léger automatiquement.
+7.3 Objectifs de performance
+Viser un poids initial de page inférieur à 500 Ko. Code-splitting par langue (charger uniquement Français OU N’Ko). Polices N’Ko auto-hébergées avec font-display: swap et subsetting pour ne charger que les glyphes utilisés. Zéro Google Fonts.
+ 
+8. Recommandation Stratégique Finale
+
+✅ RECOMMANDATION PRINCIPALE
+Option C — Cloudflare Pages
+Cloudflare est le seul fournisseur avec une présence edge significative en Afrique de l’Ouest (Dakar, Lagos, Accra, Abidjan, Ouagadougou). Cette présence transforme l’expérience utilisateur de manière mesurable : TTFB de 20 ms contre 150–300 ms. Pour une audience accédant au contenu via des connexions 3G coûteuses sur des appareils d’entrée de gamme, cette différence n’est pas un luxe mais une condition d’accessibilité.
+Coût : 0–5 $/mois  ·  Bande passante illimitée  ·  Zéro pub
+
+🛡️ ALTERNATIVE SOUVERAINE
+Option D — VPS OVH/Hetzner + Coolify + Cloudflare CDN
+Pour un contrôle total et zéro dépendance à un adaptateur tiers : VPS OVH France à ~6 €/mois avec Coolify, Cloudflare en CDN proxy gratuit. Compatibilité Next.js 15+ native à 100%, bande passante illimitée, mêmes PoPs Cloudflare africains pour le cache statique. Coût : maintenance serveur.
+
+Vercel seul (Option A) est la pire option pour l’Afrique de l’Ouest : un seul PoP CDN pertinent (Lagos), pas de compute africain, restrictions d’usage commercial sur le plan gratuit, et un vendor lock-in croissant. L’hybride Vercel + Cloudflare Proxy (Option B) est techniquement viable mais inutilement complexe et officiellement non supporté par Vercel.
+
+Fin du rapport — N’Ko Souverain · Analyse d’Infrastructure · Février 2026

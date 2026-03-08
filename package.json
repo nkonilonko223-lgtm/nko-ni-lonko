@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.4.2",
     "@phosphor-icons/react": "^2.1.10",
     "@portabletext/react": "^6.0.2",
     "@portabletext/types": "^4.0.1",
@@ -16,8 +17,12 @@
     "@sanity/image-url": "^2.0.3",
     "@sanity/vision": "^5.9.0",
     "@serwist/next": "^9.5.6",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.36.3",
     "@vercel/analytics": "^1.6.1",
     "date-fns": "^4.1.0",
+    "disposable-email-domains": "^1.0.62",
+    "isomorphic-dompurify": "^3.0.0",
     "katex": "^0.16.33",
     "next": "16.1.6",
     "next-sanity": "^12.1.0",
@@ -32,6 +37,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
+    "@types/dompurify": "^3.0.5",
     "@types/katex": "^0.16.8",
     "@types/node": "^20.19.32",
     "@types/react": "^19.2.13",
