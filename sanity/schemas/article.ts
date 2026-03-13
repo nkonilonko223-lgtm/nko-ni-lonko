@@ -52,6 +52,8 @@ export default defineType({
           { title: 'ߛߋߒߞߏߟߊߘߐߦߊ / Technologie', value: 'ߛߋߒߞߏߟߊߘߐߦߊ' }, 
           { title: 'ߘߐ߬ߝߐ / Histoire', value: 'ߘߐ߬ߝߐ' },
           { title: 'ߞߍ߲ߘߍߦߊ / Santé', value: 'ߞߍ߲ߘߍߦߊ' },
+          // 🚀 LA NOUVELLE PILULE DE VERRE
+          { title: 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ / Revue Mensuelle', value: 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ' },
         ],
         layout: 'radio'
       },
@@ -242,6 +244,43 @@ export default defineType({
               validation: (rule) => rule.required()
             }
           ]
+        },
+        // 🚀 NOUVEAU : Bloc Titre de Rubrique (Pour structurer la Revue Mensuelle)
+        {
+          type: 'object',
+          name: 'sectionHeader',
+          title: '📑 Titre de Rubrique / ߞߎߡߘߊ ߓߏߟߏ߲',
+          fields: [
+            {
+              name: 'titleNko',
+              type: 'string',
+              title: 'Titre de la rubrique (N\'Ko) / ߓߏߟߏ߲ ߕߐ߮',
+              description: 'Ex: ߣߌߡߊߞߊߙߊ߲',
+              validation: (rule) => rule.required().error('ߓߏߟߏ߲ ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre N\'Ko est requis'),
+              components: {
+                input: (props: import('sanity').StringInputProps) => 
+                  React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+              }
+            },
+            {
+              name: 'titleFr',
+              type: 'string',
+              title: 'Titre de la rubrique (Français)',
+              description: 'Ex: LE VIVANT',
+            },
+            {
+              name: 'icon',
+              type: 'string',
+              title: 'Icône Phosphor (Optionnel)',
+              description: 'Ex: ph-dna, ph-planet, ph-leaf...',
+            }
+          ],
+          preview: {
+            select: { title: 'titleNko', subtitle: 'titleFr' },
+            prepare({ title, subtitle }) {
+              return { title: `📑 ${title}`, subtitle: subtitle };
+            }
+          }
         }
       ],
     }),
@@ -291,6 +330,31 @@ export default defineType({
           title: 'Texte alternatif (SEO) / ߖߌ߬ߦߊ߬ߓߍ ߡߊ߲߬ߞߕߎ',
           description: 'Description de l\'image pour les aveugles et Google.',
           validation: (rule) => rule.required().error("ߖߌ߬ߦߊ߬ߓߍ ߡߊ߲߬ߞߕߎ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / L'alt text est absolument obligatoire pour l'accessibilité."),
+        },
+        // 🚀 AJOUT MAJEUR : Légendes N'Ko et Françaises pour la couverture
+        {
+          name: 'captionNko',
+          type: 'text',
+          title: 'Légende (N\'Ko) / ߖߌ߬ߦߊ߬ߓߍ ߞߘߐߟߊ߫ ߛߓߍ',
+          description: "La légende de l'image de la semaine (visible sous la couverture).",
+          rows: 2,
+          options: { isHighlighted: true },
+          components: {
+            input: (props: import('sanity').StringInputProps) => 
+              React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+          }
+        },
+        {
+          name: 'caption',
+          type: 'text',
+          title: 'Légende (Français)',
+          description: "Traduction française de la légende.",
+          rows: 2,
+          options: { isHighlighted: true },
+          components: {
+            input: (props: import('sanity').StringInputProps) => 
+              React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props))
+          }
         }
       ],
       validation: (rule) => rule.required().error('ߖߌ߬ߦߊ߬ߓߍ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Une image de couverture est obligatoire'),

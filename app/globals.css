@@ -642,15 +642,63 @@ nav {
     text-shadow: none;
   }
 
-  .category-pill:hover,
-  .category-pill.active,
-  .category-pill[aria-pressed="true"] {
-    background: rgba(251, 191, 36, 0.15);
-    border-color: var(--color-gold);
+  /* 🚀 LA PÉPITE D'OR (Revue Mensuelle - Standard 1/10000 & Mobile First) */
+  .category-pill.premium {
+    /* 1. Ancrage : Fond très sombre pour bloquer le fond cosmique et faire ressortir l'or */
+    background: rgba(10, 10, 10, 0.85); 
+    border: 1px solid rgba(251, 191, 36, 0.6);
     color: var(--color-gold);
+    /* 2. Aura : Ombre interne dorée subtile + Ombre externe */
+    box-shadow: inset 0 0 12px rgba(251, 191, 36, 0.15), 0 0 15px rgba(251, 191, 36, 0.15);
+    position: relative;
+    overflow: hidden;
+    font-weight: 600;
+  }
+
+  /* État cliqué/actif : Or massif */
+  .category-pill.premium:hover,
+  .category-pill.premium.active,
+  .category-pill.premium[aria-pressed="true"] {
+    background: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #000000; /* Contraste maximal */
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.6);
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 0 10px rgba(251, 191, 36, 0.3);
+    text-shadow: none;
+  }
+
+  /* 🚀 DOGME 3 : PERFORMANCES MOBILES (Animations actives uniquement sur PC) */
+  @media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+    /* Le Halo Respirant */
+    .category-pill.premium::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(251, 191, 36, 0.2) 0%, transparent 70%);
+      animation: pulse-gold-premium 3s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+
+    /* L'Éclat Traversant (Optimisé GPU avec Transform) */
+    .category-pill.premium::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      /* Départ hors champ via Transform */
+      transform: skewX(-20deg) translateX(-300%);
+      animation: shimmer-sweep-gpu 6s infinite;
+      pointer-events: none;
+    }
+
+    /* Désactivation des effets quand la pilule est active */
+    .category-pill.premium.active::before,
+    .category-pill.premium.active::after {
+      display: none;
+    }
   }
 
   /* =========================================
@@ -1184,13 +1232,15 @@ nav {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: 250% center;
-  }
-  100% {
-    background-position: -250% center;
-  }
+@keyframes pulse-gold-premium {
+  0% { opacity: 0.2; }
+  100% { opacity: 0.8; }
+}
+
+@keyframes shimmer-sweep-gpu {
+  0% { transform: skewX(-20deg) translateX(-300%); }
+  20% { transform: skewX(-20deg) translateX(400%); }
+  100% { transform: skewX(-20deg) translateX(400%); } /* Pause de 4 secondes */
 }
 
 /* ===========================================

@@ -30,25 +30,30 @@ const CATEGORY_ICONS: Record<string, string> = {
   "géologie": "ph-mountains",
   technology: "ph-robot",
   technologie: "ph-robot",
-  history: "ph-scroll",
-  histoire: "ph-scroll",
-  health: "ph-heartbeat",
-  "santé": "ph-heartbeat",
-  science: "ph-flask",
-  default: "ph-hash",
+ history: "ph-scroll",
+  histoire: "ph-scroll",
+  health: "ph-heartbeat",
+  "santé": "ph-heartbeat",
+  science: "ph-flask",
+  // 🚀 NOUVEAU : Icône pour la Revue Mensuelle
+  review: "ph-calendar-star",
+  revue: "ph-calendar-star",
+  default: "ph-hash",
 };
 
 // 🚀 LE PONT INVERSE (Traduit le N'Ko de Sanity vers la clé JSON)
 const CATEGORY_REVERSE_MAP: Record<string, string> = {
-  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
-  'ߘߐ߬ߞߏ': 'physics',
-  'ߣߌߡߊߞߊߙߊ߲': 'biology',
-  'ߘߡߊ߬ߟߐ߲': 'mathematics',
-  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
-  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
-  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
-  'ߘߐ߬ߝߐ': 'history',
-  'ߞߍ߲ߘߍߦߊ': 'health',
+  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
+  'ߘߐ߬ߞߏ': 'physics',
+  'ߣߌߡߊߞߊߙߊ߲': 'biology',
+  'ߘߡߊ߬ߟߐ߲': 'mathematics',
+  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
+  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
+  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
+  'ߘߐ߬ߝߐ': 'history',
+  'ߞߍ߲ߘߍߦߊ': 'health',
+  // 🚀 NOUVEAU : Pont pour la Revue Mensuelle
+  'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ': 'review',
 };
 
 const ARTICLES_PER_PAGE = 6;
@@ -97,21 +102,29 @@ function useDebounce<T>(value: T, delay: number): T {
 
 function useScrollDetection(threshold: number = 50): boolean {
   const [scrolled, setScrolled] = useState(false);
-  const rafRef = useRef<number>(0);
+  const scrolledRef = useRef(false); // 🚀 MÉMOIRE SILENCIEUSE 1/1000
+
   useEffect(() => {
     const handleScroll = () => {
-      if (rafRef.current) return;
-      rafRef.current = requestAnimationFrame(() => {
-        setScrolled(window.scrollY > threshold);
-        rafRef.current = 0;
-      });
+      const isScrolled = window.scrollY > threshold;
+      
+      // 🚀 ALGORITHME "EDGE-CROSSING" : On ne réveille React QUE si l'état change réellement.
+      // Fin de l'étouffement du processeur sur mobile !
+      if (isScrolled !== scrolledRef.current) {
+        scrolledRef.current = isScrolled;
+        setScrolled(isScrolled);
+      }
     };
+    
+    // Écoute passive pour ne pas bloquer le défilement tactile
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+    
+    // Initialisation silencieuse au chargement
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [threshold]);
+
   return scrolled;
 }
 
@@ -497,17 +510,17 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         </span>
       </div>
 
-      {/* 🚀 L'INJECTION DU RÉACTEUR (Optimisation Image 1/1000) */}
+      {/* 🚀 L'INJECTION DU RÉACTEUR (Optimisation AVIF Extrême 1/1000) */}
       <div className="cosmic-background" aria-hidden="true">
         
-        {/* 1. Jams Webb : On annule le CSS lourd et on injecte Next Image */}
+        {/* 1. Jams Webb : Qualité baissée à 60 (Invisible sous le filtre noir) */}
         <div className="bg-layer-space" ref={spaceRef} style={{ backgroundImage: 'none' }}>
           <Image 
             src="/jams-webb.png" 
             alt="Espace cosmique" 
             fill 
             priority 
-            quality={85}
+            quality={60}
             sizes="100vw"
             className="object-cover"
           />
@@ -516,14 +529,14 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         {/* 2. Le motif répétitif (Généralement léger, on le laisse gérer par le CSS pour le repeat) */}
         <div className="bg-layer-pattern" ref={patternRef}></div>
 
-        {/* 3. Le Baobab : Optimisation totale tout en gardant le mask-image du CSS parent */}
+        {/* 3. Le Baobab : Qualité baissée à 60 (Invisible sous le filtre noir) */}
         <div className="bg-layer-baobab" ref={baobabRef} style={{ backgroundImage: 'none' }}>
           <Image 
             src="/le-baobaob.png" 
             alt="Baobab de la connaissance" 
             fill 
             priority 
-            quality={85}
+            quality={60}
             sizes="100vw"
             className="object-cover"
           />
@@ -701,19 +714,25 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
             <span>{typedT.home?.allCategories || (isNko ? "ߓߍ߯" : "Tout")}</span>
           </button>
 
-          {Object.entries(categories).map(([key, label]) => (
-            <button
-              key={key}
-              className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === key ? "active" : ""}`}
-              onClick={() => handleCategoryChange(key)}
-              aria-pressed={activeCategory === key}
-            >
-              <i className={`ph-bold ${getCategoryIconClass(key)}`} aria-hidden="true"></i>
-              <span className={isNko ? "font-kigelia" : ""}>{label}</span>
-            </button>
-          ))}
+          {Object.entries(categories).map(([key, label]) => {
+            // 🚀 LE RADAR DE L'ÉLITE : Si c'est la Revue Mensuelle, on active la Pépite d'Or
+            const isPremium = key === "review";
+            
+            return (
+              <button
+                key={key}
+                className={`category-pill ${isPremium ? "premium" : ""} snap-start shrink-0 touch-manipulation ${activeCategory === key ? "active" : ""}`}
+                onClick={() => handleCategoryChange(key)}
+                aria-pressed={activeCategory === key}
+              >
+                <i className={`ph-bold ${getCategoryIconClass(key)}`} aria-hidden="true"></i>
+                <span className={isNko ? "font-kigelia" : ""}>{label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
+      
 <div className="section-header items-baseline" id="articles">
         {/* 🚀 MODIF 1/1000 : Écart réduit (Léger)
             - Français : text-xl
@@ -726,13 +745,15 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         {/* 🚀 MODIF 1/1000 : Écart réduit (Léger)
             - Français : text-sm
             - N'Ko : text-base (Taille standard, juste au-dessus de sm)
+            (Remplacement du Link par une ancre pour éviter l'erreur 404 de pré-chargement Next.js)
         */}
-        <Link 
-          href="/articles" 
+        <a 
+          href="#articles-grid" 
+          onClick={triggerVibration}
           className={`reveal text-[#fbbf24]/90 hover:text-[#fbbf24] transition-colors font-normal ml-4 ${isNko ? "font-kigelia text-base tracking-wider" : "text-sm tracking-wide"}`}
         >
           {typedT.home?.featured?.viewAll}
-        </Link>
+        </a>
       </div>
 
       <div className="grid-container" id="articles-grid">
