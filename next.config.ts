@@ -53,9 +53,33 @@ const nextConfig: NextConfig = {
   },
   
   // =========================================================
-// 4. SÉCURITÉ (Bouclier & Compatibilité Studio + Turnstile)
+// 4. SÉCURITÉ (Bouclier & Compatibilité Studio)
 // =========================================================
 async headers() {
+  // 🚀 DÉSACTIVE LA CSP EN DÉVELOPPEMENT (elle casse Phosphor)
+  if (process.env.NODE_ENV === 'development') {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+    ];
+  }
+
+  // 🚀 CSP ACTIVÉE UNIQUEMENT EN PRODUCTION
   return [
     {
       source: '/(.*)',
@@ -80,14 +104,13 @@ async headers() {
           key: 'X-XSS-Protection',
           value: '1; mode=block',
         },
-        // 🚀 NOUVEAU : CSP pour Cloudflare Turnstile + Newsletter
         {
           key: 'Content-Security-Policy',
           value: [
             "default-src 'self'",
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
-            "style-src 'self' 'unsafe-inline'",
-            "font-src 'self' data:",
+            "style-src 'self' 'unsafe-inline' https://unpkg.com",
+            "font-src 'self' data: https://unpkg.com",
             "img-src 'self' data: https: blob:",
             "connect-src 'self' https://challenges.cloudflare.com https://*.nkonilonko.com",
             "frame-src 'self' https://challenges.cloudflare.com",

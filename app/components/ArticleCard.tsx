@@ -40,17 +40,18 @@ const ICON_MAP: Record<string, string> = {
 // Traduit le N'Ko brut de Sanity vers la clé universelle du JSON
 // --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
 const CATEGORY_REVERSE_MAP: Record<string, string> = {
-  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
-  'ߘߐ߬ߞߏ': 'physics',
-  'ߣߌߡߊߞߊߙߊ߲': 'biology',
-  'ߘߡߊ߬ߟߐ߲': 'mathematics',
-  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
-  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
-  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
-  'ߘߐ߬ߝߐ': 'history',
-  'ߞߍ߲ߘߍߦߊ': 'health',
-  'Science': 'science',
-  'ߟߐ߲ߞߏ': 'science'
+  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
+  'ߘߐ߬ߞߏ': 'physics',
+  'ߣߌߡߊߞߊߙߊ߲': 'biology',
+  'ߘߡߊ߬ߟߐ߲': 'mathematics',
+  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
+  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
+  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
+  'ߘߐ߬ߝߐ': 'history',
+  'ߞߍ߲ߘߍߦߊ': 'health',
+  'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ': 'review', // 🚀 AJOUTE CETTE LIGNE
+  'Science': 'science',
+  'ߟߐ߲ߞߏ': 'science'
 };
 
 // Les fonctions de date restent intactes

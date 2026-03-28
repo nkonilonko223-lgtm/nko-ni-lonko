@@ -352,6 +352,7 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -402,6 +403,16 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
     setVisibleCount(ARTICLES_PER_PAGE);
     scrollToArticlesGrid();
   }, [scrollToArticlesGrid, triggerVibration]);
+  const handleDropdownToggle = useCallback(() => {
+  triggerVibration();
+  setDropdownOpen((prev) => !prev);
+}, [triggerVibration]);
+
+const handleCategorySelect = useCallback((key: string) => {
+  triggerVibration();
+  handleCategoryChange(key);
+  setDropdownOpen(false);
+}, [handleCategoryChange, triggerVibration]);
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -478,6 +489,29 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   useEffect(() => {
     observeElements();
   }, [filteredArticles, visibleCount, observeElements, lang]);
+  // Fermeture dropdown (ESC + click outside)
+useEffect(() => {
+  if (!dropdownOpen) return;
+  
+  const handleEsc = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') setDropdownOpen(false);
+  };
+  
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('.category-dropdown-wrapper')) {
+      setDropdownOpen(false);
+    }
+  };
+  
+  document.addEventListener('keydown', handleEsc);
+  document.addEventListener('click', handleClickOutside);
+  
+  return () => {
+    document.removeEventListener('keydown', handleEsc);
+    document.removeEventListener('click', handleClickOutside);
+  };
+}, [dropdownOpen]);
 
   const getCategoryIconClass = useCallback((key: string) => {
     const normalizedKey = key.toLowerCase();
@@ -488,7 +522,8 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   const siteName = typedT.metadata?.siteName || "Kiba";
   const categories = typedT.home?.categories || {};
   const visibleArticles = filteredArticles.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredArticles.length;
+  const MAX_ARTICLES_HOMEPAGE = 36;
+const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ARTICLES_HOMEPAGE;
 
   return (
     <>
@@ -694,17 +729,76 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
       </section>
 
 {/* 🚀 MODIF 1/1000: Wrapper relatif pour les masques de scroll */}
-      <div className="relative w-full md:w-auto">
-        {/* Masques de dégradé pour suggérer le scroll (Visibles uniquement sur mobile) */}
-        <div className="absolute left-0 top-0 bottom-4 w-8 bg-gradient-to-r from-[#02040a] to-transparent z-10 pointer-events-none md:hidden"></div>
-        <div className="absolute right-0 top-0 bottom-4 w-8 bg-gradient-to-l from-[#02040a] to-transparent z-10 pointer-events-none md:hidden"></div>
+      {/* MOBILE: Dropdown Custom Premium */}
+<div className="md:hidden w-full mb-6 px-6">
+  <div className="category-dropdown-wrapper">
+    <button
+      onClick={handleDropdownToggle}
+      className={`category-dropdown-trigger ${dropdownOpen ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
+      aria-expanded={dropdownOpen}
+      aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
+    >
+      <span className="flex items-center gap-2">
+        <i className="ph-bold ph-squares-four"></i>
+        {activeCategory === 'all' 
+          ? (isNko ? 'ߛߎ߯ߦߊ ߟߎ߬ ߓߍ߯' : 'Toutes les catégories')
+          : categories[activeCategory] || activeCategory
+        }
+      </span>
+      <i className="ph-bold ph-caret-down"></i>
+    </button>
 
-        <div
-          className="categories-wrapper reveal flex overflow-x-auto snap-x snap-mandatory pb-4 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible md:pb-0 scrollbar-hide"
-          role="group"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
-          aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
-        >
+    {/* Overlay */}
+    <div 
+      className={`category-dropdown-overlay ${dropdownOpen ? 'open' : ''}`}
+      onClick={() => setDropdownOpen(false)}
+      aria-hidden="true"
+    />
+
+    {/* Menu */}
+    <div className={`category-dropdown-menu ${dropdownOpen ? 'open' : ''}`}>
+      {/* Toutes */}
+      <div
+        onClick={() => handleCategorySelect('all')}
+        className={`category-dropdown-option ${activeCategory === 'all' ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
+      >
+        <i className="ph-bold ph-squares-four"></i>
+        <span>{isNko ? 'ߛߎ߯ߦߊ ߟߎ߬ ߓߍ߯' : 'Toutes les catégories'}</span>
+      </div>
+
+      {/* Revue Mensuelle (Premium) - Position 2 */}
+      <div
+        onClick={() => handleCategorySelect('review')}
+        className={`category-dropdown-option premium ${activeCategory === 'review' ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
+      >
+        <i className="ph-bold ph-calendar-star"></i>
+        <span>{isNko ? 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ' : 'Revue Mensuelle'}</span>
+      </div>
+
+      {/* Autres catégories */}
+      {Object.entries(categories)
+        .filter(([key]) => key !== 'review')
+        .map(([key, label]) => (
+          <div
+            key={key}
+            onClick={() => handleCategorySelect(key)}
+            className={`category-dropdown-option ${activeCategory === key ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
+          >
+            <i className={`ph-bold ${getCategoryIconClass(key)}`}></i>
+            <span>{label}</span>
+          </div>
+        ))}
+    </div>
+  </div>
+</div>
+
+{/* DESKTOP: Pills (masqué sur mobile) */}
+<div className="relative w-full md:w-auto hidden md:block">
+  <div
+    className="categories-wrapper reveal flex flex-wrap"
+    role="group"
+    aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
+  >
           <button
             className={`category-pill snap-start shrink-0 touch-manipulation ${activeCategory === "all" ? "active" : ""}`}
             onClick={() => handleCategoryChange("all")}
@@ -782,23 +876,33 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
         )}
       </div>
 
-      {hasMore && (
-        <div style={{ textAlign: "center", marginBottom: "80px" }}>
-          <button
-            className="cta-btn touch-manipulation"
-            onClick={() => { triggerVibration(); setVisibleCount((prev) => prev + ARTICLES_PER_PAGE); }}
-            style={{
-              background: "var(--gradient-panel)", color: "var(--color-gold)",
-              border: "1px solid var(--color-border)", fontSize: "1rem", padding: "16px 40px",
-            }}
-          >
-            <span className={isNko ? "font-kigelia" : ""}>
-              {typedT.home?.loadMore || (isNko ? "ߘߏ߫ ߜߘߍ߫ ߟߎ߫ ߦߋ߫ " : "Voir plus")}
-            </span>
-            <i className="ph-bold ph-caret-down" aria-hidden="true"></i>
-          </button>
-        </div>
-      )}
+     <div style={{ textAlign: "center", marginBottom: "80px" }}>
+  {hasMore ? (
+    <button
+      className="cta-btn touch-manipulation"
+      onClick={() => { triggerVibration(); setVisibleCount((prev) => prev + ARTICLES_PER_PAGE); }}
+      style={{
+        background: "var(--gradient-panel)", color: "var(--color-gold)",
+        border: "1px solid var(--color-border)", fontSize: "1rem", padding: "16px 40px",
+      }}
+    >
+      <span className={isNko ? "font-kigelia" : ""}>
+        {typedT.home?.loadMore || (isNko ? "ߘߏ߫ ߜߘߍ߫ ߟߎ߫ ߦߋ߫" : "Voir plus")}
+      </span>
+      <i className="ph-bold ph-caret-down" aria-hidden="true"></i>
+    </button>
+  ) : filteredArticles.length > MAX_ARTICLES_HOMEPAGE ? (
+    <Link href="/articles" className="cta-btn touch-manipulation" style={{
+      background: "var(--gradient-panel)", color: "var(--color-gold)",
+      border: "1px solid var(--color-border)", fontSize: "1rem", padding: "16px 40px",
+    }}>
+      <span className={isNko ? "font-kigelia" : ""}>
+        {isNko ? "ߞߎߡߘߊ ߓߍ߯ ߦߋ߫" : "Voir toutes les publications"}
+      </span>
+      <i className={`ph-bold ${isNko ? "ph-arrow-left" : "ph-arrow-right"}`} aria-hidden="true"></i>
+    </Link>
+  ) : null}
+</div>
 
       <SiteFooter activeCategory={activeCategory} setActiveCategory={handleCategoryChange} />
     </>
