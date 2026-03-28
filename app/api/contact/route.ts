@@ -9,7 +9,6 @@ import { z } from 'zod';
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 import disposableDomains from 'disposable-email-domains';
-import DOMPurify from 'isomorphic-dompurify'; // 🧪 IMPORT DE L'ACIDE MOLÉCULAIRE
 
 // ⚙️ INFRASTRUCTURE : Bascule sur Serverless Node.js pour supporter la purification DOM
 export const runtime = 'nodejs';
@@ -92,11 +91,6 @@ export async function POST(request: Request) {
        return NextResponse.json({ error: "ߟߊ߬ߛߙߋ߬ߦߊ߬ߟߌ ߓߘߊ߫ ߗߌߙߏ߲ / Échec de l'authentification sécurisée (Robot détecté)." }, { status: 403 });
     }
 
-    // 🧪 6. PURIFICATION ACIDE (DOMPurify 1/10000)
-    // L'acide détruit les scripts malveillants tout en préservant à 100% l'encodage N'Ko et la ponctuation saine
-    const safeName = DOMPurify.sanitize(name);
-    const safeMessage = DOMPurify.sanitize(message);
-
     // ========================================================================
     // 🟢 ZONE SÉCURISÉE : ENVOI DU FANTÔME (Resend Uniquement)
     // ========================================================================
@@ -116,7 +110,7 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         from: 'N\'Ko ni Lonko <newsletter@nkonilonko.com>', 
         to: ['nkonilonko223@gmail.com'], // 🔴 L'ADRESSE OFFICIELLE
-        subject: `🚨 ߗߋߛߓߍ ߞߎߘߊ (${safeName})`,
+        subject: `🚨 ߗߋߛߓߍ ߞߎߘߊ (${name})`,
         html: `
           <!DOCTYPE html>
           <html lang="nqo" dir="rtl" translate="no" class="notranslate">
@@ -153,14 +147,14 @@ export async function POST(request: Request) {
               </div>
 
               <div class="info-row">
-                <span class="label">ߕߐ߮ :</span> ${safeName}
+                <span class="label">ߕߐ߮ :</span> ${name}
               </div>
               <div class="info-row">
                 <span class="label">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ :</span> <a href="mailto:${email}" style="color: #fbbf24; text-decoration: none;">${email}</a>
               </div>
 
               <div class="message-content" dir="auto">
-                ${safeMessage}
+                ${message}
               </div>
             </div>
           </body>

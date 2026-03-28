@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 import disposableDomains from 'disposable-email-domains';
-import DOMPurify from 'isomorphic-dompurify';
+
 import { generateWelcomeEmail } from './template'; 
 
 // ⚙️ INFRASTRUCTURE : Node.js pour supporter la cryptographie et la purification
@@ -130,8 +130,8 @@ export async function POST(request: Request) {
     }
 
     // 🧪 5. PURIFICATION ET CANONISATION
-    const safeEmail = DOMPurify.sanitize(email);
-    const pureEmail = canonicalizeEmail(safeEmail); // 🔴 L'arme Anti-Alias s'active
+    
+    const pureEmail = canonicalizeEmail(email); // 🔴 L'arme Anti-Alias s'active
 
     // ========================================================================
     // 🟢 ZONE SÉCURISÉE : LOGIQUE D'IDEMPOTENCE ET GRAVURE SANITY
@@ -157,7 +157,7 @@ export async function POST(request: Request) {
 
     // 🛑 ARRÊT SILENCIEUX : Si l'e-mail existe déjà
     if (sanityCheckData.result) {
-        console.info(`ℹ️ [Newsletter] Doublon évité pour : ${maskEmail(safeEmail)}`);
+        console.info(`ℹ️ [Newsletter] Doublon évité pour : ${maskEmail(email)}`);
         // On renvoie un succès avec la traduction exacte du Dogme
         return NextResponse.json({ success: true, message: "ߌ ߕߎ߲߬ ߡߊߝߘߎ߬ߟߋ߲" }, { status: 200 });
     }
@@ -219,7 +219,7 @@ export async function POST(request: Request) {
        throw new Error(`Refus Resend: ${errorDetails}`);
     }
 
-    console.info(`✅ [API Newsletter] E-mail envoyé avec succès à : ${maskEmail(safeEmail)}`);
+    console.info(`✅ [API Newsletter] E-mail envoyé avec succès à : ${maskEmail(email)}`);
 
     // 🎉 LE TRIOMPHE FINAL
     return NextResponse.json(
