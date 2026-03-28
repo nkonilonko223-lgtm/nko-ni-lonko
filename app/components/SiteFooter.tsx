@@ -215,12 +215,14 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   />
                   
                 <input 
-                    type="email" 
-                    value={email}
-                    onChange={handleEmailChange}
-                    placeholder={isNko ? 'ߌ ߟߊ߫ ߞߘߎߡߊ...' : 'Votre email...'} 
-                    className={`relative z-10 flex-1 min-w-0 bg-transparent border-none outline-none text-white px-3 py-2 placeholder-gray-600 ${isNko ? 'text-end text-base font-kigelia' : 'text-sm'}`} 
-                  />
+    type="text"
+    inputMode="email"
+    autoComplete="email"
+    value={email}
+    onChange={handleEmailChange}
+    placeholder={isNko ? 'ߌ ߟߊ߫ ߞߘߎߡߊ...' : 'Votre email...'} 
+    className={`relative z-10 flex-1 min-w-0 bg-transparent border-none outline-none text-white px-3 py-2 placeholder-gray-600 ${isNko ? 'text-end text-base font-kigelia' : 'text-sm'}`} 
+  />
                   
                   <button 
                     type="submit"
