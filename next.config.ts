@@ -53,40 +53,51 @@ const nextConfig: NextConfig = {
   },
   
   // =========================================================
-  // 4. SÉCURITÉ (Bouclier & Compatibilité Studio)
-  // =========================================================
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            // 🚀 CORRECTION : SAMEORIGIN permet à l'aperçu Sanity de fonctionner
-            key: 'X-Frame-Options',
-            value: 'SAMEORIGIN',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          // 🛡️ NOUVEAU BOUCLIER 1 : Force le HTTPS strict (HSTS)
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
-          },
-          // 🛡️ NOUVEAU BOUCLIER 2 : Protection anti-injections
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-        ],
-      },
-    ];
-  },
+// 4. SÉCURITÉ (Bouclier & Compatibilité Studio + Turnstile)
+// =========================================================
+async headers() {
+  return [
+    {
+      source: '/(.*)',
+      headers: [
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
+        },
+        {
+          key: 'X-Frame-Options',
+          value: 'SAMEORIGIN',
+        },
+        {
+          key: 'Referrer-Policy',
+          value: 'strict-origin-when-cross-origin',
+        },
+        {
+          key: 'Strict-Transport-Security',
+          value: 'max-age=63072000; includeSubDomains; preload',
+        },
+        {
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
+        },
+        // 🚀 NOUVEAU : CSP pour Cloudflare Turnstile + Newsletter
+        {
+          key: 'Content-Security-Policy',
+          value: [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
+            "style-src 'self' 'unsafe-inline'",
+            "font-src 'self' data:",
+            "img-src 'self' data: https: blob:",
+            "connect-src 'self' https://challenges.cloudflare.com https://*.nkonilonko.com",
+            "frame-src 'self' https://challenges.cloudflare.com",
+            "worker-src 'self' blob:"
+          ].join('; ')
+        }
+      ],
+    },
+  ];
+},
 
   // =========================================================
   // 5. INJECTION DE REACT (Solution globale)
