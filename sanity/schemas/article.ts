@@ -22,6 +22,24 @@ export default defineType({
     { name: 'media', title: '🖼️ ߖߌ߬ߦߊ߬ߓߍ / Médias' },
     { name: 'seo', title: '🚀 ߢߌߣߌ߲ߞߏ / SEO & Partage' },
   ],
+  // 👑 ORDERINGS : Tri intelligent dans le Studio
+  orderings: [
+    {
+      title: '📅 Date (Plus récent)',
+      name: 'publishedAtDesc',
+      by: [{ field: 'publishedAt', direction: 'desc' }]
+    },
+    {
+      title: '📅 Date (Plus ancien)',
+      name: 'publishedAtAsc',
+      by: [{ field: 'publishedAt', direction: 'asc' }]
+    },
+    {
+      title: '🔤 Titre (A → Z)',
+      name: 'titleAsc',
+      by: [{ field: 'title', direction: 'asc' }]
+    },
+  ],
   fields: [
     // =========================================================================
     // ✍️ ONGLET : RÉDACTION (CONTENT)
