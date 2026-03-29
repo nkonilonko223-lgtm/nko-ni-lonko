@@ -55,6 +55,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   manifest: "/manifest.json",
+  verification: {
+    google: '843ZK_DeoFe9h5mvxGW3kSNz-dHT0_RMxbb4cS7_Kao',
+  },
   
   applicationName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ System",
   generator: "N'Ko ni Lonko Engine v2.0",
@@ -217,10 +220,11 @@ export default function RootLayout({
 return (
     <html lang="nqo" dir="rtl" translate="no" suppressHydrationWarning data-scroll-behavior="smooth"> 
       <head>
-        {/* Restauration de la connexion rapide au CDN */}
         <link rel="preconnect" href="https://unpkg.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://unpkg.com" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* 👑 Google Search Console — Vérification propriété */}
+        <meta name="google-site-verification" content="843ZK_DeoFe9h5mvxGW3kSNz-dHT0_RMxbb4cS7_Kao" />
       </head>
       
       <body 
