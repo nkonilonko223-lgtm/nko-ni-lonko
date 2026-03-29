@@ -36,8 +36,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsMounted(true);
-      const savedLang = localStorage.getItem("preferred-lang") as Language | null;
-      if (savedLang && (savedLang === "fr" || savedLang === "nko")) {
+      const rawLang = localStorage.getItem("preferred-lang");
+      const savedLang: Language | null = (rawLang === "fr" || rawLang === "nko") ? rawLang : null;
+      if (savedLang) {
         setLang(savedLang);
       } else {
         setShowPortal(true);

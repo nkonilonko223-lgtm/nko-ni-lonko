@@ -36,8 +36,24 @@ const customCaching: RuntimeCaching[] = [
       cacheName: 'nko-sanity-images',
       plugins: [
         new ExpirationPlugin({
-          maxEntries: 50,
+          // 👑 Magazine scientifique — 150 images cachées (30 jours)
+          maxEntries: 150,
           maxAgeSeconds: 60 * 60 * 24 * 30,
+          purgeOnQuotaError: true,
+        }),
+      ],
+    }),
+  },
+  // 👑 NOUVEAU : Cache Phosphor Icons (unpkg CDN) — critique réseau 2G Afrique
+  {
+    matcher: ({ url }) => url.hostname === 'unpkg.com',
+    handler: new CacheFirst({
+      cacheName: 'nko-phosphor-icons',
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 5,
+          // 7 jours — Phosphor ne change pas souvent
+          maxAgeSeconds: 60 * 60 * 24 * 7,
           purgeOnQuotaError: true,
         }),
       ],

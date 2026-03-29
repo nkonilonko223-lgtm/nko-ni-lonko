@@ -1,5 +1,16 @@
 import { defineField, defineType } from 'sanity';
-import React from 'react'; // 🚀 IMPORT VITAL POUR RÉPARER LE CRASH DU STUDIO
+import React from 'react';
+
+// 👑 BIDI ENGINE UNIVERSEL — Auto-détection N'Ko/FR sur chaque frappe
+const SmartBidiInput = (props: import('sanity').StringInputProps) => {
+  const value = (props as { value?: string }).value || '';
+  const isNko = /[\u07C0-\u07FF]/.test(value);
+  return React.createElement(
+    'div',
+    { dir: isNko ? 'rtl' : 'ltr', style: { textAlign: isNko ? 'right' : 'left' } },
+    props.renderDefault(props)
+  );
+};
 
 export default defineType({
   name: 'article',
@@ -63,7 +74,7 @@ export default defineType({
     defineField({
       name: 'tags',
       title: 'Mots-clés (Tags) / ߞߎߡߊߢߌ߲ ߠߎ߬',
-      description: "Mots-clés pour classer l'article (ex: Espace, ADN, Gravité)",
+      description: "⚡ Appuyez sur ENTRÉE après chaque tag pour le valider avant de naviguer. / ߡߌ߬ߘߊ ߞߊ߬ ߕߘߍ߬ ߓߊ߯ ߕߘߍ߬ ߕߊ߬ ߞߎ߲߬ ߞߊ߬ ߥߊ߫",
       type: 'array',
       group: 'content',
       of: [{ type: 'string' }],
@@ -239,9 +250,10 @@ export default defineType({
             {
               name: 'text',
               type: 'text',
-              title: 'Texte de l\'encart',
+              title: 'Texte de l\'encart / ߟߊ߬ߞߙߐ߬ߛߌ߬ߟߌ ߞߣߘߐ',
               rows: 3,
-              validation: (rule) => rule.required()
+              validation: (rule) => rule.required(),
+              components: { input: SmartBidiInput }
             }
           ]
         },
@@ -300,7 +312,8 @@ export default defineType({
               name: 'title', 
               title: 'Titre de la source / ߓߐߛߎ߲ ߕߐ߮', 
               type: 'string', 
-              validation: (rule) => rule.required().error('ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre de la source est requis') 
+              validation: (rule) => rule.required().error('ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre de la source est requis'),
+              components: { input: SmartBidiInput }
             },
            { 
               name: 'url', 
@@ -370,6 +383,7 @@ export default defineType({
       type: 'string',
       group: 'seo',
       validation: (rule) => rule.max(60).warning("Un titre SEO de plus de 60 caractères sera coupé par Google."),
+      components: { input: SmartBidiInput }
     }),
 
     defineField({
@@ -399,6 +413,7 @@ export default defineType({
       validation: (rule) => rule
         .required().error('ߞߊ߲߬ߛߓߍ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le résumé est obligatoire')
         .max(200).warning('ߞߊ߲߬ߛߓߍ ߞߊߊ߬ ߕߊ߬ߡߌ߲߬ ߛߓߍߘߋ߲߫ ߂߀߀ ߟߊ߫ / Le résumé ne doit pas dépasser 200 caractères.'),
+      components: { input: SmartBidiInput }
     }),
   ],
 
