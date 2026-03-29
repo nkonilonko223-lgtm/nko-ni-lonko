@@ -47,9 +47,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'monthly' as const,
     priority: 0.8,
     // 👑 Google Images — chaque article expose son image
-    ...(article.mainImageUrl && {
+    ...(article.mainImageUrl && !article.mainImageUrl.includes('.heif') && {
       images: [
-        article.mainImageUrl
+        `${article.mainImageUrl}?fm=jpg&q=80`
       ]
     }),
   }));
