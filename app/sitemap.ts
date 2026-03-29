@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // 👑 Google Images — chaque article expose son image
     ...(article.mainImageUrl && {
       images: [
-        `${article.mainImageUrl}?w=1200&h=630&fit=crop&fm=jpg&q=80`
+        article.mainImageUrl
       ]
     }),
   }));
