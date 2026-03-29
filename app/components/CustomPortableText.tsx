@@ -52,6 +52,21 @@ type PortableYouTubeProps = PortableTextComponentProps<YouTubeBlock>;
 type PortableMathProps = PortableTextComponentProps<MathBlock>;
 type PortableCalloutProps = PortableTextComponentProps<CalloutBlock>;
 
+interface SectionHeaderBlock {
+  titleNko?: string;
+  titleFr?: string;
+  icon?: string;
+}
+
+interface CodeBlock {
+  code: string;
+  language?: string;
+  filename?: string;
+}
+
+type PortableSectionHeaderProps = PortableTextComponentProps<SectionHeaderBlock>;
+type PortableCodeProps = PortableTextComponentProps<CodeBlock>;
+
 interface LightboxState {
   url: string;
   alt: string;
@@ -467,11 +482,87 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
             </div>
           </FadeInBlock>
         );
-      }
+      },
+
+      // 👑 N'Ko is King — Titre de Rubrique (Revue Mensuelle)
+      sectionHeader: ({ value: sectionValue }: PortableSectionHeaderProps) => {
+        if (!sectionValue?.titleNko && !sectionValue?.titleFr) return null;
+        return (
+          <FadeInBlock>
+            <div className="my-14 md:my-20 print:my-8">
+              {/* Ligne décorative supérieure */}
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/40 to-transparent" />
+                {sectionValue.icon && (
+                  <div className="w-10 h-10 rounded-full bg-[#fbbf24]/10 border border-[#fbbf24]/30 flex items-center justify-center shrink-0">
+                    <i className={`ph-bold ${sectionValue.icon} text-[#fbbf24] text-xl`}></i>
+                  </div>
+                )}
+                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/40 to-transparent" />
+              </div>
+
+              {/* 👑 Titre N'Ko — Souverain */}
+              {sectionValue.titleNko && (
+                <p
+                  dir="rtl"
+                  className="font-kigelia text-3xl md:text-4xl font-bold text-[#fbbf24] text-center leading-normal mb-2 print:text-black drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
+                >
+                  {sectionValue.titleNko}
+                </p>
+              )}
+
+              {/* Titre Français — Subordonné */}
+              {sectionValue.titleFr && (
+                <p
+                  dir="ltr"
+                  className="font-sans text-sm md:text-base text-gray-500 text-center uppercase tracking-[0.3em] print:text-gray-600 mt-1"
+                >
+                  {sectionValue.titleFr}
+                </p>
+              )}
+
+              {/* Ligne décorative inférieure */}
+              <div className="mt-6 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/20 to-transparent" />
+            </div>
+          </FadeInBlock>
+        );
+      },
+
+      // 💻 Bloc Code Technologie
+      code: ({ value: codeValue }: PortableCodeProps) => {
+        if (!codeValue?.code) return null;
+        return (
+          <FadeInBlock>
+            <div className="my-8 md:my-10 rounded-xl overflow-hidden border border-white/10 shadow-xl print:border-gray-300" dir="ltr">
+              {/* Header du bloc */}
+              <div className="flex items-center justify-between px-4 py-2.5 bg-[#0b1121] border-b border-white/10 print:bg-gray-100">
+                <div className="flex items-center gap-2">
+                  <i className="ph-bold ph-terminal text-[#fbbf24] text-sm"></i>
+                  {codeValue.filename && (
+                    <span className="text-xs text-gray-400 font-mono tracking-wide">
+                      {codeValue.filename}
+                    </span>
+                  )}
+                </div>
+                {codeValue.language && (
+                  <span className="text-[10px] uppercase tracking-widest text-[#fbbf24]/60 font-mono border border-[#fbbf24]/20 px-2 py-0.5 rounded-full">
+                    {codeValue.language}
+                  </span>
+                )}
+              </div>
+              {/* Code */}
+              <pre className="overflow-x-auto p-4 md:p-6 bg-[#060910] print:bg-white">
+                <code className="text-sm text-gray-300 print:text-black font-mono leading-relaxed whitespace-pre">
+                  {codeValue.code}
+                </code>
+              </pre>
+            </div>
+          </FadeInBlock>
+        );
+      },
     }
  // 🚀 FIX VS CODE : Ajout de setLightbox dans les dépendances
   }), [firstTextBlockKey, setLightbox]);
-
   return (
     <>
       <PortableText value={value} components={components} />

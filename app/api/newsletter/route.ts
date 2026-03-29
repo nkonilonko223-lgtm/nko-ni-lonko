@@ -170,13 +170,15 @@ export async function POST(request: Request) {
       mutations: [
         {
           create: {
-            _id: sovereignToken, // 🔴 NOTRE clé secrète
+            _id: sovereignToken,
             _type: 'subscriber',
             email: pureEmail,
             status: 'pending', 
             languagePreference: 'nko',
             source: 'footer',
             subscribedAt: new Date().toISOString(),
+            // 🛡️ Standard mondial : lien de vérification valable 24h uniquement
+            tokenExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
           }
         }
       ]

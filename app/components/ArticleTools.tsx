@@ -224,6 +224,29 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
     };
   }, []);
 
+  // 🛡️ FERMETURE AU CLIC EXTÉRIEUR (Cockpit + Sommaire)
+  useEffect(() => {
+    if (!showToc && !isExpanded) return;
+
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('aside')) return;
+      setShowToc(false);
+      setIsExpanded(false);
+    };
+
+    const timer = setTimeout(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }, 10);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [showToc, isExpanded]);
+
   const toggleBookmark = () => {
     triggerVibration();
     const slug = window.location.pathname;
@@ -263,6 +286,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
 
   const handleShare = async () => {
     triggerVibration();
+    setIsExpanded(false); // 🛡️ Ferme le cockpit mobile
     const cleanUrl = getCanonicalUrl();
     if (navigator.share) {
       navigator.share({ title, url: cleanUrl }).catch(() => {});
@@ -294,9 +318,9 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
 
   const handlePrint = () => {
     triggerVibration();
+    setIsExpanded(false); // 🛡️ Ferme le cockpit mobile
     if (typeof window !== 'undefined') window.print();
   };
-
   const wrapZoomIn = () => { triggerVibration(); onZoomIn(); };
   const wrapZoomOut = () => { triggerVibration(); onZoomOut(); };
 
@@ -307,8 +331,9 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
         <div 
           className="fixed z-[9990] flex items-center gap-1 p-1 bg-black/90 backdrop-blur-xl border border-white/20 shadow-[0_10px_40px_rgba(251,191,36,0.3)] rounded-full animate-in fade-in zoom-in duration-200"
           style={{ 
-            left: `${selection.x}px`, 
-            top: `${selection.y}px`, 
+            // 👑 Blindage mobile : clamp empêche la pilule de sortir de l'écran
+            left: `clamp(60px, ${selection.x}px, calc(100vw - 60px))`,
+            top: `clamp(80px, ${selection.y}px, calc(100vh - 80px))`,
             transform: 'translate(-50%, -120%)'
           }}
         >
@@ -372,7 +397,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
         <div className={`flex flex-col-reverse md:flex-col gap-4 ${isNko ? 'items-start md:items-center' : 'items-end md:items-center'}`}>
           
           {/* LE PANNEAU DE SOMMAIRE (Radar) */}
-          <div className={`overflow-hidden transition-all duration-500 ease-in-out origin-bottom-right md:origin-top-right backdrop-blur-2xl bg-black/85 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl ${
+         <div className={`overflow-hidden origin-bottom-right md:origin-top-right backdrop-blur-2xl bg-black/85 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
             showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
           }`}>
             <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">

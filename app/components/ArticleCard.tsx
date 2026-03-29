@@ -68,9 +68,10 @@ function toNkoDigits(num: number | string): string {
 
 function formatDateNkoFull(dateString: string): string {
   const date = new Date(dateString);
-  const day = toNkoDigits(date.getDate());
-  const month = NKO_MONTHS[date.getMonth()];
-  const year = toNkoDigits(date.getFullYear());
+  // 🛡️ UTC absolu — cohérent avec CustomPortableText, zéro décalage fuseau horaire
+  const day = toNkoDigits(date.getUTCDate());
+  const month = NKO_MONTHS[date.getUTCMonth()];
+  const year = toNkoDigits(date.getUTCFullYear());
   return `${month} ߕߟߋ߬ ${day} ߛߊ߲߭ ${year}`;
 }
 

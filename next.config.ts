@@ -47,6 +47,7 @@ const nextConfig: NextConfig = {
   // =========================================================
   // 3. BUILD (DOGME 2 : ZÉRO BUG)
   // =========================================================
+  
   typescript: {
     // 🚨 CORRECTION 1/1000 : On ne ferme plus les yeux sur les erreurs de typage.
     ignoreBuildErrors: false, 
@@ -79,9 +80,14 @@ const nextConfig: NextConfig = {
             value: 'max-age=63072000; includeSubDomains; preload',
           },
           // 🛡️ NOUVEAU BOUCLIER 2 : Protection anti-injections
-          {
+         {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          // 🛡️ NOUVEAU BOUCLIER 3 : Désactive les capteurs inutiles
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=()',
           },
         ],
       },

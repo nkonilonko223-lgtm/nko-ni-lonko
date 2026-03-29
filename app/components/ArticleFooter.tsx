@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "../../sanity/image";
 import { PortableTextBlock } from "@portabletext/types";
-import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
+import { Turnstile } from '@marsidev/react-turnstile';
 
 // ==============================================================================
 // 1. TYPAGE STRICT & UTILITAIRES
@@ -100,6 +100,8 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   
   // 🚀 ACTION C : État anti-crash pour l'image de l'auteur
   const [authorImageError, setAuthorImageError] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const turnstileRef = useRef<any>(null);
 
   // 🚀 ACTION A : Le radar d'apparition en cascade (Intersection Observer)
   const [cardsVisible, setCardsVisible] = useState(false);
@@ -172,6 +174,11 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
       alert(error instanceof Error ? error.message : "Impossible de se connecter au serveur.");
     } finally {
       setIsSubmitting(false);
+      // 🛡️ Réarmement Turnstile pour le prochain essai
+      if (turnstileRef.current) {
+        turnstileRef.current.reset();
+        setTurnstileToken(null);
+      }
     }
   };
 
@@ -461,6 +468,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                     {/* 🛡️ INJECTION INVISIBLE DU RADAR CLOUDFLARE */}
                     <div className="hidden">
                       <Turnstile
+                        ref={turnstileRef}
                         siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
                         onSuccess={(token) => setTurnstileToken(token)}
                       />

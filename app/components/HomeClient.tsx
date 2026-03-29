@@ -56,6 +56,12 @@ const CATEGORY_REVERSE_MAP: Record<string, string> = {
   'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ': 'review',
 };
 
+// 🛡️ DOGME 2 : Typage natif BeforeInstallPrompt (Zéro any)
+interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
 const ARTICLES_PER_PAGE = 6;
 
 // ==============================================================================
@@ -354,8 +360,7 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
 
   const scrolled = useScrollDetection(50);
@@ -417,7 +422,7 @@ const handleCategorySelect = useCallback((key: string) => {
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       setShowInstallBtn(true);
     };
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);

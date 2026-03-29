@@ -23,7 +23,7 @@ interface SanityHomeArticleRaw {
   mainImage: SanityImageRaw;
   publishedAt: string;
   excerpt: string; 
-  bodyLength?: number; 
+  wordCount?: number;
   category?: string; 
   // 🚀 SYNCHRONISATION 1/1000 : On attend un tableau d'auteurs (Multi-Paternité)
   authors?: Array<{
@@ -94,8 +94,8 @@ function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArticle {
   
   const category = raw.category || "ߟߐ߲ߞߏ | Science";
   
-  const charCount = raw.bodyLength || 0;
-  const calculatedReadingTime = Math.max(1, Math.ceil((charCount / 5) / 150));
+  // 👑 Vrais mots — méthode identique à article/[slug]/page.tsx
+  const calculatedReadingTime = Math.max(1, Math.ceil((raw.wordCount || 0) / 200));
 
   // 🚀 LOGIQUE MULTI-AUTEURS : On cible le premier auteur pour l'affichage de la carte
   const primaryAuthor = raw.authors?.[0];
@@ -125,7 +125,7 @@ async function getArticles(): Promise<SafeHomeArticle[]> {
     mainImage,
     publishedAt,
     "excerpt": coalesce(excerpt, pt::text(body)[0..150] + "..."), 
-    "bodyLength": length(pt::text(body)), 
+    "wordCount": length(string::split(pt::text(body), " ")),
     category,
     authors[]->{
       name,

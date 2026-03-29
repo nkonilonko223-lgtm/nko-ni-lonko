@@ -18,7 +18,7 @@ import Link from "next/link";
 import ArticleTools from "./ArticleTools"; 
 import ArticleFooter from "./ArticleFooter"; 
 import { PortableTextBlock } from "@portabletext/types";
-import CustomPortableText, { estimateReadingTime, formatDateNko, toNkoDigits } from "./CustomPortableText";
+import CustomPortableText, { formatDateNko, toNkoDigits } from "./CustomPortableText";
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Zéro Any - Dogme 2)
@@ -47,7 +47,8 @@ interface ClientArticleData {
   body: PortableTextBlock[];
   excerpt: string;
   category: string;
-  references: Array<{ title: string; url: string }>; // 🚀 NOUVEAU : Réception des references
+  readingTime: number;
+  references: Array<{ title: string; url: string }>;
   authors: Array<{
     name: string;
     nameNko: string | null;
@@ -152,7 +153,7 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
   const nkoTitle = parts[0].trim(); 
   const frTitle = parts.length > 1 ? `(${parts[1]}` : "";
 
-  const readingTime = estimateReadingTime(article.body);
+  const readingTime = article.readingTime;
   const readingTimeText = lang === 'nko' 
     ? `${toNkoDigits(readingTime)} ${t.article.minutes}` 
     : `${readingTime} min de lecture`;
@@ -166,10 +167,27 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
     <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-white print:text-black">
       
       {/* 🖨️ LE SECRET 1/1000 : Contrôle absolu des marges de l'imprimante et encres forcées */}
-      <style dangerouslySetInnerHTML={{ __html: `
+     <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           @page { size: auto; margin: 2cm; }
           body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          
+          /* 🖨️ FIX IMAGE COUVERTURE : Force l'affichage de l'image fill */
+          .print-cover-wrapper {
+            position: relative !important;
+            height: 400px !important;
+            width: 100% !important;
+            overflow: hidden !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+          }
+          .print-cover-wrapper img {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+          }
         }
       `}} />
 
@@ -283,7 +301,7 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
         
         {article.mainImageUrl && (
           <div 
-            className="relative w-full aspect-video rounded-xl md:rounded-[2rem] overflow-hidden border border-white/10 print:border-none shadow-2xl shadow-[#fbbf24]/10 z-10 print:shadow-none cursor-zoom-in group"
+            className="print-cover-wrapper relative w-full aspect-video rounded-xl md:rounded-[2rem] overflow-hidden border border-white/10 print:border-none shadow-2xl shadow-[#fbbf24]/10 z-10 print:shadow-none cursor-zoom-in group"
             onClick={() => setCoverLightbox(true)}
           >
             <Image
