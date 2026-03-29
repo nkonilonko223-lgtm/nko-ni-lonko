@@ -25,6 +25,7 @@ export default function ContactClient() {
   // 🚀 ÉTAT DU COFFRE-FORT CLOUDFLARE
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const turnstileRef = useRef<TurnstileInstance>(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // ⏱️ DÉMARRAGE DU CHRONOMÈTRE BIOMÉTRIQUE
   useEffect(() => {
@@ -131,7 +132,10 @@ export default function ContactClient() {
     
     // 🚀 VERROUILLAGE ABSOLU : On exige le Jeton Cloudflare avant d'autoriser le clic
     if (!isOnline || !formData.name || !isValidEmail || !formData.message || !turnstileToken) {
-      if (!turnstileToken) alert("ߡߊ߬ߞߐ߬ߣߐ߲߬ߠߌ߲ ߞߍ߫ ߣߍ߲ߞߍ߫ / Analyse de sécurité en cours, veuillez patienter une seconde.");
+      if (!turnstileToken) {
+        setErrorMessage("ߡߊ߬ߞߐ߬ߣߐ߲߬ߠߌ߲ ߞߍ߫ ߣߍ߲ߞߍ߫ / Analyse de sécurité en cours...");
+        setTimeout(() => setErrorMessage(""), 3000);
+      }
       return;
     }
 
@@ -184,7 +188,9 @@ export default function ContactClient() {
       setTurnstileToken(null);
       turnstileRef.current?.reset();
       
-      alert(error instanceof Error ? error.message : "Une erreur de connexion est survenue.");
+      const msg = error instanceof Error ? error.message : "Une erreur de connexion est survenue.";
+      setErrorMessage(msg);
+      setTimeout(() => setErrorMessage(""), 4000);
     }
   };
 
@@ -347,8 +353,10 @@ export default function ContactClient() {
                             </label>
                             <div className="relative">
                               <input 
-                                  type="email" 
-                                  name="email"
+                                 type="text"
+                              inputMode="email"
+                              autoComplete="email"
+                              name="email"
                                   value={formData.email}
                                   onChange={handleChange}
                                   required
@@ -442,6 +450,14 @@ export default function ContactClient() {
                                 </>
                             )}
                         </button>
+
+                        {/* Message d'erreur inline */}
+                        <div className={`overflow-hidden transition-all duration-300 ${errorMessage ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}>
+                          <p className="text-xs text-red-400 flex items-center justify-center gap-1 mt-2 font-kigelia">
+                            <i className="ph-fill ph-warning-circle"></i>
+                            {errorMessage}
+                          </p>
+                        </div>
                     </form>
                 )}
             </div>
