@@ -230,20 +230,22 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
 
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       const target = e.target as HTMLElement;
+      // 🛡️ Ne ferme pas si on est dans l'aside OU dans un bouton OU dans le panneau TOC
       if (target.closest('aside')) return;
+      if (target.closest('button')) return;
+      if (target.closest('[class*="rounded-3xl"]')) return;
       setShowToc(false);
       setIsExpanded(false);
     };
 
+    // 🛡️ Desktop uniquement — on retire touchstart qui cause le bug mobile
     const timer = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside);
     }, 10);
 
     return () => {
       clearTimeout(timer);
       document.removeEventListener('mousedown', handleClickOutside);
-      document.removeEventListener('touchstart', handleClickOutside);
     };
   }, [showToc, isExpanded]);
 
