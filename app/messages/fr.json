@@ -21,6 +21,8 @@
       "title": "Articles récents",
       "viewAll": "Voir tout"
     },
+    "allCategories": "Tout",
+    "loadMore": "Voir plus",
     "categories": {
       "review": "Revue Mensuelle",
       "astronomy": "Astronomie",
@@ -53,7 +55,8 @@
   "search": {
     "placeholder": "Rechercher dans les articles...",
     "results": "Résultats de recherche",
-    "noResults": "Aucun résultat trouvé",
+    "noResults": "Aucun résultat pour \"{query}\"",
+    "noArticles": "Aucun article trouvé.",
     "filters": "Filtres"
   },
   "footer": {
