@@ -118,6 +118,14 @@ export default defineType({
       validation: (Rule) => Rule.required(),
       readOnly: true,
     }),
+    defineField({
+      name: 'tokenExpiresAt',
+      title: 'ߖߊ߬ߕߋ߬ߟߊ ߕߎ߬ߡߊ߬ߘߊ (Expiration du lien de vérification)',
+      description: "Le lien de vérification expire 24h après l'inscription.",
+      type: 'datetime',
+      fieldset: 'tracking',
+      readOnly: true,
+    }),
   ],
   preview: {
     select: {

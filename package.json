@@ -15,6 +15,7 @@
     "@portabletext/types": "^4.0.1",
     "@sanity/code-input": "^7.0.8",
     "@sanity/image-url": "^2.0.3",
+    "@sanity/presentation": "^1.22.1",
     "@sanity/vision": "^5.9.0",
     "@serwist/next": "^9.5.6",
     "@upstash/ratelimit": "^2.0.8",

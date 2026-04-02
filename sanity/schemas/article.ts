@@ -53,6 +53,8 @@ export default defineType({
       validation: (rule) => rule
         .required().error('ߞߎߡߘߊ ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre est obligatoire')
         .min(10).warning("ߕߐ߮ ߛߎߘߎ߲ߡߊ߲߫ ߞߏߖߎ߯ߦߊ߫ / Un titre trop court manque d'impact."),
+      // 👑 N'Ko is King : Auto-détection dès la première lettre
+      components: { input: SmartBidiInput }
     }),
     
     // 🚀 MULTI-PATERNITÉ (Tableau d'Auteurs)
@@ -268,7 +270,7 @@ export default defineType({
             {
               name: 'text',
               type: 'text',
-              title: 'Texte de l\'encart / ߟߊ߬ߞߙߐ߬ߛߌ߬ߟߌ ߞߣߘߐ',
+              title: 'Texte de l\'encart',
               rows: 3,
               validation: (rule) => rule.required(),
               components: { input: SmartBidiInput }
@@ -308,7 +310,10 @@ export default defineType({
           preview: {
             select: { title: 'titleNko', subtitle: 'titleFr' },
             prepare({ title, subtitle }) {
-              return { title: `📑 ${title}`, subtitle: subtitle };
+              return { 
+                title: `📑 ${title || subtitle || 'Nouveau titre de rubrique'}`,
+                subtitle: subtitle || ''
+              };
             }
           }
         }

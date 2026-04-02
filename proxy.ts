@@ -19,6 +19,7 @@ const BANNED_AGENTS = [
   'baiduspider',     // Robot chinois agressif
 ];
 
+// ✅ CORRECT pour Next.js 16 — remettre "proxy"
 export function proxy(request: NextRequest) {
   // 1. LECTURE DU PASSEPORT (Extraction des données)
   const userAgent = request.headers.get('user-agent')?.toLowerCase() || '';
@@ -61,7 +62,7 @@ export function proxy(request: NextRequest) {
     form-action 'self';
     frame-ancestors 'self';
     upgrade-insecure-requests;
-  `.replace(/\s{2,}/g, ' ').trim(); // Nettoyage des espaces pour la performance réseau
+  `.replace(/\s{2,}/g, ' ').trim();
 
   // On clone les en-têtes de la requête pour y glisser notre Nonce (Next.js le lira)
   const requestHeaders = new Headers(request.headers);
@@ -92,8 +93,11 @@ export const config = {
      * On protège TOUT le site, sauf :
      * 1. Les fichiers statiques cachés (_next/static, _next/image)
      * 2. L'icône du site (favicon.ico)
-     * 3. Le Sanity Studio (/studio) pour ne pas ralentir tes rédacteurs
+     * 3. Les fichiers SEO (sitemap.xml, robots.txt)
+     * 4. Les assets PWA (manifest, icônes)
+     * 5. Le Sanity Studio (/studio)
+     * 6. Les routes API (protégées par Turnstile/CRON_SECRET)
      */
-    '/((?!_next/static|_next/image|favicon.ico|studio).*)',
+    '/((?!_next/static|_next/image|favicon\\.ico|sitemap\\.xml|robots\\.txt|manifest\\.webmanifest|icon-.*\\.png|studio|api/).*)',
   ],
 };

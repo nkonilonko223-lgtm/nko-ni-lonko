@@ -25,7 +25,6 @@
     "isolatedModules": true,
     // 🛠️ CORRECTION VITALE APPLIQUÉE : Standard Next.js
     "jsx": "react-jsx",
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./*"

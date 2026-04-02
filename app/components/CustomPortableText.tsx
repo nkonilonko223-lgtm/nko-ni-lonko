@@ -44,9 +44,11 @@ interface MathBlock {
 
 interface CalloutBlock {
   text: string;
-  intent?: 'info' | 'warning' | 'success';
+  titleNko?: string;
+  titleFr?: string;
+  source?: string;
+  intent?: 'definition' | 'stat' | 'question' | 'warning' | 'amazing' | 'quote' | 'info';
 }
-
 type PortableImageProps = PortableTextComponentProps<SanityImage>;
 type PortableYouTubeProps = PortableTextComponentProps<YouTubeBlock>;
 type PortableMathProps = PortableTextComponentProps<MathBlock>;
@@ -462,28 +464,118 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
 
       callout: ({ value: calloutValue }: PortableCalloutProps) => {
         if (!calloutValue?.text) return null;
-        const nkoText = isNko(calloutValue.text);
-        const dir = nkoText ? "rtl" : "ltr";
-        const fontClass = nkoText ? "font-kigelia text-lg leading-[1.8]" : "font-sans text-base leading-relaxed";
         
-        const isWarning = calloutValue.intent === 'warning';
-        const colorClass = isWarning ? 'text-red-400 border-red-500/50 from-red-500/10' : 'text-[#fbbf24] border-[#fbbf24] from-[#fbbf24]/10';
-        const iconClass = isWarning ? 'ph-warning-circle' : 'ph-lightbulb';
+        const nkoText = isNko(calloutValue.text) || isNko(calloutValue.titleNko || '');
+        const fontClass = nkoText ? "font-kigelia text-lg leading-[1.8]" : "font-sans text-base leading-relaxed";
+
+        // 👑 CONFIG PAR TYPE — N'Ko is King
+        const intentConfig: Record<string, {
+          icon: string;
+          colorClass: string;
+          borderClass: string;
+          bgClass: string;
+          labelNko: string;
+          labelFr: string;
+        }> = {
+          definition: {
+            icon: 'ph-book-open',
+            colorClass: 'text-blue-300',
+            borderClass: 'border-blue-400/50',
+            bgClass: 'from-blue-500/10',
+            labelNko: 'ߞߘߐߦߌߘߊ',
+            labelFr: 'Définition'
+          },
+          stat: {
+            icon: 'ph-chart-bar',
+            colorClass: 'text-emerald-300',
+            borderClass: 'border-emerald-400/50',
+            bgClass: 'from-emerald-500/10',
+            labelNko: 'ߝߐ߬ߓߍ ߜߋ߲',
+            labelFr: 'Chiffre du mois'
+          },
+          question: {
+            icon: 'ph-question',
+            colorClass: 'text-purple-300',
+            borderClass: 'border-purple-400/50',
+            bgClass: 'from-purple-500/10',
+            labelNko: 'ߢߍߥߟߊ ߓߏߟߏ߲',
+            labelFr: 'Grande Question'
+          },
+          warning: {
+            icon: 'ph-warning-circle',
+            colorClass: 'text-red-400',
+            borderClass: 'border-red-500/50',
+            bgClass: 'from-red-500/10',
+            labelNko: 'ߟߊ߬ߕߍ߲',
+            labelFr: 'Attention'
+          },
+          amazing: {
+            icon: 'ph-sparkle',
+            colorClass: 'text-[#fbbf24]',
+            borderClass: 'border-[#fbbf24]/50',
+            bgClass: 'from-[#fbbf24]/10',
+            labelNko: 'ߕߏ߬ߟߏ߲ ߞߏ',
+            labelFr: 'Le saviez-vous ?'
+          },
+          quote: {
+            icon: 'ph-quotes',
+            colorClass: 'text-rose-300',
+            borderClass: 'border-rose-400/50',
+            bgClass: 'from-rose-500/10',
+            labelNko: 'ߞߊ߲ߕߏ߲',
+            labelFr: 'Citation'
+          },
+          info: {
+            icon: 'ph-info',
+            colorClass: 'text-[#fbbf24]',
+            borderClass: 'border-[#fbbf24]/50',
+            bgClass: 'from-[#fbbf24]/10',
+            labelNko: 'ߟߐ߲ߞߏ',
+            labelFr: 'Information'
+          },
+        };
+
+        const config = intentConfig[calloutValue.intent || 'info'] || intentConfig.info;
+        const titleNko = calloutValue.titleNko || config.labelNko;
+        const titleFr = calloutValue.titleFr || config.labelFr;
 
         return (
           <FadeInBlock>
-            <div dir={dir} className={`my-8 p-6 md:p-8 rounded-2xl bg-gradient-to-br to-transparent border-l-4 border-r border-y border-white/10 print:border-black print:bg-transparent flex gap-4 md:gap-6 shadow-lg ${colorClass} ${nkoText ? 'flex-row-reverse' : 'flex-row'}`}>
-              <div className="text-3xl mt-1 shrink-0">
-                <i className={`ph-fill ${iconClass} drop-shadow-[0_0_8px_currentColor]`}></i>
+            <div
+              dir={nkoText ? "rtl" : "ltr"}
+              className={`my-8 md:my-12 rounded-2xl bg-gradient-to-br ${config.bgClass} to-transparent border ${config.borderClass} border-y border-white/5 print:border-black print:bg-transparent overflow-hidden shadow-lg`}
+            >
+              {/* 👑 EN-TÊTE BILINGUE */}
+              <div className={`flex items-center gap-3 px-6 py-3 border-b ${config.borderClass} border-opacity-30 ${nkoText ? 'flex-row-reverse' : 'flex-row'}`}>
+                <i className={`ph-fill ${config.icon} text-2xl ${config.colorClass} drop-shadow-[0_0_8px_currentColor]`}></i>
+                <div className={`flex flex-col ${nkoText ? 'items-end' : 'items-start'}`}>
+                  {/* 👑 N'Ko is King : Titre N'Ko en premier */}
+                  <span className={`font-kigelia text-base font-bold ${config.colorClass}`}>
+                    {titleNko}
+                  </span>
+                  <span className="font-sans text-[10px] uppercase tracking-widest text-white/40">
+                    {titleFr}
+                  </span>
+                </div>
               </div>
-              <div className={`${fontClass} text-gray-200 print:text-black`}>
-                 {calloutValue.text}
+
+              {/* 👑 CONTENU */}
+              <div className={`px-6 py-5 ${fontClass} ${config.colorClass} print:text-black`}>
+                {calloutValue.text}
               </div>
+
+              {/* 👑 SOURCE (si présente) */}
+              {calloutValue.source && (
+                <div className={`px-6 py-2 border-t ${config.borderClass} border-opacity-20 flex ${nkoText ? 'justify-start' : 'justify-end'}`}>
+                  <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest">
+                    — {calloutValue.source}
+                  </span>
+                </div>
+              )}
             </div>
           </FadeInBlock>
         );
       },
-
       // 👑 N'Ko is King — Titre de Rubrique (Revue Mensuelle)
       sectionHeader: ({ value: sectionValue }: PortableSectionHeaderProps) => {
         if (!sectionValue?.titleNko && !sectionValue?.titleFr) return null;
