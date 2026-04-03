@@ -315,7 +315,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                   src={authorImageUrl} 
                   alt={author.name}
                   fill
-                  quality={85} // 🚀 1/1000 : Équilibre parfait (Netteté Retina + Respect absolu du forfait Data)
+quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus léger pour West Africa
                   sizes="(max-width: 768px) 192px, 256px"
                   className="object-cover rounded-full border border-[#fbbf24]/50 relative z-10 transition-transform duration-500 group-hover/author:scale-105 shadow-xl"
                   onError={() => setAuthorImageError(true)} 

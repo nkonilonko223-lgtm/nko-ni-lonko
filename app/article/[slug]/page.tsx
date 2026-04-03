@@ -345,11 +345,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     // 👑 Auteurs avec réseaux sociaux — Google connaît chaque auteur
     "author": article.authors.map(author => ({
       "@type": "Person",
-      // 👑 N'Ko is King : Nom N'Ko en alternateName prioritaire
       "name": author.name,
       "alternateName": author.nameNko || undefined,
-      // 👑 N'Ko is King : Rôle N'Ko d'abord
       "jobTitle": author.roleNko || author.role || undefined,
+      // 🚀 NOUVEAU : Photo auteur — Google byline
+      "image": author.imageUrl || undefined,
       "affiliation": author.institution ? {
         "@type": "Organization",
         "name": author.institution
@@ -362,29 +362,35 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         "propertyID": "ORCID",
         "value": `https://orcid.org/${author.orcid}`
       } : undefined,
-      // 👑 Réseaux sociaux auteur injectés dans Google
       "sameAs": author.socials
         .map(s => s.url)
         .filter(Boolean)
     })),
     "publisher": {
       "@type": "Organization",
-      // 👑 N'Ko is King : Nom N'Ko d'abord
       "name": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
       "@id": `${SITE_URL}/#organization`,
       "url": SITE_URL,
+      // 🚀 NOUVEAU : Réseaux sociaux de l'organisation
+      "sameAs": [
+        "https://www.youtube.com/@nkonilonko",
+        "https://www.tiktok.com/@nkonilonko223",
+        "https://x.com/nkonilonko"
+      ],
       "logo": {
         "@type": "ImageObject",
         "url": `${SITE_URL}/icon-512x512.png`,
         "width": 512,
         "height": 512
       },
-      // 👑 Fondateur — Google fait le lien entre Moustapha et la plateforme
       "founder": {
         "@type": "Person",
         "name": "Moustapha CAMARA",
         "alternateName": "ߡߎ߬ߛߊߝߊ߬ ߞߊ߬ߡߙߊ߬",
-        "url": SITE_URL,
+        // 🚀 FIX : Page dédiée au lieu de la racine
+        "url": `${SITE_URL}/about`,
+        // 🚀 NOUVEAU : Photo fondateur
+        "image": `${SITE_URL}/fondateur.png`,
         "sameAs": [
           "https://www.youtube.com/@nkonilonko",
           "https://www.tiktok.com/@nkonilonko223",

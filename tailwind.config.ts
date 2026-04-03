@@ -71,6 +71,15 @@ const config: Config = {
       transitionTimingFunction: {
         'cinematic': 'cubic-bezier(0.22, 1, 0.36, 1)', // Ultra-fluide
         'bounce-soft': 'cubic-bezier(0.34, 1.56, 0.64, 1)', // Rebond organique
+        'out-quint': 'cubic-bezier(0.23, 1, 0.32, 1)', // 🚀 NOUVEAU : Fluide précis
+      },
+
+      // 6.5 DURÉES NOMMÉES (🚀 NOUVEAU : Anti-ambiguïté Tailwind 3.4+)
+      transitionDuration: {
+        '800': '800ms',
+        '3000': '3000ms',
+        '5000': '5000ms',
+        '7000': '7000ms',
       },
 
       // 7. ANIMATIONS (Enrichies)

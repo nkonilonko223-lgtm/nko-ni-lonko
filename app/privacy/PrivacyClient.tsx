@@ -96,14 +96,14 @@ export default function PrivacyClient() {
       titleFr: "2. Utilisation des Informations",
       tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߦߋ߫ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ ߘߐߙߐ߲߫ ߠߋ߬ ߘߐ߫.",
       tldrFr: "En clair : Vos informations ne servent qu'à la communication. Pas de publicité, pas de ciblage.",
-      textNko: "ߊߟߎ߫ ߦߴߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߡ߲ ߠߎ߬ ߟߊߕߊ߬ߡߌ߲߬ߠߊ߫ ߊ߲ ߡߊ߬߸ ߏ߬ ߟߎ߬ ߦߋ߫ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߎ߲߬ ߞߋߟߋ߲߫ ߔߋ߫ ߘߐߙߐ߲߫ ߠߋ߬ ߘߐ߫ ߊ߲ ߓߟߏ߫߹ ߣߴߏߴ ߦߴߊ߲ ߓߍ߫ ߛߋ߫ ߞߊ߬ ߢߐ߲߯ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߡߌ߲ ߡߊ߬߹ ߞߊ߬ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ߬ߦߊ߫߹ ߣߴߏ߬ ߕߍ߫ ߊ߲ ߕߴߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߖߎ߬ߟߊ߬ߦߊ߬ ߟߊ߬ߛߙߋ߬ߦߊ߬ߟߌ ߣߴߊ߬ ߕߣߐ߬ߓߐ߬ ߛߌߙߊ߫ ߛߌ߫ ߞߊ߲߬߹ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߟߐ߲ߠߌ߲ ߝߏߟߏ߲ߝߊߟߊ߲ ߠߋ߬ ߘߌ߫߸ ߊ߬ ߕߍ߫ ߖߎ߬ߟߊ߬ߦߊ߬ ߘߊߞߎ߲߫ ߛߌ߫ ߘߐ߫ ߡߎ߬ߡߍ߫߹",
+      textNko: "ߊߟߎ߫ ߦߴߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏ߬ߣߌ߬ߦߊ ߡߌ߲ ߠߎ߬ ߟߊߕߊ߬ߡߌ߲߬ߠߊ߫ ߊ߲ ߡߊ߬߸ ߏ߬ ߟߎ߬ ߦߋ߫ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߎ߲߬ ߞߋߟߋ߲߫ ߔߋ߫ ߘߐߙߐ߲߫ ߠߋ߬ ߘߐ߫ ߊ߲ ߓߟߏ߫߹ ߣߴߏߴ ߦߴߊ߲ ߓߍ߫ ߛߋ߫ ߞߊ߬ ߢߐ߲߯ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߡߌ߲ ߡߊ߬߹ ߞߊ߬ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ߬ߦߊ߫߹ ߣߴߏ߬ ߕߍ߫ ߊ߲ ߕߴߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߖߎ߬ߟߊ߬ߦߊ߬ ߟߊ߬ߛߙߋ߬ߦߊ߬ߟߌ ߣߴߊ߬ ߕߣߐ߬ߓߐ߬ ߛߌߙߊ߫ ߛߌ߫ ߞߊ߲߬߹ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߟߐ߲ߠߌ߲ ߝߏߟߏ߲ߝߊߟߊ߲ ߠߋ߬ ߘߌ߫߸ ߊ߬ ߕߍ߫ ߖߎ߬ߟߊ߬ߦߊ߬ ߘߊߞߎ߲߫ ߛߌ߫ ߘߐ߫ ߡߎ߬ߡߍ߫߹",
       textFr: "Les informations que vous nous confiez sont utilisées dans un seul but : la communication directe avec vous. Nous n'utilisons pas vos données pour vous envoyer des publicités non sollicitées, ni pour du profilage marketing. Le sanctuaire N'Ko ni Lonko est un espace de savoir, pas un espace commercial."
     },
     {
       id: "protection",
       titleNko: "ߟߊ߬ߞߊ߲߬ߘߊ߬ߟߌ ߣߌ߫ ߞߣߐ߬ߜߍ߲߬ߠߌ߲",
       titleFr: "3. Sécurité de l'Architecture",
-      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊ߲ ߧߋ߫ ߛߋߒߞߏߟߦߊ ߞߎ߲߬ߕߍߡߊ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߵߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߞߊ߲ߘߊ߫.",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߊ߲ ߧߋ߫ ߛߋߒߞߏߟߦߊ ߞߎ߲߬ߕߍߡߊ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫ ߞߵߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏ߬ߣߌ߬ߦߊ ߠߎ߬ ߟߊߞߊ߲ߘߊ߫.",
       tldrFr: "En clair : Nous utilisons un cryptage de haut niveau pour sécuriser vos échanges.",
       textNko: "ߊߟߎ߫ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߟߊߞߊ߲ߘߊ ߦߴߊ߲ ߡߊ߬ߞߏ߬ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. ߊ߲ ߠߊ߫ ߓߟߐߟߐ ߞߐߜߍ ߦߋ߫ ߘߞߏ߬ߓߛߍ ߟߊߞߊ߲ߘߊ߫ ߛߋߞߏߦߊ ߟߎ߬ ߓߍ߯ ߘߐ߫ ߞߟߏߜߍߟߍ߲߫ ߠߎ߬ ߟߋ߬ ߕߍ߫ ߡߊ߬ ߓߌ߬߸ ߥߟߊ߫ ߛߊ߫ ߞߴߊ߲ ߟߊ߫ ߓߊ߯ߙߊߛߌ߮ ߟߎ߬ ߣߌ߫ ߊ߬ߟߎ߬ ߟߊ߫ ߓߟߐߟߐ ߛߏ߯ߓߊߟߌߟߊ ߟߎ߬ ߣߌ߫ ߢߐ߲߯ ߕߍ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊߦߊ ߛߘߌ߬ߜߋ߲߫ ߠߎ߬ ߟߊߞߊ߲ߘߊ߫߸ ߊ߬ ߢߊ ߓߘߍߓߘߍ߫ ߡߊ߬߸ ߏ߬ ߘߐ߫ ߊ߲ ߠߊ߫ ߟߐ߲ߞߏ ߞߋߛߓߍ ߟߎ߬ ߘߌ߫ ߕߏ߫ ߜߎ߲߬ߘߏ ߊ߬ ߣߌ߫ ߘߎ߲߬ߘߎ߬ߡߊ߬ߦߊ ߘߝߊߣߍ߲ ߘߐ߫.",
       textFr: "La sécurité de vos données est une priorité absolue. Notre architecture utilise les technologies de cryptage les plus avancées pour protéger les échanges entre votre navigateur et nos serveurs, garantissant ainsi que vos communications scientifiques restent strictement confidentielles."

@@ -32,9 +32,10 @@ const nextConfig: NextConfig = {
         hostname: 'i.ytimg.com',
       },
     ],
-    formats: ['image/avif', 'image/webp'],
-    // 🚀 AMÉLIORATION 1/1000 : Mise en cache agressive (30 jours)
-    minimumCacheTTL: 2592000, 
+formats: ['image/avif', 'image/webp'],
+qualities: [60, 75, 90],
+// 🚀 AMÉLIORATION 1/1000 : Mise en cache agressive (30 jours)
+minimumCacheTTL: 2592000,
   },
 
   // =========================================================

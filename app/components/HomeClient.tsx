@@ -283,7 +283,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
-      className={`fixed inset-0 z-[9999] flex flex-col overscroll-contain bg-[#02040a]/95 backdrop-blur-3xl transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+      className={`fixed inset-0 z-[9999] flex flex-col overscroll-contain bg-[#02040a]/95 backdrop-blur-3xl transition-all duration-700 ease-cinematic ${
         isOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
       }`}
     >
@@ -636,7 +636,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
             
             {/* 🚀 MODIF 1/1000 : L'icône a maintenant "text-[#fbbf24]" EN PERMANENCE */}
             <i 
-              className={`ph ph-translate transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] text-[#fbbf24] ${isNko ? 'rotate-[360deg] scale-110' : 'rotate-0 scale-100'}`} 
+              className={`ph ph-translate transition-all duration-700 ease-bounce-soft text-[#fbbf24] ${isNko ? 'rotate-[360deg] scale-110' : 'rotate-0 scale-100'}`} 
               aria-hidden="true"
             ></i>
 
