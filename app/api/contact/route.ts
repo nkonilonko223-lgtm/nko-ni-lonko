@@ -9,6 +9,7 @@ import { z } from 'zod';
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
 import disposableDomains from 'disposable-email-domains';
+import sanitizeHtml from 'sanitize-html';
 
 // ⚙️ INFRASTRUCTURE : Bascule sur Serverless Node.js pour supporter la purification DOM
 export const runtime = 'nodejs';
@@ -91,6 +92,10 @@ export async function POST(request: Request) {
        return NextResponse.json({ error: "ߟߊ߬ߛߙߋ߬ߦߊ߬ߟߌ ߓߘߊ߫ ߗߌߙߏ߲ / Échec de l'authentification sécurisée (Robot détecté)." }, { status: 403 });
     }
 
+    // 🧪 6. PURIFICATION ACIDE (DOMPurify 1/10000)
+    // L'acide détruit les scripts malveillants tout en préservant à 100% l'encodage N'Ko et la ponctuation saine
+   const safeName = sanitizeHtml(name, { allowedTags: [] });
+const safeMessage = sanitizeHtml(message, { allowedTags: [] });
     // ========================================================================
     // 🟢 ZONE SÉCURISÉE : ENVOI DU FANTÔME (Resend Uniquement)
     // ========================================================================
@@ -108,9 +113,10 @@ export async function POST(request: Request) {
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'N\'Ko ni Lonko <newsletter@nkonilonko.com>', 
+        from: 'NKo ni Lonko <contact@nkonilonko.com>', 
         to: ['nkonilonko223@gmail.com'], // 🔴 L'ADRESSE OFFICIELLE
-        subject: `🚨 ߗߋߛߓߍ ߞߎߘߊ (${name})`,
+        reply_to: email, // 🚀 Quand tu cliques "Répondre" dans Gmail, ça répond directement au client
+        subject: `🚨 ߗߋߛߓߍ ߞߎߘߊ (${safeName})`,
         html: `
           <!DOCTYPE html>
           <html lang="nqo" dir="rtl" translate="no" class="notranslate">
@@ -147,14 +153,14 @@ export async function POST(request: Request) {
               </div>
 
               <div class="info-row">
-                <span class="label">ߕߐ߮ :</span> ${name}
+                <span class="label">ߕߐ߮ :</span> ${safeName}
               </div>
               <div class="info-row">
                 <span class="label">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ :</span> <a href="mailto:${email}" style="color: #fbbf24; text-decoration: none;">${email}</a>
               </div>
 
               <div class="message-content" dir="auto">
-                ${message}
+                ${safeMessage}
               </div>
             </div>
           </body>

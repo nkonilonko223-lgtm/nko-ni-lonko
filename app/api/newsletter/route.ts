@@ -209,7 +209,7 @@ export async function POST(request: Request) {
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'N\'Ko ni Lonko <newsletter@nkonilonko.com>', 
+        from: 'NKo ni Lonko <newsletter@nkonilonko.com>', 
         to: [pureEmail],
         subject: 'ߌ ߣߌ߫ ߛߣߍ߫ ߟߐ߲ߞߏ ߘߎߢߊ߫ ߘߐ߫ (Bienvenue)',
         html: generateWelcomeEmail(verifyLink) 

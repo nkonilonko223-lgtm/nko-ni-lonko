@@ -320,15 +320,30 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
       },
       h1: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
-        return <FadeInBlock><h1 dir={nko ? "rtl" : "ltr"} className={`text-3xl md:text-4xl font-extrabold text-[#fbbf24] print:text-black mt-10 md:mt-14 pb-0 -mb-2 leading-none text-balance ${nko ? "font-kigelia" : "font-sans"}`}>{children}</h1></FadeInBlock>;
+        if (nko) {
+          return (
+            <FadeInBlock>
+              <h1 dir="rtl" className="text-4xl md:text-5xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+                {children}
+              </h1>
+            </FadeInBlock>
+          );
+        } else {
+          return (
+            <FadeInBlock>
+              <h1 dir="ltr" className="text-2xl md:text-3xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-[#fbbf24]/10 to-transparent border-l-4 border-[#fbbf24] leading-tight text-balance font-sans">
+                {children}
+              </h1>
+            </FadeInBlock>
+          );
+        }
       },
-     h2: ({ value: blockValue, children }) => {
+    h2: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
         if (nko) {
           return (
             <FadeInBlock>
-              {/* 🚀 MODIF : pr-8 md:pr-12 pour le léger décalage vers le centre */}
-              <h2 dir="rtl" className="text-2xl md:text-3xl font-bold text-[#fbbf24] print:text-black mt-12 md:mt-16 mb-4 md:mb-6 py-2 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia">
+              <h2 dir="rtl" className="text-3xl md:text-4xl font-bold text-[#fbbf24] print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia">
                 {children}
               </h2>
             </FadeInBlock>
@@ -336,8 +351,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         } else {
           return (
             <FadeInBlock>
-              {/* 🚀 MODIF : pl-8 md:pl-12 pour le léger décalage vers le centre */}
-              <h2 dir="ltr" className="text-xl md:text-2xl font-bold text-[#fbbf24] print:text-black mt-12 md:mt-16 mb-4 md:mb-6 py-2 pl-8 md:pl-12 bg-gradient-to-r from-white/5 to-transparent border-l-2 border-white/40 leading-tight text-balance font-sans">
+              <h2 dir="ltr" className="text-xl md:text-2xl font-bold text-white print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pl-8 md:pl-12 bg-gradient-to-r from-white/5 to-transparent border-l-2 border-white/40 leading-tight text-balance font-sans">
                 {children}
               </h2>
             </FadeInBlock>
@@ -349,7 +363,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         if (nko) {
           return (
             <FadeInBlock>
-              <h3 dir="rtl" className="text-xl md:text-2xl font-semibold text-white print:text-black mt-10 md:mt-12 mb-3 pr-6 md:pr-10 border-r-2 border-[#fbbf24]/50 leading-snug text-balance font-kigelia">
+              <h3 dir="rtl" className="text-2xl md:text-3xl font-semibold text-[#fbbf24] print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pr-6 md:pr-10 border-r-2 border-[#fbbf24]/50 leading-snug text-balance font-kigelia">
                 {children}
               </h3>
             </FadeInBlock>
@@ -357,23 +371,54 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         } else {
           return (
             <FadeInBlock>
-              <h3 dir="ltr" className="text-lg md:text-xl font-semibold text-white print:text-black mt-10 md:mt-12 mb-3 pl-6 md:pl-10 border-l-2 border-white/30 leading-snug text-balance font-sans">
+              <h3 dir="ltr" className="text-lg md:text-xl font-semibold text-white print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pl-6 md:pl-10 border-l-2 border-white/30 leading-snug text-balance font-sans">
                 {children}
               </h3>
             </FadeInBlock>
           );
         }
       },
-      blockquote: ({ value: blockValue, children }) => {
+      h4: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
-        const style = nko ? { fontSize: '1.2em', lineHeight: '2.0' } : {};
-        return (
-          <FadeInBlock>
-            <blockquote dir={nko ? "rtl" : "ltr"} className={`border-l-4 border-[#fbbf24] print:border-black pl-4 md:pl-6 py-4 my-8 md:my-10 italic text-[#fbbf24] print:text-black text-lg bg-gradient-to-r from-[#fbbf24]/10 to-transparent print:bg-transparent rounded-r-xl ${nko ? "font-kigelia" : "font-sans"}`} style={style}>
+        if (nko) {
+          return (
+            <FadeInBlock>
+              <h4 dir="rtl" className="text-xl md:text-2xl font-medium text-[#fbbf24]/90 print:text-black mt-8 md:mt-10 mb-3 md:mb-4 leading-snug text-balance font-kigelia">
                 {children}
-            </blockquote>
-          </FadeInBlock>
-        );
+              </h4>
+            </FadeInBlock>
+          );
+        } else {
+          return (
+            <FadeInBlock>
+              <h4 dir="ltr" className="text-base md:text-lg font-medium text-white/90 print:text-black mt-8 md:mt-10 mb-3 md:mb-4 leading-snug text-balance font-sans">
+                {children}
+              </h4>
+            </FadeInBlock>
+          );
+        }
+      },
+     blockquote: ({ value: blockValue, children }) => {
+        const nko = isNko(getBlockText(blockValue));
+        if (nko) {
+          return (
+            <FadeInBlock>
+              <blockquote dir="rtl" className="relative border-r-4 border-[#fbbf24] print:border-black pr-6 md:pr-8 py-5 my-10 md:my-14 italic text-[#fbbf24] print:text-black bg-gradient-to-l from-[#fbbf24]/10 to-transparent print:bg-transparent rounded-l-xl font-kigelia" style={{ fontSize: '1.3em', lineHeight: '2.0' }}>
+                <i className="ph-fill ph-quotes absolute top-3 right-3 text-[#fbbf24]/20 text-3xl print:hidden"></i>
+                {children}
+              </blockquote>
+            </FadeInBlock>
+          );
+        } else {
+          return (
+            <FadeInBlock>
+              <blockquote dir="ltr" className="relative border-l-4 border-[#fbbf24] print:border-black pl-6 md:pl-8 py-5 my-10 md:my-14 italic text-[#fbbf24]/90 print:text-black bg-gradient-to-r from-[#fbbf24]/10 to-transparent print:bg-transparent rounded-r-xl font-sans" style={{ fontSize: '1.1em', lineHeight: '1.8' }}>
+                <i className="ph-fill ph-quotes absolute top-3 left-3 text-[#fbbf24]/20 text-3xl print:hidden"></i>
+                {children}
+              </blockquote>
+            </FadeInBlock>
+          );
+        }
       }
     },
     list: {

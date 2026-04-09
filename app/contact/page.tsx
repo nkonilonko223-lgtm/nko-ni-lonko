@@ -5,7 +5,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
 export const metadata: Metadata = {
   title: "ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ | Contact | N'Ko ni Lonko",
-  description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߛߐ߬ߘߐ߲߬. Contactez l'équipe N'Ko ni Lonko pour toute question scientifique.",
+  description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߛߐ߬ߘߐ߲߬. Contactez l'équipe N'Ko ni Lonko — plateforme de vulgarisation scientifique bilingue N'Ko/Français. Email : contact@nkonilonko.com. Siège : Bamako, Mali.",
   alternates: {
     canonical: `${SITE_URL}/contact`,
   },
@@ -56,7 +56,6 @@ const contactJsonLd = {
     }
   }
 };
-
 export default function ContactPage() {
   return (
     <>
@@ -64,6 +63,50 @@ export default function ContactPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
       />
+
+      {/* ================================================================
+          SEO — Contenu serveur visible au crawl HTML initial (noscript)
+          ================================================================ */}
+      <noscript>
+        <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
+          <h1>ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ — Contactez N&apos;Ko ni Lonko</h1>
+
+          <section dir="rtl" lang="nqo">
+            <h2>ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
+            <p><strong>ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ :</strong> ߓߊ߬ߡߊ߬ߞߐ߬߸ ߡߊ߬ߟߌ — ߝߘߊ߬ߝߌ߲߬ߠߊ ߕߟߋ߬ߓߊ</p>
+            <p>
+              ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫ ߟߐ߲ߞߏ ߟߊߛߋߟߌ ߞߊߡߊ߬ ߝߘߊ߬ߝߌ߲߬ߠߊ.
+            </p>
+          </section>
+
+          <section lang="fr">
+            <h2>Informations de contact</h2>
+            <address>
+              <p><strong>Siège :</strong> Bamako, Mali — Afrique de l&apos;Ouest</p>
+              <p>
+                <strong>Email :</strong>{" "}
+                <a href="mailto:contact@nkonilonko.com">contact@nkonilonko.com</a>
+              </p>
+            </address>
+            <p>
+              N&apos;Ko ni Lonko est la première plateforme de vulgarisation scientifique
+              bilingue N&apos;Ko/Français. Contactez-nous pour toute question sur nos articles
+              d&apos;astronomie, de physique, de biologie ou pour proposer une collaboration.
+            </p>
+          </section>
+
+          {/* eslint-disable @next/next/no-html-link-for-pages */}
+          <nav>
+            <ul>
+              <li><a href="/">Accueil — N&apos;Ko ni Lonko</a></li>
+              <li><a href="/about">À Propos</a></li>
+              <li><a href="/privacy">Politique de confidentialité</a></li>
+              <li><a href="/terms">Conditions d&apos;utilisation</a></li>
+            </ul>
+          </nav>
+          {/* eslint-enable @next/next/no-html-link-for-pages */}
+        </div>
+      </noscript>
       <ContactClient />
     </>
   );

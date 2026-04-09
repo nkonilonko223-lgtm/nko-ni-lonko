@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nkonilonko.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.nkonilonko.com';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,7 +9,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/studio/', '/api/'],
+       disallow: ['/studio/', '/api/', '/_next/static/media/', '/favicon.ico'],
       },
       // 🛡️ Blocage IA : Ton contenu N'Ko t'appartient
       {

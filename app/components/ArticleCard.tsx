@@ -72,7 +72,7 @@ function formatDateNkoFull(dateString: string): string {
   const day = toNkoDigits(date.getUTCDate());
   const month = NKO_MONTHS[date.getUTCMonth()];
   const year = toNkoDigits(date.getUTCFullYear());
-  return `${month} ߕߟߋ߬ ${day} ߛߊ߲߭ ${year}`;
+  return `${year} ${month} ߕߋ߬ߟߋ߫ ${day}`;
 }
 
 function getCategoryIcon(category: string): string {
@@ -250,7 +250,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               <span className={`flex items-center gap-1.5 ${isNko ? 'font-kigelia text-sm' : ''}`}>
                 <i className="ph-bold ph-book-open text-[#fbbf24]"></i>
                 {isNko 
-                  ? <span className="text-base">{toNkoDigits(readTime)} ߡߌ߬ߛߍ߲</span> 
+                  ? <span className="text-base">ߡߌ߬ߛߍ߲ {toNkoDigits(readTime)}</span> 
                   : `${readTime} min`
                 }
               </span>

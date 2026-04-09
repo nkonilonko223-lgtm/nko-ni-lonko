@@ -127,7 +127,7 @@ export default function AboutClient() {
       </button>
 
       {/* 🚀 Aura bleue vibrante et visible pour un vrai contraste */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] md:w-[700px] h-[350px] md:h-[700px] bg-blue-500 rounded-full blur-[130px] opacity-20 pointer-events-none animate-pulse duration-[7000ms] z-[-1]"></div>
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[350px] md:w-[700px] h-[350px] md:h-[700px] bg-blue-500 rounded-full blur-[130px] opacity-20 pointer-events-none animate-pulse duration-7000 z-[-1]"></div>
 
       <div className="relative z-10 max-w-6xl mx-auto flex flex-col items-center animate-in fade-in slide-in-from-bottom-10 duration-1000 fill-mode-forwards">
 
@@ -176,7 +176,7 @@ export default function AboutClient() {
                     {/* 🚀 N'KO : Verrouillé tel que tu l'as validé */}
                     <h2 className="font-kigelia text-2xl md:text-3xl text-[#fbbf24] mb-6">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</h2>
                     <p className="font-kigelia text-2xl md:text-3xl text-[#fbbf24] leading-[1.8] md:leading-[2] drop-shadow-md">
-                        ߞߵߊ߬ ߞߊ߬ߙߊ߲߫߸ ߞߵߊ߬ ߝߊ߬ߡߎ߲߫߸ ߞߵߊ߬ ߟߊߓߊ߯ߙߊ߫ ߏ߬ ߟߋ߬ ߦߋ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߞߊ߫ ߘߐ߬ߖߊ ߘߌ߫: ߊ߬ ߟߐ߲߫ ߞߏ߫ ߘߊ߲߬ ߛߌ߫ ߕߍ߫ ߟߐ߲ߞߏ ߟߊ߫߸ ߊ߱ ߏ߬ ߗߏ߯ ߞߋߟߋ߲߫ ߘߐ߫ ߘߊ߲߬ ߡߊ߲߫ ߞߊ߲߫ ߞߊ߬ ߞߍ߫߸ ߊ߲ ߠߊ߫ ߞߊ߲߫ ߘߐߦߙߌߥߊߟߋ߲߫ ߣߌ߲߬ ߝߟߊ߫ ߟߊ߫ ߘߋ߬߹ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߘߊ߲߫ ߠߊ߫ ߣߊ߬ߕߊ ߘߏ߫ ߟߋ߬ ߞߊߡߊ߬߸ ߛߊ߫ ߞߊ߬ ߟߐ߲ߞߏ ߛߓߊߡߊ ߟߎ߬ ߟߊߓߍ߯ߦߊ (ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ߸ ߝߕߌߙߋ߲ ߘߐߞߏߦߊ߸ ߣߌߡߊߞߊߙߊ߲ ߣߴߊ߬ ߢߐ߲߰ ߘߐ߫ ߟߎ߬) ߡߊ߲߬ߘߋ߲߫ ߡߌ߬ߙߌ߲߬ߘߌ ߦߋ߫߸ ߞߊ߬ ߕߊ߬ߡߌ߲ ߏ߬ ߟߊ߫ ߝߐ߫ ߞߊ߬ ߕߊ߫ ߛߋ߫ ߘߎߢߊ߫ ߡߌ߬ߙߌ߲߬ߘߌ ߕߐ߭ ߟߎ߬ ߓߍ߯ ߡߊ߬߹ ߒߞߏ ߟߊߓߊ߯ߙߊߟߌ ߕߍ߫ ߕߏ߫ ߣߊߡߎ߲ ߛߌߟߊ߫ ߘߐߙߐ߲߫ ߡߊ߬߸ ߏ߬ ߞߐ߫߸ ߊ߬ ߞߍߕߐ߫ ߓߍ߯ ߟߋ߬ ߦߋ߫ ߛߌߟߊߟߊߓߐ߫ ߘߌ߫ ߣߌ߲߬ ߘߌ߫߸ ߞߊ߬ ߥߊ߫ ߛߋߞߏߟߊ ߞߎ߲ߛߊ߲ߧߊ߫ ߞߎ߲߬ߕߍ߫ ߡߊ߬ ߘߎߢߊ߫ ߞߣߐ߫߹
+                        ߞߵߊ߬ ߘߐߛߊߙߌ߫ ߸ ߞߵߊ߬ ߢߊߦߋ߫ ߸ ߞߵߊ߬ ߟߊߓߊ߯ߙߊ߫ ߏ߬ ߟߋ߬ ߦߋ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߞߊ߫ ߘߐ߬ߖߊ ߘߌ߫: ߊ߬ ߟߐ߲߫ ߞߏ߫ ߘߊ߲߬ ߛߌ߫ ߕߍ߫ ߟߐ߲ߞߏ ߟߊ߫߸ ߊ߰ ߏ߬ ߗߏ߯ ߞߋߟߋ߲߫ ߘߐ߫ ߘߊ߲߬ ߡߊ߲߫ ߞߊ߲߫ ߞߊ߬ ߞߍ߫߸ ߒ߬ ߠߊ߫ ߞߊ߲߫ ߘߐߦߙߌߥߊߟߋ߲߫ ߣߌ߲߬ ߝߣߊ߫ ߟߊ߫ ߘߋ߬߹ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߘߊ߲߫ ߘߊ߫ ߣߊ߬ߕߊ ߘߏ߫ ߟߋ߬ ߞߊߡߊ߬،ߛߊ߫߸ ߞߊ߬ ߟߐ߲ߞߏ߫ &quot;ߛߓߍߡߊ&quot; ߟߎ߬ ߟߊߝߘߏ߬ߓߊ߬ߦߊ߬ ߦߏ߫:(ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ߸ ߝߕߌߙߋ߲ ߘߐ߬ߞߏ߬ߦߊ߸ ߣߌߡߊߞߊߙߊ߲ ߣߴߊ߬ ߢߐ߲߰ ߘߐ߫ ߟߎ߬) ߡߊ߲߬ߘߋ߲߫ ߡߌ߬ߙߌ߲߬ߘߌ ߦߋ߫߸ ߞߊ߬ ߕߊ߬ߡߌ߲ ߏ߬ ߟߊ߫ ߝߐ߫ ߞߊ߬ ߕߊ߫ ߛߋ߫ ߘߎߢߊ߫ ߡߌ߬ߙߌ߲߬ߘߌ ߕߐ߭ ߓߍ߯ ߡߊ߬߹ ߒߞߏ ߟߊߓߊ߯ߙߊߟߌ ߕߍ߫ ߕߏ߫ ߣߊߡߎ߲ ߛߌߟߊ߫ ߘߐߙߐ߲߫ ߡߊ߬߸ ߏ߬ ߞߐ߫߸ ߊ߬ ߞߍߕߐ߫ ߓߍ߯ ߟߋ߬ ߦߋ߫ ߛߌߟߊߓߐߛߐ߯ߣߊ ߘߌ߫ ߣߌ߲߬߸ ߞߊ߬ ߥߊ߫ ߛߋߒߞߏߟߦߊ ߣߌ߫ ߞߎ߲߬ߛߊ߲߬ߧߊ ߞߎ߲߬ߕߍ߫ ߡߊ߬ ߘߎߢߊ߫ ߞߣߐ߫߹
                     </p>
                 </div>
             </div>

@@ -45,7 +45,7 @@ interface ClientArticleData {
   mainImageRaw: SanityImage | null; 
   publishedAt: string;
   body: PortableTextBlock[];
-  excerpt: string;
+ excerpt: string;
   category: string;
   readingTime: number;
   references: Array<{ title: string; url: string }>;
@@ -155,7 +155,7 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
 
   const readingTime = article.readingTime;
   const readingTimeText = lang === 'nko' 
-    ? `${toNkoDigits(readingTime)} ${t.article.minutes}` 
+   ? `${t.article.minutes} ${toNkoDigits(readingTime)}` 
     : `${readingTime} min de lecture`;
 
   // 🚀 SÉCURITÉ ABSOLUE : Zéro "any"
