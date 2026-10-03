@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     // 🛡️ 2. FORMAT UUID VALIDE ? (Bloque les injections non-UUID)
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(token)) {
-      console.warn(`⚠️ [Verify] Format de jeton invalide : ${token}`);
+      console.warn("⚠️ [Verify] Format de jeton invalide.");
       return NextResponse.redirect(`${baseUrl}?verified=false&reason=invalid`);
     }
 
@@ -39,9 +39,12 @@ export async function GET(request: Request) {
     }
 
     // 🛡️ 3. VÉRIFICATION QUE LE DOCUMENT EXISTE + EST PENDING + N'EST PAS EXPIRÉ
-    const query = encodeURIComponent(`*[_type == "subscriber" && _id == "${token}"][0]`);
+    // 🔒 Les fiches sont rangées sous le chemin privé "subscriber." (invisible au public)
+    const docId = `subscriber.${token}`;
+    const query = encodeURIComponent(`*[_type == "subscriber" && _id == $id][0]`);
+    const idParam = encodeURIComponent(JSON.stringify(docId));
     const checkRes = await fetch(
-      `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}`,
+      `https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}&%24id=${idParam}`,
       {
         headers: { Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}` },
         cache: 'no-store',
@@ -53,13 +56,13 @@ export async function GET(request: Request) {
 
     // 🛡️ Document introuvable
     if (!subscriber) {
-      console.warn(`⚠️ [Verify] Jeton introuvable dans Sanity : ${token}`);
+      console.warn("⚠️ [Verify] Jeton introuvable dans Sanity.");
       return NextResponse.redirect(`${baseUrl}?verified=false&reason=notfound`);
     }
 
     // 🛡️ Déjà vérifié — succès silencieux (idempotence)
     if (subscriber.status === 'verified') {
-      console.info(`ℹ️ [Verify] Déjà vérifié : ${token}`);
+      console.info("ℹ️ [Verify] Déjà vérifié.");
       return NextResponse.redirect(`${baseUrl}?verified=true`);
     }
 
@@ -74,7 +77,7 @@ export async function GET(request: Request) {
       const expiresAt = new Date(subscriber.tokenExpiresAt).getTime();
       const now = Date.now();
       if (now > expiresAt) {
-        console.warn(`⚠️ [Verify] Jeton expiré pour : ${token}`);
+        console.warn("⚠️ [Verify] Jeton expiré.");
         return NextResponse.redirect(`${baseUrl}?verified=false&reason=expired`);
       }
     }
@@ -84,7 +87,7 @@ export async function GET(request: Request) {
       mutations: [
         {
           patch: {
-            id: token,
+            id: docId,
             set: { status: 'verified' },
             // 🛡️ Sécurité supplémentaire : on n'accepte de patcher QUE si pending
             ifRevisionID: subscriber._rev,
@@ -111,7 +114,7 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${baseUrl}?verified=false&reason=server`);
     }
 
-    console.log(`🟢 [Verify] Abonné vérifié avec succès : ${token}`);
+    console.log("🟢 [Verify] Abonné vérifié avec succès.");
     return NextResponse.redirect(`${baseUrl}?verified=true`);
 
   } catch (error) {
