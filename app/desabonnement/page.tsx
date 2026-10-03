@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 // Textes N'Ko fournis par la rédaction (règle : on n'invente ni ne modifie jamais le N'Ko).
 // Si un texte est vide, seule la version française s'affiche.
 const TEXTES_NKO = {
-  titre: "ߡߊߝߘߎ ",
+  titre: "ߡߊߝߘߎ ߓߐ߫",
   explication: "ߘߌ߯ߟߊ߲ ߣߌ߲߬ ߘߌ߯߸ ߞߊ߬ ߌ ߟߊ߫ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߓߐ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߛߙߍߘߍ ߘߐ߫߹",
   bouton: "ߒ ߡߊߝߘߎ ߓߐ߫",
   fait: "ߊ߬ ߓߘߊ߫ ߞߍ߫߸ ߌ ߟߊ߫ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߓߘߊ߫ ߓߐ߫ ߊ߲ ߠߊ߫ ߛߙߍߘߍ ߘߐ߫߹ ߌ ߕߍߣߊ߬ ߊ߲ ߠߊ߫ ߢߎߡߍߙߋ߲ߗߋ ߟߎ߬ ߛߐ߬ߘߐ߲߬ ߠߊ߫ ߡߎ߬ߕߎ߲߬߹",
