@@ -146,8 +146,10 @@ export async function POST(request: Request) {
     }
 
     // 🔍 PHASE A : LE RADAR ANTI-DOUBLONS (Vérification en Temps Réel)
-    const query = encodeURIComponent(`*[_type == "subscriber" && email == "${pureEmail}"][0]`);
-    const sanityCheckRes = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}`, {
+    // L'e-mail est transmis comme paramètre GROQ ($email), jamais collé dans la requête
+    const query = encodeURIComponent(`*[_type == "subscriber" && email == $email][0]`);
+    const emailParam = encodeURIComponent(JSON.stringify(pureEmail));
+    const sanityCheckRes = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}&%24email=${emailParam}`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}` },
         cache: 'no-store' // 🚀 LE BRISE-CACHE : Interdit à Next.js de mentir, force l'interrogation directe à Sanity
@@ -170,7 +172,8 @@ export async function POST(request: Request) {
       mutations: [
         {
           create: {
-            _id: sovereignToken,
+            // 🔒 Le point rend la fiche invisible aux requêtes anonymes (dataset public)
+            _id: `subscriber.${sovereignToken}`,
             _type: 'subscriber',
             email: pureEmail,
             status: 'pending', 
@@ -197,7 +200,7 @@ export async function POST(request: Request) {
         throw new Error("Échec de la création dans Sanity");
     }
     
-    console.log(`✅ [Sanity] Nouvel abonné scellé. Token FORGÉ : ${sovereignToken}`);
+    console.log(`✅ [Sanity] Nouvel abonné scellé : ${maskEmail(email)}`);
 
     // 📧 PHASE C : L'ARME DE COMMUNICATION (Email de vérification)
     const verifyLink = `${baseUrl}/api/verify?token=${sovereignToken}`;
