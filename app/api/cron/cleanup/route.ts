@@ -11,8 +11,10 @@ export const runtime = 'edge';
 
 export async function GET(request: Request) {
   // 🛡️ COUCHE 1 : LE CADENAS VERCEL (Zero Trust)
+  // Si CRON_SECRET manque, on refuse tout (sinon "Bearer undefined" ouvrirait la porte)
+  const cronSecret = process.env.CRON_SECRET;
   const authHeader = request.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
     console.error("🚨 [Sécurité] Tentative d'accès non autorisée à la Faucheuse.");
     return NextResponse.json({ error: "ߟߊ߬ߘߌ߬ߢߍ߬ߟߌ ߕߍ߫ / Non autorisé" }, { status: 401 });
   }
