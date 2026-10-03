@@ -153,47 +153,47 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
         }
       </style>
     </head>
-    <body>
-      <table class="wrapper" width="100%" border="0" cellpadding="0" cellspacing="0">
+    <body translate="no">
+      <table translate="no" class="wrapper" width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
-          <td align="center">
-            <table class="container" width="100%" border="0" cellpadding="0" cellspacing="0">
+          <td translate="no" align="center">
+            <table translate="no" class="container" width="100%" border="0" cellpadding="0" cellspacing="0">
               <tr>
-                <td class="header">
-                  <h1 class="logo-text notranslate" dir="rtl">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ<span class="logo-dot">.</span></h1>
+                <td translate="no" class="header">
+                  <h1 translate="no" class="logo-text notranslate" dir="rtl">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ<span translate="no" class="logo-dot">.</span></h1>
                 </td>
               </tr>
               <tr>
-                <td class="content">
-                  <div class="devise-nko notranslate" dir="rtl">
+                <td translate="no" class="content">
+                  <div translate="no" class="devise-nko notranslate" dir="rtl">
                     ߟߐ߲ߞߏ ߡߊ߫ ߘߊ߲߬ ߠߊ߫ ߝߊ߬ߛߏ߬ ߛߌ߫ ߡߊ߬.<br>
                     ߞߊ߲ ߝߣߊ߫ ߡߊ߫ ߞߊ߲߫ ߞߊ߬ ߞߍ߫ ߞߎ߬ߡߊ߬ߜߏߟߏ߲߫ ߘߌ߫.
                   </div>
-                  <div class="devise-fr notranslate" dir="ltr">
+                  <div translate="no" class="devise-fr notranslate" dir="ltr">
                     La science n'a pas de frontières.<br>
                     La langue ne devrait plus en être une.
                   </div>
-                  <div class="message-nko notranslate" dir="rtl">
+                  <div translate="no" class="message-nko notranslate" dir="rtl">
                     ߌ ߣߌ߫ ߛߣߍ߫ ߟߐ߲ߞߏ ߖߊ߯ߓߡߊ ߞߣߍ ߞߊ߲߬߹<br>
                     ߌ ߟߊ߫ ߞߘߎߡߊ ߟߊߛߙߋߦߊ߫ ߊ߲ ߦߋ߲߫ ߓߊ߫߹
                   </div>
-                  <div class="message-fr notranslate" dir="ltr">
+                  <div translate="no" class="message-fr notranslate" dir="ltr">
                     Bienvenue dans l'univers du savoir.<br>
                     Confirmez votre adresse e-mail ici.
                   </div>
-                  <div>
-                    <a href="${verifyLink}" class="btn-gold notranslate" dir="rtl">
+                  <div translate="no">
+                    <a translate="no" href="${verifyLink}" class="btn-gold notranslate" dir="rtl">
                       ߊ߬ߥߐ߸ ߒ ߓߘߊ߫ ߛߐ߲߬߹
-                      <span class="btn-fr" dir="ltr">Oui, je confirme</span>
+                      <span translate="no" class="btn-fr" dir="ltr">Oui, je confirme</span>
                     </a>
                   </div>
                 </td>
               </tr>
             </table>
-            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <table translate="no" width="100%" border="0" cellpadding="0" cellspacing="0">
               <tr>
-                <td class="footer">
-                  <a href="${unsubscribeLink}" class="unsubscribe-link notranslate"><span lang="nqo" dir="rtl" style="font-family: 'Kigelia', sans-serif; font-size: 15px;">ߡߊߝߘߎ ߓߐ߫</span> / Se désabonner</a>
+                <td translate="no" class="footer">
+                  <a translate="no" href="${unsubscribeLink}" class="unsubscribe-link notranslate"><span translate="no" lang="nqo" dir="rtl" style="font-family: 'Kigelia', sans-serif; font-size: 15px;">ߡߊߝߘߎ ߓߐ߫</span> / Se désabonner</a>
                 </td>
               </tr>
             </table>
