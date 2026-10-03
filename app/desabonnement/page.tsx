@@ -12,16 +12,16 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-// ⚠️ TEXTES N'KO À FOURNIR PAR LA RÉDACTION (règle : on n'invente jamais de N'Ko).
-// Tant qu'un texte est vide, seule la version française s'affiche.
+// Textes N'Ko fournis par la rédaction (règle : on n'invente ni ne modifie jamais le N'Ko).
+// Si un texte est vide, seule la version française s'affiche.
 const TEXTES_NKO = {
-  titre: "",
-  explication: "",
-  bouton: "",
-  fait: "",
-  invalide: "",
-  erreur: "",
-  accueil: "",
+  titre: "ߡߊߝߘߎ ",
+  explication: "ߘߌ߯ߟߊ߲ ߣߌ߲߬ ߘߌ߯߸ ߞߊ߬ ߌ ߟߊ߫ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߓߐ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߛߙߍߘߍ ߘߐ߫߹",
+  bouton: "ߒ ߡߊߝߘߎ ߓߐ߫",
+  fait: "ߊ߬ ߓߘߊ߫ ߞߍ߫߸ ߌ ߟߊ߫ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߓߘߊ߫ ߓߐ߫ ߊ߲ ߠߊ߫ ߛߙߍߘߍ ߘߐ߫߹ ߌ ߕߍߣߊ߬ ߊ߲ ߠߊ߫ ߢߎߡߍߙߋ߲ߗߋ ߟߎ߬ ߛߐ߬ߘߐ߲߬ ߠߊ߫ ߡߎ߬ߕߎ߲߬߹",
+  invalide: "ߛߘߌ߬ߜߋ߲ ߣߌ߲߬ ߡߊ߲߫ ߢߊ߬ ߥߟߴߊ߬ ߡߊ߫ ߘߝߊ߫߹ ߌ ߓߟߏߞߍ߫ ߛߘߌ߬ߜߋ߲ ߠߊ߫߸ ߌ ߞߊ߬  ߊ߲ ߛߐ߬ߘߐ߲߬ ߊ߲ ߠߊ߫ ߢߎߡߍߙߋ߲ߗߋ ߘߐ߫ ߡߍ߲ ߝߍ߬߹",
+  erreur: "ߝߎ߬ߕߎ߲߬ߕߌ ߟߋ߬߹ ߊ߬ ߡߊߝߟߍ߫ ߕߎ߲߯ ߞߐߟߊ߫߸ ߥߟߊ߫ ߞߊ߬ ߛߓߍߟߌ ߞߍ߫ ߊ߲ ߡߊ߬ ߟߊߛߐ߬ߘߐ߲߬ߠߌ ߞߐߜߍ ߞߊ߲߬߹",
+  accueil: "ߛߊ߬ߦߌ߲߬ ߟߊ߬ߓߍ߲߬ߠߌ ߡߊ߬",
 };
 
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
