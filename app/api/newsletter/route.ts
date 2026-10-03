@@ -89,7 +89,13 @@ export async function POST(request: Request) {
     const baseUrl = new URL(request.url).origin; 
     
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN && ip !== 'IP_INCONNUE') {
-      const { success } = await ratelimit.limit(ip);
+      let success = true;
+      try {
+        ({ success } = await ratelimit.limit(ip));
+      } catch (error) {
+        // Upstash injoignable : on continue (Turnstile protège toujours), on note l'incident
+        console.error("⚠️ [Bouclier Redis] Upstash injoignable, limite ignorée :", error);
+      }
       if (!success) {
         console.warn(`🚨 [Bouclier Redis] Attaque DDoS bloquée depuis l'IP : ${ip}`);
         return NextResponse.json({ error: "ߌ ߓߘߊ߫ ߢߌߣߌ߲ߞߊߟߌ ߛߌߦߊߡߊ߲߫ ߞߍ߫ / Trop de tentatives. Veuillez patienter 1 minute." }, { status: 429 });
