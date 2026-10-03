@@ -126,10 +126,11 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
           text-align: center;
         }
 
+        /* Lien discret mais lisible : gris (pas de bouton), souligné pour qu'on le reconnaisse */
         .unsubscribe-link {
-          color: #525252;
-          font-size: 12px;
-          text-decoration: none;
+          color: #737373;
+          font-size: 13px;
+          text-decoration: underline;
           letter-spacing: 0.5px;
           font-family: sans-serif;
         }
@@ -170,7 +171,7 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
             <table width="100%" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td class="footer">
-                  <a href="${unsubscribeLink}" class="unsubscribe-link notranslate">Se désabonner</a>
+                  <a href="${unsubscribeLink}" class="unsubscribe-link notranslate"><span lang="nqo" dir="rtl" style="font-family: 'Kigelia', sans-serif; font-size: 15px;">ߡߊߝߘߎ ߓߐ߫</span> / Se désabonner</a>
                 </td>
               </tr>
             </table>
