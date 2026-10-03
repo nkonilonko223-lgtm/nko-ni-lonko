@@ -106,7 +106,24 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
           color: #e5e5e5;
           font-size: 20px;
           line-height: 2;
+          margin-bottom: 12px;
+        }
+
+        /* Traduction française, plus petite et plus discrète que le N'Ko */
+        .message-fr {
+          color: #a3a3a3;
+          font-size: 14px;
+          line-height: 1.7;
           margin-bottom: 40px;
+          font-family: sans-serif;
+        }
+
+        .btn-fr {
+          display: block;
+          font-size: 13px;
+          font-weight: normal;
+          font-family: sans-serif;
+          margin-top: 4px;
         }
 
         .btn-gold {
@@ -157,12 +174,17 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
                     La langue ne devrait plus en être une.
                   </div>
                   <div class="message-nko notranslate" dir="rtl">
-                    ߌ ߣߌ߫ ߛߣߍ߫ ߟߐ߲ߞߏ ߘߎߢߊ߫ ߘߐ߫.<br>
-                    ߌ ߟߊ߫ ߞߘߎߡߊ ߟߊߛߙߋߦߊ߫ ߖߊ߰ߣߌ߲߫.
+                    ߌ ߣߌ߫ ߛߣߍ߫ ߟߐ߲ߞߏ ߖߊ߯ߓߡߊ ߞߣߍ ߞߊ߲߬߹<br>
+                    ߌ ߟߊ߫ ߞߘߎߡߊ ߟߊߛߙߋߦߊ߫ ߊ߲ ߦߋ߲߫ ߓߊ߫߹
+                  </div>
+                  <div class="message-fr notranslate" dir="ltr">
+                    Bienvenue dans l'univers du savoir.<br>
+                    Confirmez votre adresse e-mail ici.
                   </div>
                   <div>
                     <a href="${verifyLink}" class="btn-gold notranslate" dir="rtl">
-                      ߊ߬ߥߐ ߒ ߓߘߊ߫ ߛߐ߲߬
+                      ߊ߬ߥߐ߸ ߒ ߓߘߊ߫ ߛߐ߲߬߹
+                      <span class="btn-fr" dir="ltr">Oui, je confirme</span>
                     </a>
                   </div>
                 </td>
