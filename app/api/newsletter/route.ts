@@ -204,6 +204,7 @@ export async function POST(request: Request) {
 
     // 📧 PHASE C : L'ARME DE COMMUNICATION (Email de vérification)
     const verifyLink = `${baseUrl}/api/verify?token=${sovereignToken}`;
+    const unsubscribeLink = `${baseUrl}/desabonnement?token=${sovereignToken}`;
 
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -215,7 +216,7 @@ export async function POST(request: Request) {
         from: 'NKo ni Lonko <newsletter@nkonilonko.com>', 
         to: [pureEmail],
         subject: 'ߌ ߣߌ߫ ߛߣߍ߫ ߟߐ߲ߞߏ ߘߎߢߊ߫ ߘߐ߫ (Bienvenue)',
-        html: generateWelcomeEmail(verifyLink) 
+        html: generateWelcomeEmail(verifyLink, unsubscribeLink)
       })
     });
 

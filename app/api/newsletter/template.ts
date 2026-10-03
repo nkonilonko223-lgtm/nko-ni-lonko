@@ -5,7 +5,7 @@
 // ============================================================================
 
 // 🔴 C'EST ICI QUE SE TROUVE LA CORRECTION : (verifyLink: string)
-export const generateWelcomeEmail = (verifyLink: string) => {
+export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string) => {
   return `
     <!DOCTYPE html>
     <html lang="nqo" dir="rtl" translate="no" class="notranslate" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -170,7 +170,7 @@ export const generateWelcomeEmail = (verifyLink: string) => {
             <table width="100%" border="0" cellpadding="0" cellspacing="0">
               <tr>
                 <td class="footer">
-                  <a href="https://www.nkonilonko.com" class="unsubscribe-link notranslate">Se désabonner</a>
+                  <a href="${unsubscribeLink}" class="unsubscribe-link notranslate">Se désabonner</a>
                 </td>
               </tr>
             </table>
