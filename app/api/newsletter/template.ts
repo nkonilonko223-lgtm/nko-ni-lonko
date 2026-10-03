@@ -175,7 +175,7 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
                   </div>
                   <div translate="no" class="message-nko notranslate" dir="rtl">
                     ߌ ߣߌ߫ ߛߣߍ߫ ߟߐ߲ߞߏ ߖߊ߯ߓߡߊ ߞߣߍ ߞߊ߲߬߹<br>
-                    ߌ ߟߊ߫ ߞߘߎߡߊ ߟߊߛߙߋߦߊ߫ ߊ߲ ߦߋ߲߫ ߓߊ߫߹
+                    ߌ ߟߊ߫ ߞߘߎߡߊ ߟߊߛߙߋߦߊ߫߸ ߊ߲ ߧߋ߲߫ ߓߊ߫߹
                   </div>
                   <div translate="no" class="message-fr notranslate" dir="ltr">
                     Bienvenue dans l'univers du savoir.<br>
