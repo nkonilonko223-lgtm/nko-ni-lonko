@@ -50,7 +50,13 @@ export async function POST(request: Request) {
     const ip = request.headers.get('x-forwarded-for') || 'IP_INCONNUE';
     
     if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-      const { success } = await ratelimit.limit(ip);
+      let success = true;
+      try {
+        ({ success } = await ratelimit.limit(ip));
+      } catch (error) {
+        // Upstash injoignable : on continue (Turnstile protège toujours), on note l'incident
+        console.error("⚠️ [Bouclier Redis] Upstash injoignable, limite ignorée :", error);
+      }
       if (!success) {
         return NextResponse.json({ error: "ߌ ߓߘߊ߫ ߗߋߛߓߍ߫ ߛߌߦߊߡߊ߲߫ ߗߋ߫. ߡߊ߬ߞߐ߬ߣߐ߲߬ߠߌ߲ ߞߍ߫. / Trop de tentatives. Veuillez patienter 15 minutes." }, { status: 429 });
       }
