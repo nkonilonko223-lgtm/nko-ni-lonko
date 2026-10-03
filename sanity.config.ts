@@ -28,5 +28,13 @@ export default defineConfig({
   schema: {
     // 🚀 L'INJECTION DIRECTE : On force le compilateur à lire les 3 fichiers restants
     types: [author, article, subscriber],
+    // 🔒 Pas de création manuelle d'abonné : seule l'API crée des fiches privées (subscriber.<jeton>)
+    templates: (prev) => prev.filter((template) => template.schemaType !== 'subscriber'),
+  },
+
+  document: {
+    // 🔒 Pas de duplication d'abonné : la copie aurait un identifiant public
+    actions: (prev, context) =>
+      context.schemaType === 'subscriber' ? prev.filter(({ action }) => action !== 'duplicate') : prev,
   },
 });
