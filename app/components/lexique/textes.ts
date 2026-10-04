@@ -12,4 +12,10 @@ export const TEXTES_LEXIQUE = {
   dictionnaire: { nko: "ߟߐ߲ߞߏ ߞߘߐߝߐߟߊ߲ ߝߊ߬ߙߊ߲߬ߛߌ߬-ߒߞߏ", fr: "Dictionnaire scientifique N'Ko – français" },
   articlesQuiUtilisent: { nko: "ߞߎߡߘߊ ߡߍ߲ ߠߎ߬ ߦߋ߫ ߞߎߡߊߘߋ߲ ߣߌ߲߬ ߟߊߓߊ߯ߙߊ߫ ߟߊ߫", fr: "Articles qui utilisent ce terme" },
   domaine: { nko: "ߡߊ߬ߘߎ߮", fr: "Domaine" },
+  // Textes 7 à 11 : N'Ko à fournir par la rédaction (vide = seul le français s'affiche)
+  rechercher: { nko: "", fr: "Rechercher un terme" },
+  aucunResultat: { nko: "", fr: "Aucun terme trouvé" },
+  memeDomaine: { nko: "", fr: "Termes du même domaine" },
+  citer: { nko: "", fr: "Citer ce terme" },
+  copie: { nko: "", fr: "Copié" },
 } as const;
