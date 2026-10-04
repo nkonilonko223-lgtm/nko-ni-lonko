@@ -109,6 +109,8 @@ export default defineType({
       type: 'datetime',
       group: 'content',
       initialValue: () => new Date().toISOString(),
+      // Sans date, le site afficherait la date du jour et l'ordre des articles serait faux
+      validation: (rule) => rule.required().error('La date de publication est obligatoire.'),
     }),
 
     defineField({
