@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { defineIncomingReferenceDecoration } from 'sanity/structure';
 import React from 'react';
 
 // ============================================================================
@@ -34,6 +35,17 @@ export default defineType({
         ? { message: "Ce champ contient du texte non normalisé (NFC). Signalez-le avant publication.", path: [fautif[0]] }
         : true;
     }).warning(),
+  // 🔒 Information éditoriale réservée à la rédaction (jamais affichée sur le site public)
+  renderMembers: (members) => [
+    ...members,
+    defineIncomingReferenceDecoration({
+      name: 'articlesQuiUtilisent',
+      title: 'Utilisé dans ces articles',
+      description: 'Visible seulement dans le Studio (rédaction). Ces liens ne sont pas publics.',
+      types: [{ type: 'article' }],
+      creationAllowed: false,
+    }),
+  ],
   fields: [
     defineField({
       name: 'termeNko',
