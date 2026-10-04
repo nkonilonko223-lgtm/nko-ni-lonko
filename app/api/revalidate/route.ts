@@ -30,6 +30,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Signature invalide' }, { status: 401 });
     }
 
+    // 📖 Terme du lexique : dictionnaire, pages des termes et plan du site
+    // (les articles relisent leurs termes à chaque visite)
+    if (body?._type === 'terme') {
+      revalidateTag('terme', { expire: 0 });
+      console.info("🔔 [Revalidate] Lexique mis à jour.");
+      return NextResponse.json({ revalidated: true, now: Date.now() });
+    }
+
     if (body?._type !== 'article') {
       return NextResponse.json({ revalidated: false, message: 'Type ignoré' });
     }

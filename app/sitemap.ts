@@ -39,6 +39,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("🚨 [Sitemap] Échec de la récupération des articles Sanity :", error);
   }
 
+  // 📖 Dictionnaire : une entrée par terme du lexique
+  let termes: { slug: string }[] = [];
+  try {
+    termes = await client.fetch<{ slug: string }[]>(
+      `*[_type == "terme" && defined(slug.current)]{ "slug": slug.current }`,
+      {},
+      { next: { tags: ["terme"], revalidate: 3600 } }
+    );
+  } catch (error) {
+    console.error("🚨 [Sitemap] Échec de la récupération du lexique :", error);
+  }
+  const termeEntries: MetadataRoute.Sitemap = termes.map((t) => ({
+    url: `${baseUrl}/lexique/${t.slug}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.5,
+  }));
+
   // ==============================================================================
   // 3. GÉNÉRATION DES ROUTES AVEC IMAGES
   // ==============================================================================
@@ -87,5 +104,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.3,
     },
     ...postEntries,
+    {
+      url: `${baseUrl}/lexique`,
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    },
+    ...termeEntries,
   ];
 }
