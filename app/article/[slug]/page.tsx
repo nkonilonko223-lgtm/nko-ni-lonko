@@ -157,7 +157,16 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     title,
     mainImage,
     publishedAt,
-    body,
+    "body": body[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "termeLexique" => { "terme": terme->{ termeNko, termeFr, definitionNko, definitionFr, "slug": slug.current } }
+      }
+    },
+    "lexique": *[_type == "terme" && _id in array::compact(^.body[].markDefs[].terme._ref)] | order(termeFr asc) {
+      termeNko, termeFr, definitionNko, definitionFr, "slug": slug.current
+    },
     excerpt,
     category,
     tags,

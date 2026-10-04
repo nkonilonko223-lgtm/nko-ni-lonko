@@ -17,6 +17,7 @@ import Image from "next/image";
 import { PortableText, PortableTextComponents, PortableTextComponentProps } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
 import { urlFor } from "../../sanity/image";
+import TermeLexique from "./lexique/TermeLexique";
 
 // 🚀 IMPORTATION DU STANDARD MATHÉMATIQUE MONDIAL
 import { BlockMath } from 'react-katex';
@@ -263,28 +264,12 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
           </a>
         );
       },
-      // 🚀 LE GLOSSAIRE (Divulgation Progressive 1/1000)
-      definition: ({ value: defValue, children }) => {
-        const tooltipText = defValue?.text || defValue?.description || '';
-        const isTooltipNko = isNko(tooltipText);
-        
-        return (
-          <span className="group relative inline-block cursor-help border-b-2 border-dashed border-[#fbbf24]/60 text-[#fbbf24] hover:bg-[#fbbf24]/10 transition-colors duration-300">
-            {children}
-            <span 
-              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 md:w-72 p-4 bg-[#02040a]/95 backdrop-blur-xl border border-white/20 rounded-xl text-sm text-gray-200 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-[100] shadow-[0_10px_40px_rgba(0,0,0,0.8)] translate-y-2 group-hover:translate-y-0" 
-              dir={isTooltipNko ? 'rtl' : 'ltr'} lang={isTooltipNko ? 'nqo' : 'fr'}
-            >
-              <span className="block font-bold text-[#fbbf24] mb-2 text-xs uppercase tracking-widest border-b border-white/10 pb-1">
-                {isTooltipNko ? 'ߞߘߐߦߌߘߊ' : 'Définition'}
-              </span>
-              <span className={`${isTooltipNko ? 'font-kigelia text-base leading-relaxed' : 'font-sans leading-snug'}`}>
-                {tooltipText || 'Définition non disponible.'}
-              </span>
-            </span>
-          </span>
-        );
-      }
+      // 📖 TERME DU LEXIQUE : le mot ouvre sa définition (fiche sur téléphone, bulle sur ordinateur)
+      termeLexique: ({ value: markValue, children, text }) => (
+        <TermeLexique terme={markValue?.terme} nko={isNko(text || '')}>
+          {children}
+        </TermeLexique>
+      )
     },
     block: {
       normal: ({ value: blockValue, children }) => {
