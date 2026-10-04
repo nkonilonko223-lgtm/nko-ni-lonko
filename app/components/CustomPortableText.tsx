@@ -673,11 +673,12 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
               </div>
 
               {/* 👑 Titre N'Ko — Souverain */}
+              {/* Détection automatique : un titre français saisi dans la case N'Ko s'affiche en français */}
               {sectionValue.titleNko && (
                 <p
-                  dir="rtl"
-                  lang="nqo"
-                  className="font-kigelia text-3xl md:text-4xl font-bold text-[#fbbf24] text-center leading-normal mb-2 print:text-black drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]"
+                  dir={isNko(sectionValue.titleNko) ? "rtl" : "ltr"}
+                  lang={isNko(sectionValue.titleNko) ? "nqo" : "fr"}
+                  className={`${isNko(sectionValue.titleNko) ? "font-kigelia" : "font-sans"} text-3xl md:text-4xl font-bold text-[#fbbf24] text-center leading-normal mb-2 print:text-black drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]`}
                 >
                   {sectionValue.titleNko}
                 </p>
