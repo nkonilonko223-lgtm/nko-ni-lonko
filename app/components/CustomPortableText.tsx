@@ -576,7 +576,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
             colorClass: 'text-purple-300',
             borderClass: 'border-purple-400/50',
             bgClass: 'from-purple-500/10',
-            labelNko: 'ߢߍߥߟߊ ߓߏߟߏ߲',
+            labelNko: 'ߢߌ߬ߣߌ߲߬ߞߊ߬ߟߌ߬ߓߊ',
             labelFr: 'Grande Question'
           },
           warning: {
@@ -592,7 +592,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
             colorClass: 'text-[#fbbf24]',
             borderClass: 'border-[#fbbf24]/50',
             bgClass: 'from-[#fbbf24]/10',
-            labelNko: 'ߕߏ߬ߟߏ߲ ߞߏ',
+            labelNko: 'ߌ ߞߊ߬ ߟߐ߲߫ ߓߊ߬؟',
             labelFr: 'Le saviez-vous ?'
           },
           quote: {
