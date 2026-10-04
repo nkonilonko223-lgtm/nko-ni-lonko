@@ -613,7 +613,9 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
           },
         };
 
-        const config = intentConfig[calloutValue.intent || 'info'] || intentConfig.info;
+        // « success » est utilisé par la rédaction pour les définitions de termes : même style que « definition »
+        const intent = calloutValue.intent === 'success' ? 'definition' : (calloutValue.intent || 'info');
+        const config = intentConfig[intent] || intentConfig.info;
         const titleNko = calloutValue.titleNko || config.labelNko;
         const titleFr = calloutValue.titleFr || config.labelFr;
 

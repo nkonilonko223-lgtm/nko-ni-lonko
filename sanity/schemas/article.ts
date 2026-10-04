@@ -279,7 +279,8 @@ export default defineType({
                 list: [
                   { title: 'Information (Défaut)', value: 'info' },
                   { title: 'Avertissement / Attention', value: 'warning' },
-                  { title: 'Succès / Validation', value: 'success' }
+                  // Valeur « success » conservée (données existantes) ; affichée comme une définition sur le site
+                  { title: 'Définition (terme expliqué)', value: 'success' }
                 ],
                 layout: 'radio'
               },
