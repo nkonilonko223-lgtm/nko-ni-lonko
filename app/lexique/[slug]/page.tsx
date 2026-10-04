@@ -5,6 +5,7 @@ import { client } from "../../../sanity/client";
 import { getSanityClient } from "../../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../../components/lexique/textes";
 import { comparerNko } from "../../components/lexique/normaliser";
+import CiterTerme from "../../components/lexique/CiterTerme";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un terme du lexique
@@ -112,6 +113,8 @@ export default async function PageTerme({ params }: { params: Promise<{ slug: st
             <span lang="nqo" dir="rtl" className="font-kigelia text-[#fbbf24]">{terme.domaine}</span>
           </p>
         )}
+
+        <CiterTerme termeNko={terme.termeNko} termeFr={terme.termeFr} url={`${SITE_URL}/lexique/${terme.slug}`} />
 
         {terme.memeDomaine && terme.memeDomaine.length > 0 && (
           <section className="border-t border-white/10 pt-6">
