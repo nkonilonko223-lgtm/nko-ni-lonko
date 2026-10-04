@@ -9,7 +9,9 @@ import "./globals.css";
 import StyledComponentsRegistry from './registry';
 import { LanguageProvider } from "./components/LanguageProvider";
 import NetworkBoundary from "./components/NetworkBoundary"; 
-import PredictiveProvider from "./components/PredictiveProvider"; 
+import PredictiveProvider from "./components/PredictiveProvider";
+import BandeauApercu from "./components/BandeauApercu";
+import { draftMode } from "next/headers";
 
 // ============================================================================
 // 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
@@ -165,11 +167,13 @@ const themeInitScript = `
 // ============================================================================
 // 6. STRUCTURE PRINCIPALE (LAYOUT)
 // ============================================================================
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Mode aperçu (activé depuis le Studio) : affiche le bandeau « brouillons visibles »
+  const { isEnabled: apercu } = await draftMode();
 
   const globalJsonLd = {
     "@context": "https://schema.org",
@@ -252,6 +256,7 @@ return (
 
         <Analytics />
         <PredictiveProvider />
+        {apercu && <BandeauApercu />}
 
         {/* Restauration du composant Script Next.js pour Phosphor */}
         <Script 
