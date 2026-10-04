@@ -626,18 +626,18 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
               lang={nkoText ? "nqo" : "fr"}
               className={`my-8 md:my-12 rounded-2xl bg-gradient-to-br ${config.bgClass} to-transparent border ${config.borderClass} border-y border-white/5 print:border-black print:bg-transparent overflow-hidden shadow-lg`}
             >
-              {/* 👑 EN-TÊTE BILINGUE */}
+              {/* 👑 EN-TÊTE : une seule étiquette, dans la langue de l'encadré */}
               <div className={`flex items-center gap-3 px-6 py-3 border-b ${config.borderClass} border-opacity-30 ${nkoText ? 'flex-row-reverse' : 'flex-row'}`}>
                 <i className={`ph-fill ${config.icon} text-2xl ${config.colorClass} drop-shadow-[0_0_8px_currentColor]`}></i>
-                <div className={`flex flex-col ${nkoText ? 'items-end' : 'items-start'}`}>
-                  {/* 👑 N'Ko is King : Titre N'Ko en premier */}
+                {nkoText ? (
                   <span lang="nqo" className={`font-kigelia text-base font-bold ${config.colorClass}`}>
                     {titleNko}
                   </span>
-                  <span lang="fr" className="font-sans text-[10px] uppercase tracking-widest text-white/40">
+                ) : (
+                  <span lang="fr" className={`font-sans text-xs font-semibold uppercase tracking-widest ${config.colorClass}`}>
                     {titleFr}
                   </span>
-                </div>
+                )}
               </div>
 
               {/* 👑 CONTENU */}
