@@ -280,7 +280,10 @@ export default defineType({
                   { title: 'Information (Défaut)', value: 'info' },
                   { title: 'Avertissement / Attention', value: 'warning' },
                   // Valeur « success » conservée (données existantes) ; affichée comme une définition sur le site
-                  { title: 'Définition (terme expliqué)', value: 'success' }
+                  { title: 'Définition (terme expliqué)', value: 'success' },
+                  // Types déjà connus du site (étiquettes N'Ko validées par la rédaction)
+                  { title: 'Le saviez-vous ?', value: 'amazing' },
+                  { title: 'Question (ex. « Et en Afrique ? »)', value: 'question' },
                 ],
                 layout: 'radio'
               },
