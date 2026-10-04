@@ -17,6 +17,23 @@ const ChampRtl = (props: import('sanity').StringInputProps) =>
 const ChampLtr = (props: import('sanity').InputProps) =>
   React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props));
 
+// Avertit si un autre terme porte déjà le même nom (évite les doublons, surtout lors des imports)
+const regleDoublon = (champ: 'termeFr' | 'termeNko') => (rule: import('sanity').StringRule) =>
+  rule
+    .custom(async (valeur, context) => {
+      if (typeof valeur !== 'string' || !valeur.trim()) return true;
+      const idBrut = context.document?._id || '';
+      const id = idBrut.startsWith('drafts.') ? idBrut.slice('drafts.'.length) : idBrut;
+      const doublon = await context
+        .getClient({ apiVersion: '2025-02-19' })
+        .fetch(
+          `*[_type == "terme" && lower(${champ}) == lower($valeur) && !(_id in [$id, "drafts." + $id])][0]._id`,
+          { valeur: valeur.trim(), id }
+        );
+      return doublon ? "Un autre terme du lexique porte déjà ce nom : vérifiez qu'il ne s'agit pas d'un doublon." : true;
+    })
+    .warning();
+
 export default defineType({
   name: 'terme',
   title: 'ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ / Lexique',
@@ -51,14 +68,20 @@ export default defineType({
       name: 'termeNko',
       title: 'Terme (N\'Ko)',
       type: 'string',
-      validation: (rule) => rule.required().error('Le terme en N\'Ko est obligatoire.'),
+      validation: (rule) => [
+        rule.required().error('Le terme en N\'Ko est obligatoire.'),
+        regleDoublon('termeNko')(rule),
+      ],
       components: { input: ChampRtl },
     }),
     defineField({
       name: 'termeFr',
       title: 'Terme (français)',
       type: 'string',
-      validation: (rule) => rule.required().error('Le terme en français est obligatoire.'),
+      validation: (rule) => [
+        rule.required().error('Le terme en français est obligatoire.'),
+        regleDoublon('termeFr')(rule),
+      ],
       components: { input: ChampLtr },
     }),
     defineField({
