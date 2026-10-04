@@ -1,5 +1,6 @@
 import { client } from "../../../sanity/client";
 import { getSanityClient } from "../../../sanity/fetch";
+import type { TermeLexiqueData } from "../../components/lexique/TermeLexique";
 import { urlFor } from "../../../sanity/image";
 import ArticleClient from "../../components/ArticleClient";
 import { Metadata } from "next";
@@ -44,6 +45,7 @@ interface SanityArticleRaw {
   
  tags: string[];
   references: Array<{ title: string; url: string }>;
+  lexique?: TermeLexiqueData[];
   authors?: Array<{
     name: string;
     nameNko?: string;
@@ -72,6 +74,7 @@ export interface SafeArticleData {
   readingTime: number; 
   tags: string[];
   references: Array<{ title: string; url: string }>;
+  lexique: TermeLexiqueData[];
  authors: Array<{
     name: string;
     nameNko: string | null;
@@ -131,6 +134,7 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     wordCount: groqWordCount,
     tags: raw.tags || [],
     references: raw.references || [],
+    lexique: raw.lexique || [],
     authors: safeAuthors
   };
 }

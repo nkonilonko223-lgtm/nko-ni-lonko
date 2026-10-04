@@ -19,6 +19,8 @@ import ArticleTools from "./ArticleTools";
 import ArticleFooter from "./ArticleFooter"; 
 import { PortableTextBlock } from "@portabletext/types";
 import CustomPortableText, { formatDateNko, toNkoDigits } from "./CustomPortableText";
+import LexiqueArticle from "./lexique/LexiqueArticle";
+import type { TermeLexiqueData } from "./lexique/TermeLexique";
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Zéro Any - Dogme 2)
@@ -49,6 +51,7 @@ interface ClientArticleData {
   category: string;
   readingTime: number;
   references: Array<{ title: string; url: string }>;
+  lexique?: TermeLexiqueData[]; // termes du lexique utilisés dans l'article
   authors: Array<{
     name: string;
     nameNko: string | null;
@@ -332,6 +335,9 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
       >
         <CustomPortableText value={article.body} lang={lang} />
       </article>
+
+      {/* 📖 Lexique de fin d'article (seulement si l'article utilise des termes) */}
+      <LexiqueArticle termes={article.lexique || []} />
 
 {/* 🖨️ PIED DE PAGE D'IMPRESSION INVISIBLE SUR ÉCRAN */}
       <div className="hidden print:block max-w-3xl mx-auto border-t-2 border-black pt-4 mt-8 text-center px-4">
