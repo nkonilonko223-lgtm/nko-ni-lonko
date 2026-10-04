@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { client } from "../../../sanity/client";
 import { getSanityClient } from "../../../sanity/fetch";
-import { TEXTES_LEXIQUE } from "../../components/lexique/textes";
+import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "../../components/lexique/textes";
 import { comparerNko } from "../../components/lexique/normaliser";
 import CiterTerme from "../../components/lexique/CiterTerme";
 
@@ -107,7 +107,7 @@ export default async function PageTerme({ params }: { params: Promise<{ slug: st
             dir="auto"
             enterKeyHint="search"
             autoComplete="off"
-            placeholder={TEXTES_LEXIQUE.rechercher.nko ? `${TEXTES_LEXIQUE.rechercher.nko} · ${TEXTES_LEXIQUE.rechercher.fr}` : TEXTES_LEXIQUE.rechercher.fr}
+            placeholder={AIDE_RECHERCHE}
             className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-11 pr-4 text-sm text-white placeholder:text-white/40 focus:border-blue-400/60 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
           />
           <button

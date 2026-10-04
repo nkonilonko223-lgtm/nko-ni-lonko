@@ -20,3 +20,10 @@ export const TEXTES_LEXIQUE = {
   citer: { nko: "ߞߎߡߊߘߋ߲ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer ce terme" },
   copie: { nko: "ߟߊ߬ߓߌ߬ߟߊ߬ߣߍ߲߫߹", fr: "Copié" },
 } as const;
+
+// Texte d'aide du champ de recherche (N'Ko · français). Le champ vide s'affiche de gauche à droite :
+// le N'Ko est donc « isolé » (U+2067 … U+2069) pour que sa ponctuation finale reste à la fin
+// de la lecture N'Ko, à gauche (mesuré dans le navigateur le 5 octobre 2026).
+export const AIDE_RECHERCHE = TEXTES_LEXIQUE.rechercher.nko
+  ? `${String.fromCodePoint(0x2067)}${TEXTES_LEXIQUE.rechercher.nko}${String.fromCodePoint(0x2069)} · ${TEXTES_LEXIQUE.rechercher.fr}`
+  : TEXTES_LEXIQUE.rechercher.fr;

@@ -11,7 +11,7 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { TEXTES_LEXIQUE } from "./textes";
+import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "./textes";
 import { normaliser } from "./normaliser";
 
 export interface TermeDictionnaire {
@@ -135,7 +135,7 @@ export default function DictionnaireInteractif({ termes }: { termes: TermeDictio
               setRecherche(e.target.value);
               setLettreFr("");
             }}
-            placeholder={TEXTES_LEXIQUE.rechercher.nko ? `${TEXTES_LEXIQUE.rechercher.nko} · ${TEXTES_LEXIQUE.rechercher.fr}` : TEXTES_LEXIQUE.rechercher.fr}
+            placeholder={AIDE_RECHERCHE}
             className="w-full rounded-full border border-white/15 bg-white/5 py-3 pl-11 pr-12 text-white placeholder:text-white/40 focus:border-blue-400/60 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
           />
           <kbd className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded border border-white/20 px-1.5 text-xs text-white/40 md:block">/</kbd>
