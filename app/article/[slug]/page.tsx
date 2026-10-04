@@ -1,4 +1,5 @@
 import { client } from "../../../sanity/client";
+import { getSanityClient } from "../../../sanity/fetch";
 import { urlFor } from "../../../sanity/image";
 import ArticleClient from "../../components/ArticleClient";
 import { Metadata } from "next";
@@ -169,11 +170,13 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     }
   }`;
   try {
-    const rawArticle = await client.fetch<SanityArticleRaw>(
-      query, 
-      { slug }, 
+    // Mode aperçu (Studio) : brouillon ; sinon : version publiée
+    const { client: sanity, apercu } = await getSanityClient();
+    const rawArticle = await sanity.fetch<SanityArticleRaw>(
+      query,
+      { slug },
       // 🚀 DESTRUCTION DU CACHE : On force la lecture en temps réel (0 seconde)
-      { next: { tags: ["article", `article-${slug}`], revalidate: 0 } }
+      apercu ? { cache: "no-store" } : { next: { tags: ["article", `article-${slug}`], revalidate: 0 } }
     );
     if (!rawArticle) return null;
     return transformSafeArticle(rawArticle);
