@@ -398,6 +398,39 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
           );
         }
       },
+      // h5 (et h6, aussi proposé par le Studio) : même détection N'Ko / français que h4, un cran plus petit
+      h5: ({ value: blockValue, children }) => {
+        const nko = isNko(getBlockText(blockValue));
+        return (
+          <FadeInBlock>
+            {nko ? (
+              <h5 dir="rtl" lang="nqo" className="text-lg md:text-xl font-medium text-[#fbbf24]/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-kigelia">
+                {children}
+              </h5>
+            ) : (
+              <h5 dir="ltr" lang="fr" className="text-sm md:text-base font-semibold text-white/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-sans">
+                {children}
+              </h5>
+            )}
+          </FadeInBlock>
+        );
+      },
+      h6: ({ value: blockValue, children }) => {
+        const nko = isNko(getBlockText(blockValue));
+        return (
+          <FadeInBlock>
+            {nko ? (
+              <h6 dir="rtl" lang="nqo" className="text-lg md:text-xl font-medium text-[#fbbf24]/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-kigelia">
+                {children}
+              </h6>
+            ) : (
+              <h6 dir="ltr" lang="fr" className="text-sm md:text-base font-semibold text-white/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-sans">
+                {children}
+              </h6>
+            )}
+          </FadeInBlock>
+        );
+      },
      blockquote: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
         if (nko) {
