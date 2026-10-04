@@ -639,7 +639,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
                     {nkoText ? titleNko : titleFr}
                   </span>
                 </p>
-                <p className={`${nkoText ? "font-kigelia text-base leading-[1.9]" : "font-sans text-sm md:text-[15px] leading-relaxed"} text-blue-50/85 print:text-black`}>
+                <p className={`${nkoText ? "font-kigelia text-[15px] leading-[1.85]" : "font-sans text-sm md:text-[15px] leading-relaxed"} text-blue-50/85 print:text-black`}>
                   {aUnTerme ? (
                     <>
                       <strong className="font-bold text-blue-300 print:text-black">{texte.slice(0, pos + 1)}</strong>
