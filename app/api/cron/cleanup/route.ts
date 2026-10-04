@@ -7,7 +7,8 @@
 
 import { NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+// Runtime Node.js : le runtime Edge est déconseillé depuis Next.js 16.3
+export const runtime = 'nodejs';
 
 export async function GET(request: Request) {
   // 🛡️ COUCHE 1 : LE CADENAS VERCEL (Zero Trust)
