@@ -3,14 +3,20 @@
 // N'KO NI LONKO — Vérification d'un fichier d'import AVANT écriture dans Sanity
 // ============================================================================
 // « Test à blanc » : lit un fichier JSON (tableau de documents Sanity) et liste
-// les problèmes. N'ÉCRIT RIEN, ne se connecte à rien, ne corrige aucun texte.
+// les problèmes. N'ÉCRIT RIEN dans Sanity et ne se connecte à rien.
+//
+// NFC (décision du propriétaire, 5 octobre 2026) : la normalisation NFC n'est PAS
+// une modification du texte. Si des textes ne sont pas en NFC, le script crée une
+// copie normalisée <fichier>.nfc.json (après contrôle : aucun caractère ajouté ni
+// retiré) et liste chaque mot concerné. C'est cette copie qu'il faut importer.
+// Les autres défauts (ex. nasalisation U+07F2 tapée deux fois) sont seulement signalés, jamais corrigés.
 //
 // Usage :   node scripts/verifier-import.mts <fichier.json>
 // Résultat : code 0 = aucune erreur bloquante ; code 1 = erreurs à corriger.
 // Les listes autorisées (catégories, types d'encadrés…) sont lues dans le schéma.
 // ============================================================================
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 
 // Import « dynamique » du schéma : Node sait lire le .ts, et la construction du site n'est pas gênée
 const { default: article } = await import(new URL('../sanity/schemas/article.ts', import.meta.url).href);
@@ -44,15 +50,43 @@ const contientNko = (t = '') => [...t].some((c) => { const n = c.codePointAt(0) 
 const codes = (t: string) => [...t].map((c) => 'U+' + (c.codePointAt(0) ?? 0).toString(16).toUpperCase().padStart(4, '0')).join(' ');
 const slugValide = (s?: string) => !!s && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(s);
 
-// NFC : on SIGNALE (sans corriger) chaque texte non normalisé, avec les codes concernés
-function verifierNfc(v: unknown, chemin: string, id: string) {
+// NFC : normalisation automatique, avec contrôle « mêmes caractères » (seul l'ordre des marques change)
+const normalisations: string[] = [];
+const estMarque = (n: number) => (n >= 0x07eb && n <= 0x07f3) || n === 0x07fd || (n >= 0x0300 && n <= 0x036f);
+const memesCaracteres = (a: string, b: string) => [...a].sort().join('|') === [...b].sort().join('|');
+
+// Découpe un texte en groupes : une lettre suivie de ses marques (tons, nasalisation…)
+function groupes(t: string) {
+  const res: string[] = [];
+  for (const c of t) {
+    if (estMarque(c.codePointAt(0) ?? 0) && res.length) res[res.length - 1] += c;
+    else res.push(c);
+  }
+  return res;
+}
+
+function normaliser(v: unknown, chemin: string, id: string): unknown {
   if (typeof v === 'string') {
-    if (v !== v.normalize('NFC')) {
-      const mots = v.split(/\s+/).filter((m) => m !== m.normalize('NFC')).slice(0, 3);
-      erreurs.push(`[${id}] ${chemin} : texte non NFC (règle 6) → ${mots.map((m) => `« ${m} » (${codes(m)})`).join(' ; ')}`);
+    // Marque tapée deux fois dans le même groupe (ex. U+07F2 U+07F2) : signalée, jamais corrigée
+    for (const g of groupes(v)) {
+      const marques = [...g].slice(1);
+      if (new Set(marques).size < marques.length) avertissements.push(`[${id}] ${chemin} : marque tapée deux fois (${codes(g)}) → à faire vérifier par la rédaction.`);
     }
-  } else if (Array.isArray(v)) v.forEach((x, i) => verifierNfc(x, `${chemin}[${i}]`, id));
-  else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) if (!k.startsWith('_')) verifierNfc(x, chemin ? `${chemin}.${k}` : k, id);
+    const n = v.normalize('NFC');
+    if (n === v) return v;
+    if (!memesCaracteres(v, n)) {
+      erreurs.push(`[${id}] ${chemin} : la normalisation NFC changerait des caractères (${codes(v).slice(0, 60)}…) → à vérifier à la main.`);
+      return v;
+    }
+    const mots = v.split(/\s+/).filter((m) => m !== m.normalize('NFC'));
+    normalisations.push(...mots.map((m) => `[${id}] ${chemin} : « ${m} » ${codes(m)} → ${codes(m.normalize('NFC'))}`));
+    return n;
+  }
+  if (Array.isArray(v)) return v.map((x, i) => normaliser(x, `${chemin}[${i}]`, id));
+  if (v && typeof v === 'object') {
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, k.startsWith('_') ? x : normaliser(x, chemin ? `${chemin}.${k}` : k, id)]));
+  }
+  return v;
 }
 
 // --- Lecture du fichier -----------------------------------------------------
@@ -65,13 +99,20 @@ try {
   process.exit(1);
 }
 
+// Tous les contrôles suivants portent sur les textes normalisés
+docs = docs.map((d) => normaliser(d, '', d._id || '(sans _id)') as Doc);
+let fichierNfc = '';
+if (normalisations.length) {
+  fichierNfc = (fichier.endsWith('.json') ? fichier.slice(0, -'.json'.length) : fichier) + '.nfc.json';
+  writeFileSync(fichierNfc, JSON.stringify(docs, null, 2) + '\n', 'utf8');
+}
+
 const termesDuFichier = new Set(docs.filter((d) => d._type === 'terme').map((d) => (d._id || '').replace(/^drafts\./, '')));
 const nomsTermes = new Map<string, string>();
 
 for (const d of docs) {
   const id = d._id || '(sans _id)';
   if (!d._id || !d._id.startsWith('drafts.')) erreurs.push(`[${id}] _id doit commencer par « drafts. » : l'IA ne crée QUE des brouillons.`);
-  verifierNfc(d, '', id);
 
   if (d._type === 'terme') {
     for (const c of ['termeNko', 'termeFr', 'definitionNko', 'definitionFr']) if (!d[c]) erreurs.push(`[${id}] terme : « ${c} » obligatoire.`);
@@ -135,5 +176,9 @@ console.log(`\n❌ Erreurs (${erreurs.length}) :`);
 erreurs.forEach((e) => console.log('  • ' + e));
 console.log(`\n⚠️ Avertissements (${avertissements.length}) :`);
 avertissements.forEach((a) => console.log('  • ' + a));
-console.log(erreurs.length ? '\n→ Corriger les erreurs AVANT tout import.' : '\n→ Aucune erreur bloquante. Import possible (en brouillons), puis vérification dans le Studio et l\'aperçu.');
+console.log(`\n🔤 Normalisations NFC faites automatiquement (${normalisations.length}) :`);
+normalisations.forEach((n) => console.log('  • ' + n));
+if (fichierNfc) console.log(`  → Copie normalisée créée : ${fichierNfc} (c'est CE fichier qu'il faut importer).`);
+const aImporter = fichierNfc || fichier;
+console.log(erreurs.length ? '\n→ Corriger les erreurs AVANT tout import.' : `\n→ Aucune erreur bloquante. Import possible (en brouillons) du fichier ${aImporter}, puis vérification dans le Studio et l'aperçu.`);
 process.exit(erreurs.length ? 1 : 0);
