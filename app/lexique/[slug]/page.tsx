@@ -6,7 +6,7 @@ import { getSanityClient } from "../../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../../components/lexique/textes";
 
 // ============================================================================
-// N'KO NI LONKO — Page d'un terme du lexique (+ articles qui l'utilisent)
+// N'KO NI LONKO — Page d'un terme du lexique
 // ============================================================================
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -18,14 +18,12 @@ interface TermeComplet {
   definitionFr?: string;
   domaine?: string;
   slug: string;
-  articles: { title: string; slug: string }[];
 }
 
+// La liste des articles qui utilisent le terme n'est PAS chargée ici (information
+// éditoriale réservée à la rédaction : voir l'encadré dans le Studio).
 const QUERY = `*[_type == "terme" && slug.current == $slug][0] {
-  termeNko, termeFr, definitionNko, definitionFr, domaine, "slug": slug.current,
-  "articles": *[_type == "article" && references(^._id) && defined(slug.current)] | order(publishedAt desc) {
-    title, "slug": slug.current
-  }
+  termeNko, termeFr, definitionNko, definitionFr, domaine, "slug": slug.current
 }`;
 
 const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");
@@ -36,7 +34,7 @@ async function getTerme(slug: string): Promise<TermeComplet | null> {
     return await sanity.fetch<TermeComplet | null>(
       QUERY,
       { slug },
-      apercu ? { cache: "no-store" } : { next: { tags: ["terme", "article"], revalidate: 3600 } }
+      apercu ? { cache: "no-store" } : { next: { tags: ["terme"], revalidate: 3600 } }
     );
   } catch (error) {
     console.error("Erreur Fetch Terme:", error);
@@ -110,23 +108,6 @@ export default async function PageTerme({ params }: { params: Promise<{ slug: st
           </p>
         )}
 
-        {terme.articles.length > 0 && (
-          <section className="border-t border-white/10 pt-6">
-            <h2 className="mb-4 flex flex-col gap-1">
-              <span lang="nqo" dir="rtl" className="font-kigelia text-lg font-bold text-white">{TEXTES_LEXIQUE.articlesQuiUtilisent.nko}</span>
-              <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-white/50">{TEXTES_LEXIQUE.articlesQuiUtilisent.fr}</span>
-            </h2>
-            <ul className="space-y-2">
-              {terme.articles.map((a) => (
-                <li key={a.slug}>
-                  <Link href={`/article/${a.slug}#lexique`} dir="auto" className="text-[#fbbf24] underline underline-offset-4 hover:text-white">
-                    {a.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
       </article>
     </main>
   );
