@@ -1,4 +1,4 @@
-import { client } from "../sanity/client";
+import { getSanityClient } from "../sanity/fetch";
 import { urlFor } from "../sanity/image";
 import HomeClient from "./components/HomeClient";
 import { Metadata } from "next";
@@ -135,10 +135,12 @@ async function getArticles(): Promise<SafeHomeArticle[]> {
   }`;
   
   try {
-    const rawArticles = await client.fetch<SanityHomeArticleRaw[]>(
-      query, 
-      {}, 
-      { next: { tags: ["article", "home-articles"], revalidate: 3600 } }
+    // Mode aperçu (Studio) : brouillons inclus, sans cache ; sinon : version publiée
+    const { client: sanity, apercu } = await getSanityClient();
+    const rawArticles = await sanity.fetch<SanityHomeArticleRaw[]>(
+      query,
+      {},
+      apercu ? { cache: "no-store" } : { next: { tags: ["article", "home-articles"], revalidate: 3600 } }
     );
     return rawArticles.map(transformSafeHomeArticle);
   } catch (error) {
