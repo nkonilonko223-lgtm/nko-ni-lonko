@@ -95,6 +95,31 @@ export default async function PageTerme({ params }: { params: Promise<{ slug: st
           </Link>
         </p>
 
+        {/* Recherche : envoie vers le dictionnaire, résultats déjà filtrés (/lexique?q=…). Fonctionne sans JavaScript. */}
+        <form role="search" action="/lexique" method="get" className="relative mb-10">
+          <label htmlFor="recherche-terme" lang="fr" className="sr-only">
+            {TEXTES_LEXIQUE.rechercher.fr}
+          </label>
+          <input
+            id="recherche-terme"
+            name="q"
+            type="search"
+            dir="auto"
+            enterKeyHint="search"
+            autoComplete="off"
+            placeholder={TEXTES_LEXIQUE.rechercher.nko ? `${TEXTES_LEXIQUE.rechercher.nko} · ${TEXTES_LEXIQUE.rechercher.fr}` : TEXTES_LEXIQUE.rechercher.fr}
+            className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-11 pr-4 text-sm text-white placeholder:text-white/40 focus:border-blue-400/60 focus:outline-none focus:ring-2 focus:ring-blue-400/30"
+          />
+          <button
+            type="submit"
+            lang="fr"
+            aria-label={TEXTES_LEXIQUE.rechercher.fr}
+            className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full px-3 py-2 text-white/50 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
+          >
+            <i className="ph-bold ph-magnifying-glass" aria-hidden="true"></i>
+          </button>
+        </form>
+
         <div lang="nqo" dir="rtl" className="mb-8">
           <h1 className="font-kigelia text-3xl md:text-4xl font-bold text-blue-300 mb-3">{terme.termeNko}</h1>
           <p className="font-kigelia text-lg leading-[1.9] text-gray-200">{terme.definitionNko}</p>
