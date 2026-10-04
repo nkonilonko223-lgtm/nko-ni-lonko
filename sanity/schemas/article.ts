@@ -42,7 +42,7 @@ export default defineType({
   ],
   // 🔒 Règle 6 : tout texte (N'Ko compris) doit rester en Unicode normalisé (NFC).
   // Avertissement (non bloquant) qui désigne le premier champ concerné.
-  validation: (rule) =>
+  validation: (rule) => [
     rule.custom((doc) => {
       if (!doc) return true;
       const champs = Object.entries(doc as Record<string, unknown>).filter(([cle]) => !cle.startsWith('_'));
@@ -54,6 +54,45 @@ export default defineType({
         ? { message: "Ce champ contient du texte non normalisé (NFC). Signalez-le avant publication.", path: [fautif[0]] }
         : true;
     }).warning(),
+    // 📖 Lexique : chaque terme relié doit l'être en N'Ko ET en français, une seule fois par langue
+    rule.custom(async (doc, context) => {
+      const body = (doc as { body?: unknown[] } | undefined)?.body;
+      if (!Array.isArray(body)) return true;
+      type Bloc = { _type?: string; children?: { text?: string; marks?: string[] }[]; markDefs?: { _key: string; _type?: string; terme?: { _ref?: string } }[] };
+      const usages: Record<'nko' | 'fr', Map<string, number>> = { nko: new Map(), fr: new Map() };
+      for (const bloc of body as Bloc[]) {
+        if (bloc?._type !== 'block' || !Array.isArray(bloc.markDefs)) continue;
+        const texte = (bloc.children || []).map((c) => c.text || '').join('');
+        // Bloc N'Ko s'il contient au moins un caractère N'Ko (plage Unicode 0x07C0–0x07FF)
+        const contientNko = [...texte].some((c) => {
+          const code = c.codePointAt(0) ?? 0;
+          return code >= 0x07c0 && code <= 0x07ff;
+        });
+        const langue = contientNko ? 'nko' : 'fr';
+        const utilises = new Set((bloc.children || []).flatMap((c) => c.marks || []));
+        for (const def of bloc.markDefs) {
+          const ref = def._type === 'termeLexique' ? def.terme?._ref : undefined;
+          if (ref && utilises.has(def._key)) usages[langue].set(ref, (usages[langue].get(ref) || 0) + 1);
+        }
+      }
+      const refs = [...new Set([...usages.nko.keys(), ...usages.fr.keys()])];
+      if (refs.length === 0) return true;
+      const noms: { _id: string; termeFr?: string }[] = await context
+        .getClient({ apiVersion: '2025-02-19' })
+        .fetch('*[_type == "terme" && _id in $ids]{ _id, termeFr }', { ids: refs }, { perspective: 'drafts' });
+      const nom = (ref: string) => `« ${noms.find((n) => n._id === ref)?.termeFr || ref} »`;
+      const problemes: string[] = [];
+      for (const ref of refs) {
+        if (!usages.nko.has(ref)) problemes.push(`${nom(ref)} relié en français mais pas en N'Ko`);
+        if (!usages.fr.has(ref)) problemes.push(`${nom(ref)} relié en N'Ko mais pas en français`);
+        for (const langue of ['nko', 'fr'] as const) {
+          const n = usages[langue].get(ref) || 0;
+          if (n > 1) problemes.push(`${nom(ref)} relié ${n} fois en ${langue === 'nko' ? "N'Ko" : 'français'} (ne relier que la 1re apparition)`);
+        }
+      }
+      return problemes.length ? { message: `Lexique : ${problemes.join(' ; ')}.`, path: ['body'] } : true;
+    }).warning(),
+  ],
   fields: [
     // =========================================================================
     // ✍️ ONGLET : RÉDACTION (CONTENT)
