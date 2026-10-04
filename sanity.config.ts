@@ -9,6 +9,7 @@ import { visionTool } from '@sanity/vision';
 import author from './sanity/schemas/author';
 import article from './sanity/schemas/article';
 import subscriber from './sanity/schemas/subscriber';
+import terme from './sanity/schemas/terme';
 // 👻 Le schéma 'message' a été purifié pour l'architecture Fantôme
 
 export default defineConfig({
@@ -45,7 +46,7 @@ export default defineConfig({
 
   schema: {
     // 🚀 L'INJECTION DIRECTE : On force le compilateur à lire les 3 fichiers restants
-    types: [author, article, subscriber],
+    types: [author, article, subscriber, terme],
     // 🔒 Pas de création manuelle d'abonné : seule l'API crée des fiches privées (subscriber.<jeton>)
     templates: (prev) => prev.filter((template) => template.schemaType !== 'subscriber'),
   },

@@ -1,0 +1,102 @@
+import { defineField, defineType } from 'sanity';
+import React from 'react';
+
+// ============================================================================
+// N'KO NI LONKO — Terme du lexique (dictionnaire scientifique N'Ko – français)
+// ============================================================================
+// Un terme est défini UNE seule fois, puis relié depuis le texte des articles.
+// Corriger une définition ici la corrige dans tous les articles.
+// ============================================================================
+
+// Champ saisi de droite à gauche (N'Ko)
+const ChampRtl = (props: import('sanity').StringInputProps) =>
+  React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props));
+
+export default defineType({
+  name: 'terme',
+  title: 'ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ / Lexique',
+  type: 'document',
+  icon: () => '📖',
+  // 🔒 Règle 6 : tout texte doit rester en Unicode normalisé (NFC). Avertissement non bloquant.
+  validation: (rule) =>
+    rule.custom((doc) => {
+      if (!doc) return true;
+      const champs = Object.entries(doc as Record<string, unknown>).filter(([cle]) => !cle.startsWith('_'));
+      const fautif = champs.find(([, valeur]) => {
+        const texte = JSON.stringify(valeur ?? '');
+        return texte !== texte.normalize('NFC');
+      });
+      return fautif
+        ? { message: "Ce champ contient du texte non normalisé (NFC). Signalez-le avant publication.", path: [fautif[0]] }
+        : true;
+    }).warning(),
+  fields: [
+    defineField({
+      name: 'termeNko',
+      title: 'Terme (N\'Ko)',
+      type: 'string',
+      validation: (rule) => rule.required().error('Le terme en N\'Ko est obligatoire.'),
+      components: { input: ChampRtl },
+    }),
+    defineField({
+      name: 'termeFr',
+      title: 'Terme (français)',
+      type: 'string',
+      validation: (rule) => rule.required().error('Le terme en français est obligatoire.'),
+    }),
+    defineField({
+      name: 'definitionNko',
+      title: 'Définition (N\'Ko)',
+      type: 'text',
+      rows: 4,
+      validation: (rule) => rule.required().error('La définition en N\'Ko est obligatoire.'),
+      components: { input: ChampRtl },
+    }),
+    defineField({
+      name: 'definitionFr',
+      title: 'Définition (français)',
+      type: 'text',
+      rows: 4,
+      validation: (rule) => rule.required().error('La définition en français est obligatoire.'),
+    }),
+    defineField({
+      name: 'domaine',
+      title: 'ߡߊ߬ߘߎ߮ / Domaine',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ / Astronomie', value: 'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ' },
+          { title: 'ߣߌߡߊߞߊߙߊ߲ / Biologie', value: 'ߣߌߡߊߞߊߙߊ߲' },
+          { title: 'ߘߐ߬ߞߏ / Physique', value: 'ߘߐ߬ߞߏ' },
+          { title: 'ߘߡߊ߬ߟߐ߲ / Mathématiques', value: 'ߘߡߊ߬ߟߐ߲' },
+          { title: 'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ / Chimie', value: 'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ' },
+          { title: 'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ / Géologie', value: 'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ' },
+          { title: 'ߛߋߒߞߏߟߊߘߐߦߊ / Technologie', value: 'ߛߋߒߞߏߟߊߘߐߦߊ' },
+          { title: 'ߘߐ߬ߝߐ / Histoire', value: 'ߘߐ߬ߝߐ' },
+          { title: 'ߞߍ߲ߘߍߦߊ / Santé', value: 'ߞߍ߲ߘߍߦߊ' },
+        ],
+      },
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Lien (slug)',
+      description: "Créé à partir du terme français. Seulement a-z, chiffres et tirets (ex : trou-noir).",
+      type: 'slug',
+      options: { source: 'termeFr', maxLength: 96 },
+      validation: (rule) => [
+        rule.required().error('Le lien est obligatoire.'),
+        rule.custom((slug) =>
+          slug?.current && /[^a-z0-9-]/.test(slug.current)
+            ? 'Le lien ne doit contenir que des minuscules sans accents, des chiffres et des tirets.'
+            : true
+        ),
+      ],
+    }),
+  ],
+  orderings: [
+    { title: 'Terme français (A → Z)', name: 'termeFrAsc', by: [{ field: 'termeFr', direction: 'asc' }] },
+  ],
+  preview: {
+    select: { title: 'termeNko', subtitle: 'termeFr' },
+  },
+});
