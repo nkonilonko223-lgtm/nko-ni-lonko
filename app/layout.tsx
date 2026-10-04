@@ -155,7 +155,7 @@ const themeInitScript = `
       var lang = (savedLang === 'fr' || savedLang === 'nko') ? savedLang : 'nko';
       var dir = lang === 'nko' ? 'rtl' : 'ltr';
       
-      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('lang', lang === 'nko' ? 'nqo' : 'fr');
       document.documentElement.setAttribute('dir', dir);
       document.body.setAttribute('dir', dir);
     } catch (e) {}

@@ -53,7 +53,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (!isMounted || existingContext) return;
     const direction = lang === "nko" ? "rtl" : "ltr";
     document.body.setAttribute("dir", direction);
-    document.documentElement.setAttribute("lang", lang);
+    // Code officiel ISO du N'Ko : « nqo » (la préférence interne reste « nko »)
+    document.documentElement.setAttribute("lang", lang === "nko" ? "nqo" : "fr");
     localStorage.setItem("preferred-lang", lang);
   }, [lang, isMounted, existingContext]);
 
