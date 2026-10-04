@@ -47,7 +47,7 @@ interface CalloutBlock {
   titleNko?: string;
   titleFr?: string;
   source?: string;
-  intent?: 'definition' | 'stat' | 'question' | 'warning' | 'amazing' | 'quote' | 'info';
+  intent?: 'definition' | 'stat' | 'question' | 'warning' | 'amazing' | 'quote' | 'info' | 'success';
 }
 type PortableImageProps = PortableTextComponentProps<SanityImage>;
 type PortableYouTubeProps = PortableTextComponentProps<YouTubeBlock>;
