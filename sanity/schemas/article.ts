@@ -50,9 +50,11 @@ export default defineType({
       description: "Titre principal affiché sur le site / ߞߎߡߘߊ ߕߐ߮ ߓߊߖߎߡߊ",
       type: 'string',
       group: 'content',
-      validation: (rule) => rule
-        .required().error('ߞߎߡߘߊ ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre est obligatoire')
-        .min(10).warning("ߕߐ߮ ߛߎߘߎ߲ߡߊ߲߫ ߞߏߖߎ߯ߦߊ߫ / Un titre trop court manque d'impact."),
+      // Liste de règles : « obligatoire » bloque la publication, « trop court » avertit seulement
+      validation: (rule) => [
+        rule.required().error('ߞߎߡߘߊ ߕߐ߮ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le titre est obligatoire'),
+        rule.min(10).warning("ߕߐ߮ ߛߎߘߎ߲ߡߊ߲߫ ߞߏߖߎ߯ߦߊ߫ / Un titre trop court manque d'impact."),
+      ],
       // 👑 N'Ko is King : Auto-détection dès la première lettre
       components: { input: SmartBidiInput }
     }),
@@ -433,9 +435,11 @@ export default defineType({
       type: 'text',
       group: 'seo',
       rows: 3,
-      validation: (rule) => rule
-        .required().error('ߞߊ߲߬ߛߓߍ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le résumé est obligatoire')
-        .max(200).warning('ߞߊ߲߬ߛߓߍ ߞߊߊ߬ ߕߊ߬ߡߌ߲߬ ߛߓߍߘߋ߲߫ ߂߀߀ ߟߊ߫ / Le résumé ne doit pas dépasser 200 caractères.'),
+      // Liste de règles : « obligatoire » bloque la publication, « trop long » avertit seulement
+      validation: (rule) => [
+        rule.required().error('ߞߊ߲߬ߛߓߍ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le résumé est obligatoire'),
+        rule.max(200).warning('ߞߊ߲߬ߛߓߍ ߞߊߊ߬ ߕߊ߬ߡߌ߲߬ ߛߓߍߘߋ߲߫ ߂߀߀ ߟߊ߫ / Le résumé ne doit pas dépasser 200 caractères.'),
+      ],
       components: { input: SmartBidiInput }
     }),
   ],
