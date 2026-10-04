@@ -40,6 +40,20 @@ export default defineType({
       by: [{ field: 'title', direction: 'asc' }]
     },
   ],
+  // 🔒 Règle 6 : tout texte (N'Ko compris) doit rester en Unicode normalisé (NFC).
+  // Avertissement (non bloquant) qui désigne le premier champ concerné.
+  validation: (rule) =>
+    rule.custom((doc) => {
+      if (!doc) return true;
+      const champs = Object.entries(doc as Record<string, unknown>).filter(([cle]) => !cle.startsWith('_'));
+      const fautif = champs.find(([, valeur]) => {
+        const texte = JSON.stringify(valeur ?? '');
+        return texte !== texte.normalize('NFC');
+      });
+      return fautif
+        ? { message: "Ce champ contient du texte non normalisé (NFC). Signalez-le avant publication.", path: [fautif[0]] }
+        : true;
+    }).warning(),
   fields: [
     // =========================================================================
     // ✍️ ONGLET : RÉDACTION (CONTENT)
