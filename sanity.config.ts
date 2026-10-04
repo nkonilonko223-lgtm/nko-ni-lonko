@@ -2,6 +2,7 @@ import { latexInput } from 'sanity-plugin-latex-input';
 import { codeInput } from '@sanity/code-input';
 import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
+import { presentationTool, defineLocations } from 'sanity/presentation';
 import { visionTool } from '@sanity/vision';
 
 // 🚀 LE COURT-CIRCUIT 1/1000 : On importe directement les fichiers à la source !
@@ -20,6 +21,23 @@ export default defineConfig({
 
   plugins: [
     structureTool(), // Mode automatique pour l'instant, on veut juste voir l'onglet !
+    // 👁️ Onglet « Presentation » : le vrai site avec les brouillons, avant publication
+    presentationTool({
+      previewUrl: { previewMode: { enable: '/api/draft-mode/enable' } },
+      resolve: {
+        locations: {
+          article: defineLocations({
+            select: { title: 'title', slug: 'slug.current' },
+            resolve: (doc) => ({
+              locations: [
+                { title: doc?.title || 'Sans titre', href: `/article/${doc?.slug}` },
+                { title: 'Accueil', href: '/' },
+              ],
+            }),
+          }),
+        },
+      },
+    }),
     visionTool(),
     latexInput(),
     codeInput(),
