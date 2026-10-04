@@ -1,4 +1,4 @@
-# État technique — N'Ko ni Lonko (4 octobre 2026)
+# État technique — N'Ko ni Lonko (5 octobre 2026)
 
 > Note d'une page pour la **session de rédaction**. Ce que le site sait faire, comment s'en servir, ce qu'il faut surveiller pour le **N°003** (publication le **30 octobre**).
 
@@ -22,7 +22,7 @@
 - L'**accueil se met à jour en quelques secondes** après chaque publication.
 
 ## 4. Règles à respecter pour le N°003
-1. **Texte N'Ko en NFC.** Constat du 4 octobre : **87 groupes de lettres dans 10 articles** ont la marque de **ton tapée avant** la nasalisation ߲ (invisible à l'écran mais gênant pour la recherche et Google) et **6 doubles** ߲. Vérifier la méthode de saisie (clavier) ; le Studio signale ces cas en orange.
+1. **Texte N'Ko en NFC.** Le 5 octobre, les **87 groupes de lettres** (10 articles) où le **ton était tapé avant** la nasalisation ߲ ont été remis dans l'ordre normal (invisible à l'écran). Pour les imports, le script le fait **automatiquement**. Dans le Studio, un texte tapé à la main dans le mauvais ordre est signalé en orange. Les **marques tapées deux fois** sont signalées : c'est à la rédaction de les corriger.
 2. **Un paragraphe = une seule langue** (N'Ko **ou** français).
 3. Chaque terme du lexique est relié **en N'Ko ET en français**, seulement à sa **1re apparition**.
 4. **Publier les termes du lexique avant les articles** qui les utilisent.

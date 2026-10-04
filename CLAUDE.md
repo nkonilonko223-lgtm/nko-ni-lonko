@@ -1,7 +1,7 @@
 # N'Ko ni Lonko — Mémoire du projet (CLAUDE.md)
 
 > Revue scientifique bilingue **N'Ko / français** — https://www.nkonilonko.com
-> Ce fichier est lu au début de chaque session. Mis à jour le 4 octobre 2026.
+> Ce fichier est lu au début de chaque session. Mis à jour le 5 octobre 2026.
 
 ---
 
@@ -17,7 +17,7 @@
 3. **Jamais rien sur `main` sans accord.** Une branche dédiée, **un commit par changement**, message clair. Le propriétaire vérifie l'**aperçu Vercel** avant toute fusion.
 4. **Avant toute écriture dans Sanity** : **export complet** du dataset, puis accord écrit. Ne **publier** ni **supprimer** aucun document sans accord.
 5. **Une seule chose à la fois**, la plus petite modification possible. Pas de refonte. Pas de nouvelle dépendance sans expliquer pourquoi.
-6. **Ne jamais modifier ni écrire un texte en N'Ko.** Le N'Ko vient **toujours** de la rédaction et est copié **sans modification**. Il doit rester en **Unicode NFC** et s'afficher avec `dir="rtl"` et `lang="nqo"` (le français : `dir="ltr"`, `lang="fr"`).
+6. **Ne jamais modifier ni écrire un texte en N'Ko.** Le N'Ko vient **toujours** de la rédaction et est copié **sans modification**. Il doit rester en **Unicode NFC** et s'afficher avec `dir="rtl"` et `lang="nqo"` (le français : `dir="ltr"`, `lang="fr"`). **La normalisation NFC n'est pas une modification** (décision du propriétaire, 5 octobre 2026) : elle est faite par `scripts/verifier-import.mts`, avec le contrôle « mêmes caractères ». Toute autre correction (ex. marque tapée deux fois) demande l'accord écrit du propriétaire.
 
 ## 2. Pile technique
 
@@ -93,6 +93,7 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 
 - **Jamais** de N'Ko écrit par l'IA. Les textes d'interface en N'Ko sont fournis par la rédaction (voir `app/components/lexique/textes.ts`, `app/desabonnement/page.tsx`). Si un texte manque : laisser l'emplacement **vide** (seul le français s'affiche) et le demander.
 - Vérifier après chaque modification que les passages N'Ko d'un fichier sont **identiques** avant/après et en **NFC**.
+- Données Sanity : **tout le texte est en NFC** depuis le 5 octobre 2026 (87 groupes remis dans l'ordre ; sauvegarde et script dans `C:\Dev\archives\`). Dans le code, désigner une marque N'Ko par son **code** (`U+07F2`), pas par le caractère.
 - Chaque bloc a `dir` **et** `lang` (`nqo` / `fr`). Le `<html>` est `lang="nqo"` : le français doit donc être marqué `lang="fr"`.
 - Propriétés Tailwind **logiques** de préférence (`ms-`, `ps-`, `border-s-`, `text-start`…).
 - Chiffres N'Ko : ߀ ߁ ߂ ߃ ߄ ߅ ߆ ߇ ߈ ߉ (U+07C0 à U+07C9).
