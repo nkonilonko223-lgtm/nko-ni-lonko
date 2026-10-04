@@ -175,19 +175,19 @@ export default defineType({
                   }
                 ]
               },
-              // 2. LE GLOSSAIRE (Divulgation Progressive)
+              // 2. TERME DU LEXIQUE : le mot sélectionné est relié à un terme réutilisable (type « terme »)
               {
-                name: 'definition',
+                name: 'termeLexique',
                 type: 'object',
-                title: '💡 ߞߘߐߦߌߘߊ / Définition',
+                title: '📖 ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ / Terme du lexique',
                 fields: [
                   {
-                    name: 'description',
-                    type: 'text',
-                    title: 'Explication scientifique / ߞߎߡߊߘߋ߲ ߞߘߐߦߌߘߊ',
-                    description: 'Le texte qui apparaîtra dans la bulle interactive (Tooltip) pour le lecteur.',
-                    rows: 3,
-                    validation: (rule) => rule.required().error('ߞߘߐߦߌߘߊ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / La définition est requise.'),
+                    name: 'terme',
+                    type: 'reference',
+                    title: 'Terme',
+                    description: 'Choisissez un terme existant, ou créez-le (il sera réutilisable dans tous les articles).',
+                    to: [{ type: 'terme' }],
+                    validation: (rule) => rule.required().error('Choisissez un terme du lexique (ou créez-le).'),
                   }
                 ]
               }
