@@ -32,7 +32,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     articles = await client.fetch<SitemapArticle[]>(
       ARTICLES_QUERY,
       {},
-      { next: { revalidate: 3600 } }
+      // Étiquette « article » : la sonnette Sanity (/api/revalidate) met aussi le plan du site à jour
+      { next: { tags: ["article"], revalidate: 3600 } }
     );
   } catch (error) {
     console.error("🚨 [Sitemap] Échec de la récupération des articles Sanity :", error);
