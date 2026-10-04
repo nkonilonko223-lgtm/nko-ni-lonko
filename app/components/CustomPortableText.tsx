@@ -619,6 +619,42 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         const titleNko = calloutValue.titleNko || config.labelNko;
         const titleFr = calloutValue.titleFr || config.labelFr;
 
+        // 📖 DÉFINITION COMPACTE (« encadré lexique ») : filet latéral, terme en gras, sans grand cadre.
+        // Le texte n'est pas modifié : on met seulement en gras la partie avant le premier « : ».
+        if (intent === 'definition') {
+          const texte = calloutValue.text;
+          const pos = texte.search(/[:：]/);
+          const aUnTerme = pos > 0 && pos <= 80 && pos < texte.length - 1;
+          return (
+            <FadeInBlock>
+              <aside
+                dir={nkoText ? "rtl" : "ltr"}
+                lang={nkoText ? "nqo" : "fr"}
+                aria-label={nkoText ? titleNko : titleFr}
+                className="my-6 md:my-8 border-s-2 border-blue-400/60 ps-4 md:ps-5 py-1 print:border-black"
+              >
+                <p className="flex items-center gap-2 mb-1 text-blue-300 print:text-black">
+                  <i className="ph-fill ph-book-open text-base" aria-hidden="true"></i>
+                  <span className={nkoText ? "font-kigelia text-sm font-bold" : "font-sans text-[11px] font-semibold uppercase tracking-widest"}>
+                    {nkoText ? titleNko : titleFr}
+                  </span>
+                </p>
+                <p className={`${nkoText ? "font-kigelia text-base leading-[1.9]" : "font-sans text-sm md:text-[15px] leading-relaxed"} text-blue-50/85 print:text-black`}>
+                  {aUnTerme ? (
+                    <>
+                      <strong className="font-bold text-blue-300 print:text-black">{texte.slice(0, pos + 1)}</strong>
+                      {texte.slice(pos + 1)}
+                    </>
+                  ) : texte}
+                </p>
+                {calloutValue.source && (
+                  <p className="mt-1 font-mono text-[10px] text-white/30 uppercase tracking-widest">— {calloutValue.source}</p>
+                )}
+              </aside>
+            </FadeInBlock>
+          );
+        }
+
         return (
           <FadeInBlock>
             <div
