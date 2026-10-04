@@ -12,6 +12,7 @@ import NetworkBoundary from "./components/NetworkBoundary";
 import PredictiveProvider from "./components/PredictiveProvider";
 import BandeauApercu from "./components/BandeauApercu";
 import { draftMode } from "next/headers";
+import { VisualEditing } from "next-sanity/visual-editing";
 
 // ============================================================================
 // 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
@@ -256,7 +257,13 @@ return (
 
         <Analytics />
         <PredictiveProvider />
-        {apercu && <BandeauApercu />}
+        {/* Mode aperçu seulement : bandeau + connecteur avec l'onglet « Presentation » du Studio */}
+        {apercu && (
+          <>
+            <BandeauApercu />
+            <VisualEditing />
+          </>
+        )}
 
         {/* Restauration du composant Script Next.js pour Phosphor */}
         <Script 
