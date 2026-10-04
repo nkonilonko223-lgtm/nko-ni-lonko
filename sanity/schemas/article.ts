@@ -420,14 +420,16 @@ export default defineType({
       type: 'slug',
       group: 'seo',
       options: { source: 'title', maxLength: 96 },
-      validation: (rule) => rule.required()
-        .custom((slug) => {
+      // Deux règles séparées : chacune garde son propre message
+      validation: (rule) => [
+        rule.required().error('ߛߟߐߜ߭ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le slug est obligatoire'),
+        rule.custom((slug) => {
           if (slug && slug.current && /[^a-z0-9-]/.test(slug.current)) {
             return "Le lien ne doit contenir que des minuscules sans accents et des tirets (ex: mon-article-science)";
           }
           return true;
-        })
-        .error('ߛߟߐߜ߭ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Le slug est obligatoire'),
+        }),
+      ],
     }),
 
     defineField({
