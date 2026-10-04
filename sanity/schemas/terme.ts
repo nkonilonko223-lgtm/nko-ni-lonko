@@ -12,6 +12,10 @@ import React from 'react';
 const ChampRtl = (props: import('sanity').StringInputProps) =>
   React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props));
 
+// Champ saisi de gauche à droite (français) : le Studio hérite du sens « rtl » du site
+const ChampLtr = (props: import('sanity').InputProps) =>
+  React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props));
+
 export default defineType({
   name: 'terme',
   title: 'ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ / Lexique',
@@ -43,6 +47,7 @@ export default defineType({
       title: 'Terme (français)',
       type: 'string',
       validation: (rule) => rule.required().error('Le terme en français est obligatoire.'),
+      components: { input: ChampLtr },
     }),
     defineField({
       name: 'definitionNko',
@@ -58,6 +63,7 @@ export default defineType({
       type: 'text',
       rows: 4,
       validation: (rule) => rule.required().error('La définition en français est obligatoire.'),
+      components: { input: ChampLtr },
     }),
     defineField({
       name: 'domaine',
@@ -83,6 +89,7 @@ export default defineType({
       description: "Créé à partir du terme français. Seulement a-z, chiffres et tirets (ex : trou-noir).",
       type: 'slug',
       options: { source: 'termeFr', maxLength: 96 },
+      components: { input: ChampLtr },
       validation: (rule) => [
         rule.required().error('Le lien est obligatoire.'),
         rule.custom((slug) =>
