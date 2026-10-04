@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { client } from "../../../sanity/client";
 import { getSanityClient } from "../../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../../components/lexique/textes";
+import { comparerNko } from "../../components/lexique/normaliser";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un terme du lexique
@@ -18,12 +19,16 @@ interface TermeComplet {
   definitionFr?: string;
   domaine?: string;
   slug: string;
+  memeDomaine?: { termeNko?: string; termeFr?: string; slug: string }[];
 }
 
 // La liste des articles qui utilisent le terme n'est PAS chargée ici (information
 // éditoriale réservée à la rédaction : voir l'encadré dans le Studio).
 const QUERY = `*[_type == "terme" && slug.current == $slug][0] {
-  termeNko, termeFr, definitionNko, definitionFr, domaine, "slug": slug.current
+  termeNko, termeFr, definitionNko, definitionFr, domaine, "slug": slug.current,
+  "memeDomaine": select(defined(domaine) => *[_type == "terme" && domaine == ^.domaine && _id != ^._id && defined(slug.current)][0...12] {
+    termeNko, termeFr, "slug": slug.current
+  }, [])
 }`;
 
 const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");
@@ -108,6 +113,30 @@ export default async function PageTerme({ params }: { params: Promise<{ slug: st
           </p>
         )}
 
+        {terme.memeDomaine && terme.memeDomaine.length > 0 && (
+          <section className="border-t border-white/10 pt-6">
+            <h2 className="mb-4 flex flex-col gap-1">
+              {TEXTES_LEXIQUE.memeDomaine.nko && (
+                <span lang="nqo" dir="rtl" className="font-kigelia text-lg font-bold text-white">{TEXTES_LEXIQUE.memeDomaine.nko}</span>
+              )}
+              <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-white/50">{TEXTES_LEXIQUE.memeDomaine.fr}</span>
+            </h2>
+            <ul className="flex flex-wrap gap-2">
+              {[...terme.memeDomaine].sort((a, b) => comparerNko(a.termeNko, b.termeNko)).map((t) => (
+                <li key={t.slug}>
+                  <Link
+                    href={`/lexique/${t.slug}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-3 py-1.5 text-sm hover:border-blue-400/50 hover:bg-blue-400/10"
+                  >
+                    <span lang="nqo" dir="rtl" className="font-kigelia text-blue-300">{t.termeNko}</span>
+                    <span aria-hidden="true" className="text-white/30">·</span>
+                    <span lang="fr" className="text-white/80">{t.termeFr}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </article>
     </main>
   );
