@@ -6,7 +6,7 @@ import ArticleClient from "../../components/ArticleClient";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
-import { IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../lib/partage";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -310,8 +310,8 @@ export async function generateMetadata(
         url: ogImage,
         alt: article.title,
       }],
-      creator: "@nkonilonko",
-      site: "@nkonilonko",
+      creator: COMPTE_X,
+      site: COMPTE_X,
     },
   };
 }
@@ -392,7 +392,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       "sameAs": [
         "https://www.youtube.com/@nkonilonko",
         "https://www.tiktok.com/@nkonilonko223",
-        "https://x.com/nkonilonko"
+        URL_X
       ],
       "logo": {
         "@type": "ImageObject",
@@ -411,7 +411,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         "sameAs": [
           "https://www.youtube.com/@nkonilonko",
           "https://www.tiktok.com/@nkonilonko223",
-          "https://x.com/nkonilonko"
+          URL_X
         ]
       }
     }

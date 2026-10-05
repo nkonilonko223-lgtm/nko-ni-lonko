@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import ContactClient from "./ContactClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     title: "ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߛߐ߬ߘߐ߲߬.",
     images: [IMAGE_PARTAGE_ACCUEIL],
-    creator: "@nkonilonko",
-    site: "@nkonilonko",
+    creator: COMPTE_X,
+    site: COMPTE_X,
   },
 };
 

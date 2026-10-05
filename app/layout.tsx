@@ -13,7 +13,7 @@ import PredictiveProvider from "./components/PredictiveProvider";
 import BandeauApercu from "./components/BandeauApercu";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
-import { IMAGE_PARTAGE_ACCUEIL } from "./lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "./lib/partage";
 
 // ============================================================================
 // 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
@@ -120,7 +120,7 @@ export const metadata: Metadata = {
     title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. La plateforme scientifique de référence.",
     images: [IMAGE_PARTAGE_ACCUEIL],
-    creator: "@nkonilonko",
+    creator: COMPTE_X,
   },
 
   icons: {
@@ -205,7 +205,7 @@ export default async function RootLayout({
         "sameAs": [
           "https://www.youtube.com/@nkonilonko",
           "https://www.tiktok.com/@nkonilonko223",
-          "https://x.com/nkonilonko"
+          URL_X
         ]
       }
     ]

@@ -27,3 +27,8 @@ export const IMAGE_PARTAGE_LEXIQUE = {
   type: "image/jpeg",
   alt: `${TEXTES_LEXIQUE.dictionnaire.nko} · ${TEXTES_LEXIQUE.dictionnaire.fr}`,
 };
+
+// Compte X (Twitter) déclaré dans les partages et les liens du site.
+// Compte du propriétaire en attendant la création de @nkonilonko : changer ICI seulement.
+export const COMPTE_X = "@MckV2016";
+export const URL_X = `https://x.com/${COMPTE_X.slice(1)}`;

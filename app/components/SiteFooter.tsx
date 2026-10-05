@@ -6,6 +6,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation"; 
 import { useLanguage } from "./LanguageProvider";
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
+import { URL_X } from "../lib/partage";
 
 interface SiteFooterProps {
   activeCategory: string;
@@ -367,7 +368,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
              {[
                { href: "https://youtube.com/@nkonilonko", icon: "youtube-logo", label: "YouTube" },
                { href: "https://facebook.com/nkonilonko", icon: "facebook-logo", label: "Facebook" },
-               { href: "https://twitter.com/nkonilonko", icon: "twitter-logo", label: "Twitter / X" },
+               { href: URL_X, icon: "twitter-logo", label: "Twitter / X" },
                { href: "https://instagram.com/nkonilonko", icon: "instagram-logo", label: "Instagram" },
                { href: "https://tiktok.com/@nkonilonko223", icon: "tiktok-logo", label: "TikTok" },
                { href: "https://wa.me/22300000000", icon: "whatsapp-logo", label: "WhatsApp" },

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import PrivacyClient from "./PrivacyClient";
 
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     title: "ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ.",
     images: [IMAGE_PARTAGE_ACCUEIL],
-    creator: "@nkonilonko",
-    site: "@nkonilonko",
+    creator: COMPTE_X,
+    site: COMPTE_X,
   },
 };
 

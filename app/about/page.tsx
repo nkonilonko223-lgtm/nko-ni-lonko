@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../lib/partage";
 import AboutClient from "./AboutClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     title: "ߞߊ߲߬ߞߎߡߊ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫.",
     images: [IMAGE_PARTAGE_ACCUEIL],
-    creator: "@nkonilonko",
-    site: "@nkonilonko",
+    creator: COMPTE_X,
+    site: COMPTE_X,
   },
 };
 
@@ -58,7 +58,7 @@ const aboutJsonLd = {
       "sameAs": [
         "https://www.youtube.com/@nkonilonko",
         "https://www.tiktok.com/@nkonilonko223",
-        "https://x.com/nkonilonko",
+        URL_X,
         "https://www.facebook.com/nkonilonko",
         "https://www.instagram.com/nkonilonko",
         "https://t.me/nkonilonko"
@@ -96,7 +96,7 @@ const aboutJsonLd = {
       "sameAs": [
         "https://www.youtube.com/@nkonilonko",
         "https://www.tiktok.com/@nkonilonko223",
-        "https://x.com/nkonilonko"
+        URL_X
       ]
     },
     // Page About
