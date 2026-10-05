@@ -28,6 +28,15 @@ export const IMAGE_PARTAGE_LEXIQUE = {
   alt: `${TEXTES_LEXIQUE.dictionnaire.nko} · ${TEXTES_LEXIQUE.dictionnaire.fr}`,
 };
 
+// Page « À propos » : la peinture du baobab
+export const IMAGE_PARTAGE_A_PROPOS = {
+  url: `${SITE_URL}/og/a-propos-v1.jpg`,
+  width: 1200,
+  height: 630,
+  type: "image/jpeg",
+  alt: "N'Ko ni Lonko — À propos : un baobab entre un astronome traditionnel et un scientifique en laboratoire",
+};
+
 // Compte X (Twitter) déclaré dans les partages et les liens du site.
 // Compte du propriétaire en attendant la création de @nkonilonko : changer ICI seulement.
 export const COMPTE_X = "@MckV2016";

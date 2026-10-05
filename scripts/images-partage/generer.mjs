@@ -32,16 +32,21 @@ const CHROME = [
 if (!CHROME) throw new Error('Chrome ou Edge introuvable (indiquer son chemin dans CHROME_PATH).');
 
 // --- Textes, lus dans le site ---------------------------------------------------
-const page = readFileSync(join(PROJET, 'app/page.tsx'), 'utf8');
-const og = page.slice(page.indexOf('openGraph:'));
-const ligne = (cle) => og.split('\n').find((l) => l.trim().startsWith(cle + ': "')).split('"')[1];
-const [nomNko, nomFr] = ligne('title').split(' | ');
-const accrocheNko = ligne('description').split('. ')[0]; // phrase approuvée par le propriétaire (5 octobre 2026)
+// Valeur d'un champ du bloc openGraph d'une page (ex. title: "…")
+const champOg = (fichier, cle) => {
+  const source = readFileSync(join(PROJET, fichier), 'utf8');
+  const og = source.slice(source.indexOf('openGraph:'));
+  return og.split('\n').find((l) => l.trim().startsWith(cle + ': "')).split('"')[1];
+};
+const [nomNko, nomFr] = champOg('app/page.tsx', 'title').split(' | ');
+const accrocheNko = champOg('app/page.tsx', 'description').split('. ')[0]; // phrase approuvée par le propriétaire (5 octobre 2026)
+const aproposNko = champOg('app/about/page.tsx', 'title').split(' | ')[0]; // le mot N'Ko placé avant « | À Propos »
 const { TEXTES_LEXIQUE } = await import(pathToFileURL(join(PROJET, 'app/components/lexique/textes.ts')).href);
 const T = {
   nomNko, nomFr, accrocheNko, accrocheFr: 'Science et savoir pour tous',
   dicoNko: TEXTES_LEXIQUE.dictionnaire.nko, dicoFr: TEXTES_LEXIQUE.dictionnaire.fr,
   lexiqueNko: TEXTES_LEXIQUE.lexique.nko, lexiqueFr: TEXTES_LEXIQUE.lexique.fr,
+  aproposNko, aproposFr: 'À propos',
 };
 for (const [cle, texte] of Object.entries(T)) {
   if (!texte) throw new Error(`Texte introuvable : ${cle}`);
@@ -117,6 +122,28 @@ body{background:#030916}
   <div class="filet"></div>
 </div>
 <div class="marque"><img src="${f('icon-512x512.png')}"><span class="nko" dir="rtl" lang="nqo">${T.nomNko}</span><span class="point">·</span><span class="fr" lang="fr">NKONILONKO.COM/LEXIQUE</span></div>
+</body></html>`,
+
+  // 3. À propos : la peinture du baobab (savoir traditionnel et science moderne), texte en bas
+  'a-propos': `<!doctype html><html lang="nqo"><head><meta charset="utf-8">${base}<style>
+.fond{background:url(${f('le-baobaob.png')}) center 30%/cover}
+.voile{background:linear-gradient(180deg,rgba(2,4,10,0) 0%,rgba(2,4,10,0) 36%,rgba(2,4,10,.70) 60%,rgba(2,4,10,.95) 100%)}
+.bas{position:absolute;left:0;right:0;bottom:44px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.etiquette{display:flex;align-items:center;gap:16px;padding:8px 24px;border:1px solid rgba(251,191,36,.55);border-radius:999px;background:rgba(2,4,10,.55);margin-bottom:14px}
+.etiquette .nko{font-size:28px;color:#fbbf24;line-height:1.3}
+.etiquette .fr{font-weight:700;font-size:15px;letter-spacing:.32em;color:#fbbf24;padding-left:.32em}
+.etiquette .sep{width:1px;height:22px;background:rgba(251,191,36,.5)}
+.ligne{display:flex;align-items:center;gap:4px}
+.ligne img{width:120px;height:120px;margin:-28px -20px;mix-blend-mode:screen}
+.nom{font-weight:700;font-size:84px;line-height:1.15;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.8)}
+.nomfr{font-weight:700;font-size:19px;letter-spacing:.38em;color:#fbbf24;margin-top:4px;padding-left:.38em}
+</style></head><body>
+<div class="abs fond"></div><div class="abs voile"></div><div class="cadre"></div>
+<div class="bas">
+  <div class="etiquette"><span class="nko" dir="rtl" lang="nqo">${T.aproposNko}</span><span class="sep"></span><span class="fr" lang="fr">${T.aproposFr.toUpperCase()}</span></div>
+  <div class="ligne"><span class="nko nom" dir="rtl" lang="nqo">${T.nomNko}</span><img src="${f('icon-512x512.png')}"></div>
+  <div class="fr nomfr" lang="fr">${T.nomFr.toUpperCase()} · NKONILONKO.COM</div>
+</div>
 </body></html>`,
 };
 

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_A_PROPOS, URL_X } from "../lib/partage";
 import AboutClient from "./AboutClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. Science et Savoir pour tous, sans frontières linguistiques.",
     url: `${SITE_URL}/about`,
     siteName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
-    images: [IMAGE_PARTAGE_ACCUEIL],
+    images: [IMAGE_PARTAGE_A_PROPOS],
     locale: "nqo",
     alternateLocale: "fr_FR",
     type: "profile",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ߞߊ߲߬ߞߎߡߊ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫.",
-    images: [IMAGE_PARTAGE_ACCUEIL],
+    images: [IMAGE_PARTAGE_A_PROPOS],
     creator: COMPTE_X,
     site: COMPTE_X,
   },
