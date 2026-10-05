@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import PrivacyClient from "./PrivacyClient";
 
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
@@ -15,12 +16,7 @@ export const metadata: Metadata = {
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ. La protection de vos données est notre priorité absolue.",
     url: `${SITE_URL}/privacy`,
     siteName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
-    images: [{
-      url: `${SITE_URL}/og-accueil.jpg`,
-      width: 1200,
-      height: 630,
-      alt: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — Confidentialité",
-    }],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     locale: "nqo",
     alternateLocale: "fr_FR",
     type: "website",
@@ -29,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ.",
-    images: [`${SITE_URL}/og-accueil.jpg`],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     creator: "@nkonilonko",
     site: "@nkonilonko",
   },

@@ -6,6 +6,7 @@ import ArticleClient from "../../components/ArticleClient";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
+import { IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -211,7 +212,7 @@ export async function generateMetadata(
   if (!article) return { title: "ߞߎߡߘߊ ߡߊ߫ ߛߐ߬ߘߐ߲߬ | Article introuvable" };
 
   // 🚀 CORRECTION CRITIQUE : "let" au lieu de "const"
-  let ogImage = article.mainImageUrl || `${SITE_URL}/og-accueil.jpg`;
+  let ogImage = article.mainImageUrl || IMAGE_PARTAGE_ACCUEIL.url;
 
   // 🛡️ LE BOUCLIER ANTI-TIMEOUT (Ingénierie 1/10000)
   if (ogImage.includes('cdn.sanity.io')) {
@@ -350,7 +351,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     "isAccessibleForFree": true,
     "image": {
       "@type": "ImageObject",
-      "url": article.mainImageUrl || `${SITE_URL}/og-accueil.jpg`,
+      "url": article.mainImageUrl || IMAGE_PARTAGE_ACCUEIL.url,
       "width": 1200,
       "height": 630,
       "representativeOfPage": true,

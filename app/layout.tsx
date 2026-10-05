@@ -13,6 +13,7 @@ import PredictiveProvider from "./components/PredictiveProvider";
 import BandeauApercu from "./components/BandeauApercu";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
+import { IMAGE_PARTAGE_ACCUEIL } from "./lib/partage";
 
 // ============================================================================
 // 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
@@ -109,20 +110,8 @@ export const metadata: Metadata = {
     locale: "nqo", 
     alternateLocale: ["fr_FR"],
     type: "website",
-    images: [
-      {
-        url: `${SITE_URL}/og-accueil.jpg`, // 🚀 Ton chef-d'œuvre JPG (1200x630)
-        width: 1200,
-        height: 630,
-        alt: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ - Le Baobab Cosmique",
-      },
-      {
-        url: `${SITE_URL}/icon-512x512.png`, // 🚀 Le Sceau Royal de secours
-        width: 512,
-        height: 512,
-        alt: "Sceau Royal N'Ko ni Lonko",
-      }
-    ]
+    // Une seule image, fabriquée par scripts/images-partage/generer.mjs (N'Ko lié)
+    images: [IMAGE_PARTAGE_ACCUEIL],
   },
 
   // 🚀 LE BOUCLIER TWITTER CARDS (X et Telegram)
@@ -130,7 +119,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. La plateforme scientifique de référence.",
-    images: [`${SITE_URL}/og-accueil.jpg`], // 🚀 Ton chef-d'œuvre JPG
+    images: [IMAGE_PARTAGE_ACCUEIL],
     creator: "@nkonilonko",
   },
 

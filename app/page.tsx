@@ -2,6 +2,7 @@ import { getSanityClient } from "../sanity/fetch";
 import { urlFor } from "../sanity/image";
 import HomeClient from "./components/HomeClient";
 import { Metadata } from "next";
+import { IMAGE_PARTAGE_ACCUEIL } from "./lib/partage";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -75,14 +76,7 @@ export const metadata: Metadata = {
     siteName: "N'Ko ni Lonko",
     locale: "nqo",
     alternateLocale: ["fr_FR"],
-    images: [
-      {
-        url: "/icon-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "Sceau N'Ko ni Lonko",
-      },
-    ],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     type: "website",
   },
 };

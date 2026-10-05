@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import TermsClient from "./TermsClient";
 
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
@@ -15,12 +16,7 @@ export const metadata: Metadata = {
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬. Le socle juridique et le pacte des auteurs.",
     url: `${SITE_URL}/terms`,
     siteName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
-    images: [{
-      url: `${SITE_URL}/og-accueil.jpg`,
-      width: 1200,
-      height: 630,
-      alt: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — Conditions",
-    }],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     locale: "nqo",
     alternateLocale: "fr_FR",
     type: "website",
@@ -29,7 +25,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬.",
-    images: [`${SITE_URL}/og-accueil.jpg`],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     creator: "@nkonilonko",
     site: "@nkonilonko",
   },

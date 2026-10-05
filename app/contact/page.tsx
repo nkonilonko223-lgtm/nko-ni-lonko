@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import ContactClient from "./ContactClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -14,12 +15,7 @@ export const metadata: Metadata = {
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߛߐ߬ߘߐ߲߬. Rejoignez la révolution scientifique en langue N'Ko.",
     url: `${SITE_URL}/contact`,
     siteName: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
-    images: [{
-      url: `${SITE_URL}/og-accueil.jpg`,
-      width: 1200,
-      height: 630,
-      alt: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — Contact",
-    }],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     locale: "nqo",
     alternateLocale: "fr_FR",
     type: "website",
@@ -28,7 +24,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ | N'Ko ni Lonko",
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߛߐ߬ߘߐ߲߬.",
-    images: [`${SITE_URL}/og-accueil.jpg`],
+    images: [IMAGE_PARTAGE_ACCUEIL],
     creator: "@nkonilonko",
     site: "@nkonilonko",
   },
