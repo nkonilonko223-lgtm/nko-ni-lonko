@@ -6,6 +6,7 @@ import { getSanityClient } from "../../../sanity/fetch";
 import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "../../components/lexique/textes";
 import { comparerNko } from "../../components/lexique/normaliser";
 import CiterTerme from "../../components/lexique/CiterTerme";
+import { IMAGE_PARTAGE_LEXIQUE } from "../../lib/partage";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un terme du lexique
@@ -61,10 +62,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const terme = await getTerme(slug);
   if (!terme) return { title: TEXTES_LEXIQUE.lexique.fr };
+  const titre = `${terme.termeNko || ""} · ${terme.termeFr || ""} | ${TEXTES_LEXIQUE.dictionnaire.fr}`;
   return {
-    title: `${terme.termeNko || ""} · ${terme.termeFr || ""} | ${TEXTES_LEXIQUE.dictionnaire.fr}`,
+    title: titre,
     description: terme.definitionFr,
     alternates: { canonical: `${SITE_URL}/lexique/${terme.slug}` },
+    // Image de partage du dictionnaire (scripts/images-partage/generer.mjs)
+    openGraph: {
+      title: titre,
+      description: terme.definitionFr,
+      url: `${SITE_URL}/lexique/${terme.slug}`,
+      siteName: "N'Ko ni Lonko",
+      locale: "nqo",
+      alternateLocale: ["fr_FR"],
+      type: "website",
+      images: [IMAGE_PARTAGE_LEXIQUE],
+    },
+    twitter: { card: "summary_large_image", title: titre, description: terme.definitionFr, images: [IMAGE_PARTAGE_LEXIQUE] },
   };
 }
 

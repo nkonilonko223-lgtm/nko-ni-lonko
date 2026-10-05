@@ -4,6 +4,7 @@ import { getSanityClient } from "../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../components/lexique/textes";
 import DictionnaireInteractif, { type TermeDictionnaire } from "../components/lexique/DictionnaireInteractif";
 import { comparerNko } from "../components/lexique/normaliser";
+import { IMAGE_PARTAGE_LEXIQUE } from "../lib/partage";
 
 // ============================================================================
 // N'KO NI LONKO — Dictionnaire scientifique N'Ko – français (tous les termes)
@@ -14,10 +15,25 @@ import { comparerNko } from "../components/lexique/normaliser";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
+const TITRE = `${TEXTES_LEXIQUE.dictionnaire.nko} | ${TEXTES_LEXIQUE.dictionnaire.fr}`;
+const DESCRIPTION = "Dictionnaire scientifique N'Ko – français de la revue N'Ko ni Lonko : chaque terme défini en N'Ko et en français.";
+
 export const metadata: Metadata = {
-  title: `${TEXTES_LEXIQUE.dictionnaire.nko} | ${TEXTES_LEXIQUE.dictionnaire.fr}`,
-  description: "Dictionnaire scientifique N'Ko – français de la revue N'Ko ni Lonko : chaque terme défini en N'Ko et en français.",
+  title: TITRE,
+  description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/lexique` },
+  // Image de partage du dictionnaire (scripts/images-partage/generer.mjs)
+  openGraph: {
+    title: TITRE,
+    description: DESCRIPTION,
+    url: `${SITE_URL}/lexique`,
+    siteName: "N'Ko ni Lonko",
+    locale: "nqo",
+    alternateLocale: ["fr_FR"],
+    type: "website",
+    images: [IMAGE_PARTAGE_LEXIQUE],
+  },
+  twitter: { card: "summary_large_image", title: TITRE, description: DESCRIPTION, images: [IMAGE_PARTAGE_LEXIQUE] },
 };
 
 const QUERY = `*[_type == "terme" && defined(slug.current)] {
