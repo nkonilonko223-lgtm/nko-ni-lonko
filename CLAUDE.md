@@ -47,6 +47,9 @@ timeout 400 node node_modules/sanity/bin/sanity documents validate --yes --level
 # Sanity (connexion faite avec le compte GitHub du propriétaire : npx sanity login --provider github)
 node node_modules/sanity/bin/sanity schema deploy        # après une fusion qui change le schéma
 node node_modules/sanity/bin/sanity dataset export production "C:/Dev/archives/exports/<nom>.tar.gz"
+
+# Images de partage (rendu par Chrome : N'Ko lié). Changer VERSION dans le script ET dans app/lib/partage.ts
+node scripts/images-partage/generer.mjs
 ```
 
 **Pièges connus :**
@@ -74,6 +77,7 @@ node node_modules/sanity/bin/sanity dataset export production "C:/Dev/archives/e
 | `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts` |
 | `sanity.config.ts` | Studio : outils, onglet Presentation, interdiction de créer/dupliquer un abonné |
 | `proxy.ts` | Filtre anti-robots + CSP (en mode « rapport seulement ») |
+| `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Les articles utilisent leur photo de couverture |
 
 ## 5. Données Sanity (à connaître avant toute écriture)
 
@@ -109,4 +113,4 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 ## 9. Calendrier et reste à faire
 
 - **N°003** : import dans Sanity du 25 au 28 octobre 2026, publication le **30 octobre**. **Gel** des nouveautés du 18 au 30 octobre (corrections seulement).
-- **Lot 2 (après le 30 octobre)** : type « Numéro », images de partage en N'Ko (l'outil `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).
+- **Lot 2 (après le 30 octobre)** : type « Numéro », images de partage des articles avec leur titre N'Ko (même méthode que `scripts/images-partage/generer.mjs`, `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).
