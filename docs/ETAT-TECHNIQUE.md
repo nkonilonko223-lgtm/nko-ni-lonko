@@ -5,7 +5,7 @@
 ## 1. Sécurité et fiabilité (fait cette semaine)
 - Site à jour : **Next.js 16.3.8** (30 failles corrigées, dont une critique).
 - **Abonnés protégés** : leurs fiches ne sont plus lisibles par le public. **Désinscription** en un clic (lien dans chaque e-mail, N'Ko + français).
-- Aucun secret exposé ; clés aux droits minimaux ; nettoyage automatique vérifié.
+- Aucun secret exposé ; clés aux droits minimaux, les 8 clés serveur en type **Secret** sur Vercel (testées) ; nettoyage automatique vérifié.
 - L'inscription continue même si le service anti-robots Upstash tombe.
 
 ## 2. Ce que la rédaction peut faire dans le Studio (www.nkonilonko.com/studio)
@@ -20,6 +20,7 @@
 - Les **termes soulignés en pointillé bleu** : un toucher ouvre la définition (fiche en bas de l'écran sur téléphone, bulle sur ordinateur), dans la langue du paragraphe.
 - Un **lexique en fin d'article** et un **dictionnaire public** (`/lexique`) : recherche (sans tons ni accents), ordre alphabétique N'Ko, « Citer ce terme ». La liste des articles qui utilisent un terme reste **privée** (Studio seulement).
 - L'**accueil se met à jour en quelques secondes** après chaque publication.
+- Un lien partagé sur **WhatsApp, Facebook, X ou LinkedIn** affiche une grande image avec le N'Ko bien lié et le vrai logo (accueil, dictionnaire, À propos ; les articles montrent leur photo de couverture). Validé sur WhatsApp et avec l'outil officiel de Facebook.
 
 ## 4. Règles à respecter pour le N°003
 1. **Texte N'Ko en NFC.** Le 5 octobre, les **87 groupes de lettres** (10 articles) où le **ton était tapé avant** la nasalisation ߲ ont été remis dans l'ordre normal (invisible à l'écran). Pour les imports, le script le fait **automatiquement**. Dans le Studio, un texte tapé à la main dans le mauvais ordre est signalé en orange. Les **marques tapées deux fois** sont signalées : c'est à la rédaction de les corriger.
@@ -33,4 +34,7 @@
 - **18 – 30 octobre** : **gel** (corrections seulement, aucune nouveauté).
 - **25 – 28 octobre** : import du N°003 (brouillons) et relecture.
 - **30 octobre** : publication.
-- **Après** : type « Numéro », images de partage en N'Ko, lettre d'information, PDF du numéro, prononciation audio des termes.
+- **Après** : type « Numéro », corpus pour le modèle de traduction N'Ko ↔ français, images de partage des articles avec titre N'Ko, lettre d'information, PDF du numéro, prononciation audio des termes.
+
+## 6. Documents
+`docs/COMPTE-RENDU-LOT-1.md` (tout ce qui a été fait) · `docs/AVANT-PUBLICATION-N003.md` (liste de contrôle et jour J) · `docs/GUIDE-IMPORT-IA.md` (saisie par une IA) · `docs/PLAN-LOT-2.md` (la suite).
