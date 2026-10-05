@@ -10,6 +10,7 @@
 
 | N° | Étape | Qui | Commande / outil |
 |---|---|---|---|
+| 0 | **Recevoir les textes** : paragraphe par paragraphe (N'Ko puis français), titre, résumé, catégorie, auteurs, date, encadrés repérés, termes du lexique avec leurs **définitions N'Ko et français**, légendes N'Ko des images, images éventuelles | rédaction | fichier Word, Google Docs, PDF ou texte collé |
 | 1 | **Export complet** du dataset (sauvegarde) | IA, avec accord écrit | `node node_modules/sanity/bin/sanity dataset export production "C:/Dev/archives/exports/avant-import-<numero>.tar.gz"` |
 | 2 | Préparer le **fichier d'import** (JSON, tableau de documents) | IA | voir § 3 et § 4 |
 | 3 | **Vérification à blanc** du fichier (n'écrit rien dans Sanity) | IA | `node scripts/verifier-import.mts <fichier.json>` → **0 erreur** obligatoire. Si le script crée `<fichier>.nfc.json`, c'est **cette copie** qu'on importe |
@@ -19,6 +20,7 @@
 | 7 | **Publication** (termes du lexique **d'abord**, puis articles) | **propriétaire seulement** | Studio → Publier |
 
 **L'IA ne publie jamais, ne supprime jamais, ne modifie jamais un document déjà publié.**
+**Les articles d'un numéro restent en brouillon jusqu'au jour de sa publication** (30 octobre 2026 pour le N°003) : rien n'est dévoilé avant.
 
 ## 2. Règles sur le N'Ko (règle 6 — non négociable)
 
@@ -82,6 +84,22 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 2. Ne relier que la **1re apparition** du terme **par langue** dans l'article.
 3. La référence pointe vers l'`_id` **publié** du terme (sans `drafts.`). Sanity refusera de publier l'article tant que le terme n'est pas publié : **publier les termes d'abord**.
 4. Les anciens encadrés « Définition » (`callout` `success`) restent possibles, mais pour un **nouveau** numéro, préférer le **lexique**.
+5. Un terme manque dans le lexique ? Le **signaler** au propriétaire (liste) : la rédaction écrit sa définition N'Ko. L'IA ne crée un terme qu'avec le N'Ko fourni par la rédaction.
+
+### Images (fournies par la rédaction ou cherchées par l'IA)
+
+**Règle : uniquement des images dont la licence permet la publication, avec leur crédit.** Une image prise au hasard sur Internet expose la revue à une plainte pour droits d'auteur.
+
+| Point | Règle |
+|---|---|
+| Sources à privilégier | **NASA** (domaine public), **ESA** et **ESO** (licences libres avec crédit), **Wikimedia Commons** (licence vérifiée image par image), banques libres (ex. Unsplash) |
+| Interdit | Images de presse, de réseaux sociaux ou de sites sans licence claire ; images générées par une IA présentées comme des photos réelles |
+| Stockage | L'image est **téléversée dans Sanity** (outil MCP `dataset_assets_upload_from_url` ou CLI), jamais liée au site d'origine |
+| Champ `source` | Crédit **et** licence, ex. « NASA/JPL-Caltech — domaine public » ou « ESO/M. Kornmesser — CC BY 4.0 » |
+| Champ `alt` | Description en français, rédigée par l'IA (ce que montre l'image, en une phrase) |
+| Champ `captionNko` | Fourni par la rédaction ; sinon **laisser vide** |
+| Champ `caption` | Légende française (rédaction, ou proposée par l'IA à partir de la source) |
+| Taille | Assez grande pour l'écran (≥ 1 200 px de large pour la couverture) |
 
 ## 5. Ce que vérifie `scripts/verifier-import.mts`
 
@@ -90,4 +108,4 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 
 ## 6. Après l'import : rapport au propriétaire
 
-Donner, **en français** : le nombre de brouillons créés (articles, termes), les avertissements restants (avec l'article et le champ concernés), les mots normalisés automatiquement (NFC), les doubles marques **à faire vérifier par la rédaction**, et le lien vers l'onglet **Presentation** pour la relecture.
+Donner, **en français** : le nombre de brouillons créés (articles, termes), les avertissements restants (avec l'article et le champ concernés), les mots normalisés automatiquement (NFC), les doubles marques **à faire vérifier par la rédaction**, les **termes manquants** du lexique, la **liste des images avec leur source et leur licence** (à valider par le propriétaire), et le lien vers l'onglet **Presentation** pour la relecture.
