@@ -4,6 +4,7 @@
 // ============================================================================
 // Pourquoi : l'outil next/og ne LIE pas les lettres N'Ko. Ici, Google Chrome
 // (déjà installé sur l'ordinateur) fait le rendu : le N'Ko est parfait.
+// Logo : public/icon-512x512.png (monogramme officiel, fond noir fondu en mode « screen »).
 // Le N'Ko est LU dans les fichiers du site (jamais retapé) et vérifié en NFC.
 //
 // Usage (depuis la racine du projet, connexion Internet pour la police Montserrat) :
@@ -68,7 +69,7 @@ const modeles = {
   accueil: `<!doctype html><html lang="nqo"><head><meta charset="utf-8">${base}<style>
 .fond{background:url(${f('jams-webb.png')}) center 40%/cover}
 .voile{background:radial-gradient(ellipse 58% 72% at 50% 50%,rgba(2,4,10,.90) 0%,rgba(2,4,10,.78) 50%,rgba(2,4,10,.40) 100%)}
-.sceau{width:72px;height:72px;margin-bottom:18px;filter:drop-shadow(0 0 18px rgba(251,191,36,.35))}
+.logo{width:184px;height:184px;margin:-40px 0 -22px;mix-blend-mode:screen}
 .nom{font-weight:700;font-size:116px;line-height:1.12;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 .nomfr{font-weight:700;font-size:24px;letter-spacing:.45em;text-transform:uppercase;color:#fbbf24;margin-top:4px;padding-left:.45em}
 .filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#fbbf24,transparent);margin:30px 0 22px}
@@ -78,7 +79,7 @@ const modeles = {
 </style></head><body>
 <div class="abs fond"></div><div class="abs voile"></div><div class="cadre"></div>
 <div class="contenu">
-  <img class="sceau" src="${f('icon.svg')}">
+  <img class="logo" src="${f('icon-512x512.png')}">
   <div class="nko nom" dir="rtl" lang="nqo">${T.nomNko}</div>
   <div class="fr nomfr" lang="fr">${T.nomFr}</div>
   <div class="filet"></div>
@@ -103,7 +104,7 @@ body{background:#030916}
 .titrefr{font-weight:600;font-size:30px;color:#93c5fd;margin-top:14px;letter-spacing:.01em}
 .filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#93c5fd,transparent);margin:34px 0 0}
 .marque{position:absolute;bottom:42px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px}
-.marque img{width:40px;height:40px}
+.marque img{width:88px;height:88px;margin:-22px -12px -22px -18px;mix-blend-mode:screen}
 .marque .nko{font-weight:700;font-size:28px;color:#fff;line-height:1.2}
 .marque .point{color:rgba(147,197,253,.6);font-size:22px}
 .marque .fr{font-weight:600;font-size:18px;letter-spacing:.16em;color:rgba(251,191,36,.9)}
@@ -115,7 +116,7 @@ body{background:#030916}
   <div class="fr titrefr" lang="fr">${T.dicoFr}</div>
   <div class="filet"></div>
 </div>
-<div class="marque"><img src="${f('icon.svg')}"><span class="nko" dir="rtl" lang="nqo">${T.nomNko}</span><span class="point">·</span><span class="fr" lang="fr">NKONILONKO.COM/LEXIQUE</span></div>
+<div class="marque"><img src="${f('icon-512x512.png')}"><span class="nko" dir="rtl" lang="nqo">${T.nomNko}</span><span class="point">·</span><span class="fr" lang="fr">NKONILONKO.COM/LEXIQUE</span></div>
 </body></html>`,
 };
 
