@@ -6,7 +6,7 @@ import { getSanityClient } from "../../../sanity/fetch";
 import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "../../components/lexique/textes";
 import { comparerNko } from "../../components/lexique/normaliser";
 import CiterTerme from "../../components/lexique/CiterTerme";
-import { IMAGE_PARTAGE_LEXIQUE } from "../../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../../lib/partage";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un terme du lexique
@@ -78,7 +78,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "website",
       images: [IMAGE_PARTAGE_LEXIQUE],
     },
-    twitter: { card: "summary_large_image", title: titre, description: terme.definitionFr, images: [IMAGE_PARTAGE_LEXIQUE] },
+    twitter: { card: "summary_large_image", title: titre, description: terme.definitionFr, images: [IMAGE_PARTAGE_LEXIQUE], creator: COMPTE_X, site: COMPTE_X },
   };
 }
 

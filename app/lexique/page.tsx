@@ -4,7 +4,7 @@ import { getSanityClient } from "../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../components/lexique/textes";
 import DictionnaireInteractif, { type TermeDictionnaire } from "../components/lexique/DictionnaireInteractif";
 import { comparerNko } from "../components/lexique/normaliser";
-import { IMAGE_PARTAGE_LEXIQUE } from "../lib/partage";
+import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../lib/partage";
 
 // ============================================================================
 // N'KO NI LONKO — Dictionnaire scientifique N'Ko – français (tous les termes)
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [IMAGE_PARTAGE_LEXIQUE],
   },
-  twitter: { card: "summary_large_image", title: TITRE, description: DESCRIPTION, images: [IMAGE_PARTAGE_LEXIQUE] },
+  twitter: { card: "summary_large_image", title: TITRE, description: DESCRIPTION, images: [IMAGE_PARTAGE_LEXIQUE], creator: COMPTE_X, site: COMPTE_X },
 };
 
 const QUERY = `*[_type == "terme" && defined(slug.current)] {

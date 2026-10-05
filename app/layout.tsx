@@ -121,6 +121,7 @@ export const metadata: Metadata = {
     description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. La plateforme scientifique de référence.",
     images: [IMAGE_PARTAGE_ACCUEIL],
     creator: COMPTE_X,
+    site: COMPTE_X,
   },
 
   icons: {
