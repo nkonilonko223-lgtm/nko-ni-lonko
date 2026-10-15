@@ -146,6 +146,17 @@ export default defineType({
       validation: (rule) => rule.required().error('ߛߎ߯ߦߊ ߛߎߥߊ߲ߘߌ߫ / Veuillez choisir une catégorie'),
     }),
 
+    // Rubrique de la revue mensuelle (facultative). Le numéro, lui, se choisit
+    // dans le document « Numéro » (sommaire) : l'article ne stocke pas son numéro.
+    defineField({
+      name: 'rubrique',
+      title: 'Rubrique de la revue',
+      description: 'Facultatif. Ex : Grand sujet, Le Ciel du mois…',
+      type: 'reference',
+      to: [{ type: 'rubrique' }],
+      group: 'content',
+    }),
+
     defineField({
       name: 'tags',
       title: 'Mots-clés (Tags) / ߞߎߡߊߢߌ߲ ߠߎ߬',
