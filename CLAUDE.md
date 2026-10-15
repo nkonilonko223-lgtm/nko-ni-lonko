@@ -19,6 +19,22 @@
 5. **Une seule chose à la fois**, la plus petite modification possible. Pas de refonte. Pas de nouvelle dépendance sans expliquer pourquoi.
 6. **Ne jamais modifier ni écrire un texte en N'Ko.** Le N'Ko vient **toujours** de la rédaction et est copié **sans modification**. Il doit rester en **Unicode NFC** et s'afficher avec `dir="rtl"` et `lang="nqo"` (le français : `dir="ltr"`, `lang="fr"`). **La normalisation NFC n'est pas une modification** (décision du propriétaire, 5 octobre 2026) : elle est faite par `scripts/verifier-import.mts`, avec le contrôle « mêmes caractères ». Toute autre correction (ex. marque tapée deux fois) demande l'accord écrit du propriétaire.
 
+## 1 bis. Les 9 dogmes (rédaction, 15 octobre 2026)
+
+Les commentaires « DOGME 1, 2, 3 » du code suivent la même numérotation.
+
+1. **N'Ko Is King** : bilinguisme obligatoire ; le N'Ko d'abord, de droite à gauche.
+2. **Extreme Engineering** : zéro `any`, posture Zero-Trust générale, performance (LCP, CLS, GPU).
+3. **Cinematic Adaptation** : mobile d'abord, PWA (dans le code, la performance **mobile** est aussi rangée ici).
+4. **Élégance** : zéro dette technique.
+5. **Protocole en 5 étapes** : Synthèse → Audit → Stratégie → Génération → Validation, feu vert explicite entre chaque étape. Pour une tâche simple, le propriétaire peut accepter des étapes regroupées.
+6. **Cartographie complète des fichiers** avant toute modification.
+7. **Écosystème Zero-Trust** : aucune clé secrète côté client (règle absolue 2).
+8. **Server-First** (App Router) : composants serveur par défaut.
+9. **Modifications chirurgicales** : remplacement de blocs avant/après, jamais de régénération de fichier complet. Toujours choisir la solution **la plus simple**.
+
+**Écriture :** toujours « **N'Ko** » (K majuscule), jamais « N'ko ».
+
 ## 2. Pile technique
 
 | Élément | Version / détail |
