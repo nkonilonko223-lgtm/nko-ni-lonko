@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
 import type { TurnstileInstance } from '@marsidev/react-turnstile'; // 🚀 RESTAURATION DU TYPAGE STRICT (La clé de VS Code)
 import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
+import { TELEPHONES, lienAppel, lienTelegram, lienWhatsApp } from "../lib/coordonnees";
 
 export default function ContactClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE (Pour le bouton de retour)
@@ -279,6 +280,64 @@ export default function ContactClient() {
                                 <p className="text-[#fbbf24] font-light text-sm group-hover:underline decoration-[#fbbf24] underline-offset-4">contact@nkonilonko.com</p>
                             </div>
                         </a>
+
+                        {/* Téléphones (Mali, France) : appel, WhatsApp, Telegram — réglés dans app/lib/coordonnees.ts.
+                            Numéro en chiffres latins et de gauche à droite (dir="ltr") pour qu'il ne s'inverse pas dans la page N'Ko. */}
+                        {TELEPHONES.map((t) => (
+                            <div key={t.e164} className="flex items-start gap-5 group">
+                                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                                    <i className="ph-fill ph-phone text-2xl text-[#fbbf24]" aria-hidden="true"></i>
+                                </div>
+                                <div className="flex flex-col items-start">
+                                    {t.pays.nko ? (
+                                        <>
+                                            <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl" lang="nqo">{t.pays.nko}</h3>
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2" lang="fr">{t.pays.fr}</span>
+                                        </>
+                                    ) : (
+                                        <h3 className="text-white font-bold text-lg mb-1" dir="ltr" lang="fr">{t.pays.fr}</h3>
+                                    )}
+                                    <a
+                                        href={lienAppel(t)}
+                                        onClick={triggerVibration}
+                                        dir="ltr"
+                                        translate="no"
+                                        aria-label={`Appeler (${t.pays.fr}) : ${t.affichage}`}
+                                        className="text-[#fbbf24] font-light text-sm hover:underline decoration-[#fbbf24] underline-offset-4 touch-manipulation"
+                                    >
+                                        {t.affichage}
+                                    </a>
+                                    <div className="mt-3 flex flex-wrap gap-3">
+                                        {t.whatsapp && (
+                                            <a
+                                                href={lienWhatsApp(t)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={triggerVibration}
+                                                aria-label={`WhatsApp (${t.pays.fr}) : ${t.affichage}`}
+                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all touch-manipulation"
+                                            >
+                                                <i className="ph-fill ph-whatsapp-logo text-lg" aria-hidden="true"></i>
+                                                <span lang="en" translate="no">WhatsApp</span>
+                                            </a>
+                                        )}
+                                        {t.telegram && (
+                                            <a
+                                                href={lienTelegram(t)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                onClick={triggerVibration}
+                                                aria-label={`Telegram (${t.pays.fr}) : ${t.affichage}`}
+                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all touch-manipulation"
+                                            >
+                                                <i className="ph-fill ph-telegram-logo text-lg" aria-hidden="true"></i>
+                                                <span lang="en" translate="no">Telegram</span>
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 
