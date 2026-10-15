@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
+import { TELEPHONES } from "../lib/coordonnees";
 import ContactClient from "./ContactClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -45,6 +46,14 @@ const contactJsonLd = {
     "@id": `${SITE_URL}/#organization`,
     "name": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
     "email": "contact@nkonilonko.com",
+    // Téléphones (Mali, France) : une seule source, app/lib/coordonnees.ts
+    "contactPoint": TELEPHONES.map((t) => ({
+      "@type": "ContactPoint",
+      "telephone": t.e164,
+      "contactType": "customer service",
+      "areaServed": t.codePays,
+      "availableLanguage": ["nqo", "fr"],
+    })),
     "url": SITE_URL,
     "location": {
       "@type": "Place",
