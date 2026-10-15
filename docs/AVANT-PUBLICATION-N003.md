@@ -26,6 +26,12 @@
 | 6 | Facultatif mais recommandé : mesurer la vitesse sur téléphone avec **PageSpeed Insights** (https://pagespeed.web.dev) sur l'accueil et un article ; noter les scores | propriétaire | facultatif |
 | 7 | Recommandé : vérifier que le site est déclaré dans **Google Search Console** et que le plan du site `https://www.nkonilonko.com/sitemap.xml` y est envoyé | propriétaire | à vérifier |
 | 8 | Brouillon `fdc1effe…` (article non terminé) : le terminer pour le N°003 ou le laisser en brouillon | rédaction | à décider |
+| 9 | **Numéros, partie A** (schéma `rubrique` / `numero`, champ `rubrique` de l'article, script de vérification) : fusion puis `sanity schema deploy`, avec l'accord écrit du propriétaire | IA + propriétaire | ⏳ |
+| 10 | Vérifier la partie A dans le **Studio officiel https://www.nkonilonko.com/studio**, puis **supprimer le Studio en double** (`xsdgnlztnsa462mh2v6t5iyk`, adresse d'aperçu) dans sanity.io/manage | propriétaire | ⏳ |
+| 11 | **Noms N'Ko des 8 rubriques** (Édito, Grand sujet, L'Afrique qui cherche, La Grande Question, Le Ciel du mois, Le Chiffre du mois, En bref, Les Mots du mois) et **libellés N'Ko de l'interface des numéros** | rédaction | ⏳ |
+| 12 | Création des 8 rubriques et du N°003 **en brouillon** (Cowork, avec `--export`) | IA | ⏳ après 9 et 11 |
+| 13 | **Numéros, partie B** (pages, page article, SEO, plan du site, menu) : fusion avec l'accord écrit du propriétaire, **avant le 18 octobre** | IA + propriétaire | ⏳ |
+| 14 | Après la partie B : ajouter `numero` et `rubrique` au **filtre du webhook Sanity** « Mise à jour du site » (`_type in ["article","terme","numero","rubrique"]`) | propriétaire | ⏳ |
 
 ---
 
@@ -48,7 +54,7 @@
 ## C. Le jour J — 30 octobre
 
 1. **Sauvegarde** : export complet du dataset le matin (`sanity dataset export`, voir `CLAUDE.md` § 3).
-2. **Publier les termes du lexique d'abord**, puis les articles (Studio → Publier).
+2. **Publier dans cet ordre** (Studio → Publier) : les **rubriques**, les **termes** du lexique, les **articles**, puis **le numéro N°003 en dernier** (sinon il pointerait vers des articles pas encore publiés).
 3. **Vérifier en ligne** (quelques secondes après chaque publication, grâce à la « sonnette ») :
    - l'accueil affiche les nouveaux articles ;
    - chaque article s'ouvre, sur téléphone et ordinateur ; les termes soulignés ouvrent leur définition ;

@@ -48,6 +48,9 @@ timeout 400 node node_modules/sanity/bin/sanity documents validate --yes --level
 node node_modules/sanity/bin/sanity schema deploy        # après une fusion qui change le schéma
 node node_modules/sanity/bin/sanity dataset export production "C:/Dev/archives/exports/<nom>.tar.gz"
 
+# Vérification à blanc d'un fichier d'import (article, terme, rubrique, numero), avec contrôle des références dans la sauvegarde
+node scripts/verifier-import.mts <fichier.json> --export "C:/Dev/archives/exports/<nom>.tar.gz"
+
 # Images de partage (rendu par Chrome : N'Ko lié). Changer VERSION dans le script ET dans app/lib/partage.ts
 node scripts/images-partage/generer.mjs
 ```
@@ -74,8 +77,9 @@ node scripts/images-partage/generer.mjs
 | `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique dès une publication |
 | `app/api/draft-mode/enable` · `disable` | Aperçu des brouillons (onglet **Presentation** du Studio) |
 | `sanity/fetch.ts` | `getSanityClient()` : brouillons en mode aperçu (clé Viewer), sinon contenu publié |
-| `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts` |
+| `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts`, `rubrique.ts`, `numero.ts` (`index.ts` est un reste inutilisé) |
 | `sanity.config.ts` | Studio : outils, onglet Presentation, interdiction de créer/dupliquer un abonné |
+| `sanity.cli.ts` | Projet et dataset ; `deployment.appId` = le Studio officiel **https://www.nkonilonko.com/studio** (`sofo4rzn3y9lp9608748cxio`). **Ne pas ouvrir le Studio sur une adresse d'aperçu Vercel** : il s'y enregistre tout seul (c'est ce qui a créé le doublon `xsdgnlztnsa462mh2v6t5iyk` le 4 octobre) |
 | `proxy.ts` | Filtre anti-robots + CSP (en mode « rapport seulement ») |
 | `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Les articles utilisent leur photo de couverture |
 
@@ -86,6 +90,9 @@ node scripts/images-partage/generer.mjs
 - **Encadrés (`callout.intent`)** : `success` = **Définition** (bleu, compact) · `amazing` = Le saviez-vous ? · `question` = Question · `info` · `warning`.
 - **Terme du lexique (`terme`)** : `termeNko`, `termeFr`, `definitionNko`, `definitionFr`, `domaine`, `slug`. Un terme est défini **une fois** et relié depuis le texte (annotation `termeLexique`). Avertissement si un terme existe déjà.
 - La liste des articles qui utilisent un terme est **réservée à la rédaction** (encadré dans le Studio) : **ne jamais l'afficher sur le site**.
+- **Rubrique (`rubrique`)** : `titleNko`, `titleFr` (obligatoires, N'Ko de la rédaction), `slug`, `ordre`, `descriptionFr`. Un article a un champ facultatif `rubrique` (référence).
+- **Numéro (`numero`)** : `numero` (unique), `slug` = numéro sur 3 chiffres (« 003 », calculé et contrôlé), `saison`, `publishedAt` (obligatoire), `couverture` (conseillée), `sommaire` (articles ordonnés, sans doublon), `edito` et `aLaUne` (dans le sommaire), `seoTitle`, `excerpt` (facultatif : sinon le résumé de l'édito). **Le numéro pointe vers ses articles** ; l'article ne stocke pas son numéro (le site le retrouve avec `references()`).
+- **Références vers un brouillon** : toujours **faibles** (`_weak: true` + `_strengthenOnPublish`), sinon Sanity refuse la création (règle du propriétaire, 15 octobre 2026). Ordre de publication : rubriques → termes → articles → numéro.
 - Import par une IA : suivre **`docs/GUIDE-IMPORT-IA.md`** (brouillons seulement, vérification, aperçu, publication par le propriétaire). Images : **uniquement libres de droits**, téléversées dans Sanity, crédit et licence dans le champ `source`.
 - Compte X des partages : `COMPTE_X` dans `app/lib/partage.ts` (aujourd'hui `@MckV2016`, compte du propriétaire ; passer à `@nkonilonko` quand il existera). YouTube, TikTok, Instagram et Facebook « nkonilonko » sont bien au propriétaire.
 
@@ -115,5 +122,6 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 
 - **Lot 1 : terminé et en ligne** (3 – 5 octobre 2026, 77 changements). Tout est décrit dans **`docs/COMPTE-RENDU-LOT-1.md`** (à lire en premier par toute nouvelle session ou autre IA, ex. Claude Cowork).
 - **N°003** : répétition générale avec le 1er article terminé (brouillon), import du 25 au 28 octobre 2026, publication le **30 octobre** — liste de contrôle et jour J : **`docs/AVANT-PUBLICATION-N003.md`**. **Gel** du site du 18 au 30 octobre (corrections seulement ; la saisie des contenus reste possible). Les articles restent en **brouillon** jusqu'au 30 octobre.
+- **Exception décidée par le propriétaire le 15 octobre 2026 : la notion de « Numéro » est livrée AVANT le gel du 18 octobre**, en deux parties : **A** (schéma `rubrique` / `numero`, champ `rubrique` de l'article, script de vérification) puis **B** (pages `/numeros` et `/numeros/[slug]`, « Paru dans le N° » et navigation sur la page article, SEO, plan du site, mise à jour automatique, lien « Numéros » du menu). Les libellés N'Ko des rubriques et de l'interface viennent de la rédaction.
 - **Lot 2 : ne pas commencer avant le 30 octobre.** Ordre et méthode (dont le modèle de traduction ByT5, jeu de données **privé**, Google Colab) : **`docs/PLAN-LOT-2.md`**.
-- **Liste du Lot 2** : type « Numéro », corpus N'Ko – français pour le modèle ByT5 (export daté, privé), politique d'usage de l'IA et clause « IA » du pacte des auteurs, images de partage des articles avec leur titre N'Ko (même méthode que `scripts/images-partage/generer.mjs`, `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).
+- **Liste du Lot 2** : corpus N'Ko – français pour le modèle ByT5 (export daté, privé), politique d'usage de l'IA et clause « IA » du pacte des auteurs, images de partage des articles avec leur titre N'Ko (même méthode que `scripts/images-partage/generer.mjs`, `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).
