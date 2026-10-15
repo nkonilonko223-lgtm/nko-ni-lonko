@@ -119,7 +119,7 @@ const safeMessage = sanitizeHtml(message, { allowedTags: [] });
         'Authorization': `Bearer ${RESEND_API_KEY}`
       },
       body: JSON.stringify({
-        from: 'NKo ni Lonko <contact@nkonilonko.com>', 
+        from: `"N'Ko ni Lonko" <contact@nkonilonko.com>`,
         to: ['nkonilonko223@gmail.com'], // 🔴 L'ADRESSE OFFICIELLE
         reply_to: email, // 🚀 Quand tu cliques "Répondre" dans Gmail, ça répond directement au client
         subject: `🚨 ߗߋߛߓߍ ߞߎߘߊ (${safeName})`,

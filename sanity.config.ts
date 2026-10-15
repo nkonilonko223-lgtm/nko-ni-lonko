@@ -16,7 +16,7 @@ import numero from './sanity/schemas/numero';
 
 export default defineConfig({
   name: 'default',
-  title: 'NKo Ni Lonko Blog',
+  title: "N'Ko ni Lonko Blog",
 
   projectId: 'yfsyhc2p',
   dataset: 'production',

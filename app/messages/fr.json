@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "N'ko ni Lonko",
+    "title": "N'Ko ni Lonko",
     "description": "Diffusion des sciences en langue N'Ko",
-    "siteName": "N'ko ni Lonko"
+    "siteName": "N'Ko ni Lonko"
   },
   "nav": {
     "home": "Accueil",
@@ -60,12 +60,12 @@
     "filters": "Filtres"
   },
   "footer": {
-    "about": "N'ko ni Lonko est une plateforme de diffusion scientifique en langue N'Ko",
+    "about": "N'Ko ni Lonko est une plateforme de diffusion scientifique en langue N'Ko",
     "contact": "Contact",
     "legal": "Mentions légales",
     "privacy": "Confidentialité",
     "terms": "Conditions d'utilisation",
-    "copyright": "© {year} N'ko ni Lonko - Tous droits réservés"
+    "copyright": "© {year} N'Ko ni Lonko - Tous droits réservés"
   },
   "common": {
     "loading": "Chargement...",
