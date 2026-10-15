@@ -13,11 +13,11 @@
 | 0 | **Recevoir les textes** : paragraphe par paragraphe (N'Ko puis français), titre, résumé, catégorie, auteurs, date, encadrés repérés, termes du lexique avec leurs **définitions N'Ko et français**, légendes N'Ko des images, images éventuelles | rédaction | fichier Word, Google Docs, PDF ou texte collé |
 | 1 | **Export complet** du dataset (sauvegarde) | IA, avec accord écrit | `node node_modules/sanity/bin/sanity dataset export production "C:/Dev/archives/exports/avant-import-<numero>.tar.gz"` |
 | 2 | Préparer le **fichier d'import** (JSON, tableau de documents) | IA | voir § 3 et § 4 |
-| 3 | **Vérification à blanc** du fichier (n'écrit rien dans Sanity) | IA | `node scripts/verifier-import.mts <fichier.json>` → **0 erreur** obligatoire. Si le script crée `<fichier>.nfc.json`, c'est **cette copie** qu'on importe |
+| 3 | **Vérification à blanc** du fichier (n'écrit rien dans Sanity) | IA | `node scripts/verifier-import.mts <fichier.json> --export <sauvegarde de l'étape 1>` → **0 erreur** obligatoire. Si le script crée `<fichier>.nfc.json`, c'est **cette copie** qu'on importe |
 | 4 | Créer les documents **en brouillon uniquement** (`_id` = `drafts.…`) | IA, avec accord écrit | outil MCP Sanity `create_documents`, ou `sanity documents create` |
 | 5 | **Validation officielle** de tous les documents | IA | `node node_modules/sanity/bin/sanity documents validate --yes --level warning` |
 | 6 | **Relecture dans l'aperçu** (Studio → Presentation) | propriétaire | sur le vrai site, en N'Ko et en français, ordinateur et téléphone |
-| 7 | **Publication** (termes du lexique **d'abord**, puis articles) | **propriétaire seulement** | Studio → Publier |
+| 7 | **Publication**, dans cet ordre : **rubriques**, **termes** du lexique, **articles**, puis **le numéro en dernier** | **propriétaire seulement** | Studio → Publier |
 
 **L'IA ne publie jamais, ne supprime jamais, ne modifie jamais un document déjà publié.**
 **Les articles d'un numéro restent en brouillon jusqu'au jour de sa publication** (30 octobre 2026 pour le N°003) : rien n'est dévoilé avant.
@@ -82,7 +82,7 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 **Règles du lexique (vérifiées par le script ET par le Studio) :**
 1. Chaque terme relié l'est **en N'Ko ET en français** (une fois dans un paragraphe N'Ko, une fois dans un paragraphe français) : les deux langues forment une **paire**.
 2. Ne relier que la **1re apparition** du terme **par langue** dans l'article.
-3. La référence pointe vers l'`_id` **publié** du terme (sans `drafts.`). Sanity refusera de publier l'article tant que le terme n'est pas publié : **publier les termes d'abord**.
+3. La référence pointe vers l'`_id` **publié** du terme (sans `drafts.`). Sanity refusera de publier l'article tant que le terme n'est pas publié : **publier les termes d'abord**. Si le terme n'existe encore **qu'en brouillon**, la référence doit être **faible** : `"_weak": true` et `"_strengthenOnPublish": { "type": "terme" }` (règle générale, voir § 4 bis).
 4. Les anciens encadrés « Définition » (`callout` `success`) restent possibles, mais pour un **nouveau** numéro, préférer le **lexique**.
 5. Un terme manque dans le lexique ? Le **signaler** au propriétaire (liste) : la rédaction écrit sa définition N'Ko. L'IA ne crée un terme qu'avec le N'Ko fourni par la rédaction.
 
@@ -101,9 +101,63 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 | Champ `caption` | Légende française (rédaction, ou proposée par l'IA à partir de la source) |
 | Taille | Assez grande pour l'écran (≥ 1 200 px de large pour la couverture) |
 
+## 4 bis. Rubriques et numéros (`rubrique`, `numero`)
+
+**Règle des références (décision du propriétaire, 15 octobre 2026) :** une référence vers un document qui n'existe **qu'en brouillon** (article, rubrique, terme) doit être **faible** : `"_weak": true` et `"_strengthenOnPublish": { "type": "<type de la cible>" }`. Sinon, Sanity refuse la création. Le script le vérifie avec `--export`.
+
+### Rubrique
+
+```json
+{
+  "_id": "drafts.rubrique-grand-sujet",
+  "_type": "rubrique",
+  "titleNko": "<N'Ko de la rédaction>",
+  "titleFr": "Grand sujet",
+  "slug": { "_type": "slug", "current": "grand-sujet" },
+  "ordre": 2,
+  "descriptionFr": "Facultatif."
+}
+```
+
+- `titleNko` et `titleFr` obligatoires (le N'Ko vient **toujours** de la rédaction) ; `slug` en `a-z0-9-` ; `ordre` entier ≥ 1.
+- Identifiants trouvés dans les fichiers du N°003 : `edito`, `grand-sujet`, `afrique-qui-cherche`, `grande-question`, `ciel-du-mois`, `chiffre-du-mois`, `en-bref`, `mots-du-mois`.
+- Un article indique sa rubrique avec le champ `rubrique` : `{ "_type": "reference", "_ref": "rubrique-grand-sujet" }` (faible si la rubrique n'est pas publiée).
+
+### Numéro
+
+```json
+{
+  "_id": "drafts.numero-003",
+  "_type": "numero",
+  "numero": 3,
+  "slug": { "_type": "slug", "current": "003" },
+  "saison": 1,
+  "publishedAt": "2026-10-30T06:00:00.000Z",
+  "titleNko": "<N'Ko de la rédaction, facultatif>",
+  "titleFr": "Facultatif",
+  "sommaire": [
+    { "_type": "reference", "_key": "s1", "_ref": "article-nkl-003-edito", "_weak": true, "_strengthenOnPublish": { "type": "article" } }
+  ],
+  "edito": { "_type": "reference", "_ref": "article-nkl-003-edito", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
+  "aLaUne": { "_type": "reference", "_ref": "article-nkl-003-gs", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
+  "couverture": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…" }, "alt": "…", "captionNko": "<rédaction>", "caption": "…" },
+  "seoTitle": "Facultatif (≤ 60 caractères)",
+  "excerpt": "Facultatif (≤ 200 caractères) ; s'il est vide, la page utilise le résumé de l'édito"
+}
+```
+
+- `numero` entier ≥ 1, **unique** ; `slug` = le numéro sur **3 chiffres** (3 → « 003 »), contrôlé.
+- `publishedAt` obligatoire. `couverture` facultative mais conseillée (avertissement) ; si elle est là, `alt` obligatoire.
+- `sommaire` : au moins un article, **dans l'ordre de la revue**, **sans doublon** ; chaque élément a un `_key`.
+- `edito` et `aLaUne` (facultatifs) doivent **figurer dans le sommaire**.
+- Le numéro pointe vers ses articles : **ne rien ajouter** dans les articles pour dire à quel numéro ils appartiennent.
+
 ## 5. Ce que vérifie `scripts/verifier-import.mts`
 
 - `_id` en `drafts.` · NFC (normalisation **automatique contrôlée**, copie `.nfc.json`, mots listés avec leurs codes Unicode) · marques tapées deux fois (**signalées**, jamais corrigées) · champs obligatoires · `slug` · catégorie autorisée · types de blocs et d'encadrés autorisés (lus dans le schéma) · `titleNko` des rubriques · `alt` des images · paires N'Ko/français du lexique · termes reliés plusieurs fois · termes en double dans le fichier.
+- **Rubriques** : titres obligatoires, N'Ko présent, `slug`, `ordre`, doublons dans le fichier. **Numéros** : numéro unique, lien « 003 » calculé, date, sommaire (non vide, sans doublon), édito et à la une dans le sommaire, couverture et son `alt`, longueurs SEO.
+- **Avec `--export <sauvegarde.tar.gz>`** (la sauvegarde de l'étape 1, lue sans connexion) : chaque référence (auteur, terme, rubrique, article, image) **existe** et a le **bon type** ; une référence vers un document **seulement en brouillon** doit être **faible** (sinon erreur) ; un document qui **existe déjà** est signalé (l'import sera alors une **mise à jour** : remplacement ou modification, pas une création) ; un `slug` ou un numéro déjà pris par un autre document est une erreur.
+- Sans `--export`, les références absentes du fichier sont seulement signalées (avertissement).
 - **Code 0** = import possible. **Code 1** = corriger d'abord. S'il existe une copie `.nfc.json`, c'est **elle** qu'on importe.
 
 ## 6. Après l'import : rapport au propriétaire
