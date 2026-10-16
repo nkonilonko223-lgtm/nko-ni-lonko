@@ -91,7 +91,7 @@ interface TranslationData {
     categories: Record<string, string>;
   };
   search?: { placeholder?: string; noResults?: string; noArticles?: string };
-  nav: { home: string; articles: string; about: string; contact: string };
+  nav: { home: string; articles: string; numeros: string; about: string; contact: string };
 }
 // ==============================================================================
 // 3. HOOKS UTILITAIRES
@@ -256,8 +256,8 @@ function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  nav: { home: string; articles: string; about: string; contact: string };
-  showInstallBtn?: boolean;
+  nav: { home: string; articles: string; numeros: string; about: string; contact: string };
+showInstallBtn?: boolean;
   onInstallClick?: () => void;
   isNko?: boolean;
 }
@@ -320,6 +320,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
             {[
               { href: "/", label: nav.home, active: true },
               { href: "#articles", label: nav.articles },
+              { href: "/numeros", label: nav.numeros },
               { href: "/about", label: nav.about },
               { href: "/contact", label: nav.contact }
             ].map((link, i) => (
@@ -602,6 +603,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           </li>
           <li className="nav-item">
             <a href="#articles">{typedT.nav.articles}</a>
+          </li>
+          <li className="nav-item">
+            <Link href="/numeros">{typedT.nav.numeros}</Link>
           </li>
           <li className="nav-item">
             <Link href="/about">{typedT.nav.about}</Link>

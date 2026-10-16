@@ -16,7 +16,7 @@ interface SiteFooterProps {
 interface TranslationData {
   metadata: { siteName: string };
   footer: { about: string; contact: string; terms: string; privacy: string; copyright: string };
-  nav: { articles: string; about: string };
+  nav: { articles: string; numeros: string; about: string };
   home: { categories: Record<string, string> };
 }
 
@@ -291,6 +291,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </h3>
             <ul className="space-y-4">
               {[
+                { path: "/numeros", label: typedT?.nav?.numeros || "Numéros" },
                 { path: "/about", label: typedT?.nav?.about || "À propos" },
                 { path: "/contact", label: typedT?.footer?.contact || "Contact" },
                 { path: "/terms", label: typedT?.footer?.terms || "CGU" },
