@@ -103,7 +103,7 @@ export default function ContactClient() {
   const socialLinks = [
     { icon: "youtube-logo", href: "https://youtube.com/@nkonilonko", label: "YouTube" },
     // WhatsApp : ici, sur la page Contact, le WhatsApp du numéro de France (déjà affiché plus haut)
-    { icon: "whatsapp-logo", href: lienWhatsApp(TELEPHONES.find((t) => t.whatsapp) ?? TELEPHONES[0]), label: "WhatsApp" },
+    { icon: "whatsapp-logo", href: lienWhatsApp(TELEPHONES.find((t) => t.codePays === "FR") ?? TELEPHONES[0]), label: "WhatsApp" },
     { icon: "instagram-logo", href: "https://instagram.com/nkonilonko", label: "Instagram" },
     { icon: "facebook-logo", href: "https://facebook.com/nkonilonko", label: "Facebook" },
     { icon: "telegram-logo", href: TELEGRAM.lien, label: "Telegram" }
@@ -282,7 +282,7 @@ export default function ContactClient() {
                             </div>
                         </a>
 
-                        {/* Téléphones (Mali, France) : appel, et WhatsApp pour la France — réglés dans app/lib/coordonnees.ts.
+                        {/* Téléphones (Mali, France) : appel et WhatsApp — réglés dans app/lib/coordonnees.ts.
                             Numéro en chiffres latins et de gauche à droite (dir="ltr") pour qu'il ne s'inverse pas dans la page N'Ko. */}
                         {TELEPHONES.map((t) => (
                             <div key={t.e164} className="flex items-start gap-5 group">
