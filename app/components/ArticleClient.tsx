@@ -11,7 +11,7 @@
  * ==============================================================================
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, type ReactNode } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Image from "next/image";
 import Link from "next/link";
@@ -75,7 +75,14 @@ interface TranslationHome {
 // 2. COMPOSANT PRINCIPAL
 // ==============================================================================
 
-export default function ArticleClient({ article }: { article: ClientArticleData }) {
+// Emplacements remplis par la page (composants serveur) : numéro, rubrique, précédent / suivant
+interface Emplacements {
+  bandeau?: ReactNode;
+  surtitre?: ReactNode;
+  navigation?: ReactNode;
+}
+
+export default function ArticleClient({ article, bandeau, surtitre, navigation }: { article: ClientArticleData } & Emplacements) {
   const { lang, toggleLanguage, t } = useLanguage(); 
   // 🚀 RADAR 2 : Vérifie si la page Client a bien reçu la donnée
   const [fontScale, setFontScale] = useState(1.125); 
@@ -277,9 +284,11 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
       </nav>
 
       <header className="pt-24 md:pt-32 print:pt-0 pb-0 px-4 md:px-8 max-w-7xl mx-auto text-center">
+        {bandeau}
         <span className={`text-[#fbbf24] print:text-gray-600 uppercase tracking-[0.3em] font-bold mb-4 md:mb-6 block ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
             {categoryLabel}
         </span>
+        {surtitre}
         <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
             <span dir="rtl" className="block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 font-kigelia text-balance">
                 {nkoTitle}
@@ -338,6 +347,8 @@ export default function ArticleClient({ article }: { article: ClientArticleData 
 
       {/* 📖 Lexique de fin d'article (seulement si l'article utilise des termes) */}
       <LexiqueArticle termes={article.lexique || []} />
+
+      {navigation}
 
 {/* 🖨️ PIED DE PAGE D'IMPRESSION INVISIBLE SUR ÉCRAN */}
       <div className="hidden print:block max-w-3xl mx-auto border-t-2 border-black pt-4 mt-8 text-center px-4">

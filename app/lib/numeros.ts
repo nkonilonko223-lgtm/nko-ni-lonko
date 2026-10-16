@@ -48,6 +48,15 @@ export type Numero = {
 
 export type NumeroCourt = Pick<Numero, "numero" | "saison" | "titleNko" | "titleFr" | "publishedAt" | "slug" | "couverture">;
 
+// Numéro d'un article (page article) : un article non publié du sommaire est renvoyé vide (null)
+export type LienDuSommaire = { title: string; slug: string };
+export type NumeroDeLArticle = { numero: number; slug: string; sommaire: (LienDuSommaire | null)[] };
+
+// À placer dans la requête de l'article : le numéro le plus récent qui le cite
+export const PROJECTION_NUMERO_DE_L_ARTICLE = `*[_type == "numero" && references(^._id)] | order(numero desc)[0] {
+  numero, "slug": slug.current, "sommaire": sommaire[]->{ title, "slug": slug.current }
+}`;
+
 const IMAGE = `{ alt, captionNko, caption, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip }`;
 
 const REQUETE_NUMERO = `*[_type == "numero" && slug.current == $slug][0] {

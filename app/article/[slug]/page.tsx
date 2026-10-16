@@ -7,6 +7,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../lib/partage";
+import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../lib/numeros";
+import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../components/numero/ArticleNumero";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -47,6 +49,8 @@ interface SanityArticleRaw {
  tags: string[];
   references: Array<{ title: string; url: string }>;
   lexique?: TermeLexiqueData[];
+  rubrique?: RubriqueCourte | null;
+  numero?: NumeroDeLArticle | null;
   authors?: Array<{
     name: string;
     nameNko?: string;
@@ -76,6 +80,8 @@ export interface SafeArticleData {
   tags: string[];
   references: Array<{ title: string; url: string }>;
   lexique: TermeLexiqueData[];
+  rubrique: RubriqueCourte | null;
+  numero: NumeroDeLArticle | null;
  authors: Array<{
     name: string;
     nameNko: string | null;
@@ -136,6 +142,8 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     tags: raw.tags || [],
     references: raw.references || [],
     lexique: raw.lexique || [],
+    rubrique: raw.rubrique || null,
+    numero: raw.numero || null,
     authors: safeAuthors
   };
 }
@@ -174,6 +182,8 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     },
     excerpt,
     category,
+    "rubrique": rubrique->{ titleNko, titleFr, "slug": slug.current },
+    "numero": ${PROJECTION_NUMERO_DE_L_ARTICLE},
     tags,
     categories[]->{title},
     references[]{title, url},
@@ -190,7 +200,7 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
       query,
       { slug },
       // 🚀 DESTRUCTION DU CACHE : On force la lecture en temps réel (0 seconde)
-      apercu ? { cache: "no-store" } : { next: { tags: ["article", `article-${slug}`], revalidate: 0 } }
+      apercu ? { cache: "no-store" } : { next: { tags: ["article", `article-${slug}`, "numero"], revalidate: 0 } }
     );
     if (!rawArticle) return null;
     return transformSafeArticle(rawArticle);
@@ -263,6 +273,8 @@ export async function generateMetadata(
       "citation_journal_title": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
       "citation_language": "nqo",
       "citation_fulltext_world_readable": "",
+      // Numéro de la revue (seulement si l'article est dans un numéro publié)
+      ...(article.numero ? { "citation_issue": String(article.numero.numero) } : {}),
       "citation_keywords": [
         ...article.tags,
         article.category,
@@ -323,7 +335,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const article = await getArticle(slug);
 
-  if (!article) return notFound(); 
+  if (!article) return notFound();
+  // Le numéro et la rubrique ne sont pas envoyés au navigateur avec l'article
+  const { numero, rubrique, ...donnees } = article;
 
   // 👑 JSON-LD 1 : L'Article Scientifique (ScholarlyArticle)
   const articleJsonLd = {
@@ -359,6 +373,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     },
     "datePublished": article.publishedAt,
     "dateModified": article.publishedAt,
+    // Numéro de la revue (même « @id » que la page /numeros/<slug>)
+    ...(article.numero ? {
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "@id": `${SITE_URL}/numeros/${article.numero.slug}`,
+        "issueNumber": String(article.numero.numero),
+        "isPartOf": { "@type": "Periodical", "name": "N'Ko ni Lonko", "url": SITE_URL }
+      }
+    } : {}),
     // 👑 Auteurs avec réseaux sociaux — Google connaît chaque auteur
     "author": article.authors.map(author => ({
       "@type": "Person",
@@ -456,8 +479,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       
-      {/* Transmission du nouvel objet robuste vers le composant d'affichage */}
-      <ArticleClient article={article} />
+      {/* Transmission du nouvel objet robuste vers le composant d'affichage.
+          Numéro et rubrique : rendus ici, côté serveur, et placés dans les emplacements */}
+      <ArticleClient
+        article={donnees}
+        bandeau={numero ? <BandeauNumero numero={numero} /> : undefined}
+        surtitre={rubrique ? <SurtitreRubrique rubrique={rubrique} /> : undefined}
+        navigation={numero ? <NavigationNumero numero={numero} slug={article.slug} /> : undefined}
+      />
     </>
   );
 }

@@ -41,7 +41,7 @@ function LibelleBloc({ texte }: { texte: Libelle }) {
 }
 
 // Libellé sur une ligne : N'Ko · français (liens)
-function LibelleEnLigne({ texte }: { texte: Libelle }) {
+export function LibelleEnLigne({ texte }: { texte: Libelle }) {
   return (
     <span className="inline-flex flex-wrap items-baseline justify-center gap-x-2">
       {texte.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-base">{texte.nko}</span>}
@@ -62,7 +62,7 @@ function Surtitre({ rubrique }: { rubrique?: RubriqueCourte | null }) {
 }
 
 // Titre N'Ko puis titre français (coupé seulement sur une parenthèse finale contenant du latin)
-function TitreArticle({ titre, grand }: { titre: string; grand?: boolean }) {
+export function TitreArticle({ titre, grand }: { titre: string; grand?: boolean }) {
   const { nko, fr } = separerTitre(titre);
   const sens = sensDe(nko);
   return (
