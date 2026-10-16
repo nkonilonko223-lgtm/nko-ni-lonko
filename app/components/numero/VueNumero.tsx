@@ -128,7 +128,9 @@ export default function VueNumero({ numero }: { numero: Numero }) {
             <span className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/40 to-transparent" aria-hidden="true" />
           </figure>
         )}
-        <div className={`relative mx-auto max-w-4xl px-4 text-center ${couverture ? "-mt-40 md:-mt-56" : "pt-28 md:pt-36"}`}>
+        {/* Le texte remonte sur la couverture ; sa hauteur minimale égale ce chevauchement,
+            pour que la suite de la page ne passe jamais sous l'image */}
+        <div className={`relative mx-auto max-w-4xl px-4 text-center ${couverture ? "-mt-40 min-h-40 md:-mt-56 md:min-h-56" : "pt-28 md:pt-36"}`}>
           <p lang="nqo" dir="rtl" className="font-kigelia text-lg text-[#fbbf24] md:text-xl">
             {numeroNko(numero.numero)}
             {saison !== null && ` · ${saisonNko(saison)}`} · {dateNko(numero.publishedAt)}
