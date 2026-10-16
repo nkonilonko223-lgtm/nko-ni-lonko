@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
 import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
+import { LIEN_ICONE_WHATSAPP, TELEGRAM } from "../lib/coordonnees";
 
 export default function AboutClient() {
   // 🚀 1. LE FOCUS COGNITIF (Bilinguisme intelligent)
@@ -95,10 +96,11 @@ export default function AboutClient() {
 
   const socialLinks = [
     { icon: "youtube-logo", href: "https://youtube.com/@nkonilonko", label: "YouTube" },
-    { icon: "whatsapp-logo", href: "https://wa.me/22300000000", label: "WhatsApp" },
+    // WhatsApp : vers la page Contact (aucun numéro sur « À propos »)
+    { icon: "whatsapp-logo", href: LIEN_ICONE_WHATSAPP, label: "WhatsApp" },
     { icon: "instagram-logo", href: "https://instagram.com/nkonilonko", label: "Instagram" },
     { icon: "facebook-logo", href: "https://facebook.com/nkonilonko", label: "Facebook" },
-    { icon: "telegram-logo", href: "https://t.me/nkonilonko", label: "Telegram" }
+    { icon: "telegram-logo", href: TELEGRAM.lien, label: "Telegram" }
   ];
 
   return (
@@ -271,8 +273,9 @@ export default function AboutClient() {
                     <a 
                       key={i} 
                       href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      // Nouvel onglet seulement pour un autre site (pas pour /contact)
+                      target={link.href.startsWith("http") ? "_blank" : undefined}
+                      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                       aria-label={link.label}
                       onClick={triggerVibration}
                       className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] touch-manipulation group"

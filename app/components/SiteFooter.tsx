@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "./LanguageProvider";
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
 import { URL_X } from "../lib/partage";
+import { LIEN_ICONE_WHATSAPP, TELEGRAM } from "../lib/coordonnees";
 
 interface SiteFooterProps {
   activeCategory: string;
@@ -319,17 +320,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   contact@nkonilonko.com
                 </a>
               </li>
-              <li className="flex items-start gap-3">
-                <i className="ph-bold ph-phone text-xl text-gray-500 mt-0.5 group-hover:text-[#fbbf24] transition-colors"></i>
-                <div className="flex flex-col gap-1.5">
-                  <a href="tel:+22300000000" onClick={triggerVibration} className="hover:text-white transition-colors" dir="ltr">
-                    +223 00 00 00 00
-                  </a>
-                  <a href="tel:+22400000000" onClick={triggerVibration} className="hover:text-white transition-colors" dir="ltr">
-                    +224 00 00 00 00
-                  </a>
-                </div>
-              </li>
+              {/* Pas de numéro de téléphone dans le pied de page (décision du propriétaire) : voir la page Contact */}
               <li className="flex items-start gap-3">
                 <i className="ph-bold ph-map-pin text-xl text-gray-500 mt-0.5"></i>
                 <p className="leading-relaxed">
@@ -372,14 +363,16 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                { href: URL_X, icon: "twitter-logo", label: "Twitter / X" },
                { href: "https://instagram.com/nkonilonko", icon: "instagram-logo", label: "Instagram" },
                { href: "https://tiktok.com/@nkonilonko223", icon: "tiktok-logo", label: "TikTok" },
-               { href: "https://wa.me/22300000000", icon: "whatsapp-logo", label: "WhatsApp" },
-               { href: "https://t.me/nkonilonko", icon: "telegram-logo", label: "Telegram" }
+               // WhatsApp : vers la page Contact (aucun numéro dans le pied de page)
+               { href: LIEN_ICONE_WHATSAPP, icon: "whatsapp-logo", label: "WhatsApp" },
+               { href: TELEGRAM.lien, icon: "telegram-logo", label: "Telegram" }
              ].map((social, i) => (
-               <a 
-                 key={i} 
-                 href={social.href} 
-                 target="_blank" 
-                 rel="noopener noreferrer" 
+               <a
+                 key={i}
+                 href={social.href}
+                 // Nouvel onglet seulement pour un autre site (pas pour /contact)
+                 target={social.href.startsWith("http") ? "_blank" : undefined}
+                 rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
                  aria-label={social.label} 
                  onClick={triggerVibration}
                  className="group touch-manipulation p-1"

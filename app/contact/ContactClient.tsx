@@ -102,10 +102,11 @@ export default function ContactClient() {
 
   const socialLinks = [
     { icon: "youtube-logo", href: "https://youtube.com/@nkonilonko", label: "YouTube" },
-    { icon: "whatsapp-logo", href: "https://wa.me/22300000000", label: "WhatsApp" },
+    // WhatsApp : ici, sur la page Contact, le WhatsApp du numéro de France (déjà affiché plus haut)
+    { icon: "whatsapp-logo", href: lienWhatsApp(TELEPHONES.find((t) => t.whatsapp) ?? TELEPHONES[0]), label: "WhatsApp" },
     { icon: "instagram-logo", href: "https://instagram.com/nkonilonko", label: "Instagram" },
     { icon: "facebook-logo", href: "https://facebook.com/nkonilonko", label: "Facebook" },
-    { icon: "telegram-logo", href: "https://t.me/nkonilonko", label: "Telegram" }
+    { icon: "telegram-logo", href: TELEGRAM.lien, label: "Telegram" }
   ];
 
   // 🚀 GESTION DES CHAMPS & VALIDATION TEMPS RÉEL
