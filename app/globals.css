@@ -373,6 +373,7 @@ nav {
     transition: all var(--duration-normal) var(--ease-smooth);
     position: relative;
     opacity: 0.9;
+    white-space: nowrap; /* un lien du menu ne se coupe jamais sur deux lignes */
   }
 
   /* Underline animé au hover */
@@ -1333,6 +1334,24 @@ nav {
 /* ===========================================
    RESPONSIVE — Mobile First Overrides
    =========================================== */
+/* Menu à 5 liens (dont « Numéros ») : écart réduit, puis menu « téléphone » sous 1024 px
+   (mesuré le 16 octobre 2026 : tout tient sur une ligne, en N'Ko et en français) */
+@media (max-width: 1100px) {
+  .nav-links {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: block;
+  }
+}
+
 @media (max-width: 900px) {
   /* Desktop nav-links : cachée sur mobile (le MobileMenu prend le relais) */
   .nav-links {
