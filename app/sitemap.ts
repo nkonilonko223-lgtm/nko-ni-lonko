@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { client } from '../sanity/client';
+import { getLiensNumeros } from './lib/numeros';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -56,6 +57,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
+  // 📚 Numéros de la revue (étiquette « numero », vidée par la sonnette)
+  const numeroEntries: MetadataRoute.Sitemap = (await getLiensNumeros()).map((n) => ({
+    url: `${baseUrl}/numeros/${n.slug}`,
+    lastModified: n.publishedAt ? new Date(n.publishedAt) : undefined,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  }));
+
   // ==============================================================================
   // 3. GÉNÉRATION DES ROUTES AVEC IMAGES
   // ==============================================================================
@@ -103,6 +112,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'yearly' as const,
       priority: 0.3,
     },
+    {
+      url: `${baseUrl}/numeros`,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    },
+    ...numeroEntries,
     ...postEntries,
     {
       url: `${baseUrl}/lexique`,
