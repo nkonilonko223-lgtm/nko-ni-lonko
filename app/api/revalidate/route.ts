@@ -38,6 +38,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ revalidated: true, now: Date.now() });
     }
 
+    // 📚 Numéro ou rubrique : pages des numéros, archive, plan du site et articles
+    // (surtitre de rubrique, « Paru dans le N° », précédent / suivant)
+    if (body?._type === 'numero' || body?._type === 'rubrique') {
+      revalidateTag('numero', { expire: 0 });
+      revalidateTag('article', { expire: 0 });
+      console.info("🔔 [Revalidate] Numéros et articles mis à jour.");
+      return NextResponse.json({ revalidated: true, now: Date.now() });
+    }
+
     if (body?._type !== 'article') {
       return NextResponse.json({ revalidated: false, message: 'Type ignoré' });
     }
