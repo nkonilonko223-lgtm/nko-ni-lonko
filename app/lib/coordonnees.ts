@@ -4,7 +4,7 @@
 // Une seule source : changer ici seulement. Un numéro par pays, avec appel,
 // WhatsApp et Telegram. Numéro au format international sans espaces (E.164)
 // pour les liens, et avec espaces pour l'affichage.
-// Les noms de pays en N'Ko viennent de la rédaction (vide = seul le français s'affiche).
+// Les noms de pays en N'Ko viennent de la rédaction (16 octobre 2026), copiés sans modification.
 // Décision du propriétaire (15 octobre 2026) : seulement sur la page Contact,
 // pas dans le pied de page (numéros moins exposés aux robots).
 // ============================================================================
@@ -19,8 +19,8 @@ export type Telephone = {
 };
 
 export const TELEPHONES: readonly Telephone[] = [
-  { e164: '+22364055100', affichage: '+223 64 05 51 00', codePays: 'ML', pays: { nko: '', fr: 'Mali' }, whatsapp: true, telegram: true },
-  { e164: '+33768610018', affichage: '+33 7 68 61 00 18', codePays: 'FR', pays: { nko: '', fr: 'France' }, whatsapp: true, telegram: true },
+  { e164: '+22364055100', affichage: '+223 64 05 51 00', codePays: 'ML', pays: { nko: 'ߡߊߟߌ߫', fr: 'Mali' }, whatsapp: true, telegram: true },
+  { e164: '+33768610018', affichage: '+33 7 68 61 00 18', codePays: 'FR', pays: { nko: 'ߝߊ߬ߙߊ߲߬ߛߌ߫', fr: 'France' }, whatsapp: true, telegram: true },
 ];
 
 export const lienAppel = (t: Telephone) => `tel:${t.e164}`;
