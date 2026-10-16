@@ -38,6 +38,15 @@ export default defineConfig({
               ],
             }),
           }),
+          numero: defineLocations({
+            select: { numero: 'numero', slug: 'slug.current' },
+            resolve: (doc) => ({
+              locations: [
+                { title: `N°${String(doc?.numero ?? '').padStart(3, '0')}`, href: `/numeros/${doc?.slug}` },
+                { title: 'Numéros', href: '/numeros' },
+              ],
+            }),
+          }),
         },
       },
     }),
