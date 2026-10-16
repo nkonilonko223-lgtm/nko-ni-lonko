@@ -67,10 +67,11 @@ export function NavigationNumero({ numero, slug }: { numero: NumeroDeLArticle; s
   const suivant = i >= 0 ? liens[i + 1] : null;
   if (!precedent && !suivant) return null;
 
+  // role="navigation" plutôt que <nav> : globals.css donne à toute balise <nav> le style de la barre du haut (collante)
   return (
-    <nav aria-label={numeroFr(numero.numero)} className="mx-auto mb-12 grid max-w-3xl gap-3 px-4 sm:grid-cols-2 md:px-6 print:hidden">
+    <div role="navigation" aria-label={numeroFr(numero.numero)} className="mx-auto mb-12 grid max-w-3xl gap-3 px-4 sm:grid-cols-2 md:px-6 print:hidden">
       {precedent ? <Voisin article={precedent} sens="precedent" /> : <span className="hidden sm:block" aria-hidden="true" />}
       {suivant && <Voisin article={suivant} sens="suivant" />}
-    </nav>
+    </div>
   );
 }
