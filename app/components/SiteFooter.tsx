@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "./LanguageProvider";
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
 import { URL_X } from "../lib/partage";
-import { LIEN_ICONE_WHATSAPP, TELEGRAM } from "../lib/coordonnees";
+import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
 
 interface SiteFooterProps {
   activeCategory: string;
@@ -323,11 +323,11 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
               {/* Pas de numéro de téléphone dans le pied de page (décision du propriétaire) : voir la page Contact */}
               <li className="flex items-start gap-3">
                 <i className="ph-bold ph-map-pin text-xl text-gray-500 mt-0.5"></i>
-                {/* Adresse du siège (lien vers la page Contact). Quartier et repère : en français
-                    tant que la rédaction n'a pas fourni leur N'Ko */}
+                {/* Adresse du siège (lien vers la page Contact), du plus petit au plus grand.
+                    Textes N'Ko et français : app/lib/coordonnees.ts (SIEGE) */}
                 <Link href="/contact" onClick={triggerVibration} className="leading-relaxed hover:text-white transition-colors">
-                  {isNko ? <>{'ߓߡߊ߬ߞߐ߫ ، ߡߊ߬ߟߌ'}<br/><span lang="fr" dir="ltr">Sébénikoro/Wèrèda</span></> : 'Mali, Bamako, Sébénikoro/Wèrèda'}<br/>
-                  <span lang="fr" dir="ltr">Près de l&apos;école publique</span>
+                  {isNko ? <span lang="nqo" dir="rtl">{SIEGE.quartierEtRepere.nko}</span> : <span lang="fr" dir="ltr">{SIEGE.quartierEtRepere.fr}</span>}<br/>
+                  {isNko ? <span lang="nqo" dir="rtl">{SIEGE.ville.nko}</span> : <span lang="fr" dir="ltr">{SIEGE.ville.fr}</span>}
                 </Link>
               </li>
             </ul>

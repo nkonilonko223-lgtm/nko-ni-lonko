@@ -33,3 +33,12 @@ export const TELEGRAM = { nom: '@nkonilonko', lien: 'https://t.me/nkonilonko' } 
 
 // Icône WhatsApp hors de la page Contact (pied de page, « À propos ») : la page Contact
 export const LIEN_ICONE_WHATSAPP = '/contact';
+
+// Siège : textes de la rédaction (16 octobre 2026), copiés par programme depuis
+// C:/Dev/archives/traductions/adresse-siege-redaction-2026-10-16.txt.
+// Ordre d'une adresse : du plus petit au plus grand (quartier, ville, pays).
+export const SIEGE = {
+  quartierEtRepere: { nko: "ߛߓߋ߬ߣߌߞߙߐ߫\\ߥߙߍ߬ߘߊ߫߸ ߓߍ߯ߦߊ ߞߊ߬ߙߊ߲߬ߕߊ ߞߍ߬ߘߍ ߝߍ߬", fr: "Wèrèda/Sébénikoro, près de l'école publique" },
+  quartier: { fr: "Wèrèda/Sébénikoro" },
+  ville: { nko: "ߓߡߊ߬ߞߐ߫ ، ߡߊߟߌ߫", fr: "Bamako, Mali" },
+} as const;

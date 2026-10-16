@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
-import { TELEPHONES } from "../lib/coordonnees";
+import { SIEGE, TELEPHONES } from "../lib/coordonnees";
 import ContactClient from "./ContactClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -78,7 +78,7 @@ export default function ContactPage() {
 
           <section dir="rtl" lang="nqo">
             <h2>ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
-            <p><strong>ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ :</strong> ߓߊ߬ߡߊ߬ߞߐ߬߸ ߡߊ߬ߟߌ — ߝߘߊ߬ߝߌ߲߬ߠߊ ߕߟߋ߬ߓߊ</p>
+            <p><strong>ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ :</strong> ߓߊ߬ߡߊ߬ߞߐ߬߸ ߡߊߟߌ߫ — ߝߘߊ߬ߝߌ߲߬ߠߊ ߕߟߋ߬ߓߊ</p>
             <p>
               ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫ ߟߐ߲ߞߏ ߟߊߛߋߟߌ ߞߊߡߊ߬ ߝߘߊ߬ߝߌ߲߬ߠߊ.
             </p>
@@ -87,7 +87,7 @@ export default function ContactPage() {
           <section lang="fr">
             <h2>Informations de contact</h2>
             <address>
-              <p><strong>Siège :</strong> Bamako, Sébénikoro/Wèrèda — Mali</p>
+              <p><strong>Siège :</strong> {SIEGE.quartier.fr}, {SIEGE.ville.fr}</p>
               <p>
                 <strong>Email :</strong>{" "}
                 <a href="mailto:contact@nkonilonko.com">contact@nkonilonko.com</a>
