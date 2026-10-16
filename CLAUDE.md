@@ -82,7 +82,9 @@ node scripts/images-partage/generer.mjs
 | Chemin | Rôle |
 |---|---|
 | `app/article/[slug]/page.tsx` | Page article (serveur) : requête GROQ, métadonnées, JSON-LD, lexique de l'article |
-| `app/components/ArticleClient.tsx` | Affichage d'un article (client) + lexique de fin |
+| `app/components/ArticleClient.tsx` | Affichage d'un article (client) + lexique de fin. Emplacements `bandeau`, `surtitre`, `navigation` remplis par la page (composants serveur) |
+| `app/numeros/` · `app/lib/numeros.ts` | Archive `/numeros` et page d'un numéro `/numeros/[slug]` (404 si absent ou non publié) ; requêtes des numéros (une par page) |
+| `app/components/numero/` | `textes.ts` (N'Ko de l'interface, fourni par la rédaction, et chiffres N'Ko), `titre.ts` (titre N'Ko / français, testé par `scripts/tester-titres.mts`), `VueNumero.tsx` (page d'un numéro), `ArticleNumero.tsx` (« Paru dans le N° », rubrique, précédent / suivant sur la page article) |
 | `app/components/CustomPortableText.tsx` | **Moteur de rendu du texte** : détection N'Ko/français par bloc, h1–h6, citations, images + légendes, encadrés, titres de rubrique, termes du lexique |
 | `app/components/lexique/` | Lexique : `textes.ts` (N'Ko de l'interface, fourni par la rédaction), `TermeLexique.tsx` (fiche/bulle), `LexiqueArticle.tsx`, `DictionnaireInteractif.tsx`, `CiterTerme.tsx`, `normaliser.ts` |
 | `app/lexique/` | Dictionnaire public `/lexique` et `/lexique/[slug]` |
@@ -90,12 +92,12 @@ node scripts/images-partage/generer.mjs
 | `app/api/newsletter` · `verify` · `unsubscribe` | Inscription, confirmation, désinscription (fiches **privées** `subscriber.<uuid>`) |
 | `app/api/contact` | Formulaire de contact (e-mail Resend, rien n'est stocké) |
 | `app/api/cron/cleanup` | Nettoyage nocturne (Vercel Cron, protégé par `CRON_SECRET`) |
-| `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique dès une publication |
+| `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique, numéros dès une publication (filtre du webhook : `_type in ["article","terme","numero","rubrique"]`) |
 | `app/api/draft-mode/enable` · `disable` | Aperçu des brouillons (onglet **Presentation** du Studio) |
 | `sanity/fetch.ts` | `getSanityClient()` : brouillons en mode aperçu (clé Viewer), sinon contenu publié |
 | `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts`, `rubrique.ts`, `numero.ts` (`index.ts` est un reste inutilisé) |
 | `sanity.config.ts` | Studio : outils, onglet Presentation, interdiction de créer/dupliquer un abonné |
-| `sanity.cli.ts` | Projet et dataset ; `deployment.appId` = le Studio officiel **https://www.nkonilonko.com/studio** (`sofo4rzn3y9lp9608748cxio`). **Ne pas ouvrir le Studio sur une adresse d'aperçu Vercel** : il s'y enregistre tout seul (c'est ce qui a créé le doublon `xsdgnlztnsa462mh2v6t5iyk` le 4 octobre) |
+| `sanity.cli.ts` | Projet et dataset ; `deployment.appId` = le Studio officiel **https://www.nkonilonko.com/studio** (`sofo4rzn3y9lp9608748cxio`). **Ne pas ouvrir le Studio sur une adresse d'aperçu Vercel** : il s'y enregistre tout seul (c'est ce qui a créé le doublon `xsdgnlztnsa462mh2v6t5iyk` le 4 octobre, supprimé le 16 octobre) |
 | `proxy.ts` | Filtre anti-robots + CSP (en mode « rapport seulement ») |
 | `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Les articles utilisent leur photo de couverture |
 

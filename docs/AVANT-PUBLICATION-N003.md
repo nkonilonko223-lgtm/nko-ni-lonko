@@ -26,11 +26,11 @@
 | 6 | Facultatif mais recommandé : mesurer la vitesse sur téléphone avec **PageSpeed Insights** (https://pagespeed.web.dev) sur l'accueil et un article ; noter les scores | propriétaire | facultatif |
 | 7 | Recommandé : vérifier que le site est déclaré dans **Google Search Console** et que le plan du site `https://www.nkonilonko.com/sitemap.xml` y est envoyé | propriétaire | à vérifier |
 | 8 | Brouillon `fdc1effe…` (article non terminé) : le terminer pour le N°003 ou le laisser en brouillon | rédaction | à décider |
-| 9 | **Numéros, partie A** (schéma `rubrique` / `numero`, champ `rubrique` de l'article, script de vérification) : fusion puis `sanity schema deploy`, avec l'accord écrit du propriétaire | IA + propriétaire | ⏳ |
-| 10 | Vérifier la partie A dans le **Studio officiel https://www.nkonilonko.com/studio**, puis **supprimer le Studio en double** (`xsdgnlztnsa462mh2v6t5iyk`, adresse d'aperçu) dans sanity.io/manage | propriétaire | ⏳ |
-| 11 | **Noms N'Ko des 8 rubriques** (Édito, Grand sujet, L'Afrique qui cherche, La Grande Question, Le Ciel du mois, Le Chiffre du mois, En bref, Les Mots du mois) et **libellés N'Ko de l'interface des numéros** | rédaction | ⏳ |
-| 12 | Création des 8 rubriques et du N°003 **en brouillon** (Cowork, avec `--export`) | IA | ⏳ après 9 et 11 |
-| 13 | **Numéros, partie B** (pages, page article, SEO, plan du site, menu) : fusion avec l'accord écrit du propriétaire, **avant le 18 octobre** | IA + propriétaire | ⏳ |
+| 9 | **Numéros, partie A** (schéma `rubrique` / `numero`, champ `rubrique` de l'article, script de vérification) : fusion puis `sanity schema deploy`, avec l'accord écrit du propriétaire | IA + propriétaire | ✅ fusionnée et déployée |
+| 10 | Vérifier la partie A dans le **Studio officiel https://www.nkonilonko.com/studio**, puis **supprimer le Studio en double** (`xsdgnlztnsa462mh2v6t5iyk`, adresse d'aperçu) dans sanity.io/manage | propriétaire | ✅ fait (doublon supprimé le 16 octobre) |
+| 11 | **Noms N'Ko des 8 rubriques** (Édito, Grand sujet, L'Afrique qui cherche, La Grande Question, Le Ciel du mois, Le Chiffre du mois, En bref, Les Mots du mois) et **libellés N'Ko de l'interface des numéros** | rédaction | ✅ fournis le 16 octobre (`C:\Dev\archives\traductions\`) |
+| 12 | Création des 8 rubriques et du N°003 **en brouillon** (Cowork, avec `--export`) | IA | ⏳ fichier des rubriques prêt (`rubriques-NKL-003.nfc.json`, 0 erreur) |
+| 13 | **Numéros, partie B** (pages, page article, SEO, plan du site, menu) : fusion avec l'accord écrit du propriétaire, **avant le 18 octobre** | IA + propriétaire | ⏳ branche `feat/numeros-pages` : vérifier l'aperçu Vercel |
 | 14 | Après la partie B : ajouter `numero` et `rubrique` au **filtre du webhook Sanity** « Mise à jour du site » (`_type in ["article","terme","numero","rubrique"]`) | propriétaire | ⏳ |
 
 ---
@@ -59,7 +59,9 @@
    - l'accueil affiche les nouveaux articles ;
    - chaque article s'ouvre, sur téléphone et ordinateur ; les termes soulignés ouvrent leur définition ;
    - le dictionnaire `/lexique` montre les nouveaux termes ; la recherche fonctionne ;
-   - le plan du site `/sitemap.xml` contient les nouvelles adresses.
+   - la page du numéro `/numeros/003` (couverture, édito, à la une, sommaire dans le bon ordre) et l'archive `/numeros` ;
+   - sur chaque article : « Paru dans le N°003 », la rubrique au-dessus du titre, article précédent / suivant ;
+   - le plan du site `/sitemap.xml` contient les nouvelles adresses (dont `/numeros/003`).
 4. **Partage** : s'envoyer le lien d'un article sur **WhatsApp** (ajouter `?v=1` à la fin si le lien a déjà été partagé) et le tester dans l'outil **Facebook** (https://developers.facebook.com/tools/debug/ → coller seulement l'adresse de l'article → « Re-collecter »).
 5. **Annonce** aux abonnés et sur les réseaux (YouTube, TikTok, Instagram, Facebook, X @MckV2016).
 6. **Surveiller** dans la journée les journaux Vercel (Logs) : aucune erreur 500 ; une inscription test à la lettre si besoin.
