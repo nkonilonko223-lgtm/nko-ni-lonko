@@ -267,7 +267,7 @@ export default function ContactClient() {
                             <div className="flex flex-col items-start">
                                 <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ</h3>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Notre Siège</span>
-                                <p className="text-gray-400 font-light leading-relaxed text-sm group-hover:text-gray-200 transition-colors">Bamako, Mali<br/>Afrique de l&apos;Ouest</p>
+                                <p lang="fr" dir="ltr" className="text-gray-400 font-light leading-relaxed text-sm group-hover:text-gray-200 transition-colors">Bamako, Sébénikoro/Wèrèda</p>
                             </div>
                         </div>
                         

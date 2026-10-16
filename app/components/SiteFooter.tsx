@@ -323,10 +323,12 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
               {/* Pas de numéro de téléphone dans le pied de page (décision du propriétaire) : voir la page Contact */}
               <li className="flex items-start gap-3">
                 <i className="ph-bold ph-map-pin text-xl text-gray-500 mt-0.5"></i>
-                <p className="leading-relaxed">
-                  {isNko ? 'ߓߡߊ߬ߞߐ߫ ، ߡߊ߬ߟߌ' : 'Bamako, Mali'} <br/>
-                  BP 0000
-                </p>
+                {/* Adresse du siège (lien vers la page Contact). Quartier et repère : en français
+                    tant que la rédaction n'a pas fourni leur N'Ko */}
+                <Link href="/contact" onClick={triggerVibration} className="leading-relaxed hover:text-white transition-colors">
+                  {isNko ? <>{'ߓߡߊ߬ߞߐ߫ ، ߡߊ߬ߟߌ'}<br/><span lang="fr" dir="ltr">Sébénikoro/Wèrèda</span></> : 'Mali, Bamako, Sébénikoro/Wèrèda'}<br/>
+                  <span lang="fr" dir="ltr">Près de l&apos;école publique</span>
+                </Link>
               </li>
             </ul>
           </div>

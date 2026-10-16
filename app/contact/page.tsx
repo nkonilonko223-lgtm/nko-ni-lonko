@@ -87,7 +87,7 @@ export default function ContactPage() {
           <section lang="fr">
             <h2>Informations de contact</h2>
             <address>
-              <p><strong>Siège :</strong> Bamako, Mali — Afrique de l&apos;Ouest</p>
+              <p><strong>Siège :</strong> Bamako, Sébénikoro/Wèrèda — Mali</p>
               <p>
                 <strong>Email :</strong>{" "}
                 <a href="mailto:contact@nkonilonko.com">contact@nkonilonko.com</a>
