@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
 import type { TurnstileInstance } from '@marsidev/react-turnstile'; // 🚀 RESTAURATION DU TYPAGE STRICT (La clé de VS Code)
 import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
-import { TELEPHONES, lienAppel, lienTelegram, lienWhatsApp } from "../lib/coordonnees";
+import { TELEGRAM, TELEPHONES, lienAppel, lienWhatsApp } from "../lib/coordonnees";
 
 export default function ContactClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE (Pour le bouton de retour)
@@ -281,7 +281,7 @@ export default function ContactClient() {
                             </div>
                         </a>
 
-                        {/* Téléphones (Mali, France) : appel, WhatsApp, Telegram — réglés dans app/lib/coordonnees.ts.
+                        {/* Téléphones (Mali, France) : appel, et WhatsApp pour la France — réglés dans app/lib/coordonnees.ts.
                             Numéro en chiffres latins et de gauche à droite (dir="ltr") pour qu'il ne s'inverse pas dans la page N'Ko. */}
                         {TELEPHONES.map((t) => (
                             <div key={t.e164} className="flex items-start gap-5 group">
@@ -307,8 +307,8 @@ export default function ContactClient() {
                                     >
                                         {t.affichage}
                                     </a>
-                                    <div className="mt-3 flex flex-wrap gap-3">
-                                        {t.whatsapp && (
+                                    {t.whatsapp && (
+                                        <div className="mt-3 flex flex-wrap gap-3">
                                             <a
                                                 href={lienWhatsApp(t)}
                                                 target="_blank"
@@ -320,24 +320,22 @@ export default function ContactClient() {
                                                 <i className="ph-fill ph-whatsapp-logo text-lg" aria-hidden="true"></i>
                                                 <span lang="en" translate="no">WhatsApp</span>
                                             </a>
-                                        )}
-                                        {t.telegram && (
-                                            <a
-                                                href={lienTelegram(t)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                onClick={triggerVibration}
-                                                aria-label={`Telegram (${t.pays.fr}) : ${t.affichage}`}
-                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all touch-manipulation"
-                                            >
-                                                <i className="ph-fill ph-telegram-logo text-lg" aria-hidden="true"></i>
-                                                <span lang="en" translate="no">Telegram</span>
-                                            </a>
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))}
+
+                        {/* Telegram : nom d'utilisateur, sans numéro (app/lib/coordonnees.ts) */}
+                        <a href={TELEGRAM.lien} target="_blank" rel="noopener noreferrer" onClick={triggerVibration} className="flex items-start gap-5 group cursor-pointer touch-manipulation">
+                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24]/10 transition-all duration-300">
+                                <i className="ph-fill ph-telegram-logo text-2xl text-[#fbbf24] group-hover:scale-110 transition-transform duration-300" aria-hidden="true"></i>
+                            </div>
+                            <div className="flex flex-col items-start">
+                                <h3 className="text-white font-bold text-lg mb-1" lang="en" translate="no">Telegram</h3>
+                                <p dir="ltr" translate="no" className="text-[#fbbf24] font-light text-sm group-hover:underline decoration-[#fbbf24] underline-offset-4">{TELEGRAM.nom}</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 
