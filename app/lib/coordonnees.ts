@@ -7,8 +7,8 @@
 // Les noms de pays en N'Ko viennent de la rédaction (16 octobre 2026), copiés sans modification.
 // Décisions du propriétaire : numéros seulement sur la page Contact, jamais dans le
 // pied de page ni « À propos » (15 octobre 2026) ; le moins de numéros possible :
-// Telegram par nom d'utilisateur (16 octobre 2026) ; WhatsApp sur les deux numéros,
-// Mali et France (17 octobre 2026).
+// Telegram par nom d'utilisateur pour la France (16 octobre 2026) ; WhatsApp sur les deux
+// numéros, et Telegram par le numéro pour le Mali (17 octobre 2026).
 // ============================================================================
 
 export type Telephone = {
@@ -17,17 +17,21 @@ export type Telephone = {
   codePays: 'ML' | 'FR';
   pays: { nko: string; fr: string };
   whatsapp: boolean;
+  telegram: boolean; // Telegram par le numéro (le compte France a son nom d'utilisateur : TELEGRAM)
 };
 
 export const TELEPHONES: readonly Telephone[] = [
-  { e164: '+22364055100', affichage: '+223 64 05 51 00', codePays: 'ML', pays: { nko: 'ߡߊߟߌ߫', fr: 'Mali' }, whatsapp: true },
-  { e164: '+33768610018', affichage: '+33 7 68 61 00 18', codePays: 'FR', pays: { nko: 'ߝߊ߬ߙߊ߲߬ߛߌ߫', fr: 'France' }, whatsapp: true },
+  { e164: '+22364055100', affichage: '+223 64 05 51 00', codePays: 'ML', pays: { nko: 'ߡߊߟߌ߫', fr: 'Mali' }, whatsapp: true, telegram: true },
+  { e164: '+33768610018', affichage: '+33 7 68 61 00 18', codePays: 'FR', pays: { nko: 'ߝߊ߬ߙߊ߲߬ߛߌ߫', fr: 'France' }, whatsapp: true, telegram: false },
 ];
 
 export const lienAppel = (t: Telephone) => `tel:${t.e164}`;
 // WhatsApp : le numéro sans « + ». Le nom d'utilisateur @NKonilonko (compte France) est
 // seulement RÉSERVÉ chez WhatsApp : quand il sera actif, mettre son lien ici et sur les icônes.
 export const lienWhatsApp = (t: Telephone) => `https://wa.me/${t.e164.slice(1)}`;
+// Telegram par le numéro (Mali, décision du 17 octobre 2026) : ne fonctionne que si, dans
+// Telegram, « Qui peut me trouver par mon numéro » = « Tout le monde » sur ce téléphone
+export const lienTelegram = (t: Telephone) => `https://t.me/${t.e164}`;
 
 // Telegram : nom d'utilisateur du compte France, aucun numéro dans le lien
 export const TELEGRAM = { nom: '@nkonilonko', lien: 'https://t.me/nkonilonko' } as const;
