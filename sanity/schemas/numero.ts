@@ -197,6 +197,13 @@ export default defineType({
           rows: 2,
           components: { input: ChampLtr },
         },
+        // Crédit de la couverture (même modèle que le champ « source » des images intégrées),
+        // affiché en petit sous l'image, identique dans les deux langues
+        {
+          name: 'source',
+          type: 'string',
+          title: 'Source ou crédit (ex. NASA/SDO)',
+        },
       ],
       validation: (rule) =>
         rule
