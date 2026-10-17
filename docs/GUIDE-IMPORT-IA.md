@@ -95,7 +95,7 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 | Sources à privilégier | **NASA** (domaine public), **ESA** et **ESO** (licences libres avec crédit), **Wikimedia Commons** (licence vérifiée image par image), banques libres (ex. Unsplash) |
 | Interdit | Images de presse, de réseaux sociaux ou de sites sans licence claire ; images générées par une IA présentées comme des photos réelles |
 | Stockage | L'image est **téléversée dans Sanity** (outil MCP `dataset_assets_upload_from_url` ou CLI), jamais liée au site d'origine |
-| Champ `source` | Crédit **et** licence, ex. « NASA/JPL-Caltech — domaine public » ou « ESO/M. Kornmesser — CC BY 4.0 » |
+| Champ `source` | Crédit **et** licence, ex. « NASA/JPL-Caltech — domaine public » ou « ESO/M. Kornmesser — CC BY 4.0 ». Existe aussi sur les **couvertures** (`mainImage.source` de l'article, `couverture.source` du numéro, depuis le 17 octobre 2026) : il s'affiche en petit sous l'image, tel quel dans les deux langues |
 | Champ `alt` | Description en français, rédigée par l'IA (ce que montre l'image, en une phrase) |
 | Champ `captionNko` | Fourni par la rédaction ; sinon **laisser vide** |
 | Champ `caption` | Légende française (rédaction, ou proposée par l'IA à partir de la source) |
@@ -140,7 +140,7 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
   ],
   "edito": { "_type": "reference", "_ref": "article-nkl-003-edito", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
   "aLaUne": { "_type": "reference", "_ref": "article-nkl-003-gs", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
-  "couverture": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…" }, "alt": "…", "captionNko": "<rédaction>", "caption": "…" },
+  "couverture": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…" }, "alt": "…", "captionNko": "<rédaction>", "caption": "…", "source": "NASA/SDO — domaine public" },
   "seoTitle": "Facultatif (≤ 60 caractères)",
   "excerpt": "Facultatif (≤ 200 caractères) ; s'il est vide, la page utilise le résumé de l'édito"
 }
