@@ -159,6 +159,12 @@ export default function VueNumero({ numero }: { numero: Numero }) {
               {couverture.caption && <span lang="fr" dir="ltr">{couverture.caption}</span>}
             </p>
           )}
+          {/* Crédit de la couverture : en petit, même texte dans les deux langues */}
+          {couverture?.source && (
+            <p dir="ltr" translate="no" className="mt-2 text-[10px] text-white/40 md:text-xs">
+              {couverture.source}
+            </p>
+          )}
         </div>
       </header>
 

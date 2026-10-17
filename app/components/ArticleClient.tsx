@@ -38,6 +38,7 @@ interface SanityImage {
   };
   alt?: string;
   caption?: string;
+  source?: string; // crédit de la couverture (ex. NASA/SDO)
 }
 
 interface ClientArticleData {
@@ -328,6 +329,12 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
               <i className="ph-bold ph-arrows-out text-white text-5xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-xl"></i>
             </div>
           </div>
+        )}
+        {/* Crédit de la couverture : en petit, même texte dans les deux langues */}
+        {article.mainImageUrl && article.mainImageRaw?.source && (
+          <p dir="ltr" translate="no" className="mt-2 text-end text-[10px] md:text-xs text-gray-500 print:text-gray-600">
+            {article.mainImageRaw.source}
+          </p>
         )}
       </header>
 

@@ -22,6 +22,7 @@ interface SanityImage {
   _type: 'image';
   asset: { _ref: string; _type: 'reference'; };
   alt?: string;
+  source?: string; // crédit de la couverture (ex. NASA/SDO)
   hotspot?: { x: number; y: number; height: number; width: number };
   crop?: { top: number; bottom: number; left: number; right: number };
 }

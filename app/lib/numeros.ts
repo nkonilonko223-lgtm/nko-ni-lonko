@@ -14,6 +14,7 @@ export type ImageNumero = {
   alt?: string;
   captionNko?: string;
   caption?: string;
+  source?: string; // crédit (ex. NASA/SDO)
   url?: string;
   largeur?: number;
   hauteur?: number;
@@ -57,7 +58,7 @@ export const PROJECTION_NUMERO_DE_L_ARTICLE = `*[_type == "numero" && references
   numero, "slug": slug.current, "sommaire": sommaire[]->{ title, "slug": slug.current }
 }`;
 
-const IMAGE = `{ alt, captionNko, caption, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip }`;
+const IMAGE = `{ alt, captionNko, caption, source, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip }`;
 
 const REQUETE_NUMERO = `*[_type == "numero" && slug.current == $slug][0] {
   numero, saison, titleNko, titleFr, publishedAt, seoTitle, excerpt, "slug": slug.current,
