@@ -42,46 +42,37 @@ export function proxy(request: NextRequest) {
   }
 
   // ========================================================================
-  // 🟢 3. GÉNÉRATION DU SCEAU CRYPTOGRAPHIQUE (NONCE) ET LAISSEZ-PASSER
+  // 🛡️ BOUCLIER 3 : CSP (Content Security Policy) — réécrite le 18 octobre 2026
   // ========================================================================
-  // Création d'un mot de passe unique à chaque milliseconde pour valider NOS scripts
-  const nonce = Buffer.from(crypto.randomUUID()).toString('base64');
-
-  // 🛡️ BOUCLIER 3 : L'ARMURE ABSOLUE CSP (Content Security Policy)
-  // On dresse la liste blanche stricte (Sanity, Turnstile, YouTube sont autorisés)
-  // « upgrade-insecure-requests » retiré (18 octobre 2026) : ignoré en mode « rapport seulement »,
-  // il affichait une erreur dans la console à chaque page ; HTTPS est déjà imposé par HSTS.
-  // À remettre le jour où la CSP passera en mode appliqué.
+  // L'ancienne règle exigeait un « nonce » (code différent à chaque visite) sur chaque script.
+  // Or les pages sont PRÉPARÉES À L'AVANCE (rapides, en cache) : elles ne peuvent pas porter
+  // ce code. Mesure faite : 0 script sur 24 à 31 l'avait → appliquée, la règle aurait bloqué
+  // TOUT le JavaScript. Nouvelle règle : les scripts du site lui-même, et seulement les sites
+  // tiers réellement utilisés (Cloudflare Turnstile, Sanity, YouTube). Les icônes sont auto-hébergées.
+  // Mode RAPPORT : les violations arrivent dans /api/csp-rapport (journaux Vercel). Quand les
+  // journaux seront propres (après le 30 octobre), passer en mode appliqué :
+  // en-tête « Content-Security-Policy » et ajout de « upgrade-insecure-requests ».
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://challenges.cloudflare.com;
+    script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com;
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://cdn.sanity.io https://img.youtube.com https://i.ytimg.com;
     font-src 'self' data:;
-    connect-src 'self' https://*.sanity.io https://challenges.cloudflare.com;
+    connect-src 'self' https://*.sanity.io wss://*.sanity.io https://challenges.cloudflare.com;
     frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
     frame-ancestors 'self';
+    report-uri /api/csp-rapport;
+    report-to csp;
   `.replace(/\s{2,}/g, ' ').trim();
 
-  // On clone les en-têtes de la requête pour y glisser notre Nonce (Next.js le lira)
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-nonce', nonce);
-  // 🚨 URGENCE : On passe en mode 'Report-Only' pour ne plus bloquer le design
-  requestHeaders.set('Content-Security-Policy-Report-Only', cspHeader);
-
-  // On génère la réponse finale en y attachant la requête modifiée
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
+  const response = NextResponse.next();
 
   // 🛡️ BOUCLIER 4 : VERROUILLAGE FINAL DE LA RÉPONSE (Headers)
-  // 🚨 URGENCE : Le navigateur signalera les menaces dans la console au lieu de casser l'UX
   response.headers.set('Content-Security-Policy-Report-Only', cspHeader);
+  response.headers.set('Reporting-Endpoints', 'csp="/api/csp-rapport"');
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
 
   return response;
