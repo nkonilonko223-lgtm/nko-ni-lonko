@@ -55,7 +55,7 @@ export default function PrivacyPage() {
       {/* eslint-disable @next/next/no-html-link-for-pages */}
       <noscript>
         <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-          <h1>ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ — Politique de confidentialité</h1>
+          <h2>ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ — Politique de confidentialité</h2>
 
           <section dir="rtl" lang="nqo">
             <h2>ߘߎ߲߬ߘߎ߬ߡߊ߬ ߞߎ߲ߣߊߝߏߣߌ߲ ߠߎ߬ ߟߊߘߍ߭</h2>

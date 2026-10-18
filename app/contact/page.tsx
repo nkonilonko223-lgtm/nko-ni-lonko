@@ -74,7 +74,7 @@ export default function ContactPage() {
           ================================================================ */}
       <noscript>
         <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-          <h1>ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ — Contactez N&apos;Ko ni Lonko</h1>
+          <h2>ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ — Contactez N&apos;Ko ni Lonko</h2>
 
           <section dir="rtl" lang="nqo">
             <h2>ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>

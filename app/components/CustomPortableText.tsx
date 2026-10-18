@@ -250,22 +250,24 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
           </FadeInBlock>
         );
       },
+      // Un « titre 1 » écrit dans le texte devient un h2 (même apparence) : la page n'a qu'un
+      // seul h1, le titre de l'article (accessibilité et référencement, 18 octobre 2026)
       h1: ({ value: blockValue, children }) => {
         const nko = isNko(getBlockText(blockValue));
         if (nko) {
           return (
             <FadeInBlock>
-              <h1 dir="rtl" lang="nqo" className="text-4xl md:text-5xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+              <h2 dir="rtl" lang="nqo" className="text-4xl md:text-5xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
                 {children}
-              </h1>
+              </h2>
             </FadeInBlock>
           );
         } else {
           return (
             <FadeInBlock>
-              <h1 dir="ltr" lang="fr" className="text-2xl md:text-3xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-[#fbbf24]/10 to-transparent border-l-4 border-[#fbbf24] leading-tight text-balance font-sans">
+              <h2 dir="ltr" lang="fr" className="text-2xl md:text-3xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-[#fbbf24]/10 to-transparent border-l-4 border-[#fbbf24] leading-tight text-balance font-sans">
                 {children}
-              </h1>
+              </h2>
             </FadeInBlock>
           );
         }

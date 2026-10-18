@@ -55,7 +55,7 @@ export default function TermsPage() {
       {/* eslint-disable @next/next/no-html-link-for-pages */}
       <noscript>
         <div style={{ padding: "2rem", maxWidth: "800px", margin: "0 auto" }}>
-          <h1>ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬ — Conditions d&apos;utilisation</h1>
+          <h2>ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬ — Conditions d&apos;utilisation</h2>
 
           <section dir="rtl" lang="nqo">
             <h2>߁. ߛߙߊߕߌ ߟߎ߬ ߟߊߡߌ߬ߘߊ߬ߟߌ</h2>
