@@ -27,8 +27,11 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 // ============================================================================
 const kigelia = localFont({
   src: [
-    { path: "./fonts/Kigelia.otf", weight: "400", style: "normal" },
-    { path: "./fonts/Kigelia1.otf", weight: "700", style: "normal" },
+    // WOFF2 (18 octobre 2026) : même police compressée sans perte (−45 %), tables de dessin et de
+    // liaison identiques, rendu Chrome identique au pixel près. Les OTF restent dans public/fonts
+    // (e-mails, images de partage).
+    { path: "./fonts/Kigelia.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/Kigelia1.woff2", weight: "700", style: "normal" },
   ],
   variable: "--font-kigelia",
   display: "swap",
