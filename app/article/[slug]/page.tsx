@@ -300,7 +300,7 @@ export async function generateMetadata(
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: article.title,
+        alt: article.mainImageRaw?.alt || article.title,
         type: "image/jpeg",
       }],
       // 👑 N'Ko is King : locale nqo en premier
@@ -321,7 +321,7 @@ export async function generateMetadata(
       description: metaDescription,
       images: [{
         url: ogImage,
-        alt: article.title,
+        alt: article.mainImageRaw?.alt || article.title,
       }],
       creator: COMPTE_X,
       site: COMPTE_X,

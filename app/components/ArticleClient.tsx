@@ -319,7 +319,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
           >
             <Image
               src={article.mainImageUrl}
-              alt={article.title}
+              alt={article.mainImageRaw?.alt || article.title}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105 print:scale-100"
               priority
@@ -441,7 +441,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
           <div className="relative w-full max-w-7xl h-full max-h-[85vh] rounded-lg overflow-hidden flex items-center justify-center">
             <Image 
               src={article.mainImageUrl} 
-              alt={article.title} 
+              alt={article.mainImageRaw?.alt || article.title} 
               fill
               className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
               sizes="100vw"
