@@ -266,6 +266,8 @@
     width: 110%;
     height: 110%;
     background: url('/arriere-plan.webp') center / 250px repeat;
+    /* AVIF 768 px (42 Ko au lieu de 104 Ko), rendu indiscernable ; WebP pour les autres navigateurs */
+    background-image: image-set(url('/arriere-plan.avif') type('image/avif'), url('/arriere-plan.webp') type('image/webp'));
     filter: invert(1) brightness(300%) contrast(150%);
     mix-blend-mode: screen;
     opacity: 0.3;
@@ -859,6 +861,7 @@ nav {
     position: absolute;
     inset: 0;
     background: url('/arriere-plan.webp') center / 300px repeat;
+    background-image: image-set(url('/arriere-plan.avif') type('image/avif'), url('/arriere-plan.webp') type('image/webp'));
     opacity: 0.05;
     pointer-events: none;
     mix-blend-mode: screen;
