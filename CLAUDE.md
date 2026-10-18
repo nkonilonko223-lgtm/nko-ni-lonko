@@ -127,6 +127,8 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 - Chaque bloc a `dir` **et** `lang` (`nqo` / `fr`). Le `<html>` est `lang="nqo"` : le français doit donc être marqué `lang="fr"`.
 - Propriétés Tailwind **logiques** de préférence (`ms-`, `ps-`, `border-s-`, `text-start`…).
 - Chiffres N'Ko : ߀ ߁ ߂ ߃ ߄ ߅ ߆ ߇ ߈ ߉ (U+07C0 à U+07C9).
+- **Numéro de la revue en N'Ko** (règle validée le 18 octobre 2026) : abréviation, « ° » **collé** aux chiffres N'Ko, puis **toujours** la nasalisation `U+07F2` après le dernier chiffre (il se lit « troisième numéro ») ; la marque n'est **jamais doublée** (ex. dans « Paru dans le … »). Le code applique la règle dans `app/components/numero/textes.ts` (`numeroNko`, `paruDansNko`) : ne jamais écrire un numéro N'Ko à la main ailleurs. Archive : `C:\Dev\archives\traductions\decisions-redaction-2026-10-16.txt`.
+- Un texte français placé **dans** une ligne N'Ko (date, numéro, nom) doit avoir `dir="ltr"`, sinon ses chiffres changent de place (ex. « octobre 2026 30 »).
 
 ## 8. Méthode de livraison
 
