@@ -3,6 +3,7 @@ import { getSanityClient } from "../../../sanity/fetch";
 import type { TermeLexiqueData } from "../../components/lexique/TermeLexique";
 import { urlFor } from "../../../sanity/image";
 import ArticleClient from "../../components/ArticleClient";
+import CustomPortableText from "../../components/CustomPortableText";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
@@ -346,8 +347,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const article = await getArticle(slug);
 
   if (!article) return notFound();
-  // Le numéro et la rubrique ne sont pas envoyés au navigateur avec l'article
-  const { numero, rubrique, ...donnees } = article;
+  // Le numéro, la rubrique et le texte brut ne sont pas envoyés au navigateur avec l'article :
+  // ils sont rendus ici, côté serveur (le texte : CustomPortableText, 18 octobre 2026)
+  const { numero, rubrique, body, ...donnees } = article;
 
   // 👑 JSON-LD 1 : L'Article Scientifique (ScholarlyArticle)
   const articleJsonLd = {
@@ -496,6 +498,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         bandeau={numero ? <BandeauNumero numero={numero} /> : undefined}
         surtitre={rubrique ? <SurtitreRubrique rubrique={rubrique} /> : undefined}
         navigation={numero ? <NavigationNumero numero={numero} slug={article.slug} /> : undefined}
+        texte={<CustomPortableText value={body} />}
       />
     </>
   );

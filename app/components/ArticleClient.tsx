@@ -18,7 +18,7 @@ import Link from "next/link";
 import ArticleTools from "./ArticleTools"; 
 import ArticleFooter from "./ArticleFooter"; 
 import { PortableTextBlock } from "@portabletext/types";
-import CustomPortableText, { formatDateNko, toNkoDigits } from "./CustomPortableText";
+import { formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
 import { contientNko, sensDe, separerTitre } from "./numero/titre";
@@ -50,7 +50,6 @@ interface ClientArticleData {
   mainImageUrl: string | null; 
   mainImageRaw: SanityImage | null; 
   publishedAt: string;
-  body: PortableTextBlock[];
  excerpt: string;
   category: string;
   readingTime: number;
@@ -79,14 +78,16 @@ interface TranslationHome {
 // 2. COMPOSANT PRINCIPAL
 // ==============================================================================
 
-// Emplacements remplis par la page (composants serveur) : numéro, rubrique, précédent / suivant
+// Emplacements remplis par la page (composants serveur) : numéro, rubrique, précédent / suivant,
+// et le texte de l'article (CustomPortableText, préparé par le serveur)
 interface Emplacements {
   bandeau?: ReactNode;
   surtitre?: ReactNode;
   navigation?: ReactNode;
+  texte?: ReactNode;
 }
 
-export default function ArticleClient({ article, bandeau, surtitre, navigation }: { article: ClientArticleData } & Emplacements) {
+export default function ArticleClient({ article, bandeau, surtitre, navigation, texte }: { article: ClientArticleData } & Emplacements) {
   const { lang, toggleLanguage, t } = useLanguage(); 
   // 🚀 RADAR 2 : Vérifie si la page Client a bien reçu la donnée
   const [fontScale, setFontScale] = useState(1.125); 
@@ -378,7 +379,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
         className="article-content flow-root pb-12 md:pb-20 max-w-3xl mx-auto px-4 md:px-6 transition-all duration-300 print:pb-0"
         style={{ fontSize: `${fontScale}rem` }} 
       >
-        <CustomPortableText value={article.body} lang={lang} />
+        {texte}
       </article>
 
       {/* 📖 Lexique de fin d'article (seulement si l'article utilise des termes) */}

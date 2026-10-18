@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * ==============================================================================
  * 📂 FICHIER : app/components/CustomPortableText.tsx
@@ -9,15 +7,22 @@
  * 🔬 SCIENCE 1/1000 : Rendu Mathématique LaTeX, Vidéos YouTube, Glossaire Interactif.
  * 🖨️ MOTEUR D'IMPRESSION : Forçage des couleurs et visibilité pour le papier.
  * 🛡️ INGÉNIERIE 0.1/1000 : Singleton Observer, UTC Absolu, Typographie ciblée.
+ * 🏛️ SERVER-FIRST (18 octobre 2026) : composant SERVEUR. Le texte arrive tout prêt dans la
+ *    page ; le moteur de rendu et les formules (KaTeX) ne sont plus envoyés au téléphone.
+ *    Îlots client seulement : visionneuse d'images, vidéo YouTube, termes du lexique.
+ *    Ne pas l'importer depuis un fichier « use client » : il repartirait dans le navigateur
+ *    (les outils partagés sont dans ./texte/outils).
  * ==============================================================================
  */
 
-import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { PortableText, PortableTextComponents, PortableTextComponentProps } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
 import { urlFor } from "../../sanity/image";
 import TermeLexique from "./lexique/TermeLexique";
+import Visionneuse, { ZoneAgrandissable } from "./texte/Visionneuse";
+import FacadeYouTube from "./texte/FacadeYouTube";
+import { getBlockText, isNko } from "./texte/outils";
 
 // 🚀 IMPORTATION DU STANDARD MATHÉMATIQUE MONDIAL
 import { BlockMath } from 'react-katex';
@@ -71,50 +76,8 @@ interface CodeBlock {
 type PortableSectionHeaderProps = PortableTextComponentProps<SectionHeaderBlock>;
 type PortableCodeProps = PortableTextComponentProps<CodeBlock>;
 
-interface LightboxState {
-  url: string;
-  alt: string;
-  captionNko?: string; // 🚀 Transport de la Légende N'Ko vers le plein écran
-  caption?: string;    // 🚀 Transport de la Légende Française
-}
-
 // ==============================================================================
-// 2. UTILITAIRES EXPORTÉS (Sécurité Hydratation)
-// ==============================================================================
-
-export function toNkoDigits(num: number | string): string {
-  const nkoDigits = ['߀', '߁', '߂', '߃', '߄', '߅', '߆', '߇', '߈', '߉'];
-  return num.toString().replace(/[0-9]/g, (w) => nkoDigits[+w]);
-}
-
-export function formatDateNko(dateString: string): string {
-  const date = new Date(dateString);
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-  const year = date.getUTCFullYear();
-  const frDate = `${day}/${month}/${year}`;
-  return toNkoDigits(frDate);
-}
-
-export function isNko(text: string): boolean {
-  if (!text) return false;
-  return /[\u07C0-\u07FF]/.test(text);
-}
-
-export function getBlockText(value: PortableTextBlock): string {
-  if (!value.children) return "";
-  return (value.children as { text: string }[]).map((c) => c.text).join("");
-}
-
-export function estimateReadingTime(body: PortableTextBlock[]): number {
-  if (!body) return 1;
-  const text = body.map(block => getBlockText(block)).join(" ");
-  const wordCount = text.split(/\s+/).length;
-  return Math.ceil(wordCount / 200) || 1;
-}
-
-// ==============================================================================
-// 3. SOUS-COMPOSANTS (Apparition & YouTube Facade)
+// 3. SOUS-COMPOSANTS (Apparition ; YouTube et visionneuse : dossier ./texte)
 // ==============================================================================
 
 // Apparition au défilement, en CSS seulement (classe « apparition », app/globals.css) :
@@ -123,80 +86,22 @@ const FadeInBlock = ({ children }: { children: React.ReactNode }) => (
   <div className="apparition print:break-inside-avoid">{children}</div>
 );
 
-// 🚀 LE MASQUE YOUTUBE (Facade Pattern pour 100% de perf)
-const YouTubeFacade = ({ videoId }: { videoId: string }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
-  return (
-    <FadeInBlock>
-      <div 
-        className="my-8 md:my-12 relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#02040a] print:hidden group cursor-pointer" 
-        onClick={() => setIsPlaying(true)}
-        role="button"
-        aria-label="Lire la vidéo scientifique"
-      >
-        {!isPlaying ? (
-          <>
-            <Image 
-              src={thumbnailUrl} 
-              alt="Miniature de la vidéo" 
-              fill 
-              className="object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-105" 
-              sizes="(max-width: 768px) 100vw, 800px" 
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-[#fbbf24] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(251,191,36,0.6)] group-hover:scale-110 transition-transform duration-300">
-                <i className="ph-fill ph-play text-black text-3xl md:text-4xl translate-x-1"></i>
-              </div>
-            </div>
-          </>
-        ) : (
-          <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-            title="Lecteur Vidéo Scientifique"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="absolute inset-0 w-full h-full border-0 animate-in fade-in duration-500"
-          />
-        )}
-      </div>
-    </FadeInBlock>
-  );
-};
-
 // ==============================================================================
 // 4. LE COMPOSANT DE RENDU PRINCIPAL
 // ==============================================================================
 
 interface CustomPortableTextProps {
   value: PortableTextBlock[];
-  lang: string;
 }
 
-export default function CustomPortableText({ value, lang }: CustomPortableTextProps) {
-  const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+export default function CustomPortableText({ value }: CustomPortableTextProps) {
+  const firstTextBlockKey = value?.find(b =>
+    b._type === 'block' &&
+    (!b.style || b.style === 'normal') &&
+    getBlockText(b as PortableTextBlock).trim().length > 0 // 🚀 IGNORER LES LIGNES VIDES
+  )?._key;
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightbox(null);
-    };
-    if (lightbox) {
-      window.addEventListener('keydown', handleKeyDown);
-    }
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [lightbox]);
-
-  const firstTextBlockKey = useMemo(() => {
-    return value?.find(b => 
-      b._type === 'block' && 
-      (!b.style || b.style === 'normal') && 
-      getBlockText(b as PortableTextBlock).trim().length > 0 // 🚀 IGNORER LES LIGNES VIDES
-    )?._key;
-  }, [value]);
-
-  const components: PortableTextComponents = useMemo(() => ({
+  const components: PortableTextComponents = {
     marks: {
       link: ({ value: markValue, children }) => {
         const target = (markValue?.href || '').startsWith('http') ? '_blank' : undefined;
@@ -401,11 +306,8 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         return (
           <FadeInBlock>
             <figure className="my-10 md:my-14 print:block print:opacity-100">
-              <div 
-                className="relative w-full overflow-hidden group cursor-zoom-in rounded-xl md:rounded-2xl border border-white/10 print:border-gray-300 shadow-2xl bg-[#02040a] print:bg-transparent"
-                onClick={() => setLightbox({ url: imageUrl, alt: imageValue.alt || '', captionNko: imageValue.captionNko, caption: imageValue.caption })}
-              >
-                 <Image 
+              <ZoneAgrandissable image={{ url: imageUrl, alt: imageValue.alt || '', captionNko: imageValue.captionNko, caption: imageValue.caption }}>
+                 <Image
                    src={imageUrl} 
                    alt={imageValue.alt || 'Illustration scientifique'} 
                    width={1200} 
@@ -416,7 +318,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center print:hidden pointer-events-none">
                     <i className="ph-bold ph-arrows-out text-white text-4xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg"></i>
                  </div>
-              </div>
+              </ZoneAgrandissable>
 
               {/* 🚀 LÉGENDE "WORLD CLASS 1/10000" (Dual-Stack & Ratio de Taille) */}
               {(imageValue.captionNko || imageValue.caption || imageValue.source) && (
@@ -467,7 +369,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         
         if (!videoId) return null;
 
-        return <YouTubeFacade videoId={videoId} />;
+        return <FadeInBlock><FacadeYouTube videoId={videoId} /></FadeInBlock>;
       },
 
       math: ({ value: mathValue }: PortableMathProps) => {
@@ -714,71 +616,11 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
         );
       },
     }
- // 🚀 FIX VS CODE : Ajout de setLightbox dans les dépendances
-  }), [firstTextBlockKey, setLightbox]);
+  };
+  // La visionneuse (îlot client) entoure le texte : elle s'affiche après lui, comme avant
   return (
-    <>
+    <Visionneuse>
       <PortableText value={value} components={components} />
-
-      {/* 🚀 LA LOUPE CINÉMATIQUE (Plein écran scrolable) */}
-      {lightbox && (
-        <div 
-          className="fixed inset-0 z-[999999] flex flex-col bg-black/98 backdrop-blur-2xl transition-all duration-300 print:hidden"
-        >
-          <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/80 to-transparent z-50 flex items-center justify-end px-6 pointer-events-none">
-            <button 
-              className="w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer backdrop-blur-md border border-white/20 hover:border-[#fbbf24] pointer-events-auto"
-              onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
-              aria-label={lang === 'nko' ? "ߊ߬ ߘߊߕߎ߲߯" : "Fermer l'image"}
-            >
-              <i className="ph-bold ph-x text-2xl"></i>
-            </button>
-          </div>
-
-          <div 
-            className="flex-1 w-full flex items-center justify-center p-4 md:p-8 min-h-[50vh]"
-            onClick={() => setLightbox(null)}
-          >
-            <div className="relative w-full h-full max-w-7xl max-h-[75vh] flex items-center justify-center cursor-zoom-out">
-              <Image 
-                src={lightbox.url} 
-                alt={lightbox.alt} 
-                fill
-                className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
-                sizes="100vw"
-              />
-            </div>
-          </div>
-
-          {/* 🚀 LÉGENDE SCROLLABLE "DUAL-STACK" POUR LE LIGHTBOX */}
-          {(lightbox.captionNko || lightbox.caption) && (
-            <div className="w-full max-h-[40vh] overflow-y-auto bg-black/90 backdrop-blur-xl border-t border-white/10 px-4 py-6 md:px-8 md:py-8 overscroll-contain shadow-[0_-20px_50px_rgba(0,0,0,0.8)]" onClick={(e) => e.stopPropagation()}>
-              <div className="max-w-4xl mx-auto flex flex-col gap-4 md:gap-5">
-                
-                {/* 1. N'Ko en Plein Écran : 17px/19px */}
-                {lightbox.captionNko && (
-                  <div dir="rtl" lang="nqo" className="text-[#fbbf24] font-kigelia text-right text-[17px] md:text-[19px] leading-relaxed drop-shadow-md">
-                    {lightbox.captionNko}
-                  </div>
-                )}
-                
-                {/* 2. Ligne de Lumière (Plus large en plein écran) */}
-                {lightbox.captionNko && lightbox.caption && (
-                  <div className="w-32 h-[1.5px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto rounded-full my-2"></div>
-                )}
-
-                {/* 3. Français en Support : 14px/15px */}
-                {lightbox.caption && (
-                  <div dir="ltr" lang="fr" className="text-white/70 font-sans text-left text-[14px] md:text-[15px] italic leading-relaxed">
-                    {lightbox.caption}
-                  </div>
-                )}
-
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </>
+    </Visionneuse>
   );
 }
