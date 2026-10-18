@@ -17,6 +17,7 @@ import Link from "next/link";
 import { urlFor } from "../../sanity/image";
 import { PortableTextBlock } from "@portabletext/types";
 import { Turnstile } from '@marsidev/react-turnstile';
+import type { TurnstileInstance } from '@marsidev/react-turnstile';
 
 // ==============================================================================
 // 1. TYPAGE STRICT & UTILITAIRES
@@ -100,8 +101,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   
   // 🚀 ACTION C : État anti-crash pour l'image de l'auteur
   const [authorImageError, setAuthorImageError] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const turnstileRef = useRef<any>(null);
+  const turnstileRef = useRef<TurnstileInstance>(null);
 
   // 🚀 ACTION A : Le radar d'apparition en cascade (Intersection Observer)
   const [cardsVisible, setCardsVisible] = useState(false);

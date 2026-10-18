@@ -6,6 +6,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation"; 
 import { useLanguage } from "./LanguageProvider";
 import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIER CLOUDFLARE
+import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { URL_X } from "../lib/partage";
 import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
 
@@ -34,8 +35,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [emailSubscribed, setEmailSubscribed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // 🛡️ ÉTAT DU SÉSAME
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const turnstileRef = useRef<any>(null); // 🛡️ TÉLÉCOMMANDE DE RÉARMEMENT
+  const turnstileRef = useRef<TurnstileInstance>(null); // 🛡️ TÉLÉCOMMANDE DE RÉARMEMENT
   const formRef = useRef<HTMLFormElement>(null);
   const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
 

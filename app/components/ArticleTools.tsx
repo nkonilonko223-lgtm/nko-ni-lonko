@@ -266,10 +266,9 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
   // 🚀 L'ARME SAFARI : Polyfill pour que le Plein Écran marche sur Mac et iPhone
   const toggleZenMode = () => {
     triggerVibration();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const docEl = document.documentElement as any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const doc = document as any;
+    // Safari (Mac, iPhone) n'a que les versions préfixées « webkit » : on les décrit (zéro any)
+    const docEl = document.documentElement as HTMLElement & { webkitRequestFullscreen?: () => void };
+    const doc = document as Document & { webkitFullscreenElement?: Element | null; webkitExitFullscreen?: () => void };
 
     if (!doc.fullscreenElement && !doc.webkitFullscreenElement) {
       if (docEl.requestFullscreen) {

@@ -5,8 +5,8 @@ import { useEffect } from "react";
 export default function PredictiveProvider() {
   useEffect(() => {
     // 🚀 1. SÉCURITÉ RÉSEAU (Éco-Intelligence)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const conn = (navigator as any).connection;
+    // « navigator.connection » n'existe pas partout (Chrome, Android) : on le décrit (zéro any)
+    const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     const isSlow = conn && (
       conn.saveData || 
       conn.effectiveType?.includes('2g') || 
@@ -20,8 +20,7 @@ export default function PredictiveProvider() {
     let fallbackCleanup: (() => void) | null = null;
 
     // 🚀 2. LE CERVEAU PRÉDICTIF (Moteur Chrome/Edge/Android)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const supportsSpeculation = (HTMLScriptElement as any).supports && (HTMLScriptElement as any).supports("speculationrules");
+    const supportsSpeculation = typeof HTMLScriptElement.supports === "function" && HTMLScriptElement.supports("speculationrules");
 
     if (supportsSpeculation) {
       script = document.createElement("script");

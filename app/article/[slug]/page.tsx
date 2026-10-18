@@ -42,7 +42,8 @@ interface SanityArticleRaw {
   slug: string;
   mainImage: SanityImage | null;
   publishedAt: string;
-  body: PortableTextBlock[]; 
+  updatedAt?: string; // dernière modification dans Sanity (_updatedAt)
+  body: PortableTextBlock[];
   wordCount?: number;
   excerpt?: string;
   category?: string;
@@ -72,8 +73,9 @@ export interface SafeArticleData {
   title: string;
   slug: string;
   mainImageUrl: string | null;
-  mainImageRaw: SanityImage | null; 
+  mainImageRaw: SanityImage | null;
   publishedAt: string;
+  updatedAt: string; // date de dernière modification (Google : dateModified)
   body: PortableTextBlock[];
   wordCount?: number;
   excerpt: string;
@@ -136,6 +138,8 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     mainImageUrl: safeUrlFor(raw.mainImage),
     mainImageRaw: raw.mainImage || null,
     publishedAt: raw.publishedAt || new Date().toISOString(),
+    // Jamais avant la publication (un brouillon modifié avant sa date de publication)
+    updatedAt: raw.updatedAt && raw.publishedAt && raw.updatedAt > raw.publishedAt ? raw.updatedAt : raw.publishedAt || new Date().toISOString(),
     body: raw.body || [],
     excerpt: raw.excerpt || "",
     category: category,
@@ -172,6 +176,7 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     title,
     mainImage,
     publishedAt,
+    "updatedAt": _updatedAt,
     "body": body[]{
       ...,
       markDefs[]{
@@ -310,7 +315,7 @@ export async function generateMetadata(
       alternateLocale: "fr_FR",
       type: "article",
       publishedTime: article.publishedAt,
-      modifiedTime: article.publishedAt,
+      modifiedTime: article.updatedAt,
       authors: article.authors.map(a => a.name),
       // Section et tags pour Facebook/LinkedIn
       section: article.category,
@@ -375,7 +380,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       "caption": article.title
     },
     "datePublished": article.publishedAt,
-    "dateModified": article.publishedAt,
+    "dateModified": article.updatedAt,
     // Numéro de la revue (même « @id » que la page /numeros/<slug>)
     ...(article.numero ? {
       "isPartOf": {
