@@ -1124,17 +1124,8 @@ nav {
   /* =========================================
      3.1 — ANIMATIONS
      ========================================= */
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 1s var(--ease-out-expo),
-                transform 1s var(--ease-out-expo);
-  }
-
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  /* « reveal » : plus de contenu caché en attendant le JavaScript (18 octobre 2026).
+     Voir « APPARITION AU DÉFILEMENT » plus bas (CSS seulement). */
 
   /* Variantes de reveal */
   .reveal-left {
@@ -1490,7 +1481,7 @@ nav {
    Le contenu est TOUJOURS visible au chargement : affichage rapide (LCP) et lisible
    même sans JavaScript. L'animation s'ajoute seulement si le navigateur sait la lier
    au défilement (sinon : aucun effet), et jamais si l'utilisateur demande moins de
-   mouvements. Classe « apparition » (paragraphes des articles).
+   mouvements. Classes « apparition » (paragraphes des articles) et « reveal » (accueil).
    =========================================== */
 @keyframes apparition {
   from { opacity: 0; transform: translateY(2rem); }
@@ -1499,7 +1490,8 @@ nav {
 
 @supports (animation-timeline: view()) {
   @media screen and (prefers-reduced-motion: no-preference) {
-    .apparition {
+    .apparition,
+    .reveal {
       animation: apparition linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 60%;

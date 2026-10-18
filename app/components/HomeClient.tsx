@@ -164,33 +164,6 @@ function useParallax() {
   return { spaceRef, patternRef, baobabRef };
 }
 
-function useRevealObserver() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-            observerRef.current?.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    return () => observerRef.current?.disconnect();
-  }, []);
-
-  const observeElements = useCallback(() => {
-    requestAnimationFrame(() => {
-      document.querySelectorAll(".reveal:not(.active)").forEach((el) => {
-        observerRef.current?.observe(el);
-      });
-    });
-  }, []);
-  return observeElements;
-}
-
 // ==============================================================================
 // 4A. L'ARME SECRÈTE 0.1/1000 : LE LOGO MAGNÉTIQUE (VERSION PURE)
 // ==============================================================================
@@ -366,7 +339,6 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
 
   const scrolled = useScrollDetection(50);
   const { spaceRef, patternRef, baobabRef } = useParallax();
-  const observeElements = useRevealObserver();
   const debouncedQuery = useDebounce(searchQuery, 300);
 
   const triggerVibration = useCallback(() => {
@@ -491,10 +463,6 @@ const handleCategorySelect = useCallback((key: string) => {
     }
   }, [triggerVibration]);
   
-  // 🚀 RADAR 1/1000 : On ajoute "lang" pour qu'il relance les animations à chaque traduction
-  useEffect(() => {
-    observeElements();
-  }, [filteredArticles, visibleCount, observeElements, lang]);
   // Fermeture dropdown (ESC + click outside)
 useEffect(() => {
   if (!dropdownOpen) return;
@@ -691,7 +659,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           {typedT.home?.hero?.title}
         </h1>
         
-        <p key={`sub-${lang}`} className="reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10" style={{ transitionDelay: "0.15s" }}>
+        <p key={`sub-${lang}`} className="reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10">
           {typedT.home?.hero?.subtitle}
         </p>
         
@@ -699,7 +667,6 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           key={`btn-${lang}`}
           href="#articles"
           className="cta-btn reveal"
-          style={{ transitionDelay: "0.3s" }}
           onClick={triggerVibration}
         >
           <span>{typedT.home?.hero?.cta}</span>
@@ -860,8 +827,8 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       </div>
 
       <div className="grid-container" id="articles-grid">
-        {visibleArticles.map((article, index) => (
-          <div key={article.slug} className="reveal" style={{ transitionDelay: `${index * 0.08}s` }}>
+        {visibleArticles.map((article) => (
+          <div key={article.slug} className="reveal">
             <ArticleCard article={article} />
           </div>
         ))}
