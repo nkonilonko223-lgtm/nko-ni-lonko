@@ -82,7 +82,7 @@ export default async function PageNumeros() {
                   <span className="mt-3 block text-xs text-white/50">
                     <span lang="nqo" dir="rtl" className="font-kigelia">{dateNko(numero.publishedAt)}</span>
                     <span aria-hidden="true"> · </span>
-                    <span lang="fr">{dateFr(numero.publishedAt)}</span>
+                    <span lang="fr" dir="ltr">{dateFr(numero.publishedAt)}</span>
                   </span>
                 </span>
               </Link>
