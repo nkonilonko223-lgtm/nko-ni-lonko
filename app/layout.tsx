@@ -1,9 +1,11 @@
-import Script from "next/script";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Montserrat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+// Icônes Phosphor AUTO-HÉBERGÉES, seulement celles du site (18 octobre 2026) : plus de script
+// ni de fichiers tiers (unpkg, jsdelivr). Fichier généré : scripts/icones/generer-icones.mjs
+import "./icones-phosphor.css";
 
 // ✅ IMPORT DES FOURNISSEURS (PROVIDERS)
 import StyledComponentsRegistry from './registry';
@@ -219,9 +221,6 @@ export default async function RootLayout({
 return (
     <html lang="nqo" dir="rtl" translate="no" suppressHydrationWarning data-scroll-behavior="smooth"> 
       <head>
-        <link rel="preconnect" href="https://unpkg.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://unpkg.com" />
-        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {/* 👑 Google Search Console — Vérification propriété */}
         <meta name="google-site-verification" content="843ZK_DeoFe9h5mvxGW3kSNz-dHT0_RMxbb4cS7_Kao" />
@@ -260,15 +259,6 @@ return (
           </>
         )}
 
-        {/* Restauration du composant Script Next.js pour Phosphor */}
-        {/* Version FIXÉE + empreinte d'intégrité (18 octobre 2026) : si le fichier changeait chez
-            unpkg, le navigateur refuserait de l'exécuter. Il charge les styles d'icônes 2.1.2 (jsdelivr). */}
-        <Script
-          src="https://unpkg.com/@phosphor-icons/web@2.1.2/src/index.js"
-          integrity="sha384-J7cw2fbG1T4C5MirTVUxsZGaMfw2m0XsCgOQEqUvB1OF9VIsHWuZF1GmyVRzs7eu"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
