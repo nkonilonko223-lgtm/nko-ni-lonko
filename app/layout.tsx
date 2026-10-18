@@ -12,7 +12,7 @@ import StyledComponentsRegistry from './registry';
 import { LanguageProvider } from "./components/LanguageProvider";
 import NetworkBoundary from "./components/NetworkBoundary"; 
 import PredictiveProvider from "./components/PredictiveProvider";
-import BandeauApercu from "./components/BandeauApercu";
+import BandeauApercu from "./components/BandeauApercuDiffere"; // chargé seulement en mode aperçu
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "./lib/partage";
