@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ArticleDuSommaire, Numero, RubriqueCourte } from "../../lib/numeros";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
-import { separerTitre } from "./titre";
+import { contientNko, sensDe, separerTitre } from "./titre";
 
 // ============================================================================
 // N'KO NI LONKO — Affichage d'un numéro (composant serveur, sans JavaScript)
@@ -14,13 +14,6 @@ import { separerTitre } from "./titre";
 
 type Libelle = { nko: string; fr: string };
 
-const contientNko = (texte = "") =>
-  [...texte].some((c) => {
-    const code = c.codePointAt(0) ?? 0;
-    return code >= 0x07c0 && code <= 0x07ff;
-  });
-// Sens et langue d'un texte libre (résumé, titre) : N'Ko s'il contient du N'Ko
-const sensDe = (texte = "") => (contientNko(texte) ? ({ dir: "rtl", lang: "nqo" } as const) : ({ dir: "ltr", lang: "fr" } as const));
 
 // Dates : chiffres N'Ko (comme le reste du site) et français
 export const dateNko = (iso: string) => {

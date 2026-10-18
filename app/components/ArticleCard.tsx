@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 import { useState, useMemo, useRef, useCallback } from "react";
+import { contientNko, sensDe, separerTitre } from "./numero/titre";
 
 // --- INTERFACE STRICTE ET ROBUSTE ---
 export interface ArticleCardProps {
@@ -148,6 +149,15 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
   const readTime = article.readingTime || 3;
 
+  // Titre et résumé « N'Ko (français) » : chaque langue sur sa ligne, avec son sens et sa
+  // police (sinon les deux sens d'écriture se mélangent). Règle : app/components/numero/titre.ts
+  const titre = separerTitre(article.title);
+  const titreNko = contientNko(titre.nko);
+  const resume = article.excerpt ? separerTitre(article.excerpt) : null;
+  // Résumé : la langue de l'interface (le français s'il existe), sinon le N'Ko
+  const texteResume = resume ? (!isNko && resume.fr ? resume.fr : resume.nko) : null;
+  const resumeNko = texteResume ? contientNko(texteResume) : isNko;
+
   return (
     <Link 
       href={`/article/${slugCurrent}`} 
@@ -256,21 +266,23 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               </span>
             </div>
 
-            <h3 className={`
-              mb-3 font-bold text-slate-100 
-              transition-colors duration-300 group-hover/card:text-[#fbbf24]
-              ${isNko ? 'font-kigelia text-2xl leading-[1.6] py-1 -my-1' : 'text-xl leading-snug'}
-            `} style={{ direction: isNko ? "rtl" : "ltr" }}>
-              <span className="line-clamp-2" title={article.title}>
-                {article.title}
+            <h3 className="mb-3 font-bold text-slate-100 transition-colors duration-300 group-hover/card:text-[#fbbf24]" title={article.title}>
+              <span {...sensDe(titre.nko)} className={`line-clamp-2 text-start ${titreNko ? 'font-kigelia text-2xl leading-[1.6] py-1 -my-1' : 'text-xl leading-snug'}`}>
+                {titre.nko}
               </span>
+              {titre.fr && (
+                <span lang="fr" dir="ltr" className="mt-1 line-clamp-2 text-start text-base font-semibold leading-snug text-slate-300">
+                  {titre.fr}
+                </span>
+              )}
             </h3>
 
-            <p className={`
-              mb-6 flex-1 text-slate-400 line-clamp-3 py-1 -my-1
-              ${isNko ? 'text-right leading-loose text-base' : 'text-left leading-relaxed text-sm'}
-            `} style={{ direction: isNko ? "rtl" : "ltr" }}>
-              {article.excerpt ? article.excerpt : (isNko ? "ߞߣߐߘߐ ߣߌ߲߬ ߘߐߜߍ߫..." : "Découvrez les détails fascinants de cette recherche scientifique...")}
+            <p
+              dir={resumeNko ? "rtl" : "ltr"}
+              lang={resumeNko ? "nqo" : "fr"}
+              className={`mb-6 flex-1 text-slate-400 line-clamp-3 py-1 -my-1 text-start ${resumeNko ? 'font-kigelia leading-loose text-base' : 'leading-relaxed text-sm'}`}
+            >
+              {texteResume ?? (isNko ? "ߞߣߐߘߐ ߣߌ߲߬ ߘߐߜߍ߫..." : "Découvrez les détails fascinants de cette recherche scientifique...")}
             </p>
 
             <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-4">

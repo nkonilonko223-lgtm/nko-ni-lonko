@@ -11,6 +11,15 @@
 
 export type TitreSepare = { nko: string; fr: string | null };
 
+// Le texte contient-il du N'Ko (U+07C0 à U+07FF) ? Sert à choisir sens, langue et police.
+export const contientNko = (texte = "") =>
+  [...texte].some((c) => {
+    const code = c.codePointAt(0) ?? 0;
+    return code >= 0x07c0 && code <= 0x07ff;
+  });
+// Sens et langue d'un texte libre (titre, résumé) : N'Ko s'il contient du N'Ko
+export const sensDe = (texte = "") => (contientNko(texte) ? ({ dir: "rtl", lang: "nqo" } as const) : ({ dir: "ltr", lang: "fr" } as const));
+
 const contientLatin = (texte: string) => /[A-Za-zÀ-ÿ]/.test(texte);
 
 export function separerTitre(titre: string): TitreSepare {
