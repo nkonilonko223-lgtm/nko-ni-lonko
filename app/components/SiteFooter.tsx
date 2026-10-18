@@ -35,6 +35,10 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [emailSubscribed, setEmailSubscribed] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // 🛡️ ÉTAT DU SÉSAME
+  // Turnstile (Cloudflare) créé seulement au premier contact avec le formulaire : les lecteurs
+  // qui n'écrivent pas ne téléchargent plus le script de Cloudflare (18 octobre 2026)
+  const [protectionActive, setProtectionActive] = useState(false);
+  const activerProtection = useCallback(() => setProtectionActive(true), []);
   const turnstileRef = useRef<TurnstileInstance>(null); // 🛡️ TÉLÉCOMMANDE DE RÉARMEMENT
   const formRef = useRef<HTMLFormElement>(null);
   const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
@@ -199,10 +203,13 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                <form 
                  ref={formRef} 
                  onMouseMove={handleFormMouseMove}
-                 onSubmit={handleNewsletterSubmit} 
+                 onSubmit={handleNewsletterSubmit}
+                 onFocusCapture={activerProtection}
+                 onPointerDownCapture={activerProtection}
                  className="relative flex items-center w-full rounded-xl bg-[#0b1121]/50 border border-white/10 overflow-hidden p-1 group transition-colors focus-within:border-white/30 focus-within:bg-[#0b1121]"
                >
                  {/* 🛡️ INJECTION INVISIBLE DU RADAR CLOUDFLARE */}
+                 {protectionActive && (
                  <div className="hidden">
                     <Turnstile
                       ref={turnstileRef}
@@ -210,6 +217,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                       onSuccess={(token) => setTurnstileToken(token)}
                     />
                  </div>
+                 )}
 
                   <div 
                     className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"

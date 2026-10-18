@@ -98,6 +98,9 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   const [isExploding, setIsExploding] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // 🚀 AJOUT : État de chargement réseau
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // 🛡️ ÉTAT DU SÉSAME CLOUDFLARE
+  // Turnstile créé seulement au premier contact avec le formulaire (18 octobre 2026)
+  const [protectionActive, setProtectionActive] = useState(false);
+  const activerProtection = useCallback(() => setProtectionActive(true), []);
   
   // 🚀 ACTION C : État anti-crash pour l'image de l'auteur
   const [authorImageError, setAuthorImageError] = useState(false);
@@ -464,8 +467,9 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                     {isNko ? 'ߕߏ߫ ߞߊ߬ ߟߐ߲ߞߏ ߞߣߐ ߞߎ߲߬ߣߊ߬ߞߊ߬ߟߋ߲߬ ߞߎߘߊ߫ ߟߎ߬ ߟߊߛߐ߬ߘߐ߲߬ ߞߍ߬' : 'Restez informé de nos prochaines découvertes'}
                 </h3>
                {/* 🚀 1/1000 : Formulaire Magnétique */}
-                <form onSubmit={handleSubscribe} className="flex flex-col md:flex-row gap-3 max-w-md mx-auto relative group/form">
-                    {/* 🛡️ INJECTION INVISIBLE DU RADAR CLOUDFLARE */}
+                <form onSubmit={handleSubscribe} onFocusCapture={activerProtection} onPointerDownCapture={activerProtection} className="flex flex-col md:flex-row gap-3 max-w-md mx-auto relative group/form">
+                    {/* 🛡️ INJECTION INVISIBLE DU RADAR CLOUDFLARE (au premier contact seulement) */}
+                    {protectionActive && (
                     <div className="hidden">
                       <Turnstile
                         ref={turnstileRef}
@@ -473,6 +477,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                         onSuccess={(token) => setTurnstileToken(token)}
                       />
                     </div>
+                    )}
                     
                     <input 
                         type="email" 

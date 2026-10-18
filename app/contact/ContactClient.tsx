@@ -25,6 +25,9 @@ export default function ContactClient() {
 
   // 🚀 ÉTAT DU COFFRE-FORT CLOUDFLARE
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  // Turnstile créé seulement au premier contact avec le formulaire (18 octobre 2026)
+  const [protectionActive, setProtectionActive] = useState(false);
+  const activerProtection = useCallback(() => setProtectionActive(true), []);
   const turnstileRef = useRef<TurnstileInstance>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -400,7 +403,7 @@ export default function ContactClient() {
                         <p className="text-gray-400 text-lg">Votre message a été envoyé avec succès.</p>
                     </div>
                 ) : (
-                    <form className="relative z-10 flex flex-col gap-6 flex-1" onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+                    <form className="relative z-10 flex flex-col gap-6 flex-1" onSubmit={handleSubmit} onKeyDown={handleKeyDown} onFocusCapture={activerProtection} onPointerDownCapture={activerProtection}>
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
                                 <span className="font-kigelia text-xl text-[#fbbf24]">ߕߐ߮</span>
@@ -482,6 +485,7 @@ export default function ContactClient() {
                         </div>
 
                         {/* 🛡️ GÉNÉRATEUR DE JETON CLOUDFLARE INVISIBLE */}
+                        {protectionActive && (
                         <div className="hidden">
                            <Turnstile
                              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
@@ -491,6 +495,7 @@ export default function ContactClient() {
                              onExpire={() => setTurnstileToken(null)}
                            />
                         </div>
+                        )}
                         
                         <button 
                             type="submit"
