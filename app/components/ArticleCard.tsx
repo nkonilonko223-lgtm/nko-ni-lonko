@@ -151,12 +151,14 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
   // Titre et résumé « N'Ko (français) » : chaque langue sur sa ligne, avec son sens et sa
   // police (sinon les deux sens d'écriture se mélangent). Règle : app/components/numero/titre.ts
+  // Décision du propriétaire (18 octobre 2026) : le N'Ko TOUJOURS en premier (en haut) ;
+  // le titre de la langue de l'interface en grand, l'autre en petit ; résumé : N'Ko, puis
+  // le français plus petit dessous.
   const titre = separerTitre(article.title);
   const titreNko = contientNko(titre.nko);
+  const francaisEnGrand = !isNko && !!titre.fr; // mode français : le titre français est le grand
   const resume = article.excerpt ? separerTitre(article.excerpt) : null;
-  // Résumé : la langue de l'interface (le français s'il existe), sinon le N'Ko
-  const texteResume = resume ? (!isNko && resume.fr ? resume.fr : resume.nko) : null;
-  const resumeNko = texteResume ? contientNko(texteResume) : isNko;
+  const resumeNko = resume ? contientNko(resume.nko) : isNko;
 
   return (
     <Link 
@@ -267,23 +269,41 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
             </div>
 
             <h3 className="mb-3 font-bold text-slate-100 transition-colors duration-300 group-hover/card:text-[#fbbf24]" title={article.title}>
-              <span {...sensDe(titre.nko)} className={`line-clamp-2 text-start ${titreNko ? 'font-kigelia text-2xl leading-[1.6] py-1 -my-1' : 'text-xl leading-snug'}`}>
+              <span
+                {...sensDe(titre.nko)}
+                className={`line-clamp-2 text-start ${titreNko ? 'font-kigelia leading-[1.6] py-1 -my-1' : 'leading-snug'} ${
+                  francaisEnGrand ? 'text-lg font-semibold text-slate-300' : titreNko ? 'text-2xl' : 'text-xl'
+                }`}
+              >
                 {titre.nko}
               </span>
               {titre.fr && (
-                <span lang="fr" dir="ltr" className="mt-1 line-clamp-2 text-start font-sans text-base font-semibold leading-snug text-slate-300">
+                <span
+                  lang="fr"
+                  dir="ltr"
+                  className={`mt-1 line-clamp-2 text-start font-sans leading-snug ${
+                    francaisEnGrand ? 'text-xl font-bold text-slate-100' : 'text-base font-semibold text-slate-300'
+                  }`}
+                >
                   {titre.fr}
                 </span>
               )}
             </h3>
 
+            <div className="mb-6 flex-1">
             <p
               dir={resumeNko ? "rtl" : "ltr"}
               lang={resumeNko ? "nqo" : "fr"}
-              className={`mb-6 flex-1 text-slate-400 line-clamp-3 py-1 -my-1 text-start ${resumeNko ? 'font-kigelia leading-loose text-base' : 'leading-relaxed text-sm'}`}
+              className={`text-slate-400 line-clamp-3 py-1 -my-1 text-start ${resumeNko ? 'font-kigelia leading-loose text-base' : 'leading-relaxed text-sm'}`}
             >
-              {texteResume ?? (isNko ? "ߞߣߐߘߐ ߣߌ߲߬ ߘߐߜߍ߫..." : "Découvrez les détails fascinants de cette recherche scientifique...")}
+              {resume ? resume.nko : (isNko ? "ߞߣߐߘߐ ߣߌ߲߬ ߘߐߜߍ߫..." : "Découvrez les détails fascinants de cette recherche scientifique...")}
             </p>
+            {resume?.fr && (
+              <p lang="fr" dir="ltr" className="mt-2 line-clamp-2 text-start font-sans text-xs leading-relaxed text-slate-500">
+                {resume.fr}
+              </p>
+            )}
+            </div>
 
             <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-4">
               <div className={`flex items-center gap-3 ${isNko ? 'flex-row-reverse' : ''}`}>
