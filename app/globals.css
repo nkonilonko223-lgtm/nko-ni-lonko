@@ -1482,30 +1482,22 @@ nav {
    même sans JavaScript. L'animation s'ajoute seulement si le navigateur sait la lier
    au défilement (sinon : aucun effet), et jamais si l'utilisateur demande moins de
    mouvements. Classes « apparition » (paragraphes des articles) et « reveal » (accueil).
-   Articles : montée SANS fondu (le texte reste opaque ; un paragraphe en bas du premier
-   écran, presque transparent, retardait l'affichage compté par Google : LCP 6,0 s au lieu
-   de 2,5 s). Accueil : fondu conservé (le grand titre est entier à l'écran au chargement).
+   Une montée SANS fondu, partout : le contenu reste opaque.
+   - Articles : un paragraphe en bas du premier écran, presque transparent, retardait
+     l'affichage compté par Google (LCP 6,0 s au lieu de 2,5 s).
+   - Accueil : un fondu (opacité animée) supprime le flou d'arrière-plan des cartes
+     (backdrop-blur) dans Chrome, qui devenaient trop transparentes (constaté le 18 octobre).
    =========================================== */
 @keyframes apparition {
   from { transform: translateY(1.5rem); }
   to { transform: none; }
 }
 
-@keyframes apparition-fondu {
-  from { opacity: 0; transform: translateY(2rem); }
-  to { opacity: 1; transform: none; }
-}
-
 @supports (animation-timeline: view()) {
   @media screen and (prefers-reduced-motion: no-preference) {
-    .apparition {
-      animation: apparition linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 60%;
-    }
-
+    .apparition,
     .reveal {
-      animation: apparition-fondu linear both;
+      animation: apparition linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 60%;
     }
