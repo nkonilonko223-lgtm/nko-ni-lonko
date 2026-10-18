@@ -443,7 +443,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
 
                   {/* 4. Crédit et licence (obligatoire pour les images CC BY) : petit, même texte dans les deux langues */}
                   {imageValue.source && (
-                    <p dir="ltr" translate="no" className="text-end text-[10px] md:text-xs text-gray-500 print:text-gray-600">
+                    <p dir="ltr" translate="no" className="text-[10px] md:text-xs text-gray-500 print:text-gray-600">
                       {imageValue.source}
                     </p>
                   )}
