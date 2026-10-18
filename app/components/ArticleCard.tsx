@@ -271,7 +271,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                 {titre.nko}
               </span>
               {titre.fr && (
-                <span lang="fr" dir="ltr" className="mt-1 line-clamp-2 text-start text-base font-semibold leading-snug text-slate-300">
+                <span lang="fr" dir="ltr" className="mt-1 line-clamp-2 text-start font-sans text-base font-semibold leading-snug text-slate-300">
                   {titre.fr}
                 </span>
               )}
