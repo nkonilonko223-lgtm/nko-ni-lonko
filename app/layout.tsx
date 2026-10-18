@@ -14,6 +14,7 @@ import BandeauApercu from "./components/BandeauApercu";
 import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "./lib/partage";
+import { jsonLd } from "./lib/jsonld";
 
 // ============================================================================
 // 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
@@ -235,7 +236,7 @@ return (
       >
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLd(globalJsonLd) }}
         />
 
         <StyledComponentsRegistry>

@@ -7,6 +7,7 @@ import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "../../components/lexique/textes"
 import { comparerNko } from "../../components/lexique/normaliser";
 import CiterTerme from "../../components/lexique/CiterTerme";
 import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../../lib/partage";
+import { jsonLd } from "../../lib/jsonld";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un terme du lexique
@@ -32,8 +33,6 @@ const QUERY = `*[_type == "terme" && slug.current == $slug][0] {
     termeNko, termeFr, "slug": slug.current
   }, [])
 }`;
-
-const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");
 
 async function getTerme(slug: string): Promise<TermeComplet | null> {
   const { client: sanity, apercu } = await getSanityClient();

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import { SIEGE, TELEPHONES } from "../lib/coordonnees";
+import { jsonLd } from "../lib/jsonld";
 import ContactClient from "./ContactClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -66,7 +67,7 @@ export default function ContactPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(contactJsonLd) }}
       />
 
       {/* ================================================================

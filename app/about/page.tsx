@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { COMPTE_X, IMAGE_PARTAGE_A_PROPOS, URL_X } from "../lib/partage";
+import { jsonLd } from "../lib/jsonld";
 import AboutClient from "./AboutClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
@@ -121,7 +122,7 @@ export default function About() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(aboutJsonLd) }}
       />
       <AboutClient />
     </>

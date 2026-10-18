@@ -9,6 +9,7 @@ import { PortableTextBlock } from "@portabletext/types";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../lib/partage";
 import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../lib/numeros";
 import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../components/numero/ArticleNumero";
+import { jsonLd } from "../../lib/jsonld";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -474,11 +475,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     <>
      <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(articleJsonLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbJsonLd) }}
       />
       
       {/* Transmission du nouvel objet robuste vers le composant d'affichage.

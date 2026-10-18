@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
+import { jsonLd } from "../lib/jsonld";
 import PrivacyClient from "./PrivacyClient";
 
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
@@ -49,7 +50,7 @@ export default function PrivacyPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(privacyJsonLd) }}
       />
 
       {/* eslint-disable @next/next/no-html-link-for-pages */}

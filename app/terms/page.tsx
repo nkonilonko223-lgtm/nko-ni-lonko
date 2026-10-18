@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
+import { jsonLd } from "../lib/jsonld";
 import TermsClient from "./TermsClient";
 
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
@@ -49,7 +50,7 @@ export default function TermsPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(termsJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLd(termsJsonLd) }}
       />
 
       {/* eslint-disable @next/next/no-html-link-for-pages */}

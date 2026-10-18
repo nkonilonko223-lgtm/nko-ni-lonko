@@ -5,6 +5,7 @@ import { TEXTES_LEXIQUE } from "../components/lexique/textes";
 import DictionnaireInteractif, { type TermeDictionnaire } from "../components/lexique/DictionnaireInteractif";
 import { comparerNko } from "../components/lexique/normaliser";
 import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../lib/partage";
+import { jsonLd } from "../lib/jsonld";
 
 // ============================================================================
 // N'KO NI LONKO — Dictionnaire scientifique N'Ko – français (tous les termes)
@@ -40,8 +41,6 @@ const QUERY = `*[_type == "terme" && defined(slug.current)] {
   termeNko, termeFr, definitionNko, definitionFr, domaine, "slug": slug.current
 }`;
 
-// Évite que du texte saisi ferme la balise <script> des données structurées
-const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, "\\u003c");
 
 export default async function PageLexique() {
   const { client: sanity, apercu } = await getSanityClient();

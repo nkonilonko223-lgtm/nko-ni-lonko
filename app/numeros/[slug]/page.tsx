@@ -4,6 +4,7 @@ import VueNumero from "../../components/numero/VueNumero";
 import { TEXTES_NUMEROS, numeroFr, numeroNko } from "../../components/numero/textes";
 import { getLiensNumeros, getNumero, type Numero } from "../../lib/numeros";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
+import { jsonLd } from "../../lib/jsonld";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un numéro de la revue (ex. /numeros/003)
@@ -14,8 +15,6 @@ import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
-// Évite qu'un texte saisi ferme la balise <script> des données structurées
-const jsonLd = (data: unknown) => JSON.stringify(data).replace(/</g, String.fromCharCode(92) + "u003c");
 
 const urlDe = (numero: Numero) => `${SITE_URL}/numeros/${numero.slug}`;
 const titreDe = (numero: Numero) =>
