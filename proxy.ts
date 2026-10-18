@@ -49,6 +49,9 @@ export function proxy(request: NextRequest) {
 
   // 🛡️ BOUCLIER 3 : L'ARMURE ABSOLUE CSP (Content Security Policy)
   // On dresse la liste blanche stricte (Sanity, Turnstile, YouTube sont autorisés)
+  // « upgrade-insecure-requests » retiré (18 octobre 2026) : ignoré en mode « rapport seulement »,
+  // il affichait une erreur dans la console à chaque page ; HTTPS est déjà imposé par HSTS.
+  // À remettre le jour où la CSP passera en mode appliqué.
   const cspHeader = `
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://challenges.cloudflare.com;
@@ -61,7 +64,6 @@ export function proxy(request: NextRequest) {
     base-uri 'self';
     form-action 'self';
     frame-ancestors 'self';
-    upgrade-insecure-requests;
   `.replace(/\s{2,}/g, ' ').trim();
 
   // On clone les en-têtes de la requête pour y glisser notre Nonce (Next.js le lira)
