@@ -21,6 +21,7 @@ import { PortableTextBlock } from "@portabletext/types";
 import CustomPortableText, { formatDateNko, toNkoDigits } from "./CustomPortableText";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
+import { contientNko, sensDe, separerTitre } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 
 // ==============================================================================
@@ -161,9 +162,12 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
     ? "ߖߌ߬ߦߊ߬ߓߍ ߣߌ߲߬ ߦߋ߫ ߞߎߡߘߊ ߢߍߛߓߍ ߟߋ߬ ߘߌ߫" 
     : "Image d'illustration de l'article";
 
-  const parts = article.title.split('(');
-  const nkoTitle = parts[0].trim(); 
-  const frTitle = parts.length > 1 ? `(${parts[1]}` : "";
+  // Titre « N'Ko (français) » : même séparation que les cartes et les numéros (parenthèse
+  // FINALE contenant du latin), le français sans parenthèses. Tailles identiques dans les deux
+  // modes (N'Ko en grand) : le serveur dessine en N'Ko, une inversion ferait sauter la page.
+  const titre = separerTitre(article.title);
+  const nkoTitle = titre.nko;
+  const frTitle = titre.fr ?? "";
 
   const readingTime = article.readingTime;
   const readingTimeText = lang === 'nko' 
@@ -295,11 +299,11 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
         </span>
         {surtitre}
         <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
-            <span dir="rtl" className="block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 font-kigelia text-balance">
+            <span {...sensDe(nkoTitle)} className={`block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : ''}`}>
                 {nkoTitle}
             </span>
             {frTitle && (
-                <span dir="ltr" className="block leading-tight text-white/90 print:text-gray-800 text-xl md:text-3xl text-balance">
+                <span lang="fr" dir="ltr" className="block leading-tight text-white/90 print:text-gray-800 text-xl md:text-3xl text-balance">
                     {frTitle}
                 </span>
             )}
