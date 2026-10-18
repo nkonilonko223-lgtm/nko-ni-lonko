@@ -39,6 +39,7 @@ interface SanityImage {
     _ref: string;
   };
   alt?: string;
+  captionNko?: string; // légende N'Ko de la couverture (rédaction)
   caption?: string;
   source?: string; // crédit de la couverture (ex. NASA/SDO)
 }
@@ -347,9 +348,29 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
       </header>
 
       <div className="relative z-0 text-center mt-4 md:mt-6 mb-10 md:mb-16 flex justify-center print:mb-8">
+        {/* Légendes de la couverture (rédaction) : N'Ko puis français, comme sous les images du
+            texte. Sans légende : l'étiquette générale « Image d'illustration de l'article ». */}
+        {article.mainImageUrl && (article.mainImageRaw?.captionNko || article.mainImageRaw?.caption) ? (
+          <div className="max-w-3xl w-full px-4 flex flex-col gap-3">
+            {article.mainImageRaw.captionNko && (
+              <p dir="rtl" lang="nqo" className="leading-relaxed text-[#fbbf24] print:text-black font-kigelia text-[15px] md:text-[16px]">
+                {article.mainImageRaw.captionNko}
+              </p>
+            )}
+            {article.mainImageRaw.captionNko && article.mainImageRaw.caption && (
+              <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto my-1 rounded-full print:hidden"></div>
+            )}
+            {article.mainImageRaw.caption && (
+              <p dir="ltr" lang="fr" className="leading-relaxed text-white/70 print:text-gray-700 font-sans text-[13px] md:text-[14px] italic">
+                {article.mainImageRaw.caption}
+              </p>
+            )}
+          </div>
+        ) : (
          <span className={`inline-block bg-black/40 print:bg-transparent backdrop-blur-md border border-white/10 print:border-none px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 print:text-gray-600 italic shadow-[0_0_20px_rgba(251,191,36,0.1)] print:shadow-none ${lang === 'nko' ? 'font-kigelia' : ''}`}>
             {captionText}
          </span>
+        )}
       </div>
 
       <article 
