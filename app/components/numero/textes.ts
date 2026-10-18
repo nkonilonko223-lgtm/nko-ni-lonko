@@ -8,6 +8,8 @@
 // - le numéro s'affiche avec l'abréviation de la rédaction et des chiffres N'Ko ;
 // - « Paru dans le N°… » : la nasalisation se colle au dernier chiffre et le mot
 //   suivant change, TOUJOURS (règle de la rédaction).
+// Correction validée le 18 octobre 2026 : la nasalisation est portée par le numéro
+// lui-même, partout (voir numeroNko), et « ° » est collé aux chiffres.
 // ============================================================================
 
 export const TEXTES_NUMEROS = {
@@ -32,9 +34,17 @@ const PARU_APRES_NKO = "߲ ߠߋ߬ ߞߣߐ߫"; // commence par la nasalisation, co
 export const chiffresNko = (texte: string) => texte.replace(/[0-9]/g, (c) => String.fromCodePoint(0x07c0 + Number(c)));
 export const numeroSur3 = (n: number) => String(n).padStart(3, "0");
 
-export const numeroNko = (n: number) => `${ABREVIATION_NKO} ${chiffresNko(numeroSur3(n))}`;
+// Règle validée le 18 octobre 2026 : le numéro se lit « troisième numéro ». Il porte donc
+// TOUJOURS la nasalisation (U+07F2) après son dernier chiffre, sans espace entre « ° » et
+// les chiffres (N°003 : abréviation, chiffres N'Ko, U+07F2). La marque n'est jamais doublée.
+const NASALE = String.fromCodePoint(0x07f2);
+const avecNasale = (texte: string) => (texte.endsWith(NASALE) ? texte : texte + NASALE);
+// Colle deux textes sans répéter la nasalisation à la jonction
+const joindreSansDoubler = (a: string, b: string) => (a.endsWith(NASALE) && b.startsWith(NASALE) ? a + b.slice(NASALE.length) : a + b);
+
+export const numeroNko = (n: number) => avecNasale(`${ABREVIATION_NKO}${chiffresNko(numeroSur3(n))}`).normalize("NFC");
 export const numeroFr = (n: number) => `N°${numeroSur3(n)}`;
 export const saisonNko = (s: number) => `${TEXTES_NUMEROS.saison.nko} ${chiffresNko(String(s))}`;
 export const saisonFr = (s: number) => `Saison ${s}`;
-export const paruDansNko = (n: number) => `${PARU_AVANT_NKO}${numeroNko(n)}${PARU_APRES_NKO}`;
+export const paruDansNko = (n: number) => joindreSansDoubler(`${PARU_AVANT_NKO}${numeroNko(n)}`, PARU_APRES_NKO).normalize("NFC");
 export const paruDansFr = (n: number) => `Paru dans le ${numeroFr(n)}`;
