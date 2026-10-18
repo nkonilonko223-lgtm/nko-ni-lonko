@@ -30,8 +30,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Signature invalide' }, { status: 401 });
     }
 
-    // 📖 Terme du lexique : dictionnaire, pages des termes et plan du site
-    // (les articles relisent leurs termes à chaque visite)
+    // 📖 Terme du lexique : dictionnaire, pages des termes, plan du site et articles
+    // (les articles portent aussi l'étiquette « terme » depuis le 18 octobre 2026)
     if (body?._type === 'terme') {
       revalidateTag('terme', { expire: 0 });
       console.info("🔔 [Revalidate] Lexique mis à jour.");

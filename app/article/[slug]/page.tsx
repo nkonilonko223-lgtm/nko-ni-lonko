@@ -200,8 +200,9 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     const rawArticle = await sanity.fetch<SanityArticleRaw>(
       query,
       { slug },
-      // 🚀 DESTRUCTION DU CACHE : On force la lecture en temps réel (0 seconde)
-      apercu ? { cache: "no-store" } : { next: { tags: ["article", `article-${slug}`, "numero"], revalidate: 0 } }
+      // Cache d'une heure, vidé tout de suite par la sonnette Sanity (/api/revalidate) à chaque
+      // publication d'un article, d'un terme du lexique, d'un numéro ou d'une rubrique (18 octobre 2026)
+      apercu ? { cache: "no-store" } : { next: { tags: ["article", `article-${slug}`, "numero", "terme"], revalidate: 3600 } }
     );
     if (!rawArticle) return null;
     return transformSafeArticle(rawArticle);
