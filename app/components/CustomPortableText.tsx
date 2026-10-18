@@ -33,6 +33,7 @@ export interface SanityImage {
   alt?: string;
   captionNko?: string; // 🚀 DOGME 1 : Légende N'Ko
   caption?: string;    // 🚀 Légende Française
+  source?: string;     // Crédit et licence (ex. « ESO/M. Kornmesser — CC BY 4.0 »), affiché sous l'image
 }
 
 interface YouTubeBlock {
@@ -416,7 +417,7 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
               </div>
 
               {/* 🚀 LÉGENDE "WORLD CLASS 1/10000" (Dual-Stack & Ratio de Taille) */}
-              {(imageValue.captionNko || imageValue.caption) && (
+              {(imageValue.captionNko || imageValue.caption || imageValue.source) && (
                 <figcaption className="mt-5 px-2 md:px-4 flex flex-col gap-3">
                   
                   {/* 1. N'Ko en Majesté : 15px/16px (Dominant & Doré) */}
@@ -437,7 +438,14 @@ export default function CustomPortableText({ value, lang }: CustomPortableTextPr
                       {imageValue.caption}
                     </p>
                   )}
-                  
+
+                  {/* 4. Crédit et licence (obligatoire pour les images CC BY) : petit, même texte dans les deux langues */}
+                  {imageValue.source && (
+                    <p dir="ltr" translate="no" className="text-end text-[10px] md:text-xs text-gray-500 print:text-gray-600">
+                      {imageValue.source}
+                    </p>
+                  )}
+
                 </figcaption>
               )}
             </figure>
