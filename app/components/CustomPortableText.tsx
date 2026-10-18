@@ -12,7 +12,7 @@
  * ==============================================================================
  */
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { PortableText, PortableTextComponents, PortableTextComponentProps } from "@portabletext/react";
 import { PortableTextBlock } from "@portabletext/types";
@@ -113,68 +113,14 @@ export function estimateReadingTime(body: PortableTextBlock[]): number {
 }
 
 // ==============================================================================
-// 3. SOUS-COMPOSANTS (Observer & YouTube Facade)
+// 3. SOUS-COMPOSANTS (Apparition & YouTube Facade)
 // ==============================================================================
 
-type ObserverCallback = () => void;
-let globalObserver: IntersectionObserver | null = null;
-const observerCallbacks = new Map<Element, ObserverCallback>();
-
-function getGlobalObserver() {
-  if (typeof window === 'undefined') return null;
-  if (!globalObserver) {
-    globalObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const callback = observerCallbacks.get(entry.target);
-          if (callback) {
-            callback();
-            observerCallbacks.delete(entry.target);
-            globalObserver!.unobserve(entry.target);
-          }
-        }
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-  }
-  return globalObserver;
-}
-
-function observeElement(element: Element, callback: ObserverCallback) {
-  const observer = getGlobalObserver();
-  if (observer) {
-    observerCallbacks.set(element, callback);
-    observer.observe(element);
-  }
-}
-
-function unobserveElement(element: Element) {
-  observerCallbacks.delete(element);
-  if (globalObserver) globalObserver.unobserve(element);
-}
-
-const FadeInBlock = ({ children }: { children: React.ReactNode }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const domRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = domRef.current;
-    if (el) observeElement(el, () => setIsVisible(true));
-    return () => {
-      if (el) unobserveElement(el);
-    };
-  }, []);
-
-  return (
-    <div 
-      ref={domRef} 
-      className={`transition-all duration-1000 ease-out transform print:opacity-100 print:translate-y-0 print:break-inside-avoid ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
+// Apparition au défilement, en CSS seulement (classe « apparition », app/globals.css) :
+// le texte est VISIBLE dès l'arrivée de la page, même sans JavaScript (18 octobre 2026).
+const FadeInBlock = ({ children }: { children: React.ReactNode }) => (
+  <div className="apparition print:break-inside-avoid">{children}</div>
+);
 
 // 🚀 LE MASQUE YOUTUBE (Facade Pattern pour 100% de perf)
 const YouTubeFacade = ({ videoId }: { videoId: string }) => {
