@@ -40,7 +40,8 @@ const ICON_MAP: Record<string, string> = {
 // --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
 // Traduit le N'Ko brut de Sanity vers la clé universelle du JSON
 // --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
-const CATEGORY_REVERSE_MAP: Record<string, string> = {
+// Exportée : la page article s'en sert aussi pour son étiquette de catégorie
+export const CATEGORY_REVERSE_MAP: Record<string, string> = {
   'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
   'ߘߐ߬ߞߏ': 'physics',
   'ߣߌߡߊߞߊߙߊ߲': 'biology',

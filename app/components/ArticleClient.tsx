@@ -20,6 +20,7 @@ import ArticleFooter from "./ArticleFooter";
 import { PortableTextBlock } from "@portabletext/types";
 import CustomPortableText, { formatDateNko, toNkoDigits } from "./CustomPortableText";
 import LexiqueArticle from "./lexique/LexiqueArticle";
+import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 
 // ==============================================================================
@@ -172,7 +173,10 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation }
   // 🚀 SÉCURITÉ ABSOLUE : Zéro "any"
   const tHome = t.home as TranslationHome;
   const categoriesMap = tHome?.categories || {};
-  const categoryLabel = article.category ? categoriesMap[article.category] : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
+  // La catégorie arrive en N'Ko brut depuis Sanity : on la convertit en clé (ex. « astronomy »),
+  // comme les cartes de l'accueil, puis on prend le mot du dictionnaire de la langue active
+  const categoryKey = article.category ? (CATEGORY_REVERSE_MAP[article.category.trim()] || article.category.toLowerCase()) : "";
+  const categoryLabel = article.category ? (categoriesMap[categoryKey] || article.category) : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
 
   return (
     <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-white print:text-black">
