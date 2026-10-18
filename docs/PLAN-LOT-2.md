@@ -13,7 +13,30 @@
 | 5 | **PDF du numéro** : page d'impression + rendu par Chrome (N'Ko lié, comme les images de partage) | Archivage, diffusion hors ligne |
 | 6 | **Politique d'usage de l'IA** (page publique) + **clause « IA » dans le pacte des auteurs** (droits d'entraînement du modèle) | À faire **avant** d'élargir l'usage du corpus |
 | 7 | Le reste de la liste (`CLAUDE.md` § 9) : audio des termes, « voir aussi », terme du jour, conversion des anciens encadrés « Définition », édition visuelle cliquable (stega), application hors ligne (Serwist incompatible avec Turbopack), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » | Améliorations |
-| 8 | Petites tâches : passer `COMPTE_X` à `@nkonilonko` dans `app/lib/partage.ts` le jour où le compte existe ; supprimer les fichiers inutilisés `public/og-accueil.jpg` et `public/icon.svg` | Ménage |
+| 8 | Petites tâches : passer `COMPTE_X` à `@nkonilonko` dans `app/lib/partage.ts` le jour où le compte existe ; supprimer les fichiers inutilisés `public/og-accueil.jpg`, `public/icon.svg` et `public/arriere-plan.png` (2,1 Mo ; le site sert l'AVIF et le WebP) | Ménage |
+| 9 | **Langue dans l'adresse** (`/fr/…`) avec `hreflang` : recommandation « B6 » ci-dessous | Le français devient visible par Google, sans perdre la rapidité |
+| 10 | **CSP en mode appliqué** : quand les journaux Vercel « [CSP] » sont restés propres deux semaines, remplacer dans `proxy.ts` l'en-tête `Content-Security-Policy-Report-Only` par `Content-Security-Policy` et ajouter `upgrade-insecure-requests` | Protection réelle contre l'injection de scripts (aujourd'hui : rapport seulement) |
+| 11 | Petits constats du chantier B (18 octobre) : l'icône `ph-telescope` de la page 404 n'existe pas dans Phosphor 2.1.2 (déjà vide avant le chantier B ; en choisir une autre, ex. `ph-planet`, puis relancer `scripts/icones/generer-icones.mjs`) ; `styled-components` (15 Ko compressés) est chargé sur toutes les pages par `app/registry.tsx` : vérifier si le Studio en a encore besoin | Ménage et vitesse |
+
+---
+
+## B6 — Langue dans l'adresse (recommandation du 18 octobre 2026)
+
+**Aujourd'hui.** La langue choisie (N'Ko ou français) est gardée dans le navigateur du lecteur (`localStorage`, clé `preferred-lang`). Le serveur prépare toujours la page **en N'Ko** ; l'interface passe en français juste après, dans le navigateur. Conséquences :
+
+- Google ne voit que la version N'Ko de l'interface (menus, titres, étiquettes) ; la version française n'existe pas pour lui, alors que les balises `hreflang` annoncent un `fr-FR`… à la **même** adresse.
+- Un lecteur francophone voit l'interface changer de langue à l'arrivée.
+
+**Option écartée : un cookie lu par le serveur.** Chaque page deviendrait « dynamique » (fabriquée à chaque visite) : fin du cache, et perte des gains de vitesse des chantiers A et B.
+
+**Recommandation : une adresse par langue**, toutes deux préparées à l'avance :
+
+1. `/article/<slug>` reste la version N'Ko (par défaut, « N'Ko Is King ») ; `/fr/article/<slug>` est la version française (même chose pour l'accueil, `/numeros`, `/lexique`, `/about`, `/contact`).
+2. `hreflang` : `nqo` → adresse N'Ko, `fr` → adresse française, `x-default` → N'Ko ; une adresse canonique par langue ; les deux dans le plan du site.
+3. Le bouton de langue devient un **lien** entre les deux adresses. Le choix gardé dans le navigateur ne sert plus qu'à proposer la bonne version à l'arrivée sur l'accueil.
+4. À mesurer avant fusion : même vitesse (pages toujours « ● » à la construction), aucun lien interne cassé, plan du site complet.
+
+**Quand.** Après le 30 octobre, sur une branche dédiée. Travail moyen, risque moyen (toutes les pages et les liens internes sont concernés) : **pas pendant le gel**.
 
 ---
 
