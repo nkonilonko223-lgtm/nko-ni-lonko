@@ -86,10 +86,10 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | Chemin | Rôle |
 |---|---|
 | `app/article/[slug]/page.tsx` | Page article (serveur) : requête GROQ, métadonnées, JSON-LD, lexique de l'article |
-| `app/components/ArticleClient.tsx` | Affichage d'un article (client) + lexique de fin. Emplacements `bandeau`, `surtitre`, `navigation` remplis par la page (composants serveur) |
+| `app/components/ArticleClient.tsx` | Affichage d'un article (client) + lexique de fin. Emplacements `bandeau`, `surtitre`, `navigation` et `texte` remplis par la page (composants serveur) |
 | `app/numeros/` · `app/lib/numeros.ts` | Archive `/numeros` et page d'un numéro `/numeros/[slug]` (404 si absent ou non publié) ; requêtes des numéros (une par page) |
 | `app/components/numero/` | `textes.ts` (N'Ko de l'interface, fourni par la rédaction, et chiffres N'Ko), `titre.ts` (titre N'Ko / français, testé par `scripts/tester-titres.mts`), `VueNumero.tsx` (page d'un numéro), `ArticleNumero.tsx` (« Paru dans le N° », rubrique, précédent / suivant sur la page article) |
-| `app/components/CustomPortableText.tsx` | **Moteur de rendu du texte** : détection N'Ko/français par bloc, h1–h6, citations, images + légendes, encadrés, titres de rubrique, termes du lexique |
+| `app/components/CustomPortableText.tsx` | **Moteur de rendu du texte**, composant **serveur** : détection N'Ko/français par bloc, h1–h6, citations, images + légendes, encadrés, titres de rubrique, termes du lexique, formules (KaTeX). Îlots client dans `app/components/texte/` (visionneuse, vidéo YouTube) ; outils partagés dans `texte/outils.ts`. **Ne pas l'importer depuis un fichier « use client »** (il repartirait dans le navigateur) |
 | `app/components/lexique/` | Lexique : `textes.ts` (N'Ko de l'interface, fourni par la rédaction), `TermeLexique.tsx` (fiche/bulle), `LexiqueArticle.tsx`, `DictionnaireInteractif.tsx`, `CiterTerme.tsx`, `normaliser.ts` |
 | `app/lexique/` | Dictionnaire public `/lexique` et `/lexique/[slug]` |
 | `app/desabonnement/page.tsx` | Page de désinscription (bouton POST) |
