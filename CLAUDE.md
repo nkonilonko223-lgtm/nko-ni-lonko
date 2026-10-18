@@ -1,7 +1,7 @@
 # N'Ko ni Lonko — Mémoire du projet (CLAUDE.md)
 
 > Revue scientifique bilingue **N'Ko / français** — https://www.nkonilonko.com
-> Ce fichier est lu au début de chaque session. Mis à jour le 5 octobre 2026.
+> Ce fichier est lu au début de chaque session. Mis à jour le 18 octobre 2026.
 
 ---
 
@@ -69,6 +69,10 @@ node scripts/verifier-import.mts <fichier.json> --export "C:/Dev/archives/export
 
 # Images de partage (rendu par Chrome : N'Ko lié). Changer VERSION dans le script ET dans app/lib/partage.ts
 node scripts/images-partage/generer.mjs
+
+# Icônes Phosphor auto-hébergées : à relancer après l'ajout d'une icône « ph-… » dans le code
+# (Python avec fontTools et brotli : pip install fonttools brotli)
+PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 ```
 
 **Pièges connus :**
@@ -98,7 +102,11 @@ node scripts/images-partage/generer.mjs
 | `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts`, `rubrique.ts`, `numero.ts` (`index.ts` est un reste inutilisé) |
 | `sanity.config.ts` | Studio : outils, onglet Presentation, interdiction de créer/dupliquer un abonné |
 | `sanity.cli.ts` | Projet et dataset ; `deployment.appId` = le Studio officiel **https://www.nkonilonko.com/studio** (`sofo4rzn3y9lp9608748cxio`). **Ne pas ouvrir le Studio sur une adresse d'aperçu Vercel** : il s'y enregistre tout seul (c'est ce qui a créé le doublon `xsdgnlztnsa462mh2v6t5iyk` le 4 octobre, supprimé le 16 octobre) |
-| `proxy.ts` | Filtre anti-robots + CSP (en mode « rapport seulement ») |
+| `proxy.ts` · `app/api/csp-rapport` | Filtre anti-robots + CSP (en mode « rapport seulement », sans « nonce » : les pages sont préparées à l'avance). Les violations arrivent dans les journaux Vercel (« [CSP] ») ; passage en mode appliqué : `docs/PLAN-LOT-2.md` |
+| `app/icones-phosphor.css` · `public/icones/` | Icônes Phosphor **auto-hébergées** (seulement celles du site, 4 épaisseurs) : fichiers **générés** par `scripts/icones/generer-icones.mjs`, ne pas les modifier à la main |
+| `app/fonts/` · `public/arriere-plan.avif` | Police Kigelia en **WOFF2** (les OTF de `public/fonts` servent aux e-mails et aux images de partage) ; motif de fond en AVIF, WebP en repli (`image-set` dans `globals.css`) |
+| `app/components/BandeauApercuDiffere.tsx` | Bandeau du mode aperçu chargé **à la demande**. Ne jamais importer directement dans `layout.tsx` un composant qui utilise `next-sanity/hooks` : ses outils (≈ 240 Ko) partiraient chez tous les visiteurs |
+| `SiteFooter` · `ArticleFooter` · `ContactClient` | Formulaires : Turnstile (Cloudflare) n'est créé qu'au premier contact avec le formulaire (focus, clic, toucher) |
 | `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Les articles utilisent leur photo de couverture |
 
 ## 5. Données Sanity (à connaître avant toute écriture)
@@ -143,5 +151,6 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 - **Lot 1 : terminé et en ligne** (3 – 5 octobre 2026, 77 changements). Tout est décrit dans **`docs/COMPTE-RENDU-LOT-1.md`** (à lire en premier par toute nouvelle session ou autre IA, ex. Claude Cowork).
 - **N°003** : répétition générale avec le 1er article terminé (brouillon), import du 25 au 28 octobre 2026, publication le **30 octobre** — liste de contrôle et jour J : **`docs/AVANT-PUBLICATION-N003.md`**. **Gel** du site du 18 au 30 octobre (corrections seulement ; la saisie des contenus reste possible). Les articles restent en **brouillon** jusqu'au 30 octobre.
 - **Exception décidée par le propriétaire le 15 octobre 2026 : la notion de « Numéro » est livrée AVANT le gel du 18 octobre**, en deux parties : **A** (schéma `rubrique` / `numero`, champ `rubrique` de l'article, script de vérification) puis **B** (pages `/numeros` et `/numeros/[slug]`, « Paru dans le N° » et navigation sur la page article, SEO, plan du site, mise à jour automatique, lien « Numéros » du menu). Les libellés N'Ko des rubriques et de l'interface viennent de la rédaction.
+- **Chantiers A et B (18 octobre 2026, vitesse, qualité, sécurité)** : le détail de chaque point est dans son message de commit (« A1 » à « A10 », « B1 » à « B11 ») ; les suites (langue dans l'adresse « B6 », CSP appliquée, petits constats) sont dans **`docs/PLAN-LOT-2.md`**.
 - **Lot 2 : ne pas commencer avant le 30 octobre.** Ordre et méthode (dont le modèle de traduction ByT5, jeu de données **privé**, Google Colab) : **`docs/PLAN-LOT-2.md`**.
 - **Liste du Lot 2** : corpus N'Ko – français pour le modèle ByT5 (export daté, privé), politique d'usage de l'IA et clause « IA » du pacte des auteurs, images de partage des articles avec leur titre N'Ko (même méthode que `scripts/images-partage/generer.mjs`, `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).
