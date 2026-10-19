@@ -62,6 +62,7 @@
    - la page du numéro `/numeros/003` (couverture, édito, à la une, sommaire dans le bon ordre) et l'archive `/numeros` ;
    - sur chaque article : « Paru dans le N°003 », la rubrique au-dessus du titre, article précédent / suivant ;
    - le plan du site `/sitemap.xml` contient les nouvelles adresses (dont `/numeros/003`).
+   - **Images de partage** des articles (titre N'Ko, numéro, catégorie) : `node scripts/images-partage/articles.mjs`, puis branche → aperçu → « fusionner » (détail : `docs/GUIDE-IMPORT-IA.md` § 7). À faire **avant** l'annonce : WhatsApp garde la première image vue.
 4. **Partage** : s'envoyer le lien d'un article sur **WhatsApp** (ajouter `?v=1` à la fin si le lien a déjà été partagé) et le tester dans l'outil **Facebook** (https://developers.facebook.com/tools/debug/ → coller seulement l'adresse de l'article → « Re-collecter »).
 5. **Annonce** aux abonnés et sur les réseaux (YouTube, TikTok, Instagram, Facebook, X @MckV2016).
 6. **Surveiller** dans la journée les journaux Vercel (Logs) : aucune erreur 500 ; une inscription test à la lettre si besoin.

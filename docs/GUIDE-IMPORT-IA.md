@@ -163,3 +163,12 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 ## 6. Après l'import : rapport au propriétaire
 
 Donner, **en français** : le nombre de brouillons créés (articles, termes), les avertissements restants (avec l'article et le champ concernés), les mots normalisés automatiquement (NFC), les doubles marques **à faire vérifier par la rédaction**, les **termes manquants** du lexique, la **liste des images avec leur source et leur licence** (à valider par le propriétaire), et le lien vers l'onglet **Presentation** pour la relecture.
+
+## 7. Après la publication : images de partage des articles
+
+Une image par article pour WhatsApp, Facebook et X : la couverture (sinon un fond au motif du site), le numéro, la catégorie, le titre N'Ko et le titre français, rendus par Chrome (lettres N'Ko liées). **Rien n'est écrit dans Sanity.**
+
+1. Une fois les articles **et** le numéro publiés : `node scripts/images-partage/articles.mjs` (lit les articles publiés ; option `--slug <slug>` pour un seul article). Pour préparer les images **avant** la publication : `--export <sauvegarde.tar.gz>` (brouillons compris).
+2. Regarder les images (`public/og/articles/`) : titre lisible, pas de texte coupé.
+3. Les envoyer sur une **branche** (images + `app/lib/images-partage-articles.json`) → aperçu Vercel → **« fusionner »** du propriétaire.
+4. Tant que ce n'est pas fait, le partage montre la couverture (solution de secours). Un titre, une catégorie, un numéro ou une couverture modifiés plus tard : relancer la commande (la nouvelle image a une nouvelle adresse).
