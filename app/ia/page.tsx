@@ -73,12 +73,14 @@ export default function PageIa() {
         <header className="mb-12 text-center">
           <h1 className="flex flex-col items-center gap-2">
             {TITRE.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-3xl font-bold text-[#fbbf24] md:text-4xl">{TITRE.nko}</span>}
-            <span lang="fr" dir="ltr" className="text-2xl font-bold md:text-4xl">{TITRE.fr}</span>
+            <span lang="fr" dir="ltr" className="font-fr text-2xl font-bold md:text-4xl">{TITRE.fr}</span>
           </h1>
-          <p lang="fr" className="mt-3 text-sm text-white/50">Mise à jour : 19 octobre 2026</p>
+          <p lang="fr" dir="ltr" className="mt-3 font-fr text-sm text-white/50">Mise à jour : 19 octobre 2026</p>
           <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-[#fbbf24]/60" />
         </header>
-        <div lang="fr" dir="ltr" className="space-y-10">
+        {/* Le site est en N'Ko par défaut (droite à gauche, Kigelia 22 px) : le français fixe sa direction, sa police et sa taille */}
+        <div lang="fr" dir="ltr" className="space-y-10 text-left font-fr text-base">
+
           {SECTIONS.map((s) => (
             <section key={s.titre}>
               <h2 className="mb-3 text-lg font-bold text-[#fbbf24] md:text-xl">{s.titre}</h2>
