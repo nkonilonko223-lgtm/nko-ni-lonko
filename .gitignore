@@ -41,3 +41,7 @@ env.local
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# corpus N'Ko-français (privé : ne jamais l'envoyer sur GitHub, voir docs/DONNEES-CORPUS.md)
+corpus-*/
+*.jsonl
