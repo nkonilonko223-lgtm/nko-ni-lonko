@@ -17,7 +17,7 @@ interface SiteFooterProps {
 
 interface TranslationData {
   metadata: { siteName: string };
-  footer: { about: string; contact: string; terms: string; privacy: string; copyright: string };
+  footer: { about: string; contact: string; terms: string; privacy: string; copyright: string; ia?: string };
   nav: { articles: string; numeros: string; about: string };
   home: { categories: Record<string, string> };
 }
@@ -304,7 +304,9 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                 { path: "/about", label: typedT?.nav?.about || "À propos" },
                 { path: "/contact", label: typedT?.footer?.contact || "Contact" },
                 { path: "/terms", label: typedT?.footer?.terms || "CGU" },
-                { path: "/privacy", label: typedT?.footer?.privacy || "Confidentialité" }
+                { path: "/privacy", label: typedT?.footer?.privacy || "Confidentialité" },
+                // Libellé N'Ko à demander à la rédaction (clé footer.ia de nko.json) : en attendant, le français
+                { path: "/ia", label: typedT?.footer?.ia || "Usage de l'IA" }
               ].map((link, i) => (
                 <li key={i}>
                   <Link href={link.path} onClick={triggerVibration} className={`group relative block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
