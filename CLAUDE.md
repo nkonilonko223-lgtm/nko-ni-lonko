@@ -70,6 +70,10 @@ node scripts/verifier-import.mts <fichier.json> --export "C:/Dev/archives/export
 # Images de partage (rendu par Chrome : N'Ko lié). Changer VERSION dans le script ET dans app/lib/partage.ts
 node scripts/images-partage/generer.mjs
 
+# Images de partage des ARTICLES (titre N'Ko, numéro, catégorie), après chaque publication
+# (rien n'est écrit dans Sanity ; --export <sauvegarde.tar.gz> pour préparer avec les brouillons)
+node scripts/images-partage/articles.mjs
+
 # Icônes Phosphor auto-hébergées : à relancer après l'ajout d'une icône « ph-… » dans le code
 # (Python avec fontTools et brotli : pip install fonttools brotli)
 PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
@@ -107,7 +111,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/fonts/` · `public/arriere-plan.avif` | Police Kigelia en **WOFF2** (les OTF de `public/fonts` servent aux e-mails et aux images de partage) ; motif de fond en AVIF, WebP en repli (`image-set` dans `globals.css`) |
 | `app/components/BandeauApercuDiffere.tsx` | Bandeau du mode aperçu chargé **à la demande**. Ne jamais importer directement dans `layout.tsx` un composant qui utilise `next-sanity/hooks` : ses outils (≈ 240 Ko) partiraient chez tous les visiteurs |
 | `SiteFooter` · `ArticleFooter` · `ContactClient` | Formulaires : Turnstile (Cloudflare) n'est créé qu'au premier contact avec le formulaire (focus, clic, toucher) |
-| `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Les articles utilisent leur photo de couverture |
+| `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Articles : `public/og/articles/` + liste `app/lib/images-partage-articles.json`, fabriquées par `scripts/images-partage/articles.mjs` (sinon, la couverture sert de secours) |
 
 ## 5. Données Sanity (à connaître avant toute écriture)
 
