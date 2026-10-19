@@ -2,6 +2,25 @@
 
 > **Ne pas commencer avant la publication du N°003** (règle du propriétaire). Même méthode qu'au Lot 1 : Synthèse → Audit → Stratégie → Génération → Validation, une branche par sujet, un changement par commit, aperçu Vercel, fusion après « fusionner ».
 
+## État au 19 octobre 2026 (préparé en avance, sur des branches, RIEN de fusionné)
+
+Décision du propriétaire (19 octobre) : préparer tout le Lot 2 pendant le gel, sans rien mettre en ligne avant le 30 octobre, sans écriture dans Sanity, sans e-mail. Branches **empilées** (chacune contient les précédentes) : fusionner la dernière revient à tout fusionner ; on peut aussi s'arrêter à une branche.
+
+| Ordre | Branche | Contenu | Après fusion |
+|---|---|---|---|
+| 1 | `feat/images-partage-articles` | Images de partage des articles (titre N'Ko, numéro, catégorie), `scripts/images-partage/articles.mjs` | Lancer l'outil après chaque publication (`docs/GUIDE-IMPORT-IA.md` § 7) |
+| 2 | `lot2/petites-taches` | Icône 404 « planète » ; 3 fichiers inutiles supprimés ; registre styled-components supprimé (−15 Ko sur chaque page) ; option obsolète `isHighlighted` retirée | **`sanity schema deploy`** ; vérifier le Studio (styles) |
+| 3 | `lot2/corpus` | `scripts/exporter-corpus.mts` (export privé, refus dans le projet), `docs/DONNEES-CORPUS.md`, carnet Colab `notebooks/byt5-nqo-fr.ipynb` | Premier vrai export **après** la publication du N°003 |
+| 4 | `lot2/lettre` | Lettre d'information `scripts/lettre/envoyer.mts` (aperçu, essai, envoi avec `--confirmer`) ; désinscription « en un clic » (RFC 8058) | Essai à l'adresse du propriétaire, puis envoi avec son **accord écrit** |
+| 5 | `lot2/pdf` | Version imprimable `/numeros/[slug]/imprimer`, `scripts/pdf-numero/generer.mjs`, lien « Télécharger le PDF » | Fabriquer le PDF après la publication du numéro |
+| 6 | `lot2/voir-aussi` | « À lire aussi » (fin d'article) ; « Terme du jour » (`/lexique`) | — |
+| 7 | `lot2/page-ia` | Page `/ia` (**texte à valider**), lien du pied de page, robots d'IA à jour, projet de clause du pacte des auteurs ; corrections de direction (`/ia`, 404) | Valider le texte ; version N'Ko par la rédaction |
+| 8 | `lot2/bilan` | Ce bilan ; `docs/TEXTES-NKO-A-DEMANDER.md` (9 textes N'Ko à demander) | — |
+
+**Pas encore fait** : langue dans l'adresse (B6, plan détaillé ci-dessous, 1 à 2 jours), application hors ligne et édition visuelle cliquable (longs, incertains), audio des termes (enregistrements), conversion des anciens encadrés (écriture Sanity), CSP appliquée (2 semaines de journaux), compte X, **mise à jour des dépendances** (ci-dessous).
+
+**Mise à jour des dépendances (constat du 19 octobre)** : `npm audit` signale 59 failles, presque toutes dans les **outils** (CLI Sanity, outils de construction), pas dans ce que reçoivent les visiteurs ; dont `basic-ftp` (critique, outil d'import Sanity). La correction automatique toucherait environ 1 000 paquets, dont Sanity 5.11 → 5.31 et sa CLI 5 → 6 (version majeure) : à faire sur une branche dédiée, après le 30 octobre, avec un essai complet du Studio par le propriétaire.
+
 ## Ordre recommandé
 
 | # | Chantier | Pourquoi dans cet ordre |
@@ -37,6 +56,15 @@
 4. À mesurer avant fusion : même vitesse (pages toujours « ● » à la construction), aucun lien interne cassé, plan du site complet.
 
 **Quand.** Après le 30 octobre, sur une branche dédiée. Travail moyen, risque moyen (toutes les pages et les liens internes sont concernés) : **pas pendant le gel**.
+
+**Plan technique (précisé le 19 octobre, estimation : 1 à 2 jours, dans une session dédiée)** :
+
+1. **Deux gabarits racine** (groupes de routes Next.js) : `app/(nko)/layout.tsx` (`<html lang="nqo">`, `<body dir="rtl">`) et `app/(fr)/fr/layout.tsx` (`<html lang="fr">`, `<body dir="ltr">`) ; les pages actuelles passent dans `(nko)` ; les pages françaises **réexportent** les mêmes composants avec la langue en paramètre.
+2. **`LanguageProvider`** reçoit la langue de la page (`langueInitiale`) : plus de bascule après coup, plus d'écran « choix de la langue » sur une adresse française ; le choix gardé dans le navigateur ne sert plus qu'à proposer la bonne version sur l'accueil.
+3. **Liens internes** : une fonction `lien(chemin, langue)` pour tous les `Link` (menus, cartes, sommaire, « À lire aussi », lexique) ; le bouton de langue devient un lien vers l'adresse jumelle.
+4. **Métadonnées par langue** : titres et descriptions (le français pour `/fr`), `canonical` propre à chaque langue, `hreflang` croisés (`nqo`, `fr`, `x-default` → N'Ko), `og:locale`, `inLanguage` des données structurées.
+5. **Plan du site** : les deux adresses de chaque page.
+6. **Vérifications avant fusion** : toutes les pages construites à l'avance (« ● » / « ○ »), aucun lien interne vers la mauvaise langue (robot de vérification), mêmes mesures de vitesse, articles au HTML identique côté N'Ko.
 
 ---
 
