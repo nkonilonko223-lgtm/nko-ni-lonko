@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
 import { useLanguage } from "../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
+import Link from "next/link";
 
 export default function PrivacyClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE & NAVIGATION
@@ -297,6 +298,16 @@ export default function PrivacyClient() {
                         </div>
                     </section>
                 ))}
+
+                {/* INTELLIGENCE ARTIFICIELLE (19 octobre 2026) : une phrase, le détail est dans les Conditions
+                    d'utilisation (partie 10). Version N'Ko à fournir par la rédaction : le français s'affiche seul. */}
+                <section id="intelligence-artificielle" lang="fr" dir="ltr" className="scroll-mt-40 rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/[0.04] p-6 text-left print:border-black">
+                    <h2 className="mb-2 text-base md:text-lg font-bold uppercase tracking-[0.15em] text-[#fbbf24] print:text-black">Intelligence artificielle</h2>
+                    <p className="font-light text-lg text-gray-300 leading-relaxed print:text-black">
+                        Vos données ne servent jamais à entraîner une intelligence artificielle.{" "}
+                        <Link href="/terms#intelligence-artificielle" className="text-[#fbbf24] underline underline-offset-4">Notre usage de l&apos;IA (Conditions d&apos;utilisation, partie 10)</Link>
+                    </p>
+                </section>
 
                 {/* 🚀 SIGNATURE INSTITUTIONNELLE */}
                 <div className="mt-8 flex flex-col items-end border-t border-white/10 pt-12 print:border-black print:pt-6" dir="rtl">
