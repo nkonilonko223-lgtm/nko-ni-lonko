@@ -291,7 +291,7 @@ export default function PrivacyClient() {
                               onMouseLeave={() => setFocusedLang('none')}
                             >
                                 <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] md:leading-[2.2] text-left print:text-black" dir="ltr">
-                                    {clause.textFr.replace(/'/g, "&apos;")}
+                                    {clause.textFr}
                                 </p>
                             </div>
                         </div>
