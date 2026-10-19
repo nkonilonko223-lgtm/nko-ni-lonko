@@ -79,6 +79,9 @@ node scripts/lettre/envoyer.mts --numero <n> --apercu <fichier.html>
 node scripts/lettre/envoyer.mts --numero <n> --essai <adresse>
 node scripts/lettre/envoyer.mts --numero <n> --tous [--confirmer <n>]
 
+# PDF d'un numéro publié (rendu Chrome de /numeros/<slug>/imprimer ; rien n'est écrit dans Sanity)
+node scripts/pdf-numero/generer.mjs --numero <n>
+
 # Corpus N'Ko ↔ français (privé, jamais dans le projet) : voir docs/DONNEES-CORPUS.md
 node scripts/exporter-corpus.mts --sortie "C:/Dev/archives/corpus"
 
@@ -106,7 +109,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | **Langue dans l'adresse (B6)** : `app/[lang]/` · `app/lib/langue.ts` · `proxy.ts` | Toutes les pages sont dans `app/[lang]/` (« nqo » = N'Ko, « fr » = français), préparées à l'avance dans les deux langues. **N'Ko : adresses sans préfixe** (`/article/<slug>`, inchangées) ; **français : `/fr/…`**. `proxy.ts` sert la version N'Ko (dossier interne `/nqo`) aux adresses sans `/fr` et renvoie `/nqo/…` vers l'adresse publique. Langue, sens et traduction fixés par le serveur (`app/[lang]/layout.tsx`). **Liens internes** : `lien("/chemin")` de `useLanguage()` (composants client) ou `<LienLangue>` (`app/components/LienLangue.tsx`, composants serveur) — jamais un chemin en dur. Métadonnées de chaque version : `versionLangue()` (`app/lib/carte-partage.ts`). Test : `node scripts/tester-langues.mjs <adresse>` |
 | `app/[lang]/article/[slug]/page.tsx` | Page article (serveur) : requête GROQ, métadonnées, JSON-LD, lexique de l'article |
 | `app/components/ArticleClient.tsx` | Affichage d'un article (client) + lexique de fin. Emplacements `bandeau`, `surtitre`, `navigation` et `texte` remplis par la page (composants serveur) |
-| `app/[lang]/numeros/` · `app/lib/numeros.ts` | Archive `/numeros` et page d'un numéro `/numeros/[slug]` (404 si absent ou non publié) ; requêtes des numéros (une par page) |
+| `app/[lang]/numeros/` · `app/lib/numeros.ts` | Archive `/numeros` et page d'un numéro `/numeros/[slug]` (404 si absent ou non publié) ; requêtes des numéros (une par page). Version imprimable `/numeros/[slug]/imprimer` (`VueImpression.tsx`, non indexée) → PDF par `scripts/pdf-numero/generer.mjs`, rangé dans `public/pdf/` (liste `app/lib/pdf-numeros.json`, lien « Télécharger le PDF » sur la page du numéro) |
 | `app/components/numero/` | `textes.ts` (N'Ko de l'interface, fourni par la rédaction, et chiffres N'Ko), `titre.ts` (titre N'Ko / français, testé par `scripts/tester-titres.mts`), `VueNumero.tsx` (page d'un numéro), `ArticleNumero.tsx` (« Paru dans le N° », rubrique, précédent / suivant sur la page article) |
 | `app/components/CustomPortableText.tsx` | **Moteur de rendu du texte**, composant **serveur** : détection N'Ko/français par bloc, h1–h6, citations, images + légendes, encadrés, titres de rubrique, termes du lexique, formules (KaTeX). Îlots client dans `app/components/texte/` (visionneuse, vidéo YouTube) ; outils partagés dans `texte/outils.ts`. **Ne pas l'importer depuis un fichier « use client »** (il repartirait dans le navigateur) |
 | `app/components/lexique/` | Lexique : `textes.ts` (N'Ko de l'interface, fourni par la rédaction), `TermeLexique.tsx` (fiche/bulle), `LexiqueArticle.tsx`, `DictionnaireInteractif.tsx`, `CiterTerme.tsx`, `normaliser.ts` |
