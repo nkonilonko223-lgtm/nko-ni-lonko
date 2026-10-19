@@ -7,6 +7,7 @@
 // Cache : étiquettes « numero » et « article », vidées par /api/revalidate.
 // ============================================================================
 
+import type { PortableTextBlock } from "@portabletext/types";
 import { client } from "../../sanity/client";
 import { getSanityClient } from "../../sanity/fetch";
 
@@ -118,5 +119,48 @@ export async function getLiensNumeros(): Promise<{ slug: string; publishedAt?: s
     );
   } catch {
     return [];
+  }
+}
+
+// Numéro COMPLET, textes des articles compris (page d'impression /numeros/[slug]/imprimer → PDF).
+// Mêmes termes du lexique que la page article. null si absent ou non publié.
+export type ArticleComplet = ArticleDuSommaire & {
+  body?: PortableTextBlock[];
+  auteurs?: { name?: string; nameNko?: string }[];
+};
+export type NumeroComplet = Omit<Numero, "sommaire"> & { sommaire: ArticleComplet[] };
+
+const REQUETE_NUMERO_COMPLET = `*[_type == "numero" && slug.current == $slug][0] {
+  numero, saison, titleNko, titleFr, publishedAt, seoTitle, excerpt, "slug": slug.current,
+  "couverture": couverture${IMAGE},
+  "editoRef": edito._ref, "aLaUneRef": aLaUne._ref,
+  "sommaire": sommaire[]->{
+    _id, title, excerpt, "slug": slug.current,
+    "image": mainImage${IMAGE},
+    "rubrique": rubrique->{ titleNko, titleFr, "slug": slug.current },
+    "auteurs": authors[]->{ name, nameNko },
+    "body": body[]{
+      ...,
+      markDefs[]{
+        ...,
+        _type == "termeLexique" => { "terme": terme->{ termeNko, termeFr, definitionNko, definitionFr, "slug": slug.current } }
+      }
+    }
+  }
+}`;
+
+export async function getNumeroComplet(slug: string): Promise<NumeroComplet | null> {
+  const { client: sanity, apercu } = await getSanityClient();
+  try {
+    const brut = await sanity.fetch<(Omit<NumeroComplet, "sommaire"> & { sommaire?: (ArticleComplet | null)[] }) | null>(
+      REQUETE_NUMERO_COMPLET,
+      { slug },
+      apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article", "terme"], revalidate: 3600 } }
+    );
+    if (!brut) return null;
+    return { ...brut, sommaire: (brut.sommaire || []).filter((a): a is ArticleComplet => !!a?.slug) };
+  } catch (error) {
+    console.error("Erreur Fetch Numéro complet:", error);
+    return null;
   }
 }
