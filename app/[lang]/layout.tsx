@@ -11,7 +11,8 @@ import "../globals.css";
 import "../icones-phosphor.css";
 
 // ✅ IMPORT DES FOURNISSEURS (PROVIDERS)
-import StyledComponentsRegistry from '../registry';
+// (Plus de registre styled-components : le Studio Sanity ne s'affiche que dans le navigateur,
+// le registre ne servait à rien et envoyait styled-components à chaque visiteur — 19 octobre 2026)
 import { LanguageProvider } from "../components/LanguageProvider";
 import NetworkBoundary from "../components/NetworkBoundary"; 
 import PredictiveProvider from "../components/PredictiveProvider";
@@ -283,13 +284,11 @@ return (
           dangerouslySetInnerHTML={{ __html: jsonLd(globalJsonLd) }}
         />
 
-        <StyledComponentsRegistry>
-            <LanguageProvider langue={langueInterface(langue)}>
-              <NetworkBoundary>
-                {children}
-              </NetworkBoundary>
-            </LanguageProvider>
-        </StyledComponentsRegistry>
+        <LanguageProvider langue={langueInterface(langue)}>
+          <NetworkBoundary>
+            {children}
+          </NetworkBoundary>
+        </LanguageProvider>
 
         <Analytics />
         <PredictiveProvider />
