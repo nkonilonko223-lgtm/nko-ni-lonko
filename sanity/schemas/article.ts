@@ -257,7 +257,6 @@ export default defineType({
               title: 'Légende (N\'Ko) / ߖߌ߬ߦߊ߬ߓߍ ߞߘߐߟߊ߫ ߛߓߍ',
               description: "Description scientifique de l'image en N'Ko.",
               rows: 2,
-              options: { isHighlighted: true },
               components: {
                 input: (props: import('sanity').StringInputProps) => 
                   React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
@@ -270,7 +269,6 @@ export default defineType({
               title: 'Légende (Français)',
               description: "Traduction française de la légende.",
               rows: 2,
-              options: { isHighlighted: true },
               components: {
                 input: (props: import('sanity').StringInputProps) => 
                   React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props))
@@ -280,14 +278,12 @@ export default defineType({
               name: 'alt',
               type: 'string',
               title: 'Texte Alternatif / ߖߌ߬ߦߊ߬ߓߍ ߡߊ߲߬ߞߕߎ',
-              options: { isHighlighted: true },
               validation: (rule) => rule.required().warning("L'alt text est fortement recommandé."),
             },
             {
               name: 'source',
               type: 'string',
               title: 'Source ou Crédit (ex: NASA) / ߓߐߛߎ߲',
-              options: { isHighlighted: true },
             }
           ],
         },
@@ -446,7 +442,6 @@ export default defineType({
           title: 'Légende (N\'Ko) / ߖߌ߬ߦߊ߬ߓߍ ߞߘߐߟߊ߫ ߛߓߍ',
           description: "La légende de l'image de la semaine (visible sous la couverture).",
           rows: 2,
-          options: { isHighlighted: true },
           components: {
             input: (props: import('sanity').StringInputProps) => 
               React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
@@ -458,7 +453,6 @@ export default defineType({
           title: 'Légende (Français)',
           description: "Traduction française de la légende.",
           rows: 2,
-          options: { isHighlighted: true },
           components: {
             input: (props: import('sanity').StringInputProps) =>
               React.createElement('div', { dir: 'ltr', style: { textAlign: 'left' } }, props.renderDefault(props))
