@@ -15,4 +15,4 @@
 | L8 | Texte complet de la page `/ia` (7 paragraphes) | Page `/ia` | `app/ia/page.tsx` (version N'Ko de chaque section, après validation du texte français par le propriétaire) |
 | L9 | Clause « Intelligence artificielle » du pacte des auteurs | Pacte des auteurs | `docs/PACTE-AUTEURS-CLAUSE-IA.md` (après validation du texte français) |
 
-Déjà fournis et réutilisés tels quels : « Sommaire », « Édito », « À la une », « Lire l'article », « Saison », le numéro (`ߝߕ°…߲`), « Voir dans le lexique », « Se désabonner », le nom du site.
+Déjà fournis et réutilisés tels quels : « Sommaire », « Édito », « À la une », « Lire l'article », « Saison », le numéro (fabriqué par numeroNko, règle de la rédaction), « Voir dans le lexique », « Se désabonner », le nom du site.
