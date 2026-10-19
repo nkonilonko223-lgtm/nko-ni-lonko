@@ -21,7 +21,7 @@ export default function NotFound() {
         {/* Icône animée */}
         <div className="relative mb-6">
            <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 animate-pulse"></div>
-           <i className="ph-duotone ph-telescope text-9xl text-[#fbbf24] relative z-10"></i>
+           <i className="ph-duotone ph-planet text-9xl text-[#fbbf24] relative z-10"></i>
         </div>
 
         <h1 className="text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500 mb-2 font-sans tracking-tighter">

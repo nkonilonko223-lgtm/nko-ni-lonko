@@ -4,7 +4,7 @@
    relancer le générateur après l'ajout d'une nouvelle icône dans le code.
    78 icônes trouvées dans le code.
    ============================================================================ */
-/* ---- regular : 77 glyphes ---- */
+/* ---- regular : 78 glyphes ---- */
 @font-face {
   font-family: "Phosphor";
   src: url("/icones/Phosphor.woff2") format("woff2");
@@ -174,6 +174,9 @@
 .ph.ph-phone:before {
   content: "\e3b8";
 }
+.ph.ph-planet:before {
+  content: "\e652";
+}
 .ph.ph-play:before {
   content: "\e3d0";
 }
@@ -268,7 +271,7 @@
   content: "\e4fc";
 }
 
-/* ---- bold : 77 glyphes ---- */
+/* ---- bold : 78 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Bold";
   src: url("/icones/Phosphor-Bold.woff2") format("woff2");
@@ -438,6 +441,9 @@
 .ph-bold.ph-phone:before {
   content: "\e3b8";
 }
+.ph-bold.ph-planet:before {
+  content: "\e652";
+}
 .ph-bold.ph-play:before {
   content: "\e3d0";
 }
@@ -532,7 +538,7 @@
   content: "\e4fc";
 }
 
-/* ---- fill : 77 glyphes ---- */
+/* ---- fill : 78 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Fill";
   src: url("/icones/Phosphor-Fill.woff2") format("woff2");
@@ -702,6 +708,9 @@
 .ph-fill.ph-phone:before {
   content: "\e3b8";
 }
+.ph-fill.ph-planet:before {
+  content: "\e652";
+}
 .ph-fill.ph-play:before {
   content: "\e3d0";
 }
@@ -796,7 +805,7 @@
   content: "\e4fc";
 }
 
-/* ---- duotone : 154 glyphes ---- */
+/* ---- duotone : 156 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Duotone";
   src: url("/icones/Phosphor-Duotone.woff2") format("woff2");
@@ -1184,6 +1193,14 @@
 }
 .ph-duotone.ph-phone:after {
   content: "\e3b9";
+  margin-left: -1em;
+}
+.ph-duotone.ph-planet:before {
+  content: "\e652";
+  opacity: 0.2;
+}
+.ph-duotone.ph-planet:after {
+  content: "\e653";
   margin-left: -1em;
 }
 .ph-duotone.ph-play:before {
