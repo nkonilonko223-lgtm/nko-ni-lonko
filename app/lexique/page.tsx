@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getSanityClient } from "../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../components/lexique/textes";
 import DictionnaireInteractif, { type TermeDictionnaire } from "../components/lexique/DictionnaireInteractif";
+import TermeDuJour from "../components/lexique/TermeDuJour";
 import { comparerNko } from "../components/lexique/normaliser";
 import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../lib/partage";
 import { jsonLd } from "../lib/jsonld";
@@ -87,7 +88,10 @@ export default async function PageLexique() {
         {termes.length === 0 ? (
           <p className="text-center text-white/50" lang="fr">Le lexique est en cours de préparation.</p>
         ) : (
-          <DictionnaireInteractif termes={termes} />
+          <>
+            <TermeDuJour termes={termes} />
+            <DictionnaireInteractif termes={termes} />
+          </>
         )}
 
         <p className="text-center mt-12">
