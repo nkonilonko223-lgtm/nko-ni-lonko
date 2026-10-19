@@ -97,7 +97,11 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
   );
 }
 
-export default function VueNumero({ numero }: { numero: Numero }) {
+// PDF du numéro (scripts/pdf-numero/generer.mjs) ; libellé N'Ko à demander à la rédaction : vide pour l'instant
+const TELECHARGER_PDF: Libelle = { nko: "", fr: "Télécharger le PDF" };
+const tailleFr = (octets: number) => `${(octets / 1024 / 1024).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} Mo`;
+
+export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fichier: string; octets: number } | null }) {
   const { sommaire } = numero;
   const edito = sommaire.find((a) => a._id === numero.editoRef);
   const une = sommaire.find((a) => a._id === numero.aLaUneRef);
@@ -202,6 +206,19 @@ export default function VueNumero({ numero }: { numero: Numero }) {
             ))}
           </ol>
         </section>
+
+        {pdf && (
+          <p className="text-center">
+            <a
+              href={`/pdf/${pdf.fichier}`}
+              download
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#fbbf24]/50 px-5 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10"
+            >
+              <i className="ph-bold ph-download-simple" aria-hidden="true"></i>
+              <LibelleEnLigne texte={{ nko: TELECHARGER_PDF.nko, fr: `${TELECHARGER_PDF.fr} (${tailleFr(pdf.octets)})` }} />
+            </a>
+          </p>
+        )}
 
         <p className="text-center">
           <LienLangue href="/numeros" className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-5 text-white/80 transition-colors hover:border-[#fbbf24] hover:text-[#fbbf24]">
