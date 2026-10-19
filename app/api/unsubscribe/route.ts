@@ -13,13 +13,20 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9
 
 // Appelée par le formulaire de la page /desabonnement (POST, pas un simple lien :
 // les antivirus de messagerie qui « cliquent » sur les liens ne désabonnent personne).
+// Aussi : désinscription « en un clic » des messageries (Gmail, Yahoo… — RFC 8058) depuis les
+// en-têtes List-Unsubscribe de la lettre (scripts/lettre/envoyer.mts) : POST avec le corps
+// « List-Unsubscribe=One-Click » et le jeton dans l'adresse ; réponse sans redirection.
 export async function POST(request: Request) {
-  const baseUrl = new URL(request.url).origin;
-  const back = (query: string) => NextResponse.redirect(`${baseUrl}/desabonnement?${query}`, 303);
+  const url = new URL(request.url);
+  const baseUrl = url.origin;
+  let unClic = false;
+  const back = (query: string) =>
+    unClic ? new NextResponse(null, { status: query === 'done=1' ? 200 : 400 }) : NextResponse.redirect(`${baseUrl}/desabonnement?${query}`, 303);
 
   try {
     const formData = await request.formData();
-    const token = formData.get('token');
+    unClic = formData.get('List-Unsubscribe') === 'One-Click';
+    const token = formData.get('token') ?? url.searchParams.get('token');
 
     if (typeof token !== 'string' || !UUID_REGEX.test(token)) {
       console.warn("⚠️ [Unsubscribe] Jeton absent ou invalide.");
