@@ -16,10 +16,22 @@ Décision du propriétaire (19 octobre) : préparer tout le Lot 2 pendant le gel
 | 6 | `lot2/voir-aussi` | « À lire aussi » (fin d'article) ; « Terme du jour » (`/lexique`) | — |
 | 7 | `lot2/page-ia` | Page `/ia` (**texte à valider**), lien du pied de page, robots d'IA à jour, projet de clause du pacte des auteurs ; corrections de direction (`/ia`, 404) | Valider le texte ; version N'Ko par la rédaction |
 | 8 | `lot2/bilan` | Ce bilan ; `docs/TEXTES-NKO-A-DEMANDER.md` (9 textes N'Ko à demander) | — |
+| 9 | `lot2/ia-conditions` | Décision du 19 octobre : **pas de page `/ia`** ; le texte validé devient la **partie 10 « Intelligence artificielle » des Conditions d'utilisation**, une phrase et un lien dans la Confidentialité ; réserve lisible par les machines (`/.well-known/tdmrep.json` + en-tête `tdm-reservation: 1`) ; page 404 : N'Ko d'abord, chaque langue avec `lang` et `dir` | — |
+| à part | `fix/confidentialite-apostrophes` | Correction du texte français de la Confidentialité (« n&apos;utilisons »… affiché 8 fois en ligne) : **peut être fusionnée pendant le gel** | — |
 
 **Pas encore fait** : langue dans l'adresse (B6, plan détaillé ci-dessous, 1 à 2 jours), application hors ligne et édition visuelle cliquable (longs, incertains), audio des termes (enregistrements), conversion des anciens encadrés (écriture Sanity), CSP appliquée (2 semaines de journaux), compte X, **mise à jour des dépendances** (ci-dessous).
 
 **Mise à jour des dépendances (constat du 19 octobre)** : `npm audit` signale 59 failles, presque toutes dans les **outils** (CLI Sanity, outils de construction), pas dans ce que reçoivent les visiteurs ; dont `basic-ftp` (critique, outil d'import Sanity). La correction automatique toucherait environ 1 000 paquets, dont Sanity 5.11 → 5.31 et sa CLI 5 → 6 (version majeure) : à faire sur une branche dédiée, après le 30 octobre, avec un essai complet du Studio par le propriétaire.
+
+## Idées d'IA retenues par le propriétaire (19 octobre 2026)
+
+Règle : **l'IA propose, l'humain valide** ; jamais de N'Ko publié sans la rédaction. Les autres idées (textes alternatifs proposés par l'IA, traduction assistée) sont écartées pour l'instant.
+
+| # | Idée | Méthode |
+|---|---|---|
+| 2 | **Recherche N'Ko ↔ écriture latine** (bambara, maninka) : un lecteur qui tape en lettres latines trouve les articles et les termes en N'Ko | Translittération par **règles** (pas d'IA), testée sur le lexique ; tableau de correspondance validé par la rédaction |
+| 4 | **Correcteur N'Ko dans le Studio** : signale les marques de ton oubliées ou doublées, le texte non NFC, les mots inconnus du lexique, avant la publication | Contrôles par règles + liste de mots de la revue ; il **signale**, il ne corrige jamais seul (avertissement dans le Studio) |
+| 5 | **Recherche par le sens** dans les articles et le lexique | Représentations multilingues (à choisir parmi celles qui connaissent le N'Ko, ex. SONAR de Meta), calculées à la publication ; sans données des lecteurs |
 
 ## Ordre recommandé
 
@@ -69,6 +81,13 @@ _(Plan du 19 octobre ci-dessous, gardé pour l'historique : la réalisation du 2
 4. **Métadonnées par langue** : titres et descriptions (le français pour `/fr`), `canonical` propre à chaque langue, `hreflang` croisés (`nqo`, `fr`, `x-default` → N'Ko), `og:locale`, `inLanguage` des données structurées.
 5. **Plan du site** : les deux adresses de chaque page.
 6. **Vérifications avant fusion** : toutes les pages construites à l'avance (« ● » / « ○ »), aucun lien interne vers la mauvaise langue (robot de vérification), mêmes mesures de vitesse, articles au HTML identique côté N'Ko.
+
+**Exigence du propriétaire (19 octobre) : « N'Ko is King » partout.** Garanties à respecter :
+- le N'Ko garde l'adresse **principale, sans préfixe** ; seul le français prend `/fr/` ;
+- `x-default` → N'Ko ; le plan du site cite le N'Ko en premier ;
+- **aucune bascule automatique** vers le français selon le navigateur (on propose, on n'impose pas) ;
+- sur les pages françaises, les titres gardent le **N'Ko en haut** (comme aujourd'hui) ; les articles restent bilingues, seule la langue de l'interface change ;
+- l'écran de choix de la langue garde le N'Ko en premier.
 
 ---
 

@@ -1,7 +1,7 @@
 # Pacte des auteurs — clause « Intelligence artificielle » (PROJET)
 
 > **Projet proposé le 19 octobre 2026, à valider par le propriétaire et à faire relire par un juriste.** Non contractuel tant qu'il n'est pas signé. Version N'Ko : à faire par la rédaction.
-> Contexte : modèle de traduction N'Ko ↔ français (`docs/PLAN-LOT-2.md`), corpus privé (`docs/DONNEES-CORPUS.md`), politique publique (`/ia`).
+> Contexte : modèle de traduction N'Ko ↔ français (`docs/PLAN-LOT-2.md`), corpus privé (`docs/DONNEES-CORPUS.md`), politique publique (Conditions d'utilisation, partie 10 « Intelligence artificielle »).
 
 ## Article — Intelligence artificielle
 
@@ -19,7 +19,7 @@
    - **Option A** — le modèle reste interne à la revue ;
    - **Option B** — le modèle (pas les données) peut être partagé avec la communauté N'Ko sous une licence libre, après **information préalable** des auteurs, qui gardent leur droit de retrait pour les entraînements suivants.
 
-7. **Transparence.** Les usages de l'IA par la revue sont décrits sur la page publique `/ia`, mise à jour à chaque changement.
+7. **Transparence.** Les usages de l'IA par la revue sont décrits dans les Conditions d'utilisation du site (partie 10 « Intelligence artificielle »), mises à jour à chaque changement.
 
 ## Points à décider par le propriétaire
 
@@ -27,4 +27,4 @@
 |---|---|
 | Option A ou B (article 6) | A au départ ; B plus tard si la communauté le demande |
 | Accord des auteurs déjà publiés | Leur envoyer la clause et demander un accord écrit (courriel) **avant** le premier vrai export du corpus |
-| Version N'Ko de la clause et de la page `/ia` | À rédiger par la rédaction |
+| Version N'Ko de la clause et de la partie 10 des Conditions | À rédiger par la rédaction |
