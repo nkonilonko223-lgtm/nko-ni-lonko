@@ -8,6 +8,7 @@ import DictionnaireInteractif, { type TermeDictionnaire } from "../../components
 import { comparerNko } from "../../components/lexique/normaliser";
 import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../../lib/partage";
 import { jsonLd } from "../../lib/jsonld";
+import TermeDuJour from "../../components/lexique/TermeDuJour";
 
 // ============================================================================
 // N'KO NI LONKO — Dictionnaire scientifique N'Ko – français (tous les termes)
@@ -95,7 +96,10 @@ export default async function PageLexique() {
         {termes.length === 0 ? (
           <p className="text-center text-white/50" lang="fr">Le lexique est en cours de préparation.</p>
         ) : (
-          <DictionnaireInteractif termes={termes} />
+          <>
+            <TermeDuJour termes={termes} />
+            <DictionnaireInteractif termes={termes} />
+          </>
         )}
 
         <p className="text-center mt-12">
