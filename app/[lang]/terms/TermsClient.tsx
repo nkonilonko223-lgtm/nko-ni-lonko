@@ -46,7 +46,14 @@ export default function TermsClient() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleBack]);
 
-const clauses = [
+// Une clause : titre, résumé (« En clair ») et texte, en N'Ko puis en français. Tant que la rédaction
+// n'a pas fourni le N'Ko d'une clause, ses champs N'Ko restent vides : seul le français s'affiche.
+type Clause = {
+  id: string; titleNko: string; titleFr: string; tldrNko: string; tldrFr: string; textNko: string; textFr: string;
+  paragraphesFr?: { titre: string; texte: string }[]; // texte français en plusieurs parties
+};
+
+const clauses: Clause[] = [
     {
       id: "acceptation",
       titleNko: "߁. ߛߙߊߕߌ ߟߎ߬ ߟߊߡߌ߬ߘߊ߬ߟߌ",
@@ -127,6 +134,26 @@ const clauses = [
       tldrFr: "En clair : Nous relisons, corrigeons et validons chaque article avant publication pour garantir l'excellence.",
       textNko: "ߞߊ߬ ߓߍ߲߬ ߊ߲ ߠߊ߫ ߢߊ߬ߒ߬ߞߐ߬ߓߊߟߌߦߊ ߛߊ߲ߡߊߦߊ ߡߊ߬߸ ߊ߲ ߠߊ߫ ߘߐ߬ߜߍ߬ߘߍ߲߬ߠߌ߲ ߘߍ߬ߘߊ ߤߊߞߍ ߦߴߊ߬ ߓߟߏ߫ ߞߊ߬ ߛߓߍߟߌ ߘߏ߫ ߟߊߕߊ߲߬ߞߌ߲߫߸ ߞߵߊ߬ ߡߊߦߟߍ߬ߡߊ߲߫ (ߒߞߏ ߛߓߍߟߌߢߊ ߣߴߊ߬ ߞߎߡߊߛߌ߲߮ ߘߐ߫) ߥߟߊ߫ ߞߵߊ߬ ߓߐ߫ ߦߋ߲߬ ߔߋߎ߫߸ ߣߴߊ߬ ߡߊ߫ ߓߍ߲߬ ߊ߲ ߠߊ߫ ߟߐ߲ߞߏ ߣߌ߫ ߞߊ߲ ߠߊߢߎ߲ߣߍ߲ ߛߙߊߕߌ ߟߎ߬ ߡߊ߬.",
       textFr: "Afin de maintenir l'excellence de notre standard mondial, notre comité de lecture se réserve le droit souverain de refuser, de corriger (orthographe, syntaxe N'Ko) ou de retirer tout article qui ne répondrait pas à notre charte d'exigence scientifique et linguistique."
+    },
+    {
+      // Texte validé par le propriétaire le 19 octobre 2026. Version N'Ko à fournir par la rédaction.
+      id: "intelligence-artificielle",
+      titleNko: "",
+      titleFr: "10. Intelligence artificielle",
+      tldrNko: "",
+      tldrFr: "En clair : des humains décident, l'IA aide. Aucun N'Ko n'est écrit par une IA, et l'entraînement de notre outil de traduction reste privé.",
+      textNko: "",
+      textFr: "",
+      paragraphesFr: [
+        { titre: "Notre principe : des humains décident, l'IA aide", texte: "À N'Ko ni Lonko, l'intelligence artificielle (IA) est un outil. Elle ne fait pas tout et ne prend aucune décision : le choix des sujets, l'écriture, la traduction, la relecture et la publication sont faits par des personnes, la rédaction et les auteurs. La rédaction reste responsable de tout ce qui est publié." },
+        { titre: "Ce que l'IA fait aujourd'hui", texte: "Elle aide pour des tâches techniques : saisie des textes dans notre outil de publication, contrôles automatiques (écriture N'Ko correcte, liens, images). Chaque texte est relu et validé par la rédaction avant sa publication." },
+        { titre: "Ce que l'IA ne fait jamais", texte: "Elle n'écrit aucun texte en N'Ko : chaque mot N'Ko publié vient de la rédaction. Elle n'est jamais auteur d'un article. Elle ne publie rien seule." },
+        { titre: "Notre outil de traduction : un entraînement privé", texte: "Nous préparons un outil de traduction N'Ko ↔ français, entraîné uniquement sur les textes publiés de la revue et sur son dictionnaire, avec l'accord des auteurs. Les données d'entraînement sont privées : elles ne sont ni vendues, ni partagées, ni publiées. Aucune traduction automatique n'est publiée sans relecture humaine." },
+        { titre: "Où servent nos outils d'IA", texte: "Pour l'instant, ils servent seulement au travail de la revue et à ce site. Cela pourra changer, par exemple avec un outil de traduction ouvert à la communauté N'Ko : nous l'annoncerons ici à l'avance, nous demanderons l'accord des auteurs, et la date de mise à jour de cette partie changera." },
+        { titre: "Vos données", texte: "Les données des lecteurs (adresses des abonnés, messages du formulaire de contact) ne servent jamais à entraîner une IA." },
+        { titre: "Nos textes et les IA des autres", texte: "N'Ko ni Lonko se réserve tous les droits sur ses textes : sans notre accord écrit, il est interdit de les collecter ou de les utiliser pour entraîner une intelligence artificielle. Cette réserve est déclarée aux robots (fichiers robots.txt et tdmrep.json), conformément au droit d'auteur. Les moteurs de recherche restent les bienvenus." },
+        { titre: "Une question ?", texte: "Écrivez-nous depuis la page Contact. Cette partie a été mise à jour en octobre 2026." },
+      ],
     }
   ];
 
@@ -137,7 +164,7 @@ useEffect(() => {
       setScrollProgress(progress);
 
       // 🚀 Correction ESLint : On liste les ID en dur au lieu d'utiliser clauses.map
-      const sections = ["acceptation", "mission", "propriete", "comportement", "limitation", "juridiction", "originalite", "licence", "rigueur"];
+      const sections = ["acceptation", "mission", "propriete", "comportement", "limitation", "juridiction", "originalite", "licence", "rigueur", "intelligence-artificielle"];
       const scrollPosition = window.scrollY + 250;
 
       for (const section of sections) {
@@ -231,9 +258,11 @@ useEffect(() => {
                         dir={isNko ? "rtl" : "ltr"}
                     >
                         {/* 🚀 BDI (Bi-Directional Isolation) empêche la ponctuation de briser le RTL */}
+                        {clause.titleNko && (
                         <span className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-[#fbbf24] font-bold"}`} dir="rtl">
                             <bdi>{clause.titleNko}</bdi>
                         </span>
+                        )}
                         <span className={`text-[9px] uppercase tracking-widest whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black/70 font-bold" : "text-white/60 font-light"}`} dir="ltr">
                             <bdi lang="fr">{clause.titleFr}</bdi>
                         </span>
@@ -259,8 +288,8 @@ useEffect(() => {
                             onClick={() => scrollToSection(clause.id)}
                             className={`flex flex-col items-start text-left transition-all duration-300 group ${activeSection === clause.id ? "opacity-100 translate-x-2" : "opacity-40 hover:opacity-80"}`}
                         >
-                            <span className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-[#fbbf24] drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-[#fbbf24]"}`} dir="rtl">{clause.titleNko}</span>
-                            <span lang="fr" className="text-[10px] text-white font-light tracking-wider uppercase">{clause.titleFr}</span>
+                            {clause.titleNko && <span className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-[#fbbf24] drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-[#fbbf24]"}`} dir="rtl">{clause.titleNko}</span>}
+                            <span lang="fr" dir="ltr" className="text-[10px] text-white font-light tracking-wider uppercase">{clause.titleFr}</span>
                         </button>
                     ))}
                 </div>
@@ -272,27 +301,38 @@ useEffect(() => {
                     <section key={clause.id} id={clause.id} className="scroll-mt-40 print:scroll-mt-0 print:break-inside-avoid print:mb-8">
                         
                         <div className="mb-6 flex flex-col items-start border-b border-white/10 pb-6 print:border-black print:pb-2" dir="rtl">
-                            <h2 className="font-kigelia text-3xl md:text-4xl text-[#fbbf24] mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
-                            <span className="text-xs md:text-sm tracking-[0.2em] text-gray-400 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
+                            {clause.titleNko ? (
+                              <>
+                                <h2 className="font-kigelia text-3xl md:text-4xl text-[#fbbf24] mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
+                                <span className="text-xs md:text-sm tracking-[0.2em] text-gray-400 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
+                              </>
+                            ) : (
+                              // Sans titre N'Ko (pas encore fourni) : le titre français devient le titre de la clause
+                              <h2 lang="fr" dir="ltr" className="text-xl md:text-2xl tracking-[0.15em] text-[#fbbf24] uppercase font-bold print:text-black">{clause.titleFr}</h2>
+                            )}
                         </div>
                         
                         <div className="flex flex-col gap-8 backdrop-blur-md bg-[#02040a]/60 p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-xl hover:border-white/10 transition-colors print:bg-white print:border-none print:shadow-none print:p-0">
                             
                             {/* 🚀 LE TL;DR */}
                             <div className="flex flex-col gap-4 bg-white/5 border-l-2 border-[#fbbf24] p-5 rounded-r-xl print:bg-gray-100 print:border-l-gray-500">
+                                {clause.tldrNko && (
                                 <div className="flex flex-col items-start" dir="rtl">
                                     <div className="flex items-center gap-3 mb-2">
                                       <i className="ph-fill ph-info text-[#fbbf24] print:hidden text-xl"></i>
                                       <p className="font-kigelia text-xl text-white/90 print:text-black">{clause.tldrNko}</p>
                                     </div>
                                 </div>
+                                )}
                                 <div lang="fr" className="flex items-start text-left" dir="ltr">
                                   <p className="text-sm font-light text-gray-400 print:text-gray-700 italic">{clause.tldrFr}</p>
                                 </div>
                             </div>
 
-                            {/* BLOC N'KO */}
-                            <div 
+                            {/* BLOC N'KO (absent tant que la rédaction ne l'a pas fourni) */}
+                            {clause.textNko && (
+                            <>
+                            <div
                               className={`transition-opacity duration-500 ${focusedLang === 'fr' ? 'opacity-30 blur-[1px]' : 'opacity-100'} print:opacity-100 print:blur-none`}
                               onMouseEnter={() => setFocusedLang('nko')}
                               onMouseLeave={() => setFocusedLang('none')}
@@ -301,10 +341,12 @@ useEffect(() => {
                                     {clause.textNko}
                                 </p>
                             </div>
-                            
+
                             <div className="flex items-center justify-center opacity-20 print:hidden">
                                 <div className="h-[1px] w-1/3 bg-gradient-to-r from-transparent via-[#fbbf24] to-transparent"></div>
                             </div>
+                            </>
+                            )}
                             
                             {/* BLOC FRANÇAIS */}
                             <div 
@@ -312,9 +354,20 @@ useEffect(() => {
                               onMouseEnter={() => setFocusedLang('fr')}
                               onMouseLeave={() => setFocusedLang('none')}
                             >
+                                {clause.paragraphesFr ? (
+                                  <div lang="fr" dir="ltr" className="flex flex-col gap-6 text-left">
+                                    {clause.paragraphesFr.map((p) => (
+                                      <div key={p.titre}>
+                                        <h3 className="mb-2 text-base md:text-lg font-bold text-[#fbbf24] print:text-black">{p.titre}</h3>
+                                        <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] print:text-black">{p.texte}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
                                 <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] md:leading-[2.2] text-left print:text-black" lang="fr" dir="ltr">
                                     {clause.textFr}
                                 </p>
+                                )}
                             </div>
                         </div>
                     </section>
