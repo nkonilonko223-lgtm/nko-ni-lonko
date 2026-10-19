@@ -34,7 +34,7 @@ export default function NotFound() {
           Page introuvable <span className="text-[#fbbf24] px-2">/</span> <span className="font-kigelia">ߞߐߜߍ ߡߊ߫ ߛߐ߬ߘߐ߲߬</span>
         </h2>
 
-        <p className="text-gray-400 max-w-lg mb-10 text-lg leading-relaxed">
+        <p lang="fr" dir="ltr" className="text-gray-400 max-w-lg mb-10 text-lg leading-relaxed">
           Il semble que vous vous soyez perdu dans l&apos;espace... Cette page n&apos;existe pas ou a été déplacée.
           <br/><br/>
           <span className="font-kigelia text-xl text-gray-300">ߌ ߣߊ߬ ߝߐ߫ ߌ ߕߎߣߎ߲ߠߋ߲ ߠߋ߬... ߞߐߜߍ ߣߌ߲߬ ߕߴߦߋ߲߬ ߥߟߊ߫ ߊ߬ ߝߊ߭ ߦߟߍ߬ߡߊ߬ߟߊ߫ ߟߋ߬.</span>
