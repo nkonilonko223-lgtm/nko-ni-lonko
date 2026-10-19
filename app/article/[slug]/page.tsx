@@ -12,6 +12,8 @@ import IMAGES_PARTAGE_ARTICLES from "../../lib/images-partage-articles.json";
 import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../lib/numeros";
 import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../components/numero/ArticleNumero";
 import { jsonLd } from "../../lib/jsonld";
+import { choisirVoirAussi, type Voisin } from "../../lib/voir-aussi";
+import VoirAussi from "../../components/VoirAussi";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -58,6 +60,9 @@ interface SanityArticleRaw {
   lexique?: TermeLexiqueData[];
   rubrique?: RubriqueCourte | null;
   numero?: NumeroDeLArticle | null;
+  rubriqueRef?: string | null;
+  termesRefs?: string[] | null;
+  voisins?: Voisin[];
   authors?: Array<{
     name: string;
     nameNko?: string;
@@ -90,6 +95,7 @@ export interface SafeArticleData {
   lexique: TermeLexiqueData[];
   rubrique: RubriqueCourte | null;
   numero: NumeroDeLArticle | null;
+  voirAussi: Voisin[]; // « À lire aussi » (rendu côté serveur, pas envoyé au navigateur)
  authors: Array<{
     name: string;
     nameNko: string | null;
@@ -154,6 +160,7 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     lexique: raw.lexique || [],
     rubrique: raw.rubrique || null,
     numero: raw.numero || null,
+    voirAussi: choisirVoirAussi({ category, rubrique: raw.rubriqueRef, termes: raw.termesRefs }, raw.voisins || []),
     authors: safeAuthors
   };
 }
@@ -194,6 +201,14 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     excerpt,
     category,
     "rubrique": rubrique->{ titleNko, titleFr, "slug": slug.current },
+    // « À lire aussi » : les autres articles, choisis par app/lib/voir-aussi.ts
+    "rubriqueRef": rubrique._ref,
+    "termesRefs": array::compact(body[].markDefs[].terme._ref),
+    "voisins": *[_type == "article" && _id != ^._id && defined(slug.current)]{
+      title, "slug": slug.current, category, "rubrique": rubrique._ref, publishedAt,
+      "termes": array::compact(body[].markDefs[].terme._ref),
+      "image": mainImage{ alt, "url": asset->url }
+    },
     "numero": ${PROJECTION_NUMERO_DE_L_ARTICLE},
     tags,
     categories[]->{title},
@@ -355,7 +370,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   if (!article) return notFound();
   // Le numéro, la rubrique et le texte brut ne sont pas envoyés au navigateur avec l'article :
   // ils sont rendus ici, côté serveur (le texte : CustomPortableText, 18 octobre 2026)
-  const { numero, rubrique, body, ...donnees } = article;
+  const { numero, rubrique, body, voirAussi, ...donnees } = article;
 
   // 👑 JSON-LD 1 : L'Article Scientifique (ScholarlyArticle)
   const articleJsonLd = {
@@ -503,7 +518,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         article={donnees}
         bandeau={numero ? <BandeauNumero numero={numero} /> : undefined}
         surtitre={rubrique ? <SurtitreRubrique rubrique={rubrique} /> : undefined}
-        navigation={numero ? <NavigationNumero numero={numero} slug={article.slug} /> : undefined}
+        navigation={
+          <>
+            {numero && <NavigationNumero numero={numero} slug={article.slug} />}
+            <VoirAussi articles={voirAussi} />
+          </>
+        }
         texte={<CustomPortableText value={body} />}
       />
     </>
