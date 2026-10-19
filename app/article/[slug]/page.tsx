@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../lib/partage";
+import IMAGES_PARTAGE_ARTICLES from "../../lib/images-partage-articles.json";
 import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../lib/numeros";
 import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../components/numero/ArticleNumero";
 import { jsonLd } from "../../lib/jsonld";
@@ -232,8 +233,13 @@ export async function generateMetadata(
 
   if (!article) return { title: "ߞߎߡߘߊ ߡߊ߫ ߛߐ߬ߘߐ߲߬ | Article introuvable" };
 
+  // Image de partage de l'article (titre N'Ko lié, numéro, catégorie) fabriquée par
+  // scripts/images-partage/articles.mjs ; sinon la couverture recadrée ; sinon l'image de l'accueil
+  const imagePartage = (IMAGES_PARTAGE_ARTICLES as Record<string, string>)[slug];
   // 🚀 CORRECTION CRITIQUE : "let" au lieu de "const"
-  let ogImage = article.mainImageUrl || IMAGE_PARTAGE_ACCUEIL.url;
+  let ogImage = imagePartage ? `${SITE_URL}/og/articles/${imagePartage}` : article.mainImageUrl || IMAGE_PARTAGE_ACCUEIL.url;
+  // L'image fabriquée montre le titre : son texte alternatif est le titre
+  const ogAlt = imagePartage ? article.title : article.mainImageRaw?.alt || article.title;
 
   // 🛡️ LE BOUCLIER ANTI-TIMEOUT (Ingénierie 1/10000)
   if (ogImage.includes('cdn.sanity.io')) {
@@ -310,7 +316,7 @@ export async function generateMetadata(
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: article.mainImageRaw?.alt || article.title,
+        alt: ogAlt,
         type: "image/jpeg",
       }],
       // 👑 N'Ko is King : locale nqo en premier
@@ -331,7 +337,7 @@ export async function generateMetadata(
       description: metaDescription,
       images: [{
         url: ogImage,
-        alt: article.mainImageRaw?.alt || article.title,
+        alt: ogAlt,
       }],
       creator: COMPTE_X,
       site: COMPTE_X,
