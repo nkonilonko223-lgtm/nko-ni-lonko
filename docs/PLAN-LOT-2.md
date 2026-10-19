@@ -33,6 +33,49 @@ Règle : **l'IA propose, l'humain valide** ; jamais de N'Ko publié sans la réd
 | 4 | **Correcteur N'Ko dans le Studio** : signale les marques de ton oubliées ou doublées, le texte non NFC, les mots inconnus du lexique, avant la publication | Contrôles par règles + liste de mots de la revue ; il **signale**, il ne corrige jamais seul (avertissement dans le Studio) |
 | 5 | **Recherche par le sens** dans les articles et le lexique | Représentations multilingues (à choisir parmi celles qui connaissent le N'Ko, ex. SONAR de Meta), calculées à la publication ; sans données des lecteurs |
 
+## Propositions « world class » (19 octobre 2026) — toutes retenues par le propriétaire
+
+**Audit de la barre d'outils des articles** (testée en ligne, N'Ko et français, 0 erreur) : les 7 outils fonctionnent, mais le **signet** ne mène nulle part (aucune page ne montre les articles sauvegardés), la **taille du texte** est oubliée à chaque page, **« Citer »** prend l'année en cours au lieu de l'année de publication (ni auteur, format ancien, chiffres latins en mode N'Ko), et le **sommaire** n'est pas utilisable au clavier.
+
+### Page article
+
+| # | Proposition | Détail |
+|---|---|---|
+| A1 | **« Ma bibliothèque »** | Page des articles sauvegardés (le signet), **lisibles sans connexion** (application hors ligne) |
+| A2 | **Réglages de lecture mémorisés** | Taille, interligne, thème « papier » clair ; gardés d'une page à l'autre |
+| A3 | **Citer comme une vraie revue** | Auteur(s), année de **publication**, numéro ; formats APA, MLA, BibTeX, RIS (Zotero) ; chiffres N'Ko en mode N'Ko ; DOI plus tard (fiche 2) |
+| A4 | **Langue de lecture** | « N'Ko + français » (par défaut, N'Ko d'abord), « N'Ko seul », « français seul » ; sur grand écran, les deux **côte à côte** par section |
+| A5 | **Reprendre ma lecture** | Retour à l'endroit où le lecteur s'était arrêté |
+| A6 | **Partager un passage en image** | La phrase choisie devient une image soignée, N'Ko bien lié (rendu par le navigateur), pour WhatsApp et Instagram |
+| A7 | **« Signaler une erreur »** | Lien vers le contact avec l'article prérempli ; politique de corrections affichée |
+| A8 | **Sommaire accessible** | Au clavier et au lecteur d'écran ; liens directs partageables vers chaque chapitre |
+
+### Autres pages
+
+| Page | Proposition |
+|---|---|
+| Accueil | Liste des articles préparée par le serveur (comme B5) : moins de JavaScript, blocage réduit sur téléphone lent (1,6 s mesuré) ; bloc « Dernier numéro » après le N°003 |
+| Recherche | Page de recherche unique (articles, lexique, numéros), clavier N'Ko à l'écran, idées d'IA 2 et 5 |
+| Auteurs | Une page par auteur : biographie N'Ko et française, ORCID, ses articles (Google Scholar) |
+| À propos | Comité de rédaction (noms, établissements), politique éditoriale, processus de relecture, politique de corrections |
+| Lexique | Partage d'un terme en image (comme A6) ; audio des termes (enregistrements de la rédaction) |
+
+### Reconnaissance scientifique (fiches prêtes, à décider plus tard)
+
+1. **ISSN** : `docs/fiches/ISSN.md` (centre malien : DNBD).
+2. **DOI** : `docs/fiches/DOI.md` (Crossref, **gratuit pour le Mali** grâce au programme GEM).
+3. **Licence** : `docs/fiches/LICENCE.md` (choix lié à la politique sur l'IA ; conseil : CC BY-NC-ND 4.0).
+4. **DOAJ** (annuaire des revues en libre accès) : exige l'ISSN, une licence ouverte, au moins 5 articles de recherche par an, une **relecture par deux experts indépendants** et un comité d'au moins 5 membres affichés. Une revue de **vulgarisation** n'y entre que si elle publie aussi des articles de recherche relus : décision de fond pour la rédaction.
+5. **Archivage durable** des PDF des numéros (ex. Internet Archive), conseillé par le DOAJ.
+
+### Qualité technique
+
+1. **Contrôles automatiques à chaque envoi sur GitHub** (TypeScript, ESLint, N'Ko inchangé, NFC, construction, poids du JavaScript) : les vérifications faites aujourd'hui à la main.
+2. **Mesure de la vitesse chez les vrais lecteurs** (dont le Mali) et alertes en cas de panne.
+3. **Audit d'accessibilité complet** (WCAG 2.2 AA) : clavier, contrastes, lecteurs d'écran, dans les deux langues.
+
+**Ordre conseillé après le 30 octobre** : A3 → A2 + A8 → A1 → A4 → contrôles automatiques ; le reste ensuite.
+
 ## Ordre recommandé
 
 | # | Chantier | Pourquoi dans cet ordre |
