@@ -5,6 +5,7 @@ import { TEXTES_NUMEROS, numeroFr, numeroNko } from "../../components/numero/tex
 import { getLiensNumeros, getNumero, type Numero } from "../../lib/numeros";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
 import { jsonLd } from "../../lib/jsonld";
+import PDF_NUMEROS from "../../lib/pdf-numeros.json";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un numéro de la revue (ex. /numeros/003)
@@ -87,7 +88,7 @@ export default async function PageNumero({ params }: { params: Promise<{ slug: s
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(parution) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(filAriane) }} />
-      <VueNumero numero={numero} />
+      <VueNumero numero={numero} pdf={(PDF_NUMEROS as Record<string, { fichier: string; octets: number }>)[numero.slug]} />
     </>
   );
 }
