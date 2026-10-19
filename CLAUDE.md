@@ -70,6 +70,15 @@ node scripts/verifier-import.mts <fichier.json> --export "C:/Dev/archives/export
 # Images de partage (rendu par Chrome : N'Ko lié). Changer VERSION dans le script ET dans app/lib/partage.ts
 node scripts/images-partage/generer.mjs
 
+# Lettre d'information d'un numéro publié : aperçu (aucun envoi), essai à une adresse, puis envoi
+# aux abonnés confirmés SEULEMENT avec --confirmer <n> (accord écrit du propriétaire avant tout envoi)
+node scripts/lettre/envoyer.mts --numero <n> --apercu <fichier.html>
+node scripts/lettre/envoyer.mts --numero <n> --essai <adresse>
+node scripts/lettre/envoyer.mts --numero <n> --tous [--confirmer <n>]
+
+# Corpus N'Ko ↔ français (privé, jamais dans le projet) : voir docs/DONNEES-CORPUS.md
+node scripts/exporter-corpus.mts --sortie "C:/Dev/archives/corpus"
+
 # Images de partage des ARTICLES (titre N'Ko, numéro, catégorie), après chaque publication
 # (rien n'est écrit dans Sanity ; --export <sauvegarde.tar.gz> pour préparer avec les brouillons)
 node scripts/images-partage/articles.mjs
@@ -97,7 +106,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/components/lexique/` | Lexique : `textes.ts` (N'Ko de l'interface, fourni par la rédaction), `TermeLexique.tsx` (fiche/bulle), `LexiqueArticle.tsx`, `DictionnaireInteractif.tsx`, `CiterTerme.tsx`, `normaliser.ts` |
 | `app/lexique/` | Dictionnaire public `/lexique` et `/lexique/[slug]` |
 | `app/desabonnement/page.tsx` | Page de désinscription (bouton POST) |
-| `app/api/newsletter` · `verify` · `unsubscribe` | Inscription, confirmation, désinscription (fiches **privées** `subscriber.<uuid>`) |
+| `app/api/newsletter` · `verify` · `unsubscribe` | Inscription, confirmation, désinscription (fiches **privées** `subscriber.<uuid>`) ; désinscription « en un clic » des messageries (RFC 8058) pour la lettre (`scripts/lettre/envoyer.mts`) |
 | `app/api/contact` | Formulaire de contact (e-mail Resend, rien n'est stocké) |
 | `app/api/cron/cleanup` | Nettoyage nocturne (Vercel Cron, protégé par `CRON_SECRET`) |
 | `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique, numéros dès une publication (filtre du webhook : `_type in ["article","terme","numero","rubrique"]`) |
