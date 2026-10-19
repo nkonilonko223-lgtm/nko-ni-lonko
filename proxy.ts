@@ -74,6 +74,10 @@ export function proxy(request: NextRequest) {
   response.headers.set('Content-Security-Policy-Report-Only', cspHeader);
   response.headers.set('Reporting-Endpoints', 'csp="/api/csp-rapport"');
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
+  // Réserve des droits de fouille de textes (directive européenne 2019/790, art. 4 ; norme TDMRep du W3C) :
+  // nos textes ne servent pas à entraîner des IA sans accord écrit. Aussi dans /.well-known/tdmrep.json
+  // et dans les Conditions d'utilisation (partie 10).
+  response.headers.set('tdm-reservation', '1');
 
   return response;
 }
