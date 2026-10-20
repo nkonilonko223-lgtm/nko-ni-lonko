@@ -82,6 +82,9 @@ type PortableCodeProps = PortableTextComponentProps<CodeBlock>;
 
 // Apparition au défilement, en CSS seulement (classe « apparition », app/globals.css) :
 // le texte est VISIBLE dès l'arrivée de la page, même sans JavaScript (18 octobre 2026).
+// Identifiant stable d'un titre de chapitre (clé Sanity du bloc) : sommaire et liens directs partageables
+const ancre = (bloc: PortableTextBlock) => `titre-${bloc._key}`;
+
 const FadeInBlock = ({ children }: { children: React.ReactNode }) => (
   <div className="apparition print:break-inside-avoid">{children}</div>
 );
@@ -162,7 +165,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h2 dir="rtl" lang="nqo" className="text-4xl md:text-5xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+              <h2 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-4xl md:text-5xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
                 {children}
               </h2>
             </FadeInBlock>
@@ -170,7 +173,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         } else {
           return (
             <FadeInBlock>
-              <h2 dir="ltr" lang="fr" className="text-2xl md:text-3xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-[#fbbf24]/10 to-transparent border-l-4 border-[#fbbf24] leading-tight text-balance font-sans">
+              <h2 id={ancre(blockValue)} dir="ltr" lang="fr" className="text-2xl md:text-3xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-[#fbbf24]/10 to-transparent border-l-4 border-[#fbbf24] leading-tight text-balance font-sans">
                 {children}
               </h2>
             </FadeInBlock>
@@ -182,7 +185,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h2 dir="rtl" lang="nqo" className="text-3xl md:text-4xl font-bold text-[#fbbf24] print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia">
+              <h2 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-3xl md:text-4xl font-bold text-[#fbbf24] print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia">
                 {children}
               </h2>
             </FadeInBlock>
@@ -190,7 +193,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         } else {
           return (
             <FadeInBlock>
-              <h2 dir="ltr" lang="fr" className="text-xl md:text-2xl font-bold text-white print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pl-8 md:pl-12 bg-gradient-to-r from-white/5 to-transparent border-l-2 border-white/40 leading-tight text-balance font-sans">
+              <h2 id={ancre(blockValue)} dir="ltr" lang="fr" className="text-xl md:text-2xl font-bold text-white print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pl-8 md:pl-12 bg-gradient-to-r from-white/5 to-transparent border-l-2 border-white/40 leading-tight text-balance font-sans">
                 {children}
               </h2>
             </FadeInBlock>
@@ -202,7 +205,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h3 dir="rtl" lang="nqo" className="text-2xl md:text-3xl font-semibold text-[#fbbf24] print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pr-6 md:pr-10 border-r-2 border-[#fbbf24]/50 leading-snug text-balance font-kigelia">
+              <h3 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-2xl md:text-3xl font-semibold text-[#fbbf24] print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pr-6 md:pr-10 border-r-2 border-[#fbbf24]/50 leading-snug text-balance font-kigelia">
                 {children}
               </h3>
             </FadeInBlock>
@@ -210,7 +213,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         } else {
           return (
             <FadeInBlock>
-              <h3 dir="ltr" lang="fr" className="text-lg md:text-xl font-semibold text-white print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pl-6 md:pl-10 border-l-2 border-white/30 leading-snug text-balance font-sans">
+              <h3 id={ancre(blockValue)} dir="ltr" lang="fr" className="text-lg md:text-xl font-semibold text-white print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pl-6 md:pl-10 border-l-2 border-white/30 leading-snug text-balance font-sans">
                 {children}
               </h3>
             </FadeInBlock>
