@@ -76,6 +76,8 @@ node scripts/images-partage/generer.mjs
 # Images de partage des ARTICLES (titre N'Ko, numéro, catégorie), après chaque publication
 # (rien n'est écrit dans Sanity ; --export <sauvegarde.tar.gz> pour préparer avec les brouillons)
 node scripts/images-partage/articles.mjs
+# Image de partage d'un NUMÉRO (couverture sans texte + bandeau fin : nom N'Ko, « N°… »), après sa publication
+node scripts/images-partage/numeros.mjs
 
 # Icônes Phosphor auto-hébergées : à relancer après l'ajout d'une icône « ph-… » dans le code
 # (Python avec fontTools et brotli : pip install fonttools brotli)
