@@ -61,7 +61,10 @@ timeout 200 node node_modules/sanity/bin/sanity schema validate
 timeout 400 node node_modules/sanity/bin/sanity documents validate --yes --level warning
 
 # Sanity (connexion faite avec le compte GitHub du propriétaire : npx sanity login --provider github)
-node node_modules/sanity/bin/sanity schema deploy        # après une fusion qui change le schéma
+# Après une fusion qui change le schéma : met à jour LES DEUX schémas déployés (l'ancien « _.schemas.default »
+# ET celui lié au Studio, que lisent les outils MCP / Cowork). Ré-enregistre le même Studio (appId de
+# sanity.cli.ts), ne touche à aucun document. Supprimer ensuite le dossier dist/ qu'elle crée.
+node node_modules/sanity/bin/sanity deploy --external --schema-required
 node node_modules/sanity/bin/sanity dataset export production "C:/Dev/archives/exports/<nom>.tar.gz"
 
 # Vérification à blanc d'un fichier d'import (article, terme, rubrique, numero), avec contrôle des références dans la sauvegarde
@@ -148,7 +151,7 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 2. Vérifier : N'Ko inchangé, ESLint, TypeScript, construction, test local réel.
 3. Envoyer la branche → attendre l'aperçu Vercel (statut sur GitHub) → le propriétaire vérifie.
 4. Fusion **en avance rapide** (`git merge --ff-only`) seulement après « fusionner » écrit.
-5. Si le schéma change : `sanity schema deploy` après la fusion.
+5. Si le schéma change : `sanity deploy --external --schema-required` après la fusion (`schema deploy` seul ne met pas à jour le schéma lié au Studio, lu par Cowork), puis supprimer `dist/`.
 
 ## 9. Calendrier et reste à faire
 
