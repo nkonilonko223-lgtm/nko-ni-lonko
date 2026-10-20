@@ -12,7 +12,26 @@ export type ParametresImage = {
   titreNko: string;
   titreFr: string | null;
   nomNko: string; // nom du site en N'Ko (app/messages/nko.json)
+  guillemets?: boolean; // faux pour une définition du lexique (ce n'est pas une citation)
+  enTete?: { nko: string; fr: string | null }; // en grand, en haut (ex. le terme du lexique)
 };
+
+// Libellé du bouton (article et lexique). N'Ko à demander à la rédaction : vide = français seul
+export const PARTAGER_IMAGE = { nko: "", fr: "Partager en image" };
+
+// Partage le fichier (téléphone : WhatsApp, Instagram…) ou, à défaut, le télécharge
+export async function partagerImage(blob: Blob, nomFichier: string, adresse: string) {
+  const fichier = new File([blob], nomFichier, { type: "image/png" });
+  if (navigator.canShare?.({ files: [fichier] })) {
+    await navigator.share({ files: [fichier], text: adresse }).catch(() => undefined);
+    return;
+  }
+  const lien = document.createElement("a");
+  lien.href = URL.createObjectURL(blob);
+  lien.download = fichier.name;
+  lien.click();
+  setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
+}
 
 const L = 1080, H = 1350, MARGE = 110;
 const OR = "#fbbf24";
@@ -77,7 +96,9 @@ export async function fabriquerImageCitation(p: ParametresImage): Promise<Blob> 
   const hTitre = titreNko.length * 58 + titreFr.length * 40;
 
   // Zone utile : sous le haut du cadre, au-dessus du logo (guillemet + passage + filet + titre)
-  const HAUT = 100, BAS = 1090, H_GUILLEMET = 120, H_FILET = 100;
+  const avecGuillemets = p.guillemets !== false && !p.enTete;
+  const H_EN_TETE = p.enTete ? (p.enTete.fr ? 170 : 120) : 0;
+  const HAUT = 100, BAS = 1090, H_GUILLEMET = (avecGuillemets ? 120 : 20) + H_EN_TETE, H_FILET = 100;
   const place = BAS - HAUT - H_GUILLEMET - H_FILET - hTitre;
 
   // Le passage : la plus grande taille qui tient (au plus 400 caractères, coupé après un mot entier)
@@ -102,7 +123,28 @@ export async function fabriquerImageCitation(p: ParametresImage): Promise<Blob> 
   ctx.font = `700 150px ${francais}`;
   ctx.direction = "ltr";
   ctx.textAlign = p.nko ? "right" : "left";
-  ctx.fillText(p.nko ? "»" : "«", p.nko ? L - MARGE : MARGE, y + 110);
+  if (avecGuillemets) ctx.fillText(p.nko ? "»" : "«", p.nko ? L - MARGE : MARGE, y + 110);
+  // En-tête (ex. le terme du lexique) : N'Ko en or, centré, puis le français
+  if (p.enTete) {
+    // La plus grande taille (jusqu'au minimum) qui tient dans la largeur
+    const ajuster = (texte: string, police: string, taille: number, minimum: number) => {
+      for (; taille > minimum; taille -= 4) {
+        ctx.font = `700 ${taille}px ${police}`;
+        if (ctx.measureText(texte).width <= L - 2 * MARGE) return;
+      }
+      ctx.font = `700 ${minimum}px ${police}`;
+    };
+    ctx.textAlign = "center";
+    ctx.direction = "rtl";
+    ajuster(p.enTete.nko, kigelia, 76, 40);
+    ctx.fillText(p.enTete.nko, L / 2, y + 80);
+    if (p.enTete.fr) {
+      ctx.direction = "ltr";
+      ctx.fillStyle = "#ffffff";
+      ajuster(p.enTete.fr, francais, 40, 24);
+      ctx.fillText(p.enTete.fr, L / 2, y + 140);
+    }
+  }
   y += H_GUILLEMET;
 
   ctx.fillStyle = "#ffffff";
