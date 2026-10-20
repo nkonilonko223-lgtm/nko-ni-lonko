@@ -1,16 +1,7 @@
 import type { NextConfig } from "next";
-import withSerwistInit from "@serwist/next";
 
-// =========================================================
-// CONFIGURATION PWA (SERWIST)
-// =========================================================
-const withSerwist = withSerwistInit({
-  swSrc: "app/sw.ts",
-  swDest: "public/sw.js",
-  disable: process.env.NODE_ENV === "development",
-  // 🛡️ CRITIQUE : Le Fallback Explicite (Empêche la page '/' de disparaître)
-  additionalPrecacheEntries: [{ url: "/offline", revision: null }],
-});
+// Lecture hors ligne : service worker écrit à la main (public/sw.js, docs/HORS-LIGNE.md).
+// Serwist, qui ne fonctionne pas avec Turbopack, a été retiré (Lot 2).
 
 const nextConfig: NextConfig = {
   // =========================================================
@@ -115,4 +106,4 @@ minimumCacheTTL: 2592000,
   turbopack: {},
 };
 
-export default withSerwist(nextConfig);
+export default nextConfig;
