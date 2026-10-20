@@ -515,7 +515,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       {/* Transmission du nouvel objet robuste vers le composant d'affichage.
           Numéro et rubrique : rendus ici, côté serveur, et placés dans les emplacements */}
       <ArticleClient
-        article={donnees}
+        article={{ ...donnees, numeroRevue: numero?.numero ?? null }}
         bandeau={numero ? <BandeauNumero numero={numero} /> : undefined}
         surtitre={rubrique ? <SurtitreRubrique rubrique={rubrique} /> : undefined}
         navigation={
