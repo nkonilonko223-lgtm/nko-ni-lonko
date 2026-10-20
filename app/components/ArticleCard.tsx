@@ -18,7 +18,9 @@ export interface ArticleCardProps {
     authorNameNko?: string | null; // 🚀 NOUVEAU : Accepte le nom N'Ko
     authorImageUrl: string | null;
     mainImageUrl: string | null;
-    readingTime?: number; 
+    mainImageAlt?: string | null; // texte alternatif de la couverture (Studio)
+    mainImagePosition?: string | null; // cadrage sur le point d'intérêt du Studio
+    readingTime?: number;
   };
   isPriority?: boolean; 
 }
@@ -210,9 +212,10 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
             {article.mainImageUrl ? (
               <Image
                 src={article.mainImageUrl}
-                alt={article.title}
+                alt={article.mainImageAlt || article.title}
                 fill
-                priority={isPriority} 
+                priority={isPriority}
+                style={article.mainImagePosition ? { objectPosition: article.mainImagePosition } : undefined}
                 className={`
                   object-cover transition-all duration-700 ease-out group-hover/card:scale-110
                   ${isImageLoading ? 'scale-105 blur-lg grayscale' : 'scale-100 blur-0 grayscale-0'}

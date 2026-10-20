@@ -4,6 +4,7 @@ import Link from "next/link";
 import { dateFr, dateNko } from "../components/numero/VueNumero";
 import { TEXTES_NUMEROS, numeroFr, numeroNko, saisonFr, saisonNko } from "../components/numero/textes";
 import { getNumeros } from "../lib/numeros";
+import { positionDuCadrage } from "../lib/point-interet";
 import PiluleRetour from "../components/PiluleRetour";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 
@@ -67,6 +68,7 @@ export default async function PageNumeros() {
                       priority={i === 0}
                       sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      style={{ objectPosition: positionDuCadrage(numero.couverture.hotspot) }}
                     />
                   )}
                 </span>

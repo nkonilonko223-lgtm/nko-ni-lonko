@@ -3,6 +3,7 @@ import { urlFor } from "../sanity/image";
 import HomeClient from "./components/HomeClient";
 import { Metadata } from "next";
 import { IMAGE_PARTAGE_ACCUEIL } from "./lib/partage";
+import { positionDuCadrage } from "./lib/point-interet";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -16,6 +17,8 @@ interface SanityImageRaw {
   asset: {
     _ref: string;
   };
+  alt?: string; // texte alternatif de la couverture (Studio)
+  hotspot?: { x?: number; y?: number }; // point d'intérêt du Studio (cadrage)
 }
 
 interface SanityHomeArticleRaw {
@@ -38,6 +41,8 @@ export interface SafeHomeArticle {
   title: string;
   slug: string;
   mainImageUrl: string | null;
+  mainImageAlt: string | null; // texte alternatif de la couverture (sinon le titre)
+  mainImagePosition: string | null; // cadrage sur le point d'intérêt du Studio
   publishedAt: string;
   excerpt: string;
   category: string;
@@ -98,6 +103,8 @@ function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArticle {
     title: raw.title || "ߛߊ߲߬ߕߊ߫ ߕߍ߫ | Sans titre",
     slug: raw.slug.current,
     mainImageUrl: raw.mainImage ? urlFor(raw.mainImage)?.url() || null : null,
+    mainImageAlt: raw.mainImage?.alt || null,
+    mainImagePosition: positionDuCadrage(raw.mainImage?.hotspot) || null,
     publishedAt: raw.publishedAt || new Date().toISOString(),
     excerpt: raw.excerpt || "", 
     category: category,

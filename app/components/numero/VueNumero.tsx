@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ArticleDuSommaire, Numero, RubriqueCourte } from "../../lib/numeros";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
 import { contientNko, sensDe, separerTitre } from "./titre";
+import { positionDuCadrage } from "../../lib/point-interet";
 
 // ============================================================================
 // N'KO NI LONKO — Affichage d'un numéro (composant serveur, sans JavaScript)
@@ -80,7 +81,7 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
     >
       {article.image?.url && (
         <span className={`relative shrink-0 overflow-hidden rounded-xl ${une ? "aspect-[16/9] w-full" : "h-20 w-20 md:h-28 md:w-28"}`}>
-          <Image src={article.image.url} alt={article.image.alt || ""} fill sizes={une ? "(min-width: 768px) 720px, 100vw" : "112px"} className="object-cover" />
+          <Image src={article.image.url} alt={article.image.alt || ""} fill sizes={une ? "(min-width: 768px) 720px, 100vw" : "112px"} className="object-cover" style={{ objectPosition: positionDuCadrage(article.image.hotspot) }} />
         </span>
       )}
       <span className="min-w-0 flex-1 text-start">
@@ -115,6 +116,7 @@ export default function VueNumero({ numero }: { numero: Numero }) {
               priority
               sizes="100vw"
               className="object-cover"
+              style={{ objectPosition: positionDuCadrage(couverture.hotspot) }}
               placeholder={couverture.lqip ? "blur" : "empty"}
               blurDataURL={couverture.lqip}
             />
@@ -152,10 +154,11 @@ export default function VueNumero({ numero }: { numero: Numero }) {
               {couverture.caption && <span lang="fr" dir="ltr">{couverture.caption}</span>}
             </p>
           )}
-          {/* Crédit de la couverture : en petit, même texte dans les deux langues */}
-          {couverture?.source && (
-            <p dir="ltr" translate="no" className="mt-2 text-[10px] text-white/40 md:text-xs">
-              {couverture.source}
+          {/* Crédit de la couverture, en petit : N'Ko d'abord (si la rédaction l'a fourni), puis français */}
+          {(couverture?.sourceNko || couverture?.source) && (
+            <p dir="rtl" className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2 text-[10px] text-white/40 md:text-xs">
+              {couverture.sourceNko && <span lang="nqo" className="font-kigelia text-xs md:text-sm">{couverture.sourceNko}</span>}
+              {couverture.source && <span lang="fr" dir="ltr" translate="no">{couverture.source}</span>}
             </p>
           )}
         </div>

@@ -71,6 +71,8 @@ interface HomeArticle {
   title: string;
   slug: string;
   mainImageUrl: string | null;
+  mainImageAlt?: string | null;
+  mainImagePosition?: string | null;
   publishedAt: string;
   excerpt: string;
   category: string;

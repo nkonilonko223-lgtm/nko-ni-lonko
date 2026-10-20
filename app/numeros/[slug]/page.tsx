@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import VueNumero from "../../components/numero/VueNumero";
 import PiluleRetour from "../../components/PiluleRetour";
+import { parametresPointInteret } from "../../lib/point-interet";
 import { TEXTES_NUMEROS, numeroFr, numeroNko } from "../../components/numero/textes";
 import { getLiensNumeros, getNumero, type Numero } from "../../lib/numeros";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
@@ -22,10 +23,11 @@ const titreDe = (numero: Numero) =>
   numero.seoTitle || `${numeroNko(numero.numero)} · ${numeroFr(numero.numero)}${numero.titleFr ? ` — ${numero.titleFr}` : ""}`;
 // Résumé du numéro ; à défaut, celui de l'édito (décision du propriétaire)
 const resumeDe = (numero: Numero) => numero.excerpt || numero.sommaire.find((a) => a._id === numero.editoRef)?.excerpt;
-// Image de partage : la couverture recadrée en 1200×630 ; à défaut, l'image de l'accueil (jamais next/og)
+// Image de partage : la couverture recadrée en 1200×630 autour du point d'intérêt du Studio (sinon le
+// centre), sans texte ajouté ; à défaut, l'image de l'accueil (jamais next/og)
 const imagePartage = (numero: Numero) =>
   numero.couverture?.url
-    ? { url: `${numero.couverture.url}?w=1200&h=630&fit=crop&fm=jpg&q=80`, width: 1200, height: 630, alt: numero.couverture.alt || numeroFr(numero.numero) }
+    ? { url: `${numero.couverture.url}?w=1200&h=630&fit=crop${parametresPointInteret(numero.couverture.hotspot)}&fm=jpg&q=80`, width: 1200, height: 630, alt: numero.couverture.alt || numeroFr(numero.numero) }
     : IMAGE_PARTAGE_ACCUEIL;
 
 export async function generateStaticParams() {

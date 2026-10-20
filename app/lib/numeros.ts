@@ -15,10 +15,12 @@ export type ImageNumero = {
   captionNko?: string;
   caption?: string;
   source?: string; // crédit (ex. NASA/SDO)
+  sourceNko?: string; // crédit en N'Ko (rédaction), affiché avant le français
   url?: string;
   largeur?: number;
   hauteur?: number;
   lqip?: string;
+  hotspot?: { x?: number; y?: number } | null; // point d'intérêt du Studio (app/lib/point-interet.ts)
 };
 
 export type RubriqueCourte = { titleNko?: string; titleFr?: string; slug?: string };
@@ -58,7 +60,7 @@ export const PROJECTION_NUMERO_DE_L_ARTICLE = `*[_type == "numero" && references
   numero, "slug": slug.current, "sommaire": sommaire[]->{ title, "slug": slug.current }
 }`;
 
-const IMAGE = `{ alt, captionNko, caption, source, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip }`;
+const IMAGE = `{ alt, captionNko, caption, source, sourceNko, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip, "hotspot": hotspot{ x, y } }`;
 
 const REQUETE_NUMERO = `*[_type == "numero" && slug.current == $slug][0] {
   numero, saison, titleNko, titleFr, publishedAt, seoTitle, excerpt, "slug": slug.current,
