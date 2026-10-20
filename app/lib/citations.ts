@@ -36,6 +36,13 @@ export function decouperNom(nomComplet: string) {
 const titreComplet = (d: DonneesCitation) => (d.titreFr ? `${d.titreNko} [${d.titreFr}]` : d.titreNko);
 const date = (d: DonneesCitation) => new Date(d.datePublication);
 
+// Citation N'Ko (en premier dans le panneau) : même forme que l'ancien bouton « Citer » du site,
+// « Titre ». Revue, numéro, année. En ligne. URL — les mots N'Ko (nom de la revue, « en ligne »),
+// le numéro et l'année en chiffres N'Ko sont fournis par l'appelant (textes de la rédaction).
+export type MotsNko = { revue: string; enLigne: string; annee: string; numero?: string };
+export const citationNko = (d: DonneesCitation, m: MotsNko) =>
+  `"${d.titreNko}". ${m.revue}${m.numero ? `, ${m.numero}` : ""}, ${m.annee}. ${m.enLigne}. ${d.url}`;
+
 // APA 7 : Nom, P. (2026, October 30). Titre [Traduction]. N'Ko ni Lonko, (3). URL
 export function citationApa(d: DonneesCitation) {
   const noms = d.auteurs.map((a) => {
