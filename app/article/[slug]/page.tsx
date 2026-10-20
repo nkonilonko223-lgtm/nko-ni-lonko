@@ -15,6 +15,7 @@ import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../compone
 import { jsonLd } from "../../lib/jsonld";
 import { choisirVoirAussi, type Voisin } from "../../lib/voir-aussi";
 import VoirAussi from "../../components/VoirAussi";
+import { decouperNom, estLaRevue } from "../../lib/citations";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -300,11 +301,15 @@ export async function generateMetadata(
       },
     },
     // 👑 Google Scholar — N'Ko is King : langue nqo déclarée en priorité
+    // Règles de Scholar : UNE balise « citation_author » par auteur (même nom, répété, dans l'ordre),
+    // date complète AAAA/MM/JJ, adresse du texte intégral.
     other: {
       "citation_title": article.title,
-      "citation_publication_date": new Date(article.publishedAt).getFullYear().toString(),
+      "citation_publication_date": new Date(article.publishedAt).toISOString().slice(0, 10).replace(/-/g, "/"),
       "citation_journal_title": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
+      "citation_publisher": "N'Ko ni Lonko",
       "citation_language": "nqo",
+      "citation_fulltext_html_url": articleUrl,
       "citation_fulltext_world_readable": "",
       // Numéro de la revue (seulement si l'article est dans un numéro publié)
       ...(article.numero ? { "citation_issue": String(article.numero.numero) } : {}),
@@ -312,15 +317,13 @@ export async function generateMetadata(
         ...article.tags,
         article.category,
       ].join("; "),
-      // Un tag par auteur (standard Google Scholar multi-auteurs)
-      ...Object.fromEntries(
-        article.authors.map((a, i) => [`citation_author_${i}`, a.name])
-      ),
-      ...Object.fromEntries(
-        article.authors
-          .filter(a => a.orcid)
-          .map((a, i) => [`citation_author_orcid_${i}`, `https://orcid.org/${a.orcid}`])
-      ),
+      // Une balise par auteur, « Nom, Prénoms » (la revue comme auteur reste une organisation)
+      ...(article.authors.length ? {
+        "citation_author": article.authors.map((a) => {
+          const { prenoms, nom } = decouperNom(a.name);
+          return prenoms ? `${nom}, ${prenoms}` : nom;
+        }),
+      } : {}),
     },
     // 👑 Open Graph enrichi — N'Ko is King
     openGraph: {
@@ -420,7 +423,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     } : {}),
     // 👑 Auteurs avec réseaux sociaux — Google connaît chaque auteur
     "author": article.authors.map(author => ({
-      "@type": "Person",
+      // La revue elle-même comme auteur (fiche « N'Ko ni Lonko ») : une organisation, pas une personne
+      "@type": estLaRevue(author.name) ? "Organization" : "Person",
       "name": author.name,
       "alternateName": author.nameNko || undefined,
       "jobTitle": author.roleNko || author.role || undefined,
