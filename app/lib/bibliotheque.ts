@@ -38,6 +38,23 @@ export function ecrireSignets(signets: string[]) {
   window.dispatchEvent(new Event(CHANGEMENT));
 }
 
+// Lecture hors ligne (public/sw.js) : garder ou oublier la copie d'un article sauvegardé.
+// Sans service worker (développement, vieux navigateur), rien ne se passe.
+export function prevenirLectureHorsLigne(type: "garder" | "oublier", chemin: string) {
+  if (!("serviceWorker" in navigator)) return;
+  navigator.serviceWorker.ready.then((r) => r.active?.postMessage({ type, chemin })).catch(() => undefined);
+}
+
+// Cet article est-il lisible sans connexion (copie gardée sur l'appareil) ?
+export async function lisibleHorsLigne(chemin: string): Promise<boolean> {
+  if (!("caches" in window)) return false;
+  try {
+    return !!(await caches.match(`${window.location.origin}${chemin}`));
+  } catch {
+    return false;
+  }
+}
+
 // Abonnement aux changements : autre onglet (« storage ») ou même page (CHANGEMENT)
 export function abonnerSignets(rappel: () => void) {
   window.addEventListener("storage", rappel);
