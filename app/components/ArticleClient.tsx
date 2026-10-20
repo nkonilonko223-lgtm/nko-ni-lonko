@@ -25,6 +25,7 @@ import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
 import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
+import messagesNko from "../messages/nko.json"; // « Accueil » en N'Ko (nom du lien flèche, lecteurs d'écran)
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Zéro Any - Dogme 2)
@@ -421,7 +422,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 <i className="ph-bold ph-translate text-lg"></i>
                 <span>{lang === 'nko' ? 'FR' : 'ߒߞߏ'}</span>
             </button>
-            <Link href={lien("/")} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
+            <Link href={lien("/")} aria-label={lang === 'nko' ? messagesNko.nav.home : 'Accueil'} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
                     <i className={`ph-bold ${lang === 'nko' ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl md:text-lg`}></i>
                 </div>
