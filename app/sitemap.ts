@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { client } from '../sanity/client';
 import { getLiensNumeros } from './lib/numeros';
+import { getLiensAuteurs } from './lib/auteurs';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -65,6 +66,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // ✍️ Pages des auteurs (ceux qui ont au moins un article publié)
+  const auteurEntries: MetadataRoute.Sitemap = (await getLiensAuteurs()).map((a) => ({
+    url: `${baseUrl}/auteurs/${a.slug}`,
+    lastModified: a.modifie ? new Date(a.modifie) : undefined,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
   // ==============================================================================
   // 3. GÉNÉRATION DES ROUTES AVEC IMAGES
   // ==============================================================================
@@ -118,6 +127,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     ...numeroEntries,
+    ...auteurEntries,
     ...postEntries,
     {
       url: `${baseUrl}/lexique`,

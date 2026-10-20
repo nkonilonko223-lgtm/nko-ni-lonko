@@ -77,6 +77,7 @@ interface SanityArticleRaw {
     orcid?: string;
     expertise?: string[];
     socials?: SocialLink[];
+    slug?: string;
   }>;
 }
 
@@ -110,7 +111,8 @@ export interface SafeArticleData {
     orcid: string | null;
     expertise: string[];
     socials: SocialLink[];
-  }>; 
+    slug: string | null; // page /auteurs/<slug>
+  }>;
 }
 
 // ==============================================================================
@@ -137,7 +139,9 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     institution: author.institution || null,
     orcid: author.orcid || null,
     expertise: author.expertise || [],
-    socials: author.socials || []
+    // WhatsApp jamais publié (ce serait un numéro de téléphone)
+    socials: (author.socials || []).filter((s) => s.platform !== "whatsapp"),
+    slug: author.slug || null,
   }));
 
   const category = raw.category || (raw.categories && raw.categories[0]?.title) || "ߟߐ߲ߞߏ | Science";
@@ -218,7 +222,7 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     "wordCount": length(string::split(pt::text(body), " ")),
     "slug": slug.current,
     authors[]->{
-      name, nameNko, image, bio, bioNko, role, roleNko, institution, orcid, expertise, socials
+      name, nameNko, "slug": slug.current, image, bio, bioNko, role, roleNko, institution, orcid, expertise, socials
     }
   }`;
   try {
@@ -434,9 +438,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         "@type": "Organization",
         "name": author.institution
       } : undefined,
-      "url": author.orcid 
-        ? `https://orcid.org/${author.orcid}` 
-        : `${SITE_URL}/about`,
+      "url": author.slug
+        ? `${SITE_URL}/auteurs/${author.slug}`
+        : author.orcid ? `https://orcid.org/${author.orcid}` : `${SITE_URL}/about`,
       "identifier": author.orcid ? {
         "@type": "PropertyValue",
         "propertyID": "ORCID",

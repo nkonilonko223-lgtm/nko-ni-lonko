@@ -59,6 +59,7 @@ interface AuthorProps {
   orcid?: string | null;       // 🚀 NOUVEAU : Identifiant scientifique
   expertise?: string[];        // 🚀 NOUVEAU : Domaines d'expertise
   socials?: SocialLink[];
+  slug?: string | null;        // page de l'auteur (/auteurs/<slug>)
 }
 
 interface RelatedArticleProps {
@@ -390,7 +391,12 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
             <div className="flex flex-col gap-1 mb-3 items-start text-start">
               <div className="flex items-center gap-2">
                 <h3 className={`font-bold leading-none text-white transition-colors duration-300 group-hover/author:text-[#fbbf24] ${isNko ? 'font-kigelia text-2xl md:text-3xl' : 'text-xl md:text-2xl'}`}>
-                  {isNko ? (author.nameNko || author.name) : author.name}
+                  {/* Le nom mène à la page de l'auteur (biographie, tous ses articles) */}
+                  {author.slug ? (
+                    <Link href={`/auteurs/${author.slug}`} className="hover:text-[#fbbf24] hover:underline underline-offset-4">
+                      {isNko ? (author.nameNko || author.name) : author.name}
+                    </Link>
+                  ) : (isNko ? (author.nameNko || author.name) : author.name)}
                 </h3>
                 <i className="ph-fill ph-seal-check text-[#fbbf24] text-lg"></i>
               </div>
