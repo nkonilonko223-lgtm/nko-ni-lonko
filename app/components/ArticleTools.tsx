@@ -20,6 +20,7 @@ import { citationApa, citationBibtex, citationMla, citationRis, type DonneesCita
 import { isNko as contientDuNko } from "./texte/outils";
 import { fabriquerImageCitation } from "./texte/imageCitation";
 import messagesNko from "../messages/nko.json";
+import { lireSignets, ecrireSignets } from "../lib/bibliotheque";
 
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
@@ -28,6 +29,9 @@ const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation co
 const SIGNALER = { nko: "", fr: "Signaler une erreur" };
 // Libellé N'Ko « Partager en image » à demander à la rédaction : vide pour l'instant (français seul)
 const PARTAGER_IMAGE = { nko: "", fr: "Partager en image" };
+// Libellés N'Ko « Sauvegardé » et « Ma bibliothèque » à demander à la rédaction : vides pour l'instant (français seul)
+const SAUVEGARDE = { nko: "", fr: "Sauvegardé" };
+const MA_BIBLIOTHEQUE = { nko: "", fr: "Ma bibliothèque" };
 
 interface ArticleToolsProps {
   onZoomIn: () => void;
@@ -83,6 +87,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
   const [copiedLink, setCopiedLink] = useState(false);
   const [formatCopie, setFormatCopie] = useState<string | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [signetAjoute, setSignetAjoute] = useState(false); // message « Sauvegardé · Ma bibliothèque »
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // États de la Boussole (Sommaire)
@@ -255,9 +260,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
   // 🚀 SÉCURITÉ HYDRATATION & LINTER : Décalage asynchrone (0ms)
   useEffect(() => {
     const timer = setTimeout(() => {
-      const slug = window.location.pathname;
-      const bookmarks = JSON.parse(localStorage.getItem('nko_bookmarks') || '[]');
-      setIsBookmarked(bookmarks.includes(slug));
+      setIsBookmarked(lireSignets().includes(window.location.pathname));
     }, 0);
     return () => clearTimeout(timer);
   }, []);
@@ -301,17 +304,25 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
   const toggleBookmark = () => {
     triggerVibration();
-    const slug = window.location.pathname;
-    let bookmarks = JSON.parse(localStorage.getItem('nko_bookmarks') || '[]');
-    if (bookmarks.includes(slug)) {
-      bookmarks = bookmarks.filter((b: string) => b !== slug);
+    const chemin = window.location.pathname;
+    const signets = lireSignets();
+    if (signets.includes(chemin)) {
+      ecrireSignets(signets.filter((s) => s !== chemin));
       setIsBookmarked(false);
+      setSignetAjoute(false);
     } else {
-      bookmarks.push(slug);
+      ecrireSignets([...signets, chemin]);
       setIsBookmarked(true);
+      setSignetAjoute(true);
     }
-    localStorage.setItem('nko_bookmarks', JSON.stringify(bookmarks));
   };
+
+  // Le message « Sauvegardé · Ma bibliothèque » disparaît seul
+  useEffect(() => {
+    if (!signetAjoute) return;
+    const minuterie = setTimeout(() => setSignetAjoute(false), 5000);
+    return () => clearTimeout(minuterie);
+  }, [signetAjoute]);
 
   // 🚀 L'ARME SAFARI : Polyfill pour que le Plein Écran marche sur Mac et iPhone
   const toggleZenMode = () => {
@@ -395,6 +406,26 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
   return (
     <>
+      {/* A1 — « Sauvegardé · Ma bibliothèque » après un signet (disparaît seul) */}
+      <div role="status" className="fixed bottom-36 md:bottom-20 left-1/2 -translate-x-1/2 z-[9999] print:hidden">
+        {signetAjoute && (
+          <div className="flex items-center gap-1 rounded-full border border-[#fbbf24]/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <span className="flex items-center gap-2 whitespace-nowrap px-3 text-sm text-white/80">
+              <i className="ph-fill ph-bookmark-simple text-[#fbbf24]" aria-hidden="true"></i>
+              {isNko && SAUVEGARDE.nko
+                ? <span lang="nqo" dir="rtl" className="font-kigelia">{SAUVEGARDE.nko}</span>
+                : <span lang="fr" dir="ltr" className="font-fr">{SAUVEGARDE.fr}</span>}
+            </span>
+            <Link href="/bibliotheque" className="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+              {isNko && MA_BIBLIOTHEQUE.nko
+                ? <span lang="nqo" dir="rtl" className="font-kigelia">{MA_BIBLIOTHEQUE.nko}</span>
+                : <span lang="fr" dir="ltr" className="font-fr">{MA_BIBLIOTHEQUE.fr}</span>}
+              <i className={`ph-bold ${isNko ? "ph-arrow-left" : "ph-arrow-right"}`} aria-hidden="true"></i>
+            </Link>
+          </div>
+        )}
+      </div>
+
       {/* 🚀 ARME 2 (UI) : LA PILULE MAGNÉTIQUE DE SÉLECTION */}
       {selection.show && (
         <div 
