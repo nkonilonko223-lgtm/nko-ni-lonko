@@ -17,12 +17,17 @@ import { useLanguage } from "./LanguageProvider";
 import { separerLangues, separerTitre, texteDePartage } from "./numero/titre";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { citationApa, citationBibtex, citationMla, citationRis, type DonneesCitation } from "../lib/citations";
+import { isNko as contientDuNko } from "./texte/outils";
+import { fabriquerImageCitation } from "./texte/imageCitation";
+import messagesNko from "../messages/nko.json";
 
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
 const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation copiée !" }; // repris tel quel de l'ancien bouton
 // Libellé N'Ko « Signaler une erreur » à demander à la rédaction : vide pour l'instant (français seul)
 const SIGNALER = { nko: "", fr: "Signaler une erreur" };
+// Libellé N'Ko « Partager en image » à demander à la rédaction : vide pour l'instant (français seul)
+const PARTAGER_IMAGE = { nko: "", fr: "Partager en image" };
 
 interface ArticleToolsProps {
   onZoomIn: () => void;
@@ -200,6 +205,33 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       : `"${selection.text}" — lu sur N'Ko ni Lonko\n\n${getCanonicalUrl()}`;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(textToShare)}`, '_blank');
     setSelection(s => ({ ...s, show: false }));
+  };
+
+  // A6 — Le passage choisi devient une image (1080 × 1350, N'Ko lié par le navigateur), partagée par le
+  // menu du téléphone ou enregistrée ; rien n'est envoyé au site
+  const [imageEnCours, setImageEnCours] = useState(false);
+  const partagerEnImage = async () => {
+    triggerVibration();
+    setImageEnCours(true);
+    try {
+      const { nko, fr } = separerTitre(title);
+      const blob = await fabriquerImageCitation({ texte: selection.text, nko: contientDuNko(selection.text), titreNko: nko, titreFr: fr, nomNko: messagesNko.metadata.siteName });
+      const fichier = new File([blob], "nko-ni-lonko-citation.png", { type: "image/png" });
+      if (navigator.canShare?.({ files: [fichier] })) {
+        await navigator.share({ files: [fichier], text: getCanonicalUrl() }).catch(() => undefined);
+      } else {
+        const lien = document.createElement("a");
+        lien.href = URL.createObjectURL(blob);
+        lien.download = fichier.name;
+        lien.click();
+        setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
+      }
+    } catch (err) {
+      console.error("Image du passage impossible", err);
+    } finally {
+      setImageEnCours(false);
+      setSelection((s) => ({ ...s, show: false }));
+    }
   };
 
   const copySelection = async () => {
@@ -397,6 +429,16 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                 aria-label={isNko ? "ߊ߬ ߟߊߖߍ߲ߛߍ߲ ߥߊߕߑߛߊߔ ߞߊ߲߬" : "Partager sur WhatsApp"}
               >
                 <i className="ph-fill ph-whatsapp-logo text-sm"></i>
+              </button>
+              {/* A6 — PARTAGER EN IMAGE */}
+              <button
+                onClick={partagerEnImage}
+                disabled={imageEnCours}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#fbbf24] transition-colors disabled:opacity-50"
+                title={isNko && PARTAGER_IMAGE.nko ? PARTAGER_IMAGE.nko : PARTAGER_IMAGE.fr}
+                aria-label={isNko && PARTAGER_IMAGE.nko ? PARTAGER_IMAGE.nko : PARTAGER_IMAGE.fr}
+              >
+                <i className="ph-bold ph-image text-sm"></i>
               </button>
               <div className="w-[1px] h-4 bg-white/20 mx-1"></div>
               <button 
