@@ -259,7 +259,7 @@ export default function ContactClient() {
                 <div>
                     <div className="mb-10 flex flex-col items-start" dir="rtl">
                         <h2 className="font-kigelia text-2xl text-[#fbbf24] mb-1 opacity-90">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
-                        <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold" dir="ltr">Informations de contact</span>
+                        <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold" lang="fr" dir="ltr">Informations de contact</span>
                     </div>
 
                     <div className="space-y-8">
@@ -269,7 +269,7 @@ export default function ContactClient() {
                             </div>
                             <div className="flex flex-col items-start">
                                 <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ</h3>
-                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Notre Siège</span>
+                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2" lang="fr">Notre Siège</span>
                                 <p lang="fr" dir="ltr" className="text-gray-400 font-light leading-relaxed text-sm group-hover:text-gray-200 transition-colors">{SIEGE.quartier.fr}<br/>{SIEGE.ville.fr}</p>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ export default function ContactClient() {
                             </div>
                             <div className="flex flex-col items-start">
                                 <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</h3>
-                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Email Direct</span>
+                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2" lang="fr">Email Direct</span>
                                 <p className="text-[#fbbf24] font-light text-sm group-hover:underline decoration-[#fbbf24] underline-offset-4">contact@nkonilonko.com</p>
                             </div>
                         </a>
@@ -361,7 +361,7 @@ export default function ContactClient() {
                 <div className="mt-12 pt-8 border-t border-white/10">
                     <div className="mb-6 flex flex-col items-start" dir="rtl">
                         <h3 className="font-kigelia text-xl text-white mb-1">ߓߟߐߟߐ ߞߙߏߝߏ ߟߎ߬</h3>
-                        <span className="text-[10px] tracking-[0.2em] text-gray-500 uppercase font-bold" dir="ltr">Réseaux Officiels</span>
+                        <span className="text-[10px] tracking-[0.2em] text-gray-500 uppercase font-bold" lang="fr" dir="ltr">Réseaux Officiels</span>
                     </div>
                     <div className="flex flex-wrap gap-4">
                         {socialLinks.map((link, i) => (
@@ -407,7 +407,7 @@ export default function ContactClient() {
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
                                 <span className="font-kigelia text-xl text-[#fbbf24]">ߕߐ߮</span>
-                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" dir="ltr">Nom Complet</span>
+                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Nom Complet</span>
                             </label>
                             <input 
                                 type="text" 
@@ -425,7 +425,7 @@ export default function ContactClient() {
                         <div className="flex flex-col text-left relative">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
                                 <span className="font-kigelia text-xl text-[#fbbf24]">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</span>
-                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" dir="ltr">Adresse Email</span>
+                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Adresse Email</span>
                             </label>
                             <div className="relative">
                               <input 
@@ -455,7 +455,7 @@ export default function ContactClient() {
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
                                 <span className="font-kigelia text-xl text-[#fbbf24]">ߗߋߛߓߍ</span>
-                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" dir="ltr">Votre Message</span>
+                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Votre Message</span>
                             </label>
                             {/* 🚀 ÉLASTICITÉ COGNITIVE */}
                             <textarea 
@@ -517,7 +517,7 @@ export default function ContactClient() {
                                       <span className="font-kigelia text-2xl font-bold">ߊ߬ ߗߋ߫</span>
                                   </div>
                                   <div className="flex items-center gap-2 mt-1 transform group-hover:translate-y-0 transition-all duration-300 opacity-70">
-                                    <span className="text-[10px] uppercase tracking-widest font-bold">
+                                    <span lang="fr" className="text-[10px] uppercase tracking-widest font-bold">
                                         Envoyer le message
                                     </span>
                                     {/* 🚀 INDICATEUR POWER USER */}

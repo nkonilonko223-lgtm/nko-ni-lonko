@@ -171,14 +171,14 @@ export default function PrivacyClient() {
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-[#fbbf24] mb-8 tracking-tight flex flex-col items-center print:text-black print:mb-4">
                 <span className="block mb-4 leading-tight drop-shadow-lg font-kigelia print:drop-shadow-none">ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ</span>
-                <span className="text-white/60 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block print:text-black print:border-black print:font-bold">
+                <span lang="fr" className="text-white/60 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block print:text-black print:border-black print:font-bold">
                     Politique de confidentialité
                 </span>
             </h1>
             
             <div className="flex flex-col items-center gap-2">
                 <p className="font-kigelia text-[#fbbf24] text-xl print:text-gray-800">ߟߊ߬ߞߎ߬ߘߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߞߏߜߍ ߂߀߂߆</p>
-                <p className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
+                <p lang="fr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
             </div>
         </div>
 
@@ -208,7 +208,7 @@ export default function PrivacyClient() {
                                 <bdi>{nkoNumber} - {clause.titleNko}</bdi>
                             </span>
                             <span className={`text-[9px] uppercase tracking-widest whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black/70 font-bold" : "text-white/60 font-light"}`} dir="ltr">
-                                <bdi>{clause.titleFr}</bdi>
+                                <bdi lang="fr">{clause.titleFr}</bdi>
                             </span>
                         </button>
                     );
@@ -224,7 +224,7 @@ export default function PrivacyClient() {
                 <div className="sticky top-32 flex flex-col gap-6 border-l border-white/10 pl-6">
                     <div className="flex flex-col items-start mb-4" dir="rtl">
                         <span className="font-kigelia text-[#fbbf24] text-2xl mb-1">ߞߎ߬ߙߎ߲߬ߘߎ ߢߍߛߓߍ</span>
-                        <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold" dir="ltr">Sommaire Juridique</span>
+                        <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold" lang="fr" dir="ltr">Sommaire Juridique</span>
                     </div>
 
                     {clauses.map((clause) => (
@@ -234,7 +234,7 @@ export default function PrivacyClient() {
                             className={`flex flex-col items-start text-left transition-all duration-300 group ${activeSection === clause.id ? "opacity-100 translate-x-2" : "opacity-40 hover:opacity-80"}`}
                         >
                             <span className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-[#fbbf24] drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-[#fbbf24]"}`} dir="rtl">{clause.titleNko}</span>
-                            <span className="text-[10px] text-white font-light tracking-wider uppercase">{clause.titleFr}</span>
+                            <span lang="fr" className="text-[10px] text-white font-light tracking-wider uppercase">{clause.titleFr}</span>
                         </button>
                     ))}
                 </div>
@@ -248,7 +248,7 @@ export default function PrivacyClient() {
                         {/* Titre de Section */}
                         <div className="mb-6 flex flex-col items-start border-b border-white/10 pb-6 print:border-black print:pb-2" dir="rtl">
                             <h2 className="font-kigelia text-3xl md:text-4xl text-[#fbbf24] mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
-                            <span className="text-xs md:text-sm tracking-[0.2em] text-gray-400 uppercase font-bold print:text-gray-800" dir="ltr">{clause.titleFr}</span>
+                            <span className="text-xs md:text-sm tracking-[0.2em] text-gray-400 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
                         </div>
                         
                         {/* Corps de Section */}
@@ -263,7 +263,7 @@ export default function PrivacyClient() {
                                       <p className="font-kigelia text-xl text-white/90 print:text-black">{clause.tldrNko}</p>
                                     </div>
                                 </div>
-                                <div className="flex items-start text-left" dir="ltr">
+                                <div lang="fr" className="flex items-start text-left" dir="ltr">
                                   {/* 🚀 FR en gris clair pour la hiérarchie */}
                                   <p className="text-sm font-light text-gray-400 print:text-gray-700 italic">{clause.tldrFr}</p>
                                 </div>
@@ -290,7 +290,7 @@ export default function PrivacyClient() {
                               onMouseEnter={() => setFocusedLang('fr')}
                               onMouseLeave={() => setFocusedLang('none')}
                             >
-                                <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] md:leading-[2.2] text-left print:text-black" dir="ltr">
+                                <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] md:leading-[2.2] text-left print:text-black" lang="fr" dir="ltr">
                                     {clause.textFr}
                                 </p>
                             </div>
@@ -304,7 +304,7 @@ export default function PrivacyClient() {
                        <i className="ph-fill ph-seal-check text-[#fbbf24] text-2xl"></i>
                     </div>
                     <p className="font-kigelia text-xl text-[#fbbf24] mb-2 print:text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — ߖߏ߯ߦߊߟߌ ߣߌ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߊߞߊ߲ߘߊ ߕߏ߲߰ߘߊ</p>
-                    <p className="text-xs tracking-[0.2em] text-white/50 uppercase font-bold print:text-gray-600" dir="ltr">N&apos;Ko ni Lonko — Département d&apos;Éthique et de Protection des Données</p>
+                    <p className="text-xs tracking-[0.2em] text-white/50 uppercase font-bold print:text-gray-600" lang="fr" dir="ltr">N&apos;Ko ni Lonko — Département d&apos;Éthique et de Protection des Données</p>
                 </div>
             </div>
         </div>

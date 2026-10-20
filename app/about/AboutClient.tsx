@@ -159,6 +159,7 @@ export default function AboutClient() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 relative z-10" dir="ltr">
                 <div 
                   className={`order-2 lg:order-1 flex flex-col justify-center text-left transition-opacity duration-500 ${focusedLang === 'nko' ? 'opacity-30 blur-[1px]' : 'opacity-100'}`}
+                  lang="fr"
                   onMouseEnter={() => setFocusedLang('fr')}
                   onMouseLeave={() => setFocusedLang('none')}
                 >
@@ -198,6 +199,7 @@ export default function AboutClient() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 relative z-10" dir="ltr">
                 <div 
                   className={`order-2 lg:order-1 flex flex-col justify-center text-left transition-opacity duration-500 ${focusedLang === 'nko' ? 'opacity-30 blur-[1px]' : 'opacity-100'}`}
+                  lang="fr"
                   onMouseEnter={() => setFocusedLang('fr')}
                   onMouseLeave={() => setFocusedLang('none')}
                 >
@@ -238,6 +240,7 @@ export default function AboutClient() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 relative z-10" dir="ltr">
                 <div 
                   className={`order-2 lg:order-1 flex flex-col items-center lg:items-start text-left transition-opacity duration-500 ${focusedLang === 'nko' ? 'opacity-30 blur-[1px]' : 'opacity-100'}`}
+                  lang="fr"
                   onMouseEnter={() => setFocusedLang('fr')}
                   onMouseLeave={() => setFocusedLang('none')}
                 >
