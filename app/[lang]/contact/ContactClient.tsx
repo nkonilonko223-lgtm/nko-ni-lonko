@@ -36,6 +36,18 @@ export default function ContactClient() {
     setFormLoadTime(Date.now());
   }, []);
 
+  // A7 — « Signaler une erreur » (page article) : /contact?article=<slug> → le message commence par
+  // l'adresse de l'article (neutre pour la langue : le lecteur écrit ensuite en N'Ko ou en français)
+  useEffect(() => {
+    const minuteur = setTimeout(() => {
+      const slug = new URLSearchParams(window.location.search).get("article");
+      if (slug && /^[a-z0-9-]{1,120}$/.test(slug)) {
+        setFormData((f) => (f.message ? f : { ...f, message: `${window.location.origin}/article/${slug}\n\n` }));
+      }
+    }, 0);
+    return () => clearTimeout(minuteur);
+  }, []);
+
   // 🚀 ÉCOUTE DU RÉSEAU (Conscience hors-ligne)
   useEffect(() => {
     // On met à jour l'état uniquement si on est VRAIMENT hors-ligne au moment du montage client.

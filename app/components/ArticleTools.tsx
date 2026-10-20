@@ -12,6 +12,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 import { separerLangues, separerTitre, texteDePartage } from "./numero/titre";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
@@ -20,6 +21,8 @@ import { citationApa, citationBibtex, citationMla, citationRis, type DonneesCita
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
 const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation copiée !" }; // repris tel quel de l'ancien bouton
+// Libellé N'Ko « Signaler une erreur » à demander à la rédaction : vide pour l'instant (français seul)
+const SIGNALER = { nko: "", fr: "Signaler une erreur" };
 
 interface ArticleToolsProps {
   onZoomIn: () => void;
@@ -27,9 +30,10 @@ interface ArticleToolsProps {
   title: string;
   // Pour « Citer » : auteurs, date de publication, numéro de la revue
   citation?: { auteurs: string[]; datePublication: string; numero?: number | null };
+  slug?: string; // pour « Signaler une erreur »
 }
 
-export default function ArticleTools({ onZoomIn, onZoomOut, title, citation }: ArticleToolsProps) {
+export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slug }: ArticleToolsProps) {
   const { lang } = useLanguage();
   const isNko = lang === 'nko';
   
@@ -144,6 +148,8 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation }: A
     if (element) {
       const y = element.getBoundingClientRect().top + window.scrollY - 100;
       window.scrollTo({ top: y, behavior: 'smooth' });
+      // Lien direct vers le chapitre dans la barre d'adresse (à copier ou partager), sans recharger
+      window.history.replaceState(null, '', `#${id}`);
     }
     if (window.innerWidth < 768) setShowToc(false);
   };
@@ -444,16 +450,23 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation }: A
             ) : (
               <ul className="space-y-3 relative before:absolute before:inset-y-0 before:left-1.5 before:w-[2px] before:bg-white/10">
                 {headings.map((h, i) => (
-                  <li key={i} className="relative z-10 pl-6 cursor-pointer group" onClick={() => scrollToHeading(h.id)}>
-                    <div className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 transition-all duration-300 ${
-                      activeHeadingId === h.id ? 'bg-[#fbbf24] border-[#fbbf24] shadow-[0_0_10px_#fbbf24]' : 'bg-black border-white/30 group-hover:border-[#fbbf24]'
-                    }`}></div>
-                    
-                    <span className={`block transition-all duration-300 line-clamp-2 leading-tight ${
-                      activeHeadingId === h.id ? 'text-[#fbbf24] font-bold' : 'text-gray-400 group-hover:text-white'
-                    } ${isNko ? 'font-kigelia text-sm' : 'text-xs'} ${h.level === 'h3' ? 'opacity-80 text-[0.85em]' : ''}`}>
-                      {h.text}
-                    </span>
+                  <li key={i} className="relative z-10">
+                    {/* Un vrai bouton : utilisable au clavier et au lecteur d'écran */}
+                    <button
+                      type="button"
+                      onClick={() => scrollToHeading(h.id)}
+                      aria-current={activeHeadingId === h.id ? "location" : undefined}
+                      className="group block w-full pl-6 text-start rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#fbbf24]"
+                    >
+                      <span aria-hidden="true" className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 transition-all duration-300 ${
+                        activeHeadingId === h.id ? 'bg-[#fbbf24] border-[#fbbf24] shadow-[0_0_10px_#fbbf24]' : 'bg-black border-white/30 group-hover:border-[#fbbf24]'
+                      }`}></span>
+                      <span className={`block transition-all duration-300 line-clamp-2 leading-tight ${
+                        activeHeadingId === h.id ? 'text-[#fbbf24] font-bold' : 'text-gray-400 group-hover:text-white'
+                      } ${isNko ? 'font-kigelia text-sm' : 'text-xs'} ${h.level === 'h3' ? 'opacity-80 text-[0.85em]' : ''}`}>
+                        {h.text}
+                      </span>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -576,6 +589,19 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation }: A
             >
               <i className="ph-bold ph-printer text-xl"></i>
             </button>
+
+            {/* A7 — SIGNALER UNE ERREUR : formulaire de contact prérempli avec l'adresse de l'article */}
+            {slug && (
+              <Link
+                href={`/contact?article=${encodeURIComponent(slug)}`}
+                onClick={triggerVibration}
+                className="flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                title={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}
+                aria-label={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}
+              >
+                <i className="ph-bold ph-warning-circle text-xl" aria-hidden="true"></i>
+              </Link>
+            )}
 
             {/* SÉPARATEUR ADAPTATIF */}
             <div className="w-[1px] h-6 md:w-6 md:h-[1px] bg-white/15 mx-0.5 md:mx-auto"></div>
