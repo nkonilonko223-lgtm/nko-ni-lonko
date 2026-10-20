@@ -16,7 +16,8 @@ import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 import { separerTitre } from "./numero/titre";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
-import { citationApa, citationBibtex, citationMla, citationRis, type DonneesCitation } from "../lib/citations";
+import { citationApa, citationBibtex, citationMla, citationNko, citationRis, type DonneesCitation } from "../lib/citations";
+import { chiffresNko, numeroNko } from "./numero/textes";
 import { isNko as contientDuNko } from "./texte/outils";
 import { fabriquerImageCitation } from "./texte/imageCitation";
 import messagesNko from "../messages/nko.json";
@@ -29,6 +30,9 @@ const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation co
 const SIGNALER = { nko: "", fr: "Signaler une erreur" };
 // Libellé N'Ko « Partager en image » à demander à la rédaction : vide pour l'instant (français seul)
 const PARTAGER_IMAGE = { nko: "", fr: "Partager en image" };
+// Citation N'Ko : « en ligne » repris tel quel de l'ancienne citation N'Ko du site ; « N'Ko » repris du bouton de langue
+const EN_LIGNE_NKO = "ߓߟߐߟߐ";
+const NOM_NKO = "ߒߞߏ";
 // Libellés N'Ko « Sauvegardé » et « Ma bibliothèque » à demander à la rédaction : vides pour l'instant (français seul)
 const SAUVEGARDE = { nko: "", fr: "Sauvegardé" };
 const MA_BIBLIOTHEQUE = { nko: "", fr: "Ma bibliothèque" };
@@ -556,7 +560,37 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                   <i className="ph-bold ph-x" aria-hidden="true"></i>
                 </button>
               </div>
-              <ul className="space-y-4" dir="ltr">
+              {/* Citation N'Ko d'abord (N'Ko Is King), de droite à gauche */}
+              {(() => {
+                const d = donneesCitation();
+                const texte = citationNko(d, {
+                  revue: messagesNko.metadata.siteName,
+                  enLigne: EN_LIGNE_NKO,
+                  annee: chiffresNko(String(new Date(d.datePublication).getUTCFullYear())),
+                  numero: d.numero ? numeroNko(d.numero) : undefined,
+                });
+                return (
+                  <div className="mb-4" dir="rtl">
+                    <div className="mb-1 flex items-center justify-between">
+                      <span lang="nqo" className="font-kigelia text-sm font-bold text-white/60">{NOM_NKO}</span>
+                      <button
+                        type="button"
+                        onClick={() => copierCitation("nko", texte)}
+                        className="flex h-8 w-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
+                        aria-label={`${isNko ? CITER.nko : CITER.fr} (N'Ko)`}
+                      >
+                        <i className={`ph-bold ${formatCopie === "nko" ? "ph-check text-green-400" : "ph-copy"}`} aria-hidden="true"></i>
+                      </button>
+                    </div>
+                    {/* L'adresse est isolée (de gauche à droite) pour ne pas se mêler au N'Ko ; le texte copié est le même */}
+                    <p lang="nqo" className="select-all break-words rounded-xl border border-white/10 bg-white/[0.03] p-3 font-kigelia text-base leading-relaxed text-gray-300">
+                      {texte.slice(0, texte.length - d.url.length)}
+                      <bdi dir="ltr" lang="fr" className="mt-1 block text-left font-fr text-xs [overflow-wrap:anywhere]">{d.url}</bdi>
+                    </p>
+                  </div>
+                );
+              })()}
+              <ul className="space-y-4 text-left font-fr" dir="ltr">
                 {([["APA", citationApa], ["MLA", citationMla], ["BibTeX", citationBibtex]] as const).map(([format, fabriquer]) => {
                   const texte = fabriquer(donneesCitation());
                   return (
@@ -577,7 +611,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                   );
                 })}
               </ul>
-              <button type="button" onClick={telechargerRis} dir="ltr" className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-[#fbbf24]/40 px-4 py-2.5 text-sm text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+              <button type="button" onClick={telechargerRis} dir="ltr" className="mt-4 flex font-fr w-full items-center justify-center gap-2 rounded-xl border border-[#fbbf24]/40 px-4 py-2.5 text-sm text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
                 <i className="ph-bold ph-download-simple" aria-hidden="true"></i>
                 Zotero · Mendeley · EndNote (.ris)
               </button>
