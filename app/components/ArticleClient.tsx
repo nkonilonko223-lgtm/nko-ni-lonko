@@ -18,7 +18,7 @@ import Link from "next/link";
 import ArticleTools from "./ArticleTools"; 
 import ArticleFooter from "./ArticleFooter"; 
 import { PortableTextBlock } from "@portabletext/types";
-import { formatDateNko, toNkoDigits } from "./texte/outils";
+import { CLE_LANGUE_LECTURE, formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
@@ -57,6 +57,7 @@ interface ClientArticleData {
   references: Array<{ title: string; url: string }>;
   lexique?: TermeLexiqueData[]; // termes du lexique utilisés dans l'article
   numeroRevue?: number | null; // numéro de la revue (pour « Citer »)
+  deuxLangues?: boolean; // le texte contient du N'Ko ET du français (choix de la langue de lecture)
   authors: Array<{
     name: string;
     nameNko: string | null;
@@ -76,6 +77,15 @@ interface ClientArticleData {
 // demander à la rédaction : vide pour l'instant (le français s'affiche seul)
 const CLE_TAILLE = "nko_taille_texte";
 const REPRENDRE = { nko: "", fr: "Reprendre la lecture" };
+// A4 — Langue de lecture. Le nom « N'Ko » en N'Ko est repris tel quel du bouton de langue (texte existant)
+const NOM_NKO = "ߒߞߏ";
+type ModeLecture = "deux" | "nko" | "fr";
+const MODES_LECTURE: { id: ModeLecture; libelle: string; lang: string }[] = [
+  { id: "deux", libelle: `${NOM_NKO} + FR`, lang: "nqo" },
+  { id: "nko", libelle: NOM_NKO, lang: "nqo" },
+  { id: "fr", libelle: "FR", lang: "fr" },
+];
+const LANGUE_LECTURE = { nko: "", fr: "Langue de lecture" }; // libellé N'Ko à demander à la rédaction
 
 // 🚀 ARME ANTI-CRASH : Typage strict pour les catégories traduites
 interface TranslationHome {
@@ -191,6 +201,30 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
     const minuteur = setTimeout(() => setReprise(null), 12000); // le bouton disparaît seul
     return () => clearTimeout(minuteur);
   }, [reprise]);
+  // A4 — Langue de lecture : le choix vit sur <html data-lecture> (posé avant l'affichage par le
+  // petit script ci-dessous) ; l'état React ne sert qu'à marquer le bouton choisi
+  const [modeLecture, setModeLecture] = useState<ModeLecture>("deux");
+  useEffect(() => {
+    if (!article.deuxLangues) return;
+    const minuteur = setTimeout(() => {
+      let m = document.documentElement.getAttribute("data-lecture");
+      if (!m) {
+        // Arrivée par un lien interne (le petit script ne s'exécute qu'au premier chargement)
+        try { m = localStorage.getItem(CLE_LANGUE_LECTURE); } catch { m = null; }
+        if (m === "nko" || m === "fr") document.documentElement.setAttribute("data-lecture", m);
+      }
+      if (m === "nko" || m === "fr") setModeLecture(m);
+    }, 0);
+    return () => clearTimeout(minuteur);
+  }, [article.deuxLangues]);
+  const choisirModeLecture = (m: ModeLecture) => {
+    triggerVibration();
+    setModeLecture(m);
+    if (m === "deux") document.documentElement.removeAttribute("data-lecture");
+    else document.documentElement.setAttribute("data-lecture", m);
+    try { localStorage.setItem(CLE_LANGUE_LECTURE, m); } catch { /* stockage indisponible */ }
+  };
+
   const reprendreLecture = () => {
     if (reprise === null) return;
     triggerVibration();
@@ -469,10 +503,36 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         )}
       </div>
 
-      <article 
+      {/* A4 — LANGUE DE LECTURE : N'Ko d'abord (de droite à gauche), les deux langues par défaut */}
+      {article.deuxLangues && (
+        <>
+          <div
+            role="radiogroup"
+            aria-label={lang === 'nko' && LANGUE_LECTURE.nko ? LANGUE_LECTURE.nko : LANGUE_LECTURE.fr}
+            dir="rtl"
+            className="mx-auto mb-6 flex max-w-3xl justify-center gap-2 px-4 print:hidden"
+          >
+            {MODES_LECTURE.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                role="radio"
+                aria-checked={modeLecture === m.id}
+                onClick={() => choisirModeLecture(m.id)}
+                className={`rounded-full border px-4 py-1.5 text-sm transition-colors touch-manipulation ${modeLecture === m.id ? 'border-[#fbbf24] bg-[#fbbf24] font-bold text-black' : 'border-white/15 text-white/70 hover:border-[#fbbf24]/60 hover:text-white'}`}
+              >
+                <bdi lang={m.lang} className={m.lang === 'nqo' ? 'font-kigelia' : ''}>{m.libelle}</bdi>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+
+      <article
         /* 🚀 L'ARME SECRÈTE (flow-root) : Restaure la cage BFC pour maintenir la lettrine en or parfaitement à sa place ! */
         className="article-content flow-root pb-12 md:pb-20 max-w-3xl mx-auto px-4 md:px-6 transition-all duration-300 print:pb-0"
-        style={{ fontSize: `${fontScale}rem` }} 
+        style={{ fontSize: `${fontScale}rem` }}
+        data-deux-langues={article.deuxLangues ? "" : undefined}
       >
         {texte}
       </article>
