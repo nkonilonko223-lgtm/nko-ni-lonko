@@ -13,21 +13,30 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "./LanguageProvider";
-import { separerLangues, texteDePartage } from "./numero/titre";
+import { separerLangues, separerTitre, texteDePartage } from "./numero/titre";
+import { TEXTES_LEXIQUE } from "./lexique/textes";
+import { citationApa, citationBibtex, citationMla, citationRis, type DonneesCitation } from "../lib/citations";
+
+// Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
+const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
+const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation copiée !" }; // repris tel quel de l'ancien bouton
 
 interface ArticleToolsProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   title: string;
+  // Pour « Citer » : auteurs, date de publication, numéro de la revue
+  citation?: { auteurs: string[]; datePublication: string; numero?: number | null };
 }
 
-export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleToolsProps) {
+export default function ArticleTools({ onZoomIn, onZoomOut, title, citation }: ArticleToolsProps) {
   const { lang } = useLanguage();
   const isNko = lang === 'nko';
   
   // États de l'Île Dynamique
   const [isExpanded, setIsExpanded] = useState(false);
   const [showToc, setShowToc] = useState(false);
+  const [showCite, setShowCite] = useState(false); // panneau « Citer » (APA, MLA, BibTeX, RIS)
   const [isVisible, setIsVisible] = useState(true); // 🚀 Détecteur d'intention
 
   // 🚀 ALGORITHME D'ÉCLIPSE (Smart Auto-Hide) 1/1000
@@ -45,6 +54,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
             if (window.innerWidth < 768) {
               setIsExpanded(false); // Auto-fermeture
               setShowToc(false);
+              setShowCite(false);
             }
           } else {
             setIsVisible(true); // Réapparition au moindre scroll vers le haut
@@ -62,7 +72,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
 
   // États de Fonctionnalités
   const [copiedLink, setCopiedLink] = useState(false);
-  const [copiedCite, setCopiedCite] = useState(false);
+  const [formatCopie, setFormatCopie] = useState<string | null>(null);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -227,7 +237,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
 
   // 🛡️ FERMETURE AU CLIC EXTÉRIEUR (Cockpit + Sommaire)
   useEffect(() => {
-    if (!showToc && !isExpanded) return;
+    if (!showToc && !isExpanded && !showCite) return;
 
     const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       const target = e.target as HTMLElement;
@@ -236,6 +246,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
       if (target.closest('button')) return;
       if (target.closest('[class*="rounded-3xl"]')) return;
       setShowToc(false);
+      setShowCite(false);
       setIsExpanded(false);
     };
 
@@ -248,7 +259,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
       clearTimeout(timer);
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showToc, isExpanded]);
+  }, [showToc, isExpanded, showCite]);
 
   const toggleBookmark = () => {
     triggerVibration();
@@ -300,23 +311,40 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
     }
   };
 
-  const handleCite = async () => {
+  // « Citer » ouvre un panneau : APA, MLA, BibTeX (à copier) et RIS (fichier pour Zotero, Mendeley)
+  const handleCite = () => {
     triggerVibration();
-    if (typeof window === 'undefined') return;
+    setShowToc(false);
+    setShowCite((v) => !v);
+  };
 
-    const year = new Date().getFullYear();
-    const cleanUrl = getCanonicalUrl();
-    const citation = isNko
-        ? `"${title}". ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ, ${year}. ߓߟߐߟߐ. ${cleanUrl}`
-        : `"${title}". N'Ko ni Lonko, ${year}. Web. ${cleanUrl}`;
+  const donneesCitation = (): DonneesCitation => {
+    const { nko, fr } = separerTitre(title);
+    return {
+      titreNko: nko, titreFr: fr, auteurs: citation?.auteurs || [],
+      datePublication: citation?.datePublication || new Date().toISOString(),
+      url: getCanonicalUrl(), numero: citation?.numero ?? null, dateConsultation: new Date(),
+    };
+  };
 
+  const copierCitation = async (format: string, texte: string) => {
+    triggerVibration();
     try {
-      await navigator.clipboard.writeText(citation);
-      setCopiedCite(true);
-      setTimeout(() => setCopiedCite(false), 2000);
+      await navigator.clipboard.writeText(texte);
+      setFormatCopie(format);
+      setTimeout(() => setFormatCopie(null), 2000);
     } catch (err) {
       console.error("Erreur copie citation", err);
     }
+  };
+
+  const telechargerRis = () => {
+    triggerVibration();
+    const lien = document.createElement("a");
+    lien.href = URL.createObjectURL(new Blob([citationRis(donneesCitation())], { type: "application/x-research-info-systems" }));
+    lien.download = `nko-ni-lonko-${window.location.pathname.split("/").pop() || "article"}.ris`;
+    lien.click();
+    setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
   };
 
   const handlePrint = () => {
@@ -432,6 +460,50 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
             )}
           </div>
 
+          {/* LE PANNEAU « CITER » : formats internationaux, titre N'Ko d'abord (app/lib/citations.ts) */}
+          {showCite && (
+            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className="w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-black/90 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200">
+              <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-[#fbbf24] font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
+                  {isNko ? CITER.nko : CITER.fr}
+                </h4>
+                <button type="button" onClick={() => setShowCite(false)} className="text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}>
+                  <i className="ph-bold ph-x" aria-hidden="true"></i>
+                </button>
+              </div>
+              <ul className="space-y-4" dir="ltr">
+                {([["APA", citationApa], ["MLA", citationMla], ["BibTeX", citationBibtex]] as const).map(([format, fabriquer]) => {
+                  const texte = fabriquer(donneesCitation());
+                  return (
+                    <li key={format}>
+                      <div className="mb-1 flex items-center justify-between">
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-white/60">{format}</span>
+                        <button
+                          type="button"
+                          onClick={() => copierCitation(format, texte)}
+                          className="flex h-8 w-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
+                          aria-label={`${isNko ? CITER.nko : CITER.fr} (${format})`}
+                        >
+                          <i className={`ph-bold ${formatCopie === format ? "ph-check text-green-400" : "ph-copy"}`} aria-hidden="true"></i>
+                        </button>
+                      </div>
+                      <p className={`select-all break-words rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs leading-relaxed text-gray-300 ${format === "BibTeX" ? "whitespace-pre-wrap font-mono" : ""}`}>{texte}</p>
+                    </li>
+                  );
+                })}
+              </ul>
+              <button type="button" onClick={telechargerRis} dir="ltr" className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-[#fbbf24]/40 px-4 py-2.5 text-sm text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+                <i className="ph-bold ph-download-simple" aria-hidden="true"></i>
+                Zotero · Mendeley · EndNote (.ris)
+              </button>
+              <p role="status" className="mt-2 h-5 text-center text-xs text-green-400">
+                {formatCopie && (
+                  <span lang={isNko ? "nqo" : "fr"} className={isNko ? "font-kigelia" : ""}>{isNko ? CITATION_COPIEE.nko : CITATION_COPIEE.fr}</span>
+                )}
+              </p>
+            </div>
+          )}
+
          {/* LE COCKPIT D'OUTILS (Tiroir Horizontal Mobile / Vertical PC) */}
           <div className={`absolute bottom-0 md:relative flex flex-row-reverse md:flex-col items-center gap-1.5 md:gap-4 p-1.5 md:p-3 rounded-full md:rounded-[2rem] bg-black/85 backdrop-blur-2xl border border-white/15 shadow-[0_0_40px_rgba(0,0,0,0.8)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
             isNko ? 'left-14 md:left-auto origin-left flex-row' : 'right-14 md:right-auto origin-right'
@@ -442,7 +514,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
             {/* BOUTON BOUSSOLE (SOMMAIRE) */}
             {headings.length > 0 && (
               <button 
-                  onClick={() => { triggerVibration(); setShowToc(!showToc); }} 
+                  onClick={() => { triggerVibration(); setShowCite(false); setShowToc(!showToc); }}
                   className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showToc ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
                   title={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
                   aria-label={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
@@ -484,19 +556,15 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
               {copiedLink ? <i className="ph-bold ph-check text-green-400 text-xl"></i> : <i className="ph-bold ph-share-network text-xl"></i>}
             </button>
 
-            {/* BOUTON CITER */}
+            {/* BOUTON CITER : ouvre le panneau des formats */}
             <button 
                 onClick={handleCite} 
-                className="group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
-                title={isNko ? "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫" : "Citer cet article"}
-                aria-label={isNko ? "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫" : "Citer cet article"}
+                className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showCite ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
+                title={isNko ? CITER.nko : CITER.fr}
+                aria-label={isNko ? CITER.nko : CITER.fr}
+                aria-expanded={showCite}
             >
-              {copiedCite ? <i className="ph-bold ph-check text-green-400 text-xl"></i> : <i className="ph-bold ph-quotes text-xl"></i>}
-              {copiedCite && (
-                <span className={`absolute bottom-full mb-3 md:bottom-auto md:mb-0 md:right-14 bg-green-500 text-black text-xs font-bold px-2 py-1 rounded whitespace-nowrap animate-in fade-in zoom-in shadow-lg ${isNko ? 'font-kigelia' : ''}`}>
-                    {isNko ? "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ" : "Citation copiée !"}
-                </span>
-              )}
+              <i className="ph-bold ph-quotes text-xl"></i>
             </button>
 
             {/* BOUTON IMPRIMER (Caché sur mobile) */}

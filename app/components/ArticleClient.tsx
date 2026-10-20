@@ -58,6 +58,7 @@ interface ClientArticleData {
   readingTime: number;
   references: Array<{ title: string; url: string }>;
   lexique?: TermeLexiqueData[]; // termes du lexique utilisés dans l'article
+  numeroRevue?: number | null; // numéro de la revue (pour « Citer »)
   authors: Array<{
     name: string;
     nameNko: string | null;
@@ -255,7 +256,12 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       </div>
 
       <div className="print:hidden">
-        <ArticleTools onZoomIn={handleZoomIn} onZoomOut={handleZoomOut} title={article.title} />
+        <ArticleTools
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
+          title={article.title}
+          citation={{ auteurs: article.authors.map((a) => a.name), datePublication: article.publishedAt, numero: article.numeroRevue }}
+        />
       </div>
 
       <nav className={`fixed top-0 left-0 w-full z-50 px-4 md:px-6 transition-all duration-300 flex justify-between items-center print:hidden ${
