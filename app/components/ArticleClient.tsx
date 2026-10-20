@@ -73,6 +73,7 @@ interface ClientArticleData {
     orcid: string | null;
     expertise: string[];
     socials: SocialLink[];
+    slug?: string | null; // page /auteurs/<slug>
   }>;
 }
 
@@ -571,8 +572,9 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 institution: article.authors[0].institution,
                 orcid: article.authors[0].orcid,
                 expertise: article.authors[0].expertise,
-                socials: article.authors[0].socials
-            } : undefined} 
+                socials: article.authors[0].socials,
+                slug: article.authors[0].slug
+            } : undefined}
             tags={categoryLabel ? [categoryLabel] : []}
             relatedArticles={[]} 
             references={article.references} // 🚀 LE TUYAU EST CONNECTÉ ! Les references vont s'afficher.
