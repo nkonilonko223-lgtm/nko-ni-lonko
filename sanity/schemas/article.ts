@@ -482,6 +482,15 @@ export default defineType({
               React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
           }
         },
+        // Visuel maison qui porte déjà son titre et la signature de la revue : l'image de partage le sert
+        // tel quel, sans bandeau (scripts/images-partage/articles.mjs). Décochée par défaut.
+        {
+          name: 'telleQuelle',
+          type: 'boolean',
+          title: "L'image porte déjà son titre et la signature (servir telle quelle)",
+          description: "À cocher seulement pour un visuel qui porte déjà son titre et « N'Ko ni Lonko · N°… » : l'image de partage n'y ajoutera aucun bandeau.",
+          options: { layout: 'checkbox' },
+        },
       ],
       validation: (rule) => rule.required().error('ߖߌ߬ߦߊ߬ߓߍ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / Une image de couverture est obligatoire'),
     }),
