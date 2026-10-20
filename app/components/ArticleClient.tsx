@@ -349,7 +349,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
               <i className="ph-fill ph-play" aria-hidden="true"></i>
               {lang === 'nko' && REPRENDRE.nko
                 ? <span lang="nqo" dir="rtl" className="font-kigelia">{REPRENDRE.nko}</span>
-                : <span lang="fr" dir="ltr">{REPRENDRE.fr}</span>}
+                : <span lang="fr" dir="ltr" className="font-fr">{REPRENDRE.fr}</span>}
             </button>
             <button
               type="button"
@@ -521,7 +521,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 onClick={() => choisirModeLecture(m.id)}
                 className={`rounded-full border px-4 py-1.5 text-sm transition-colors touch-manipulation ${modeLecture === m.id ? 'border-[#fbbf24] bg-[#fbbf24] font-bold text-black' : 'border-white/15 text-white/70 hover:border-[#fbbf24]/60 hover:text-white'}`}
               >
-                <bdi lang={m.lang} className={m.lang === 'nqo' ? 'font-kigelia' : ''}>{m.libelle}</bdi>
+                <bdi lang={m.lang} className={m.lang === 'nqo' ? 'font-kigelia' : 'font-fr'}>{m.libelle}</bdi>
               </button>
             ))}
           </div>
