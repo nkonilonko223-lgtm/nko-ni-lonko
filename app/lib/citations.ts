@@ -20,8 +20,13 @@ export const REVUE = "N'Ko ni Lonko";
 const MOIS_MLA = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
 const MOIS_APA = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+// La revue elle-même comme auteur (ex. fiche auteur « N'ko Ni Lonko ») : une organisation, jamais découpée
+const simplifier = (t: string) => t.normalize("NFD").replace(/[^a-z]/gi, "").toLowerCase();
+export const estLaRevue = (nom: string) => simplifier(nom) === simplifier(REVUE);
+
 // « Moustapha CAMARA » → { prenoms: « Moustapha », nom: « Camara » } (le nom en capitales devient « Camara »)
 export function decouperNom(nomComplet: string) {
+  if (estLaRevue(nomComplet)) return { prenoms: "", nom: REVUE };
   const mots = nomComplet.trim().split(/[ ]+/).filter(Boolean);
   const capitalise = (m: string) => (m === m.toUpperCase() && m.length > 1 ? m.charAt(0) + m.slice(1).toLowerCase() : m);
   if (mots.length < 2) return { prenoms: "", nom: capitalise(mots[0] || "") };
@@ -38,14 +43,16 @@ export function citationApa(d: DonneesCitation) {
     const initiales = prenoms.split(/[ -]+/).filter(Boolean).map((p) => p.charAt(0).toUpperCase() + ".").join(" ");
     return initiales ? `${nom}, ${initiales}` : nom;
   });
-  const auteurs = noms.length === 0 ? REVUE : noms.length === 1 ? noms[0] : `${noms.slice(0, -1).join(", ")}, & ${noms[noms.length - 1]}`;
+  const liste = noms.length === 0 ? REVUE : noms.length === 1 ? noms[0] : `${noms.slice(0, -1).join(", ")}, & ${noms[noms.length - 1]}`;
+  const auteurs = liste.endsWith(".") ? liste : `${liste}.`; // « Camara, M. » ou « N'Ko ni Lonko. »
   const p = date(d);
   return `${auteurs} (${p.getUTCFullYear()}, ${MOIS_APA[p.getUTCMonth()]} ${p.getUTCDate()}). ${titreComplet(d)}. ${REVUE}${d.numero ? `, (${d.numero})` : ""}. ${d.url}`;
 }
 
 // MLA 9 : Nom, Prénom. « Titre [Traduction]. » N'Ko ni Lonko, no. 3, 30 Oct. 2026, URL. Accessed 20 Oct. 2026.
+// (Quand l'auteur est la revue elle-même, MLA commence directement par le titre.)
 export function citationMla(d: DonneesCitation) {
-  const noms = d.auteurs.map(decouperNom);
+  const noms = d.auteurs.filter((a) => !estLaRevue(a)).map(decouperNom);
   const premier = noms[0] ? (noms[0].prenoms ? `${noms[0].nom}, ${noms[0].prenoms}` : noms[0].nom) : "";
   const auteurs = noms.length === 0 ? "" : noms.length === 1 ? `${premier}. ` : noms.length === 2 ? `${premier}, and ${noms[1].prenoms} ${noms[1].nom}. ` : `${premier}, et al. `;
   const p = date(d);
@@ -65,7 +72,8 @@ function cle(d: DonneesCitation) {
 export function citationBibtex(d: DonneesCitation) {
   const p = date(d);
   const champs: [string, string | undefined][] = [
-    ["author", d.auteurs.map((a) => { const { prenoms, nom } = decouperNom(a); return prenoms ? `${nom}, ${prenoms}` : nom; }).join(" and ") || undefined],
+    // Une organisation entre doubles accolades, pour que BibTeX ne la découpe pas
+    ["author", d.auteurs.map((a) => { const { prenoms, nom } = decouperNom(a); return estLaRevue(a) ? `{${nom}}` : prenoms ? `${nom}, ${prenoms}` : nom; }).join(" and ") || undefined],
     ["title", `{${titreComplet(d)}}`],
     ["journal", REVUE],
     ["year", String(p.getUTCFullYear())],
