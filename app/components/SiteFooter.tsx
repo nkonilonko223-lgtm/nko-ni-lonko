@@ -301,13 +301,14 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             <ul className="space-y-4">
               {[
                 { path: "/numeros", label: typedT?.nav?.numeros || "Numéros" },
+                { path: "/bibliotheque", label: "Ma bibliothèque", lang: "fr" }, // libellé N'Ko à demander à la rédaction
                 { path: "/about", label: typedT?.nav?.about || "À propos" },
                 { path: "/contact", label: typedT?.footer?.contact || "Contact" },
                 { path: "/terms", label: typedT?.footer?.terms || "CGU" },
                 { path: "/privacy", label: typedT?.footer?.privacy || "Confidentialité" }
               ].map((link, i) => (
                 <li key={i}>
-                  <Link href={link.path} onClick={triggerVibration} className={`group relative block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
+                  <Link href={link.path} onClick={triggerVibration} lang={link.lang} className={`group relative block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko && !link.lang ? 'text-lg font-kigelia' : 'text-base'} ${link.lang ? 'font-fr' : ''}`}>
                     <i className={`ph-bold ph-caret-right text-[#fbbf24] absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
                     {link.label}
                   </Link>
