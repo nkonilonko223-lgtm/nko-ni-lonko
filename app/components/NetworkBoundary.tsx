@@ -53,14 +53,23 @@ export default function NetworkBoundary({ children }: { children: React.ReactNod
 
           e.preventDefault();
           e.stopPropagation();
-          triggerErrorVibration();
-          
-          // 🚀 Mémoire Fantôme : On mémorise uniquement si c'est un lien interne au site (Sécurité Max)
-          if (url.hostname === window.location.hostname) {
-            setPendingUrl(url.pathname + url.search + url.hash);
-          }
-          
-          setShowOverlay(true);
+          const interne = url.hostname === window.location.hostname;
+
+          // Lecture hors ligne (public/sw.js) : une page gardée sur l'appareil s'ouvre quand même
+          const ouvrirOuPrevenir = async () => {
+            const gardee = interne && "caches" in window
+              ? await caches.match(url.origin + url.pathname).catch(() => undefined)
+              : undefined;
+            if (gardee) {
+              window.location.assign(url.href);
+              return;
+            }
+            triggerErrorVibration();
+            // 🚀 Mémoire Fantôme : On mémorise uniquement si c'est un lien interne au site (Sécurité Max)
+            if (interne) setPendingUrl(url.pathname + url.search + url.hash);
+            setShowOverlay(true);
+          };
+          void ouvrirOuPrevenir();
         } catch (err) {
           console.warn("URL invalide interceptée hors-ligne.", err);
         }

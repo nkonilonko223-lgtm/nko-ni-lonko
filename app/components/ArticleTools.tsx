@@ -21,7 +21,7 @@ import { chiffresNko, numeroNko } from "./numero/textes";
 import { isNko as contientDuNko } from "./texte/outils";
 import { fabriquerImageCitation } from "./texte/imageCitation";
 import messagesNko from "../messages/nko.json";
-import { lireSignets, ecrireSignets } from "../lib/bibliotheque";
+import { lireSignets, ecrireSignets, prevenirLectureHorsLigne } from "../lib/bibliotheque";
 
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
@@ -312,10 +312,12 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
     const signets = lireSignets();
     if (signets.includes(chemin)) {
       ecrireSignets(signets.filter((s) => s !== chemin));
+      prevenirLectureHorsLigne("oublier", chemin);
       setIsBookmarked(false);
       setSignetAjoute(false);
     } else {
       ecrireSignets([...signets, chemin]);
+      prevenirLectureHorsLigne("garder", chemin); // lisible sans connexion
       setIsBookmarked(true);
       setSignetAjoute(true);
     }

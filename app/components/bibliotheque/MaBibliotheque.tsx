@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useLanguage } from "../LanguageProvider";
-import { abonnerSignets, analyserSignets, ecrireSignets, signetsBruts } from "../../lib/bibliotheque";
+import { abonnerSignets, analyserSignets, ecrireSignets, lisibleHorsLigne, prevenirLectureHorsLigne, signetsBruts } from "../../lib/bibliotheque";
 import { sensDe, separerTitre } from "../numero/titre";
 import messagesNko from "../../messages/nko.json";
 
@@ -32,6 +32,7 @@ const TEXTES = {
   explication: { nko: "", fr: "Les articles sauvegardés avec le signet restent sur cet appareil. Rien n'est envoyé." },
   vide: { nko: "", fr: "Aucun article sauvegardé pour l'instant. Touchez le signet d'un article pour le retrouver ici." },
   retirer: { nko: "", fr: "Retirer de ma bibliothèque" },
+  horsLigne: { nko: "", fr: "Lisible sans connexion" },
   numeros: { nko: messagesNko.nav.numeros, fr: "Numéros" },
 } satisfies Record<string, Libelle>;
 
@@ -57,8 +58,28 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
       });
 
   const retirer = (chemin: string) => {
-    if (brut !== null) ecrireSignets(analyserSignets(brut).filter((c) => c !== chemin));
+    if (brut === null) return;
+    ecrireSignets(analyserSignets(brut).filter((c) => c !== chemin));
+    prevenirLectureHorsLigne("oublier", chemin);
   };
+
+  // Lecture hors ligne (public/sw.js) : quels articles sont gardés sur l'appareil ? Ceux qui
+  // ne le sont pas encore (sauvegardés avant le service worker) sont demandés, si connecté.
+  const [horsLigne, setHorsLigne] = useState<Set<string>>(() => new Set());
+  const chemins = sauvegardes?.map((s) => s.chemin).join("|") ?? "";
+  useEffect(() => {
+    if (!chemins) return;
+    let actif = true;
+    (async () => {
+      const gardes = new Set<string>();
+      for (const chemin of chemins.split("|")) {
+        if (await lisibleHorsLigne(chemin)) gardes.add(chemin);
+        else if (navigator.onLine) prevenirLectureHorsLigne("garder", chemin);
+      }
+      if (actif) setHorsLigne(gardes);
+    })();
+    return () => { actif = false; };
+  }, [chemins]);
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -97,6 +118,12 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
                   <span className="flex-1 p-4 text-start">
                     <span {...sens} className={`block text-lg font-bold text-white transition-colors group-hover:text-[#fbbf24] ${sens.lang === "nqo" ? "font-kigelia" : ""}`}>{nko}</span>
                     {fr && <span lang="fr" dir="ltr" className="mt-1 block font-fr text-sm text-white/70">{fr}</span>}
+                    {horsLigne.has(chemin) && (
+                      <span className="mt-3 flex items-center gap-1.5 text-xs text-green-400">
+                        <i className="ph-fill ph-check-circle" aria-hidden="true"></i>
+                        {libelle(TEXTES.horsLigne)}
+                      </span>
+                    )}
                   </span>
                 </Link>
                 <button
