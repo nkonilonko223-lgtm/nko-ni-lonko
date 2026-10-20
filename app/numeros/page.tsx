@@ -4,6 +4,7 @@ import Link from "next/link";
 import { dateFr, dateNko } from "../components/numero/VueNumero";
 import { TEXTES_NUMEROS, numeroFr, numeroNko, saisonFr, saisonNko } from "../components/numero/textes";
 import { getNumeros } from "../lib/numeros";
+import PiluleRetour from "../components/PiluleRetour";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 
 // ============================================================================
@@ -36,6 +37,7 @@ export default async function PageNumeros() {
 
   return (
     <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+      <PiluleRetour />
       <header className="mx-auto mb-12 max-w-5xl text-center">
         <h1 className="flex flex-col items-center gap-1">
           <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{TEXTES_NUMEROS.lesNumeros.nko}</span>

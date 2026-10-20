@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { client } from "../../sanity/client";
+import PiluleRetour from "../components/PiluleRetour";
 import MaBibliotheque, { type ArticleSauvegardable } from "../components/bibliotheque/MaBibliotheque";
 
 // ============================================================================
@@ -38,6 +39,7 @@ export default async function PageBibliotheque() {
   const articles = await getArticles();
   return (
     <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+      <PiluleRetour />
       <MaBibliotheque articles={articles} />
     </main>
   );

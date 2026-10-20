@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import VueNumero from "../../components/numero/VueNumero";
+import PiluleRetour from "../../components/PiluleRetour";
 import { TEXTES_NUMEROS, numeroFr, numeroNko } from "../../components/numero/textes";
 import { getLiensNumeros, getNumero, type Numero } from "../../lib/numeros";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
@@ -88,6 +89,7 @@ export default async function PageNumero({ params }: { params: Promise<{ slug: s
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(parution) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(filAriane) }} />
+      <PiluleRetour />
       <VueNumero numero={numero} pdf={(PDF_NUMEROS as Record<string, { fichier: string; octets: number }>)[numero.slug]} />
     </>
   );

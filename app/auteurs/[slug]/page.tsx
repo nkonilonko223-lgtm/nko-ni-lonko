@@ -7,6 +7,7 @@ import { sensDe } from "../../components/numero/titre";
 import { getAuteur, getLiensAuteurs, type Auteur } from "../../lib/auteurs";
 import { estLaRevue } from "../../lib/citations";
 import { jsonLd } from "../../lib/jsonld";
+import PiluleRetour from "../../components/PiluleRetour";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
 import messagesNko from "../../messages/nko.json";
 
@@ -88,6 +89,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
 
   return (
     <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+      <PiluleRetour />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(profil) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(filAriane) }} />
 
