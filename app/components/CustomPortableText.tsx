@@ -300,6 +300,12 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
       bullet: ({children}) => <FadeInBlock><ul className="list-disc pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black">{children}</ul></FadeInBlock>,
       number: ({children}) => <FadeInBlock><ol className="list-decimal pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black marker:font-bold">{children}</ol></FadeInBlock>,
     },
+    // Chaque élément de liste porte sa langue et son sens, comme les paragraphes (règle du projet,
+    // et nécessaire au choix « langue de lecture »)
+    listItem: ({ children, value: itemValue }) => {
+      const nko = isNko(getBlockText(itemValue));
+      return <li lang={nko ? "nqo" : "fr"} dir={nko ? "rtl" : "ltr"}>{children}</li>;
+    },
     types: {
       image: ({ value: imageValue }: PortableImageProps) => {
         if (!imageValue?.asset?._ref) return null;

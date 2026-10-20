@@ -38,3 +38,13 @@ export function estimateReadingTime(body: PortableTextBlock[]): number {
   const wordCount = text.split(/\s+/).length;
   return Math.ceil(wordCount / 200) || 1;
 }
+
+// Langue de lecture choisie par le lecteur (page article) : clé partagée entre le serveur (petit
+// script posé avant l'affichage du texte) et le navigateur (boutons « langue de lecture »)
+export const CLE_LANGUE_LECTURE = "nko_langue_lecture";
+
+// Le texte contient-il du N'Ko ET du français ? (sinon, pas de choix de langue de lecture)
+export function contientDeuxLangues(body: PortableTextBlock[]): boolean {
+  const textes = body.filter((b) => b._type === "block").map(getBlockText).filter((t) => t.trim());
+  return textes.some(isNko) && textes.some((t) => !isNko(t));
+}

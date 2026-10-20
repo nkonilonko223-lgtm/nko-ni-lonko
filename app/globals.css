@@ -971,6 +971,15 @@ nav {
     content: none;
   }
 
+  /* A4 — Langue de lecture (choix du lecteur au-dessus du texte) : N'Ko seul ou français seul.
+     Par défaut, les deux langues, N'Ko d'abord. Le choix est posé sur <html data-lecture> AVANT
+     l'affichage (petit script de la page article : la page ne saute pas) ; seulement pour un article
+     qui contient les deux langues (data-deux-langues). Un passage français DANS un paragraphe N'Ko reste visible. */
+  html[data-lecture="nko"] .article-content[data-deux-langues] .apparition [lang="fr"]:not(.apparition [lang="nqo"] [lang="fr"]),
+  html[data-lecture="fr"] .article-content[data-deux-langues] .apparition [lang="nqo"]:not(.apparition [lang="fr"] [lang="nqo"]) {
+    display: none;
+  }
+
   /* Lien direct vers un chapitre (#titre-…) : le titre s'arrête sous la barre du haut */
   .article-content :is(h2, h3)[id] {
     scroll-margin-top: 7rem;
