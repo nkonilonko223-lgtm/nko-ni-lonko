@@ -2,7 +2,7 @@
 
 > **Ne pas commencer avant la publication du N°003** (règle du propriétaire). Même méthode qu'au Lot 1 : Synthèse → Audit → Stratégie → Génération → Validation, une branche par sujet, un changement par commit, aperçu Vercel, fusion après « fusionner ».
 
-## État au 19 octobre 2026 (préparé en avance, sur des branches, RIEN de fusionné)
+## État au 20 octobre 2026 (préparé en avance, sur des branches, RIEN de fusionné)
 
 Décision du propriétaire (19 octobre) : préparer tout le Lot 2 pendant le gel, sans rien mettre en ligne avant le 30 octobre, sans écriture dans Sanity, sans e-mail. Branches **empilées** (chacune contient les précédentes) : fusionner la dernière revient à tout fusionner ; on peut aussi s'arrêter à une branche.
 
@@ -17,9 +17,28 @@ Décision du propriétaire (19 octobre) : préparer tout le Lot 2 pendant le gel
 | 7 | `lot2/page-ia` | Page `/ia` (**texte à valider**), lien du pied de page, robots d'IA à jour, projet de clause du pacte des auteurs ; corrections de direction (`/ia`, 404) | Valider le texte ; version N'Ko par la rédaction |
 | 8 | `lot2/bilan` | Ce bilan ; `docs/TEXTES-NKO-A-DEMANDER.md` (9 textes N'Ko à demander) | — |
 | 9 | `lot2/ia-conditions` | Décision du 19 octobre : **pas de page `/ia`** ; le texte validé devient la **partie 10 « Intelligence artificielle » des Conditions d'utilisation**, une phrase et un lien dans la Confidentialité ; réserve lisible par les machines (`/.well-known/tdmrep.json` + en-tête `tdm-reservation: 1`) ; page 404 : N'Ko d'abord, chaque langue avec `lang` et `dir` | — |
-| à part | `fix/confidentialite-apostrophes` | Correction du texte français de la Confidentialité (« n&apos;utilisons »… affiché 8 fois en ligne) : **peut être fusionnée pendant le gel** | — |
+| à part | `fix/confidentialite-apostrophes` | Correction du texte français de la Confidentialité (« n&apos;utilisons »… affiché 8 fois en ligne) : **fusionnée le 20 octobre** (la branche 1 aussi) | — |
 
-**Pas encore fait** : langue dans l'adresse (B6, plan détaillé ci-dessous, 1 à 2 jours), application hors ligne et édition visuelle cliquable (longs, incertains), audio des termes (enregistrements), conversion des anciens encadrés (écriture Sanity), CSP appliquée (2 semaines de journaux), compte X, **mise à jour des dépendances** (ci-dessous).
+### Ajouts du 20 octobre 2026 (suite de la même pile, reposée sur `main` ; RIEN de fusionné)
+
+| Ordre | Branche | Contenu | Après fusion |
+|---|---|---|---|
+| 10 | `lot2/propositions` | Fiches ISSN, DOI, licence ; propositions « world class » dans ce plan | — |
+| 11 | `lot2/lecture` | A3 « Citer » (APA, MLA, BibTeX, RIS ; la revue auteur = organisation) ; A8 liens directs vers les chapitres ; A2 taille du texte gardée ; A5 « Reprendre la lecture » ; A7 « Signaler une erreur » ; sommaire au clavier | — |
+| 12 | `lot2/langue-lecture` | A4 langue de lecture « N'Ko + FR / N'Ko / FR » (choix gardé, aucun saut de page) | — |
+| 13 | `lot2/partage-image` | A6 « Partager en image » (passage choisi → image 1080 × 1350, N'Ko lié) | — |
+| 14 | `lot2/bibliotheque` | A1 « Ma bibliothèque » (`/bibliotheque`) ; police française des libellés français | — |
+| 15 | `lot2/correcteur` | Correcteur N'Ko du Studio (idée 4 : marques doublées, mots « écrits autrement ») ; garde du N'Ko dans le code ; **contrôles automatiques GitHub** ; la citation N'Ko revient en premier dans « Citer » | Regarder l'onglet **Actions** de GitHub après chaque envoi |
+| 16 | `lot2/scholar` | Google Scholar : une balise `citation_author` par auteur (avant : aucun auteur reconnu) | — |
+| 17 | `lot2/auteurs` | Pages auteurs `/auteurs/<slug>` (WhatsApp jamais publié) ; bouton « Retour » sur les pages sans navigation | Ajouter `author` au filtre de la « sonnette » Sanity (webhook) : `_type in ["article","terme","numero","rubrique","author"]` |
+| 18 | `lot2/recherche` | Recherche de l'accueil sans marques de ton ni accents | — |
+| 19 | `lot2/hors-ligne` | **Lecture hors ligne** (`public/sw.js`, `docs/HORS-LIGNE.md`) ; Serwist retiré (16 paquets en moins) | Vérifier soi-même (`docs/HORS-LIGNE.md`) |
+| 20 | `lot2/finitions` | Titre des articles : le nom de la revue n'apparaît plus deux fois ; nom du lien flèche (lecteurs d'écran) | — |
+| à part | `correctif/navigation-scholar` | **Corrections de choses EN LIGNE, partant de `main`** (autorisées pendant le gel) : bouton « Retour » sur `/numeros` et `/numeros/<n>` (la page du N°003 sera partagée le 30) ; auteurs pour Google Scholar ; titre sans doublon | Peut être fusionnée **avant le 30 octobre** ; ensuite, reposer la pile du Lot 2 dessus |
+
+**Pas encore fait** : langue dans l'adresse (B6, plan détaillé ci-dessous, 1 à 2 jours), édition visuelle cliquable (long, incertain), recherche N'Ko ↔ lettres latines (idée 2 : le tableau de correspondance doit être validé par la rédaction), recherche par le sens (idée 5), audio des termes (enregistrements), conversion des anciens encadrés (écriture Sanity), CSP appliquée (2 semaines de journaux), compte X, **mise à jour des dépendances** (ci-dessous).
+
+**À décider par le propriétaire (constat du 20 octobre)** : en mode N'Ko, une grande partie du français du site (sous-titres des articles, petites étiquettes) s'affiche avec les lettres latines de la police **Kigelia** (penchées), car la page entière est réglée sur Kigelia ; seuls les textes marqués « font-fr » sont en Montserrat. Une seule règle CSS (« tout texte `lang="fr"` en Montserrat ») unifierait le site. Changement visible partout : à décider, et à vérifier sur l'aperçu.
 
 **Mise à jour des dépendances (constat du 19 octobre)** : `npm audit` signale 59 failles, presque toutes dans les **outils** (CLI Sanity, outils de construction), pas dans ce que reçoivent les visiteurs ; dont `basic-ftp` (critique, outil d'import Sanity). La correction automatique toucherait environ 1 000 paquets, dont Sanity 5.11 → 5.31 et sa CLI 5 → 6 (version majeure) : à faire sur une branche dédiée, après le 30 octobre, avec un essai complet du Studio par le propriétaire.
 
