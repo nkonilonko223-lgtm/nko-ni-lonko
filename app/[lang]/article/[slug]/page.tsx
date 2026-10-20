@@ -17,6 +17,7 @@ import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../../comp
 import { jsonLd } from "../../../lib/jsonld";
 import { choisirVoirAussi, type Voisin } from "../../../lib/voir-aussi";
 import VoirAussi from "../../../components/VoirAussi";
+import { decouperNom, estLaRevue } from "../../../lib/citations";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -325,8 +326,13 @@ export async function generateMetadata(
         ...article.tags,
         article.category,
       ].join("; "),
-      // Une balise par auteur (Next.js répète la balise pour chaque élément de la liste)
-      ...(article.authors.length ? { "citation_author": article.authors.map((a) => a.name) } : {}),
+      // Une balise par auteur, « Nom, Prénoms » (la revue comme auteur reste une organisation)
+      ...(article.authors.length ? {
+        "citation_author": article.authors.map((a) => {
+          const { prenoms, nom } = decouperNom(a.name);
+          return prenoms ? `${nom}, ${prenoms}` : nom;
+        }),
+      } : {}),
     },
     // 👑 Open Graph enrichi — N'Ko is King
     openGraph: {
@@ -438,7 +444,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
     }),
     // 👑 Auteurs avec réseaux sociaux — Google connaît chaque auteur
     "author": article.authors.map(author => ({
-      "@type": "Person",
+      // La revue elle-même comme auteur (fiche « N'Ko ni Lonko ») : une organisation, pas une personne
+      "@type": estLaRevue(author.name) ? "Organization" : "Person",
       "name": author.name,
       "alternateName": author.nameNko || undefined,
       "jobTitle": author.roleNko || author.role || undefined,
