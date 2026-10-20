@@ -5,8 +5,9 @@
 // Une image 1200×630 par article. Modèle 2 (21 octobre 2026), « photo d'abord » comme les grands
 // journaux : la couverture seule, cadrée sur le point d'intérêt du Studio, et en bas un dégradé
 // discret avec le numéro, la catégorie et la signature. Le titre n'est PAS écrit sur la photo :
-// WhatsApp, Facebook et X l'affichent déjà dessous. Une couverture qui porte déjà son titre et la
-// signature (liste TELLES_QUELLES) sert telle quelle. Sans couverture : modèle « titre » (fond au
+// WhatsApp et Facebook l'affichent dessous (X n'affiche que l'image : le nom N'Ko de la revue reste
+// donc dans le bandeau). Une couverture qui porte déjà son titre et la signature (case « servir telle
+// quelle » cochée dans le Studio) sert telle quelle, sans bandeau. Sans couverture : modèle « titre » (fond au
 // motif du site, numéro, catégorie, titre N'Ko et titre français). Rendu par Google
 // Chrome (lettres N'Ko liées), comme scripts/images-partage/generer.mjs. Rien n'est écrit dans Sanity.
 // N'Ko JAMAIS retapé : titres et catégories lus dans les données (titre coupé par separerTitre),
@@ -23,7 +24,7 @@
 //             --essai <dossier> (images écrites dans ce dossier seulement, le site n'est pas touché)
 //             --image <fichier> [--point x,y] (avec --essai et --slug : une image de l'ordinateur à la
 //             place de la couverture, cadrée sur le point x,y entre 0 et 1 ; pour voir le résultat
-//             AVANT l'import dans Sanity)
+//             AVANT l'import dans Sanity) ; --telle-quelle : comme si la case était cochée
 // Résultat : public/og/articles/<slug>-<empreinte>.jpg et la liste app/lib/images-partage-articles.json
 // (lue par la page article). L'empreinte change avec le titre, la catégorie, le numéro, la
 // couverture ou le modèle : les réseaux sociaux voient une nouvelle adresse et reprennent l'image.
@@ -38,8 +39,6 @@ import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const MODELE = 2; // à augmenter si l'apparence change : toutes les images reçoivent une nouvelle adresse
-// Couvertures qui portent déjà leur titre et la signature de la revue : servies telles quelles (recadrées)
-const TELLES_QUELLES = new Set(['edito-n003']); // l'illustration de l'Édito du N°003
 const PROJET = resolve(import.meta.dirname, '../..');
 const DOSSIER = join(PROJET, 'public/og/articles');
 const LISTE = join(PROJET, 'app/lib/images-partage-articles.json');
@@ -62,6 +61,8 @@ const essai = option('--essai');
 const seulement = args.flatMap((a, i) => (a === '--slug' ? [args[i + 1]] : []));
 const imageLocale = option('--image');
 const point = option('--point')?.split(',').map(Number);
+const forcerTelleQuelle = args.includes('--telle-quelle');
+if (forcerTelleQuelle && !essai) throw new Error('--telle-quelle est réservé aux essais (--essai) : sinon, cocher la case dans le Studio');
 if (imageLocale && (!essai || seulement.length !== 1)) throw new Error('--image exige --essai <dossier> et un seul --slug');
 if (point && (point.length !== 2 || point.some((v) => !(v >= 0 && v <= 1)))) throw new Error('--point attend x,y entre 0 et 1 (ex. 0.17,0.4)');
 
@@ -189,7 +190,7 @@ document.fonts.ready.then(() => {
 
 // Modèle 2 « photo d'abord » : la couverture (déjà recadrée en 1200×630), un dégradé discret en bas
 // avec la signature (à droite, N'Ko d'abord) et le numéro et la catégorie (à gauche).
-// bandeau = false : la couverture porte déjà son titre et sa signature (TELLES_QUELLES).
+// bandeau = false : la couverture porte déjà son titre et sa signature (case « servir telle quelle »).
 const modelePhoto = ({ numero, categorie, bandeau }) => `<!doctype html><html lang="nqo"><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=block" rel="stylesheet">
 <style>
@@ -263,10 +264,11 @@ try {
       if (!r.ok) throw new Error(`${a.slug} : couverture introuvable (${r.status})`);
       writeFileSync(join(travail, 'couverture.jpg'), Buffer.from(await r.arrayBuffer()));
     }
-    const empreinte = createHash('sha256').update(JSON.stringify([MODELE, a.title, a.category, a.numero ?? null, adresse, TELLES_QUELLES.has(a.slug)])).digest('hex').slice(0, 8);
+    const telleQuelle = forcerTelleQuelle || a.mainImage?.telleQuelle === true; // case cochée dans le Studio
+    const empreinte = createHash('sha256').update(JSON.stringify([MODELE, a.title, a.category, a.numero ?? null, adresse, telleQuelle])).digest('hex').slice(0, 8);
     const nom = `${a.slug}-${empreinte}.jpg`;
     const html = adresse
-      ? modelePhoto({ numero: a.numero, categorie, bandeau: !TELLES_QUELLES.has(a.slug) })
+      ? modelePhoto({ numero: a.numero, categorie, bandeau: !telleQuelle })
       : modele({ titre, numero: a.numero, categorie, couverture: false });
     writeFileSync(join(travail, 'page.html'), html, 'utf8');
     const png = join(travail, 'page.png');
