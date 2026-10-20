@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import ArticleCard from "./ArticleCard";
 import SiteFooter from "./SiteFooter";
 import { useLanguage } from "./LanguageProvider";
+import { normaliser } from "./lexique/normaliser";
 
 
 // ==============================================================================
@@ -413,8 +414,14 @@ const handleCategorySelect = useCallback((key: string) => {
     setDeferredPrompt(null);
   };
 
+  // Recherche tolérante : sans marques de ton N'Ko ni accents (« eruption » trouve « Éruption »)
+  const textesCherchables = useMemo(
+    () => new Map(articles.map((a) => [a, normaliser(`${a.title} ${a.excerpt}`)])),
+    [articles]
+  );
+
   const filteredArticles = useMemo(() => {
-    const normalizedSearch = debouncedQuery.toLowerCase().trim();
+    const normalizedSearch = normaliser(debouncedQuery);
     return articles.filter((article) => {
       let matchesCategory = true;
       if (activeCategory !== "all") {
@@ -426,13 +433,11 @@ const handleCategorySelect = useCallback((key: string) => {
       }
       let matchesSearch = true;
       if (normalizedSearch) {
-        matchesSearch =
-          article.title.toLowerCase().includes(normalizedSearch) ||
-          article.excerpt.toLowerCase().includes(normalizedSearch);
+        matchesSearch = (textesCherchables.get(article) ?? "").includes(normalizedSearch);
       }
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, debouncedQuery, articles]);
+  }, [activeCategory, debouncedQuery, articles, textesCherchables]);
 
   useEffect(() => {
     if (articles.length > 0) {
