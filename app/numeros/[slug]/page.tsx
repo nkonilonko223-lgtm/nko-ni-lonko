@@ -7,6 +7,7 @@ import { TEXTES_NUMEROS, numeroFr, numeroNko } from "../../components/numero/tex
 import { getLiensNumeros, getNumero, type Numero } from "../../lib/numeros";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
 import { jsonLd } from "../../lib/jsonld";
+import IMAGES_PARTAGE_NUMEROS from "../../lib/images-partage-numeros.json";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un numéro de la revue (ex. /numeros/003)
@@ -23,12 +24,18 @@ const titreDe = (numero: Numero) =>
   numero.seoTitle || `${numeroNko(numero.numero)} · ${numeroFr(numero.numero)}${numero.titleFr ? ` — ${numero.titleFr}` : ""}`;
 // Résumé du numéro ; à défaut, celui de l'édito (décision du propriétaire)
 const resumeDe = (numero: Numero) => numero.excerpt || numero.sommaire.find((a) => a._id === numero.editoRef)?.excerpt;
-// Image de partage : la couverture recadrée en 1200×630 autour du point d'intérêt du Studio (sinon le
-// centre), sans texte ajouté ; à défaut, l'image de l'accueil (jamais next/og)
-const imagePartage = (numero: Numero) =>
-  numero.couverture?.url
-    ? { url: `${numero.couverture.url}?w=1200&h=630&fit=crop${parametresPointInteret(numero.couverture.hotspot)}&fm=jpg&q=80`, width: 1200, height: 630, alt: numero.couverture.alt || numeroFr(numero.numero) }
+// Image de partage : celle fabriquée par scripts/images-partage/numeros.mjs (couverture + bandeau fin :
+// nom N'Ko de la revue et numéro, comme les grands magazines) ; sinon la couverture recadrée en
+// 1200×630 autour du point d'intérêt ; à défaut, l'image de l'accueil (jamais next/og).
+// Le bandeau n'existe que sur l'image de partage : la couverture affichée sur le site reste sans texte.
+const imagePartage = (numero: Numero) => {
+  const alt = numero.couverture?.alt || numeroFr(numero.numero);
+  const fabriquee = (IMAGES_PARTAGE_NUMEROS as Record<string, string>)[numero.slug];
+  if (fabriquee) return { url: `${SITE_URL}/og/numeros/${fabriquee}`, width: 1200, height: 630, alt };
+  return numero.couverture?.url
+    ? { url: `${numero.couverture.url}?w=1200&h=630&fit=crop${parametresPointInteret(numero.couverture.hotspot)}&fm=jpg&q=80`, width: 1200, height: 630, alt }
     : IMAGE_PARTAGE_ACCUEIL;
+};
 
 export async function generateStaticParams() {
   return (await getLiensNumeros()).map(({ slug }) => ({ slug }));
