@@ -51,14 +51,18 @@ Les commentaires « DOGME 1, 2, 3 » du code suivent la même numérotation.
 
 ```bash
 # Construction : la variable TLS est OBLIGATOIRE en local (certificats de la machine)
-export NEXT_TURBOPACK_EXPERIMENTAL_USE_SYSTEM_TLS_CERTS=1 SERWIST_SUPPRESS_TURBOPACK_WARNING=1
+export NEXT_TURBOPACK_EXPERIMENTAL_USE_SYSTEM_TLS_CERTS=1
 timeout 300 node node_modules/next/dist/bin/next build
+# Serveur d'essai local avec les images : node --use-system-ca node_modules/next/dist/bin/next start -p 3100
 
 # Vérifications (lancer les outils DIRECTEMENT, pas avec npx : npx se fige parfois ici)
 timeout 150 node node_modules/eslint/bin/eslint.js <fichiers>
 timeout 200 node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
 timeout 200 node node_modules/sanity/bin/sanity schema validate
 timeout 400 node node_modules/sanity/bin/sanity documents validate --yes --level warning
+node scripts/verifier-nko-code.mts --depuis main     # garde du N'Ko : NFC partout + N'Ko changé depuis main (à vérifier)
+node scripts/tester-correcteur.mts [--export <sauvegarde.tar.gz>]   # correcteur N'Ko du Studio
+# Les mêmes contrôles tournent sur GitHub à chaque envoi (.github/workflows/verifications.yml, onglet « Actions »)
 
 # Sanity (connexion faite avec le compte GitHub du propriétaire : npx sanity login --provider github)
 # Après une fusion qui change le schéma : met à jour LES DEUX schémas déployés (l'ancien « _.schemas.default »
@@ -129,6 +133,12 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `proxy.ts` · `app/api/csp-rapport` | Langue dans l'adresse (voir plus haut) + filtre anti-robots + CSP (en mode « rapport seulement », sans « nonce » : les pages sont préparées à l'avance). Les violations arrivent dans les journaux Vercel (« [CSP] ») ; passage en mode appliqué : `docs/PLAN-LOT-2.md` |
 | `app/icones-phosphor.css` · `public/icones/` | Icônes Phosphor **auto-hébergées** (seulement celles du site, 4 épaisseurs) : fichiers **générés** par `scripts/icones/generer-icones.mjs`, ne pas les modifier à la main |
 | `app/fonts/` · `public/arriere-plan.avif` | Police Kigelia en **WOFF2** (les OTF de `public/fonts` servent aux e-mails et aux images de partage) ; motif de fond en AVIF, WebP en repli (`image-set` dans `globals.css`) |
+| `app/bibliotheque/` · `app/lib/bibliotheque.ts` | « Ma bibliothèque » : articles sauvegardés avec le signet (dans le navigateur du lecteur, clé `nko_bookmarks`), lisibles sans connexion |
+| `public/sw.js` · `app/components/LectureHorsLigne.tsx` | **Lecture hors ligne** (service worker écrit à la main ; Serwist retiré). Réseau d'abord pour les pages ; jamais `/studio`, `/api`. Arrêt d'urgence : `docs/HORS-LIGNE.md` |
+| `app/auteurs/[slug]/` · `app/lib/auteurs.ts` | Pages auteurs (biographie N'Ko puis française, articles). **WhatsApp jamais publié** (numéro de téléphone) |
+| `app/components/PiluleRetour.tsx` | Bouton « Retour » des pages sans navigation (numéros, auteurs, bibliothèque) : venu d'un autre site → accueil |
+| `sanity/correcteur-nko.ts` | Correcteur N'Ko du Studio (avertissements, ne corrige jamais) : marques doublées, mots « écrits autrement » que dans les articles publiés |
+| `app/lib/citations.ts` | « Citer » : citation N'Ko d'abord, puis APA, MLA, BibTeX, RIS (la revue auteur = organisation) |
 | `app/components/BandeauApercuDiffere.tsx` | Bandeau du mode aperçu chargé **à la demande**. Ne jamais importer directement dans `layout.tsx` un composant qui utilise `next-sanity/hooks` : ses outils (≈ 240 Ko) partiraient chez tous les visiteurs |
 | `SiteFooter` · `ArticleFooter` · `ContactClient` | Formulaires : Turnstile (Cloudflare) n'est créé qu'au premier contact avec le formulaire (focus, clic, toucher) |
 | `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Articles : `public/og/articles/` + liste `app/lib/images-partage-articles.json`, fabriquées par `scripts/images-partage/articles.mjs` (sinon, la couverture sert de secours) |
@@ -177,4 +187,5 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 - **Exception décidée par le propriétaire le 15 octobre 2026 : la notion de « Numéro » est livrée AVANT le gel du 18 octobre**, en deux parties : **A** (schéma `rubrique` / `numero`, champ `rubrique` de l'article, script de vérification) puis **B** (pages `/numeros` et `/numeros/[slug]`, « Paru dans le N° » et navigation sur la page article, SEO, plan du site, mise à jour automatique, lien « Numéros » du menu). Les libellés N'Ko des rubriques et de l'interface viennent de la rédaction.
 - **Chantiers A et B (18 octobre 2026, vitesse, qualité, sécurité)** : le détail de chaque point est dans son message de commit (« A1 » à « A10 », « B1 » à « B11 ») ; les suites (langue dans l'adresse « B6 », CSP appliquée, petits constats) sont dans **`docs/PLAN-LOT-2.md`**.
 - **Lot 2 : ne pas commencer avant le 30 octobre.** Ordre et méthode (dont le modèle de traduction ByT5, jeu de données **privé**, Google Colab) : **`docs/PLAN-LOT-2.md`**.
+- **Lot 2 préparé en avance (19 – 20 octobre 2026, accord du propriétaire)** : 20 branches empilées `lot2/…`, **rien de fusionné** ; liste, ordre et gestes après fusion dans **`docs/PLAN-LOT-2.md`** (« État au 20 octobre »). Textes N'Ko à demander et constats pour la rédaction : **`docs/TEXTES-NKO-A-DEMANDER.md`**. Branche à part `correctif/navigation-scholar` (depuis `main`, corrections de choses en ligne) : fusionnable avant le 30.
 - **Liste du Lot 2** : corpus N'Ko – français pour le modèle ByT5 (export daté, privé), politique d'usage de l'IA et clause « IA » du pacte des auteurs, images de partage des articles avec leur titre N'Ko (même méthode que `scripts/images-partage/generer.mjs`, `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).
