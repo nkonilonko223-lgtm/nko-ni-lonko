@@ -19,7 +19,7 @@ import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { citationApa, citationBibtex, citationMla, citationNko, citationRis, type DonneesCitation } from "../lib/citations";
 import { chiffresNko, numeroNko } from "./numero/textes";
 import { isNko as contientDuNko } from "./texte/outils";
-import { fabriquerImageCitation } from "./texte/imageCitation";
+import { fabriquerImageCitation, partagerImage, PARTAGER_IMAGE } from "./texte/imageCitation";
 import messagesNko from "../messages/nko.json";
 import { lireSignets, ecrireSignets, prevenirLectureHorsLigne } from "../lib/bibliotheque";
 
@@ -28,8 +28,6 @@ const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" }
 const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation copiée !" }; // repris tel quel de l'ancien bouton
 // Libellé N'Ko « Signaler une erreur » à demander à la rédaction : vide pour l'instant (français seul)
 const SIGNALER = { nko: "", fr: "Signaler une erreur" };
-// Libellé N'Ko « Partager en image » à demander à la rédaction : vide pour l'instant (français seul)
-const PARTAGER_IMAGE = { nko: "", fr: "Partager en image" };
 // Citation N'Ko : « en ligne » repris tel quel de l'ancienne citation N'Ko du site ; « N'Ko » repris du bouton de langue
 const EN_LIGNE_NKO = "ߓߟߐߟߐ";
 const NOM_NKO = "ߒߞߏ";
@@ -225,16 +223,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
     try {
       const { nko, fr } = separerTitre(title);
       const blob = await fabriquerImageCitation({ texte: selection.text, nko: contientDuNko(selection.text), titreNko: nko, titreFr: fr, nomNko: messagesNko.metadata.siteName });
-      const fichier = new File([blob], "nko-ni-lonko-citation.png", { type: "image/png" });
-      if (navigator.canShare?.({ files: [fichier] })) {
-        await navigator.share({ files: [fichier], text: getCanonicalUrl() }).catch(() => undefined);
-      } else {
-        const lien = document.createElement("a");
-        lien.href = URL.createObjectURL(blob);
-        lien.download = fichier.name;
-        lien.click();
-        setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
-      }
+      await partagerImage(blob, "nko-ni-lonko-citation.png", getCanonicalUrl());
     } catch (err) {
       console.error("Image du passage impossible", err);
     } finally {

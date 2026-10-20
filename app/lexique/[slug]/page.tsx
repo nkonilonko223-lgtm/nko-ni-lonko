@@ -6,6 +6,7 @@ import { getSanityClient } from "../../../sanity/fetch";
 import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "../../components/lexique/textes";
 import { comparerNko } from "../../components/lexique/normaliser";
 import CiterTerme from "../../components/lexique/CiterTerme";
+import PartagerTerme from "../../components/lexique/PartagerTerme";
 import { COMPTE_X, IMAGE_PARTAGE_LEXIQUE } from "../../lib/partage";
 import { jsonLd } from "../../lib/jsonld";
 
@@ -153,6 +154,14 @@ export default async function PageTerme({ params }: { params: Promise<{ slug: st
         )}
 
         <CiterTerme termeNko={terme.termeNko} termeFr={terme.termeFr} url={`${SITE_URL}/lexique/${terme.slug}`} />
+        <PartagerTerme
+          termeNko={terme.termeNko}
+          termeFr={terme.termeFr}
+          definitionNko={terme.definitionNko}
+          definitionFr={terme.definitionFr}
+          url={`${SITE_URL}/lexique/${terme.slug}`}
+          slug={terme.slug}
+        />
 
         {terme.memeDomaine && terme.memeDomaine.length > 0 && (
           <section className="border-t border-white/10 pt-6">

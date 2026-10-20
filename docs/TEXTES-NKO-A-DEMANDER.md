@@ -17,7 +17,7 @@
 | L10 | Reprendre la lecture | Article : bouton proposé au retour du lecteur | `app/components/ArticleClient.tsx` → `REPRENDRE.nko` |
 | L11 | Langue de lecture | Article : nom (lecteurs d'écran) du choix « N'Ko + FR / N'Ko / FR » | `app/components/ArticleClient.tsx` → `LANGUE_LECTURE.nko` |
 | L12 | Signaler une erreur | Article : bouton de la barre d'outils | `app/components/ArticleTools.tsx` → `SIGNALER.nko` |
-| L13 | Partager en image | Article : bouton de la barre de sélection | `app/components/ArticleTools.tsx` → `PARTAGER_IMAGE.nko` |
+| L13 | Partager en image | Article (barre de sélection) et fiche d'un terme du lexique | `app/components/texte/imageCitation.ts` → `PARTAGER_IMAGE.nko` (un seul endroit pour les deux) |
 | L14 | Sauvegardé · Ma bibliothèque | Article : message après le signet | `app/components/ArticleTools.tsx` → `SAUVEGARDE.nko`, `MA_BIBLIOTHEQUE.nko` |
 | L15 | Ma bibliothèque · « Les articles sauvegardés avec le signet restent sur cet appareil. Rien n'est envoyé. » · « Aucun article sauvegardé pour l'instant. Touchez le signet d'un article pour le retrouver ici. » · Retirer de ma bibliothèque · Lisible sans connexion | Page `/bibliotheque` | `app/components/bibliotheque/MaBibliotheque.tsx` → `TEXTES` (titre, explication, vide, retirer, horsLigne) |
 | L16 | Ma bibliothèque | Menu du pied de page de l'accueil | `app/components/SiteFooter.tsx` (lien `/bibliotheque`, aujourd'hui en français, `lang="fr"`) |
