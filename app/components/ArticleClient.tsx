@@ -20,6 +20,7 @@ import ArticleFooter from "./ArticleFooter";
 import { PortableTextBlock } from "@portabletext/types";
 import { formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
+import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
 import { contientNko, sensDe, separerTitre } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
@@ -70,6 +71,11 @@ interface ClientArticleData {
     socials: SocialLink[];
   }>;
 }
+
+// Réglages gardés sur l'appareil du lecteur (A2, A5). Libellé N'Ko « Reprendre la lecture » à
+// demander à la rédaction : vide pour l'instant (le français s'affiche seul)
+const CLE_TAILLE = "nko_taille_texte";
+const REPRENDRE = { nko: "", fr: "Reprendre la lecture" };
 
 // 🚀 ARME ANTI-CRASH : Typage strict pour les catégories traduites
 interface TranslationHome {
@@ -132,6 +138,66 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // A2 — Taille du texte mémorisée d'un article à l'autre (sur cet appareil seulement)
+  const [tailleChargee, setTailleChargee] = useState(false);
+  useEffect(() => {
+    const minuteur = setTimeout(() => {
+      try {
+        const v = Number(localStorage.getItem(CLE_TAILLE));
+        if (v >= 0.875 && v <= 2) setFontScale(v);
+      } catch { /* stockage indisponible (navigation privée) */ }
+      setTailleChargee(true);
+    }, 0);
+    return () => clearTimeout(minuteur);
+  }, []);
+  useEffect(() => {
+    if (!tailleChargee) return;
+    try { localStorage.setItem(CLE_TAILLE, String(fontScale)); } catch { /* stockage indisponible */ }
+  }, [fontScale, tailleChargee]);
+
+  // A5 — Reprendre ma lecture : le PARAGRAPHE en haut de l'écran est gardé quand le lecteur quitte
+  // la page (exact, même si la hauteur de la page change avec les images) ; à son retour, un bouton
+  // (jamais un défilement imposé) propose de reprendre au même endroit
+  const cleLecture = `nko_lecture:${article.slug}`;
+  const [reprise, setReprise] = useState<number | null>(null);
+  useEffect(() => {
+    const blocs = () => Array.from(document.querySelectorAll<HTMLElement>("article.article-content .apparition"));
+    const minuteur = setTimeout(() => {
+      try {
+        const i = Number(localStorage.getItem(cleLecture));
+        if (Number.isInteger(i) && i >= 2 && i < blocs().length - 2) setReprise(i);
+      } catch { /* stockage indisponible */ }
+    }, 0);
+    const garder = () => {
+      const liste = blocs();
+      const i = liste.findIndex((b) => b.getBoundingClientRect().bottom > 120); // premier bloc sous la barre du haut
+      try {
+        if (i < 0 || i >= liste.length - 2) localStorage.removeItem(cleLecture); // article terminé
+        else if (i >= 2) localStorage.setItem(cleLecture, String(i));
+      } catch { /* stockage indisponible */ }
+    };
+    const siCachee = () => { if (document.visibilityState === 'hidden') garder(); };
+    window.addEventListener('pagehide', garder);
+    document.addEventListener('visibilitychange', siCachee);
+    return () => {
+      clearTimeout(minuteur);
+      window.removeEventListener('pagehide', garder);
+      document.removeEventListener('visibilitychange', siCachee);
+    };
+  }, [cleLecture]);
+  useEffect(() => {
+    if (reprise === null) return;
+    const minuteur = setTimeout(() => setReprise(null), 12000); // le bouton disparaît seul
+    return () => clearTimeout(minuteur);
+  }, [reprise]);
+  const reprendreLecture = () => {
+    if (reprise === null) return;
+    triggerVibration();
+    const bloc = document.querySelectorAll<HTMLElement>("article.article-content .apparition")[reprise];
+    if (bloc) window.scrollTo({ top: bloc.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' });
+    setReprise(null);
+  };
 
   const handleShare = async () => {
     triggerVibration();
@@ -241,7 +307,29 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         </div>
       </div>
 
-      <div className="fixed top-0 left-0 h-1 bg-[#fbbf24] z-[1001] transition-transform duration-75 ease-out shadow-[0_0_10px_#fbbf24] origin-left print:hidden" 
+      {/* A5 — REPRENDRE MA LECTURE (proposé, jamais imposé ; disparaît seul) */}
+      {reprise !== null && (
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] print:hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex items-center gap-1 rounded-full border border-[#fbbf24]/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl">
+            <button type="button" onClick={reprendreLecture} className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+              <i className="ph-fill ph-play" aria-hidden="true"></i>
+              {lang === 'nko' && REPRENDRE.nko
+                ? <span lang="nqo" dir="rtl" className="font-kigelia">{REPRENDRE.nko}</span>
+                : <span lang="fr" dir="ltr">{REPRENDRE.fr}</span>}
+            </button>
+            <button
+              type="button"
+              onClick={() => setReprise(null)}
+              aria-label={lang === 'nko' ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}
+              className="flex h-8 w-8 items-center justify-center rounded-full text-white/50 transition-colors hover:text-white"
+            >
+              <i className="ph-bold ph-x" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="fixed top-0 left-0 h-1 bg-[#fbbf24] z-[1001] transition-transform duration-75 ease-out shadow-[0_0_10px_#fbbf24] origin-left print:hidden"
            style={{ transform: `scaleX(${scrollProgress})`, width: '100%' }}>
       </div>
 
@@ -256,6 +344,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           onZoomOut={handleZoomOut}
           title={article.title}
           citation={{ auteurs: article.authors.map((a) => a.name), datePublication: article.publishedAt, numero: article.numeroRevue }}
+          slug={article.slug}
         />
       </div>
 
