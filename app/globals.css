@@ -971,6 +971,11 @@ nav {
     content: none;
   }
 
+  /* Lien direct vers un chapitre (#titre-…) : le titre s'arrête sous la barre du haut */
+  .article-content :is(h2, h3)[id] {
+    scroll-margin-top: 7rem;
+  }
+
   .article-content :is(ul, ol) {
     list-style-position: inside;
   }
