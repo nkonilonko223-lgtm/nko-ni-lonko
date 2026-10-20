@@ -119,6 +119,16 @@
     line-height: 1.6;
   }
 
+  /* Le français garde SA police (Montserrat) même en mode N'Ko : sinon il hérite de Kigelia
+     (lettres latines penchées). Décision du propriétaire, 20 octobre 2026. Un passage N'Ko
+     placé dans un bloc français garde Kigelia. Les classes posées à la main (font-…) priment. */
+  [lang|="fr"] {
+    font-family: var(--font-fr);
+  }
+  [lang|="fr"] [lang="nqo"] {
+    font-family: var(--font-kigelia);
+  }
+
   /* Titres — Français */
   body[dir="ltr"] :is(h1, h2, h3) {
     font-weight: 800;
