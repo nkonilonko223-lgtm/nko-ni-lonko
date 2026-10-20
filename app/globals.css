@@ -121,11 +121,12 @@
 
   /* Le français garde SA police (Montserrat) même en mode N'Ko : sinon il hérite de Kigelia
      (lettres latines penchées). Décision du propriétaire, 20 octobre 2026. Un passage N'Ko
-     placé dans un bloc français garde Kigelia. Les classes posées à la main (font-…) priment. */
-  [lang|="fr"] {
+     placé dans un bloc français garde Kigelia. Les classes posées à la main (font-…) priment.
+     Même règle pour l'anglais (noms de marques marqués lang="en" : WhatsApp, Telegram…). */
+  :is([lang|="fr"], [lang|="en"]) {
     font-family: var(--font-fr);
   }
-  [lang|="fr"] [lang="nqo"] {
+  :is([lang|="fr"], [lang|="en"]) [lang="nqo"] {
     font-family: var(--font-kigelia);
   }
 
