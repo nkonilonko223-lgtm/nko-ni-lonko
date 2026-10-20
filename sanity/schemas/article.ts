@@ -1,5 +1,26 @@
-import { defineField, defineType } from 'sanity';
+import { defineField, defineType, type ValidationContext } from 'sanity';
 import React from 'react';
+import { construireVocabulaire, ecritsAutrement, messageEcritsAutrement, textesDe, verifierMarquesDoublees, type Vocabulaire } from '../correcteur-nko';
+
+// ✍️ Correcteur N'Ko : vocabulaire des articles PUBLIÉS (sauf l'article en cours) et des termes,
+// gardé 10 minutes dans le Studio pour ne pas tout relire à chaque frappe
+let memoireVocabulaire: { exclu: string; quand: number; vocabulaire: Vocabulaire } | null = null;
+async function vocabulaireDeLaRevue(context: ValidationContext, exclu: string): Promise<Vocabulaire> {
+  if (memoireVocabulaire && memoireVocabulaire.exclu === exclu && Date.now() - memoireVocabulaire.quand < 10 * 60 * 1000) {
+    return memoireVocabulaire.vocabulaire;
+  }
+  const { articles, termes }: { articles: unknown[]; termes: unknown[] } = await context.getClient({ apiVersion: '2025-02-19' }).fetch(
+    `{
+      "articles": *[_type == "article" && _id != $exclu]{ title, excerpt, "texte": pt::text(body) },
+      "termes": *[_type == "terme"]{ termeNko, definitionNko }
+    }`,
+    { exclu },
+    { perspective: 'published' }
+  );
+  const vocabulaire = construireVocabulaire(textesDe([articles, termes]));
+  memoireVocabulaire = { exclu, quand: Date.now(), vocabulaire };
+  return vocabulaire;
+}
 
 // 👑 BIDI ENGINE UNIVERSEL — Auto-détection N'Ko/FR sur chaque frappe
 const SmartBidiInput = (props: import('sanity').StringInputProps) => {
@@ -91,6 +112,15 @@ export default defineType({
         }
       }
       return problemes.length ? { message: `Lexique : ${problemes.join(' ; ')}.`, path: ['body'] } : true;
+    }).warning(),
+    // ✍️ Correcteur N'Ko (sanity/correcteur-nko.ts) : il signale, il ne corrige jamais
+    rule.custom((doc) => verifierMarquesDoublees(doc as Record<string, unknown> | undefined)).warning(),
+    rule.custom(async (doc, context) => {
+      if (!doc?._id) return true;
+      const publie = doc._id.replace(/^drafts\./, '').replace(/^versions\.[^.]+\./, '');
+      const textes = Object.entries(doc).filter(([cle]) => !cle.startsWith('_')).flatMap(([, v]) => textesDe(v));
+      const liste = ecritsAutrement(textes.join('\n'), await vocabulaireDeLaRevue(context, publie));
+      return liste.length ? messageEcritsAutrement(liste) : true;
     }).warning(),
   ],
   fields: [

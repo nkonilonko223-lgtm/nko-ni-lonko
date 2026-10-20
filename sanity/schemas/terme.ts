@@ -1,6 +1,7 @@
 import { defineField, defineType } from 'sanity';
 import { defineIncomingReferenceDecoration } from 'sanity/structure';
 import React from 'react';
+import { verifierMarquesDoublees } from '../correcteur-nko';
 
 // ============================================================================
 // N'KO NI LONKO — Terme du lexique (dictionnaire scientifique N'Ko – français)
@@ -40,7 +41,8 @@ export default defineType({
   type: 'document',
   icon: () => '📖',
   // 🔒 Règle 6 : tout texte doit rester en Unicode normalisé (NFC). Avertissement non bloquant.
-  validation: (rule) =>
+  // ✍️ Correcteur N'Ko (sanity/correcteur-nko.ts) : marque doublée. Il signale, il ne corrige jamais.
+  validation: (rule) => [
     rule.custom((doc) => {
       if (!doc) return true;
       const champs = Object.entries(doc as Record<string, unknown>).filter(([cle]) => !cle.startsWith('_'));
@@ -52,6 +54,8 @@ export default defineType({
         ? { message: "Ce champ contient du texte non normalisé (NFC). Signalez-le avant publication.", path: [fautif[0]] }
         : true;
     }).warning(),
+    rule.custom((doc) => verifierMarquesDoublees(doc as Record<string, unknown> | undefined)).warning(),
+  ],
   // 🔒 Information éditoriale réservée à la rédaction (jamais affichée sur le site public)
   renderMembers: (members) => [
     ...members,
