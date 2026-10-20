@@ -1,0 +1,61 @@
+# ============================================================================
+# N'KO NI LONKO — Contrôles automatiques à chaque envoi sur GitHub (onglet « Actions »)
+# ============================================================================
+# Vérifie le code SANS rien publier ni écrire : ESLint, TypeScript, schéma Sanity, tests des
+# titres et du correcteur N'Ko, garde du N'Ko (NFC + changements à vérifier).
+# Aucun secret : le dataset Sanity est public, la construction du site est faite par Vercel.
+# Droits réduits au minimum : lecture du dépôt seulement.
+# ============================================================================
+name: Vérifications
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verifications-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # tout l'historique : pour comparer le N'Ko avec l'envoi précédent
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Installation (versions exactes du package-lock.json)
+        run: npm ci --no-audit --no-fund
+
+      - name: Garde du N'Ko (NFC partout ; changements signalés)
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          if ! git rev-parse -q --verify "${BASE}^{commit}" >/dev/null 2>&1; then
+            BASE=$(git merge-base HEAD origin/main)
+          fi
+          node scripts/verifier-nko-code.mts --depuis "$BASE"
+
+      - name: ESLint
+        run: node node_modules/eslint/bin/eslint.js .
+
+      - name: TypeScript
+        run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
+
+      - name: Schéma Sanity
+        run: node node_modules/sanity/bin/sanity schema validate
+
+      - name: Test du correcteur N'Ko
+        run: node scripts/tester-correcteur.mts
+
+      - name: Test des titres N'Ko / français (articles publiés, lecture seule)
+        run: node scripts/tester-titres.mts
