@@ -198,11 +198,19 @@ export default defineType({
           components: { input: ChampLtr },
         },
         // Crédit de la couverture (même modèle que le champ « source » des images intégrées),
-        // affiché en petit sous l'image, identique dans les deux langues
+        // affiché en petit sous l'image ; le crédit N'Ko (ci-dessous), s'il existe, passe avant
         {
           name: 'source',
           type: 'string',
           title: 'Source ou crédit (ex. NASA/SDO)',
+        },
+        // Crédit en N'Ko (facultatif, fourni par la rédaction) : affiché AVANT le crédit français
+        {
+          name: 'sourceNko',
+          type: 'string',
+          title: "Source ou crédit (N'Ko)",
+          description: "Facultatif. Texte de la rédaction, affiché avant le crédit français.",
+          components: { input: ChampRtl },
         },
       ],
       validation: (rule) =>
