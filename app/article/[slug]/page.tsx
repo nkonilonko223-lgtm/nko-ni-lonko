@@ -259,8 +259,9 @@ export async function generateMetadata(
   const metaDescription = article.excerpt || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. Découvrez cet article scientifique exclusif sur N'Ko ni Lonko.";
 
   return {
-    // 👑 N'Ko is King : Titre SEO optionnel ou titre principal
-    title: `${article.title} | ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ`,
+    // 👑 N'Ko is King : titre de l'article ; le nom de la revue est ajouté UNE fois par le modèle
+    // général (app/layout.tsx, « %s | … ») — l'ajouter ici le doublait dans l'onglet et sur Google
+    title: article.title,
     description: metaDescription,
     metadataBase: new URL(SITE_URL),
     alternates: {
