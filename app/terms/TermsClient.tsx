@@ -162,7 +162,7 @@ useEffect(() => {
   };
 
   return (
-    <div className="relative text-white flex flex-col items-center justify-start px-6 pt-32 pb-24 selection:bg-[#fbbf24] selection:text-black overflow-hidden print:bg-white print:text-black print:p-0">
+    <main className="relative text-white flex flex-col items-center justify-start px-6 pt-32 pb-24 selection:bg-[#fbbf24] selection:text-black overflow-hidden print:bg-white print:text-black print:p-0">
       
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Taille Affinée 1/10000) */}
       <button
@@ -332,6 +332,6 @@ useEffect(() => {
         </div>
 
       </div>
-    </div>
+    </main>
   );
 }
