@@ -631,6 +631,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         </div>
       </div>
 
+      <main>
       <header className="hero pt-24 pb-2 md:py-0 flex flex-col justify-center min-h-[40vh] md:min-h-[70vh]">
         {/* 🚀 MODIF 1/1000 : Clé "key" pour forcer la réanimation fluide sans bug fantôme */}
         <h1 className={`reveal mb-1 md:mb-6 ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
@@ -856,6 +857,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
     </Link>
   ) : null}
 </div>
+      </main>
 
       <SiteFooter activeCategory={activeCategory} setActiveCategory={handleCategoryChange} />
     </>
