@@ -137,8 +137,9 @@ export const metadata: Metadata = carteSansMelange({
       { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
       { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
+    // Icône de l'iPhone : 180 px, cadrée sur le logo (scripts/icones/favicon.mjs)
     apple: [
-      { url: "/icon-192x192.png" }
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
     ]
   },
   robots: { index: true, follow: true }
