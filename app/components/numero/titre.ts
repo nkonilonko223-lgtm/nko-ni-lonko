@@ -40,3 +40,47 @@ export function separerTitre(titre: string): TitreSepare {
   }
   return { nko: titre, fr: null };
 }
+
+// Partie N'Ko et partie française d'un texte bilingue, pour les cartes de partage (WhatsApp,
+// Telegram, X…) : ces applications coupent les lignes, et sur une ligne qui mélange le N'Ko
+// (droite à gauche) et le français (gauche à droite) elles déplacent parenthèses et mots
+// (« du) … (Niger »). Formes reconnues : « N'Ko (français) » (règle de separerTitre),
+// « (français) N'Ko » (anciens articles), puis des morceaux séparés par « | », « · », « — »
+// ou une fin de phrase. Les morceaux voisins de
+// même écriture restent ensemble, avec leur séparateur d'origine : on coupe, on ne réécrit rien.
+// Test : node scripts/tester-cartes.mts
+const SEPARATEURS = /(\s+[|·—]\s+|(?<=\.)\s+)/;
+
+export function separerLangues(texte?: string | null): { nko: string | null; fr: string | null } {
+  const t = (texte ?? "").trim();
+  if (!t) return { nko: null, fr: null };
+  const parentheses = separerTitre(t);
+  if (parentheses.fr !== null && contientNko(parentheses.nko)) return parentheses;
+  // « (français) N'Ko » : parenthèse ouvrante au début, équilibrée, sans N'Ko dedans
+  if (t.startsWith("(")) {
+    const fin = t.indexOf(")");
+    const fr = t.slice(1, fin).trim();
+    const nko = t.slice(fin + 1).trim();
+    if (fin > 0 && !fr.includes("(") && contientLatin(fr) && !contientNko(fr) && contientNko(nko)) return { nko, fr };
+  }
+  const morceaux = t.split(SEPARATEURS);
+  const groupes: { nko: boolean; texte: string }[] = [];
+  // Indices pairs : les morceaux ; indices impairs : le séparateur qui les précède
+  for (let i = 0; i < morceaux.length; i += 2) {
+    const morceau = morceaux[i] ?? "";
+    if (!morceau.trim()) continue;
+    const nko = contientNko(morceau);
+    const dernier = groupes[groupes.length - 1];
+    if (dernier && dernier.nko === nko) dernier.texte += (morceaux[i - 1] ?? " ") + morceau;
+    else groupes.push({ nko, texte: morceau });
+  }
+  const partie = (nko: boolean) => groupes.filter((g) => g.nko === nko).map((g) => g.texte.trim()).join(" | ") || null;
+  return { nko: partie(true), fr: partie(false) };
+}
+
+// Texte du bouton de partage : une ligne par langue (N'Ko d'abord) ; le saut de ligne final
+// met le lien, ajouté par le téléphone, sur sa propre ligne
+export function texteDePartage(titre: string): string {
+  const { nko, fr } = separerLangues(titre);
+  return `${[nko, fr].filter(Boolean).join("\n")}\n`;
+}
