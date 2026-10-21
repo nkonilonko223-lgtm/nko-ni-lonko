@@ -2,7 +2,7 @@
 // N'KO NI LONKO — Normalisation pour la recherche et le tri du lexique
 // ============================================================================
 // Retire les marques de ton N'Ko (U+07EB à U+07F3, et U+07FD) et les accents
-// latins, puis met en minuscules. « ߞߎߡߊߘߋ߲߫ » = « ߞߎߡߊߘߋ߲ », « Éruption » = « eruption ».
+// latins, puis met en minuscules. « ߞߎߡߊߘߋ߲ » + U+07EB (ton haut) = « ߞߎߡߊߘߋ߲ », « Éruption » = « eruption ».
 // Sert UNIQUEMENT à comparer : le texte affiché n'est jamais modifié.
 // ============================================================================
 

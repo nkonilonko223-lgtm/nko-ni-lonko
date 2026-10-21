@@ -15,7 +15,7 @@ export const TEXTES_LEXIQUE = {
   // Textes 7 à 11 : fournis par la rédaction (5 octobre 2026), copiés sans modification.
   // Texte 10 : 1re proposition retenue (variante proposée : ߞߏߝߐߟߌ).
   rechercher: { nko: "ߞߎߡߊߘߋ߲ ߘߏ߫ ߢߌߣߌ߲߫...", fr: "Rechercher un terme" },
-  aucunResultat: { nko: "ߞߎߡߊߘߋ߲߫ ߛߌ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬߹", fr: "Aucun terme trouvé" },
+  aucunResultat: { nko: "ߞߎߡߊߘߋ߲ ߛߌ߫ ߡߊ߫ ߛߐ߬ߘߐ߲߬߹", fr: "Aucun terme trouvé" },
   memeDomaine: { nko: "ߘߊߞߎ߲߫ ߞߋߟߋ߲߫ ߞߎߡߊߘߋ߲ ߠߎ߬", fr: "Termes du même domaine" },
   citer: { nko: "ߞߎߡߊߘߋ߲ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer ce terme" },
   copie: { nko: "ߟߊ߬ߓߌ߬ߟߊ߬ߣߍ߲߫߹", fr: "Copié" },
