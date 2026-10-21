@@ -95,6 +95,25 @@ Règle : **l'IA propose, l'humain valide** ; jamais de N'Ko publié sans la réd
 
 **Ordre conseillé après le 30 octobre** : A3 → A2 + A8 → A1 → A4 → contrôles automatiques ; le reste ensuite.
 
+## Application « N'Ko ni Lonko » (accord du propriétaire, 21 octobre 2026)
+
+**Principe** (comme le Financial Times, Twitter Lite, Starbucks, Pinterest) : le site **devient** l'application, un seul code, mise à jour instantanée, très légère. Pas d'application native séparée pour l'instant (deux codes à entretenir, environ 50 000 à 100 000 €). Atout N'Ko : l'application emporte la police Kigelia, le N'Ko y est lisible même sur un téléphone sans police N'Ko.
+
+**À commencer après le 30 octobre, juste après la mise en ligne de la lecture sans connexion** (branche `lot2/hors-ligne`).
+
+**Déjà en place** : la fiche d'application `public/manifest.json` (nom en N'Ko, couleurs, 2 icônes, 2 raccourcis), le réglage iPhone (`appleWebApp`), et le **bouton « Installer l'application » en N'Ko et en français** sur l'accueil (`app/components/HomeClient.tsx`, événement `beforeinstallprompt`). Ce bouton n'apparaît que sur Chrome, Edge et Samsung Internet (Android et ordinateur) ; **jamais sur iPhone** (Safari n'envoie pas ce signal).
+
+| Étape | Contenu | Durée | À fournir |
+|---|---|---|---|
+| 1. Compléter l'application installable | Mettre en ligne la lecture sans connexion ; sur iPhone, petit guide « Partager → Sur l'écran d'accueil » à la place du bouton ; captures d'écran et icônes complètes dans la fiche (fenêtre d'installation plus riche) ; le bouton proposé aussi après quelques lectures, pas seulement sur l'accueil | 2 à 3 jours | Libellés N'Ko du guide iPhone (rédaction) |
+| 2. « Télécharger le numéro » (proposition phare) | Un bouton sur la page d'un numéro garde tous ses articles et images sur le téléphone, pour les lire sans connexion (comme l'édition de The Economist) | 2 jours | Libellé N'Ko du bouton (rédaction) |
+| 3. Sur Google Play | La même application dans la boutique (« Trusted Web Activity »), mise à jour toute seule avec le site ; fichier `/.well-known/assetlinks.json` | 2 à 3 jours | **Compte développeur Google Play** créé par le propriétaire (environ 25 $, une seule fois) ; accord sur l'icône et le nom court |
+| 4. Notification « Nouveau numéro » | Seulement pour les lecteurs qui l'acceptent, jamais à la première visite ; Android, et iPhone si l'application est installée ; clés d'envoi côté serveur seulement ; une phrase dans la Confidentialité | 4 à 6 jours | Texte N'Ko de la notification (rédaction) |
+
+**Plus tard, si l'audience grandit** : l'App Store d'Apple, avec un vrai plus par rapport au site (numéros hors ligne, notifications, audio des termes), sinon Apple refuse ; compte Apple (99 $ par an) et construction sur Mac.
+
+**Règles** : hors ligne d'abord ; moins de 1 Mo ; ouverture rapide en 3G ; une seule identité (nom, icône, textes) ; notifications rares ; aucun N'Ko écrit par l'IA (libellés vides tant que la rédaction ne les a pas fournis).
+
 ## Ordre recommandé
 
 | # | Chantier | Pourquoi dans cet ordre |
