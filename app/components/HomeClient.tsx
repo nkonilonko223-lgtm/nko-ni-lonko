@@ -327,7 +327,6 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   
   const typedT = t as unknown as TranslationData;
 
-  const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showVerifyToast, setShowVerifyToast] = useState(false); // 🚀 NOUVEAU : Le déclencheur du Toast
   
@@ -436,15 +435,6 @@ const handleCategorySelect = useCallback((key: string) => {
     });
   }, [activeCategory, debouncedQuery, articles]);
 
-  useEffect(() => {
-    if (articles.length > 0) {
-      const timer = setTimeout(() => setLoading(false), 400);
-      return () => clearTimeout(timer);
-    }
-    const maxTimer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(maxTimer);
-  }, [articles]);
-
   // 🚀 RADAR 1/1000 : Intercepte la confirmation sans alerter ESLint
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -506,20 +496,6 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       <a href="#articles" className="skip-to-content">
         {isNko ? "ߥߊ߫ ߞߣߐߘߐ ߝߟߍ߫" : "Aller au contenu"}
       </a>
-
-      <div
-        id="preloader"
-        role="status"
-        aria-live="polite"
-        aria-label={isNko ? "ߟߊߖߛߐߟߌ ߦߋ߫ ߞߊ߬ ߞߍ߫..." : "Chargement en cours..."}
-        data-loaded={!loading}
-      >
-        <div className="loader-symbol" aria-hidden="true">ߒ</div>
-        <div className="loader-line" aria-hidden="true"></div>
-        <span className="sr-only">
-          {isNko ? "ߟߊߖߛߐߟߌ ߦߋ߫ ߞߊ߬ ߞߍ߫..." : "Chargement en cours..."}
-        </span>
-      </div>
 
       {/* 🚀 L'INJECTION DU RÉACTEUR (Optimisation AVIF Extrême 1/1000) */}
       <div className="cosmic-background" aria-hidden="true">

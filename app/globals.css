@@ -208,48 +208,8 @@
    LAYER 2 — COMPONENTS
    =========================================== */
 @layer components {
-  /* =========================================
-     2.1 — PRELOADER
-     ========================================= */
-  #preloader {
-    position: fixed;
-    inset: 0;
-    background: var(--color-void);
-    z-index: var(--z-preloader);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    transition: opacity 0.8s var(--ease-out-expo),
-                visibility 0.8s;
-  }
-
-  #preloader[data-loaded="true"] {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .loader-symbol {
-    font-family: var(--font-kigelia);
-    font-size: clamp(3rem, 5vw, 5rem);
-    color: var(--color-gold);
-    animation: pulse-gold 2s infinite;
-    text-shadow: 0 0 40px rgba(251, 191, 36, 0.5);
-  }
-
-  .loader-line {
-    width: 0;
-    height: 3px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      var(--color-gold),
-      transparent
-    );
-    margin-top: 30px;
-    animation: grow-line 2s var(--ease-smooth) forwards;
-  }
+  /* 2.1 — PRELOADER : retiré le 21 octobre 2026. Il cachait l'accueil 5 à 7 s sur un
+     téléphone lent (et pour toujours sans JavaScript) alors que le contenu était prêt. */
 
   /* =========================================
      2.2 — BACKGROUND COSMIQUE (Parallaxe)
@@ -1211,33 +1171,6 @@ nav {
 /* ===========================================
    KEYFRAMES — En dehors des layers
    =========================================== */
-@keyframes pulse-gold {
-  0%,
-  100% {
-    opacity: 0.6;
-    transform: scale(0.95);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes grow-line {
-  0% {
-    width: 0;
-    opacity: 0;
-  }
-  50% {
-    width: 150px;
-    opacity: 1;
-  }
-  100% {
-    width: 300px;
-    opacity: 0;
-  }
-}
-
 @keyframes pulse-gold-premium {
   0% { opacity: 0.2; }
   100% { opacity: 0.8; }
@@ -1551,11 +1484,6 @@ nav {
   .cta-btn:hover {
     transform: none;
   }
-
-  .loader-symbol {
-    animation: none;
-    opacity: 1;
-  }
 }
 
 /* ===========================================
@@ -1592,7 +1520,6 @@ nav {
   }
 
   .cosmic-background,
-  #preloader,
   nav,
   .search-container,
   .categories-wrapper,
