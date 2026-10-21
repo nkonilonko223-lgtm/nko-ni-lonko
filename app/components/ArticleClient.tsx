@@ -21,7 +21,7 @@ import { PortableTextBlock } from "@portabletext/types";
 import { formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
-import { contientNko, sensDe, separerTitre } from "./numero/titre";
+import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
 
@@ -139,9 +139,11 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
     triggerVibration();
     if (navigator.share) {
       try {
+        // Une ligne par langue, jamais les deux sens d'écriture sur une ligne (sinon WhatsApp
+        // mélange les mots) ; le lien, ajouté par le téléphone, va sur sa propre ligne
         await navigator.share({
-          title: article.title,
-          text: article.excerpt || "Découvrez cet article scientifique.",
+          title: separerLangues(article.title).nko ?? article.title,
+          text: texteDePartage(article.title),
           url: window.location.href,
         });
       } catch (error) {

@@ -13,6 +13,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "./LanguageProvider";
+import { separerLangues, texteDePartage } from "./numero/titre";
 
 interface ArticleToolsProps {
   onZoomIn: () => void;
@@ -290,7 +291,8 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title }: ArticleTool
     setIsExpanded(false); // 🛡️ Ferme le cockpit mobile
     const cleanUrl = getCanonicalUrl();
     if (navigator.share) {
-      navigator.share({ title, url: cleanUrl }).catch(() => {});
+      // Comme le bouton de partage de l'article : une ligne par langue, le lien sur sa propre ligne
+      navigator.share({ title: separerLangues(title).nko ?? title, text: texteDePartage(title), url: cleanUrl }).catch(() => {});
     } else {
       navigator.clipboard.writeText(cleanUrl);
       setCopiedLink(true);
