@@ -239,7 +239,7 @@ export async function generateMetadata(
   // 🚀 CORRECTION CRITIQUE : "let" au lieu de "const"
   let ogImage = imagePartage ? `${SITE_URL}/og/articles/${imagePartage}` : article.mainImageUrl || IMAGE_PARTAGE_ACCUEIL.url;
   // L'image fabriquée montre le titre : son texte alternatif est le titre
-  const ogAlt = imagePartage ? article.title : article.mainImageRaw?.alt || article.title;
+  const ogAlt = imagePartage ? article.title : article.mainImageRaw?.alt?.trim() || article.title;
 
   // 🛡️ LE BOUCLIER ANTI-TIMEOUT (Ingénierie 1/10000)
   if (ogImage.includes('cdn.sanity.io')) {

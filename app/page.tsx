@@ -103,7 +103,7 @@ function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArticle {
     title: raw.title || "ߛߊ߲߬ߕߊ߫ ߕߍ߫ | Sans titre",
     slug: raw.slug.current,
     mainImageUrl: raw.mainImage ? urlFor(raw.mainImage)?.url() || null : null,
-    mainImageAlt: raw.mainImage?.alt || null,
+    mainImageAlt: raw.mainImage?.alt?.trim() || null,
     mainImagePosition: positionDuCadrage(raw.mainImage?.hotspot) || null,
     publishedAt: raw.publishedAt || new Date().toISOString(),
     excerpt: raw.excerpt || "", 

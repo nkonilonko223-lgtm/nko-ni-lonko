@@ -306,10 +306,10 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         return (
           <FadeInBlock>
             <figure className="my-10 md:my-14 print:block print:opacity-100">
-              <ZoneAgrandissable image={{ url: imageUrl, alt: imageValue.alt || '', captionNko: imageValue.captionNko, caption: imageValue.caption }}>
+              <ZoneAgrandissable image={{ url: imageUrl, alt: imageValue.alt?.trim() || '', captionNko: imageValue.captionNko, caption: imageValue.caption }}>
                  <Image
                    src={imageUrl} 
-                   alt={imageValue.alt || 'Illustration scientifique'} 
+                   alt={imageValue.alt?.trim() || 'Illustration scientifique'} 
                    width={1200} 
                    height={800} 
                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02] print:scale-100" 

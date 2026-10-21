@@ -29,7 +29,7 @@ const resumeDe = (numero: Numero) => numero.excerpt || numero.sommaire.find((a) 
 // 1200×630 autour du point d'intérêt ; à défaut, l'image de l'accueil (jamais next/og).
 // Le bandeau n'existe que sur l'image de partage : la couverture affichée sur le site reste sans texte.
 const imagePartage = (numero: Numero) => {
-  const alt = numero.couverture?.alt || numeroFr(numero.numero);
+  const alt = numero.couverture?.alt?.trim() || numeroFr(numero.numero);
   const fabriquee = (IMAGES_PARTAGE_NUMEROS as Record<string, string>)[numero.slug];
   if (fabriquee) return { url: `${SITE_URL}/og/numeros/${fabriquee}`, width: 1200, height: 630, alt };
   return numero.couverture?.url
