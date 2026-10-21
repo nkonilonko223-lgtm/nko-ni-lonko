@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { carteSansMelange } from "../lib/carte-partage";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import { jsonLd } from "../lib/jsonld";
 import PrivacyClient from "./PrivacyClient";
@@ -6,7 +7,7 @@ import PrivacyClient from "./PrivacyClient";
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   title: "ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ | Confidentialité | N'Ko ni Lonko",
   description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ. Politique de confidentialité et protection des données de la plateforme N'Ko ni Lonko — vulgarisation scientifique bilingue N'Ko/Français. Collecte minimale, zéro publicité, sécurité maximale.",
   alternates: {
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     creator: COMPTE_X,
     site: COMPTE_X,
   },
-};
+});
 
 // 2. L'INJECTION DU VISUEL
 // JSON-LD Privacy

@@ -1,0 +1,33 @@
+// ============================================================================
+// N'KO NI LONKO — Carte de partage sans mélange des deux sens d'écriture
+// ============================================================================
+// WhatsApp, Telegram, X… affichent og:title, og:description et og:site_name sur des
+// lignes qu'ils coupent eux-mêmes : une ligne qui mêle le N'Ko (droite à gauche) et le
+// français (gauche à droite) s'y affiche en désordre (« du) … (Niger »).
+// Règle (22 octobre 2026, demande de MckV) : titre de la carte = partie N'Ko ;
+// description = partie française ; nom du site = « N'Ko ni Lonko ». Le <title> de la page
+// (onglet, Google) ne change pas. Le texte n'est jamais réécrit : voir separerLangues.
+// ============================================================================
+import type { Metadata } from "next";
+import { separerLangues } from "../components/numero/titre";
+
+const texte = (v: unknown) => (typeof v === "string" ? v : undefined);
+
+// descriptionDuTitre (article, numéro) : la description est la partie française du titre,
+// pour que la carte nomme la page dans les deux langues
+export function carteSansMelange(m: Metadata, { descriptionDuTitre = false } = {}): Metadata {
+  const og = m.openGraph;
+  const titre = texte(og?.title) ?? texte(m.title);
+  const description = texte(og?.description) ?? texte(m.description);
+  const t = separerLangues(titre);
+  const d = separerLangues(description);
+  const carte = {
+    title: t.nko ?? t.fr ?? titre,
+    description: (descriptionDuTitre && t.nko && t.fr) || d.fr || d.nko || description,
+  };
+  return {
+    ...m,
+    ...(og ? { openGraph: { ...og, ...carte, siteName: "N'Ko ni Lonko" } } : {}),
+    ...(m.twitter ? { twitter: { ...m.twitter, ...carte } } : {}),
+  };
+}

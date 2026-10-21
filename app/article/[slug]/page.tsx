@@ -5,6 +5,7 @@ import { urlFor } from "../../../sanity/image";
 import ArticleClient from "../../components/ArticleClient";
 import CustomPortableText from "../../components/CustomPortableText";
 import { Metadata } from "next";
+import { carteSansMelange } from "../../lib/carte-partage";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../lib/partage";
@@ -258,7 +259,7 @@ export async function generateMetadata(
   // 👑 BILINGUISME ABSOLU : Si pas de résumé, N'Ko d'abord, Français ensuite.
   const metaDescription = article.excerpt || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. Découvrez cet article scientifique exclusif sur N'Ko ni Lonko.";
 
-  return {
+  return carteSansMelange({
     // 👑 N'Ko is King : titre de l'article ; le nom de la revue est ajouté UNE fois par le modèle
     // général (app/layout.tsx, « %s | … ») — l'ajouter ici le doublait dans l'onglet et sur Google
     title: article.title,
@@ -340,7 +341,7 @@ export async function generateMetadata(
       creator: COMPTE_X,
       site: COMPTE_X,
     },
-  };
+  }, { descriptionDuTitre: true });
 }
 
 // ==============================================================================

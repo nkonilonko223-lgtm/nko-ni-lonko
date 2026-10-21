@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { carteSansMelange } from "../lib/carte-partage";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import { jsonLd } from "../lib/jsonld";
 import TermsClient from "./TermsClient";
@@ -6,7 +7,7 @@ import TermsClient from "./TermsClient";
 // 1. LE BOUCLIER SEO (Optimisation 1/1000 pour Google et Partage)
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.nkonilonko.com";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   title: "ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬ | Conditions d'utilisation | N'Ko ni Lonko",
   description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬. Conditions générales d'utilisation de N'Ko ni Lonko — plateforme de vulgarisation scientifique bilingue N'Ko/Français. Propriété intellectuelle, charte éditoriale, droits des auteurs.",
   alternates: {
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     creator: COMPTE_X,
     site: COMPTE_X,
   },
-};
+});
 
 // 2. L'INJECTION DU VISUEL
 // JSON-LD Terms

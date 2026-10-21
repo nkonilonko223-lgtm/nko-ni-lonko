@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { carteSansMelange } from "../lib/carte-partage";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import { SIEGE, TELEPHONES } from "../lib/coordonnees";
 import { jsonLd } from "../lib/jsonld";
@@ -6,7 +7,7 @@ import ContactClient from "./ContactClient";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   title: "ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ | Contact | N'Ko ni Lonko",
   description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߛߐ߬ߘߐ߲߬. Contactez l'équipe N'Ko ni Lonko — plateforme de vulgarisation scientifique bilingue N'Ko/Français. Email : contact@nkonilonko.com. Siège : Bamako, Mali.",
   alternates: {
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
     creator: COMPTE_X,
     site: COMPTE_X,
   },
-};
+});
 
 // JSON-LD Contact
 const contactJsonLd = {

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { carteSansMelange } from "./lib/carte-partage";
 import localFont from "next/font/local";
 import { Montserrat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -62,7 +63,7 @@ export const viewport: Viewport = {
 // ============================================================================
 // 4. MÉTADONNÉES GLOBALES (L'ARMURE SEO IMPÉRIALE - HYBRIDE)
 // ============================================================================
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   metadataBase: new URL(SITE_URL),
   manifest: "/manifest.json",
   verification: {
@@ -141,7 +142,7 @@ export const metadata: Metadata = {
     ]
   },
   robots: { index: true, follow: true }
-};
+});
 
 // ============================================================================
 // 5. LE SCRIPT DE BLOCAGE ANTI-FLASH (OPTIMISÉ 1/1000)

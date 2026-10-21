@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { carteSansMelange } from "../../lib/carte-partage";
 import { notFound } from "next/navigation";
 import VueNumero from "../../components/numero/VueNumero";
 import PiluleRetour from "../../components/PiluleRetour";
@@ -49,14 +50,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const titre = titreDe(numero);
   const description = resumeDe(numero);
   const image = imagePartage(numero);
-  return {
+  return carteSansMelange({
     title: titre,
     description,
     // « nqo » (N'Ko) n'est pas dans la liste de Next.js : même écriture que la page article
     alternates: { canonical: url, languages: { nqo: url, "fr-FR": url, "x-default": url } as Record<string, string> },
     openGraph: { title: titre, description, url, siteName: "N'Ko ni Lonko", locale: "nqo", alternateLocale: ["fr_FR"], type: "website", images: [image] },
     twitter: { card: "summary_large_image", title: titre, description, images: [image], creator: COMPTE_X, site: COMPTE_X },
-  };
+  }, { descriptionDuTitre: true });
 }
 
 export default async function PageNumero({ params }: { params: Promise<{ slug: string }> }) {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { carteSansMelange } from "../lib/carte-partage";
 import Link from "next/link";
 import { getSanityClient } from "../../sanity/fetch";
 import { TEXTES_LEXIQUE } from "../components/lexique/textes";
@@ -19,7 +20,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 const TITRE = `${TEXTES_LEXIQUE.dictionnaire.nko} | ${TEXTES_LEXIQUE.dictionnaire.fr}`;
 const DESCRIPTION = "Dictionnaire scientifique N'Ko – français de la revue N'Ko ni Lonko : chaque terme défini en N'Ko et en français.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   title: TITRE,
   description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/lexique` },
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     images: [IMAGE_PARTAGE_LEXIQUE],
   },
   twitter: { card: "summary_large_image", title: TITRE, description: DESCRIPTION, images: [IMAGE_PARTAGE_LEXIQUE], creator: COMPTE_X, site: COMPTE_X },
-};
+});
 
 const QUERY = `*[_type == "terme" && defined(slug.current)] {
   termeNko, termeFr, definitionNko, definitionFr, domaine, "slug": slug.current

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { carteSansMelange } from "../lib/carte-partage";
 import { COMPTE_X, IMAGE_PARTAGE_A_PROPOS, URL_X } from "../lib/partage";
 import { jsonLd } from "../lib/jsonld";
 import AboutClient from "./AboutClient";
@@ -8,7 +9,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 // ==============================================================================
 // SEO — Métadonnées enrichies 1/10000
 // ==============================================================================
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   // 👑 N'Ko is King
   title: "ߞߊ߲߬ߞߎߡߊ | À Propos | N'Ko ni Lonko",
   description: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫. Notre mission : vulgariser la science en langue N'Ko pour le partage du savoir universel.",
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
     creator: COMPTE_X,
     site: COMPTE_X,
   },
-};
+});
 
 // ==============================================================================
 // JSON-LD — Fondateur + Organisation + Page

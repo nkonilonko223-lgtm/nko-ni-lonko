@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { carteSansMelange } from "../lib/carte-partage";
 import Image from "next/image";
 import Link from "next/link";
 import { dateFr, dateNko } from "../components/numero/VueNumero";
@@ -16,7 +17,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 const TITRE = `${TEXTES_NUMEROS.lesNumeros.nko} | ${TEXTES_NUMEROS.lesNumeros.fr}`;
 const DESCRIPTION = "Tous les numéros de la revue mensuelle N'Ko ni Lonko, en N'Ko et en français.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   title: TITRE,
   description: DESCRIPTION,
   alternates: { canonical: `${SITE_URL}/numeros` },
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     images: [IMAGE_PARTAGE_ACCUEIL],
   },
   twitter: { card: "summary_large_image", title: TITRE, description: DESCRIPTION, images: [IMAGE_PARTAGE_ACCUEIL], creator: COMPTE_X, site: COMPTE_X },
-};
+});
 
 export default async function PageNumeros() {
   const numeros = await getNumeros();

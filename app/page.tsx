@@ -2,6 +2,7 @@ import { getSanityClient } from "../sanity/fetch";
 import { urlFor } from "../sanity/image";
 import HomeClient from "./components/HomeClient";
 import { Metadata } from "next";
+import { carteSansMelange } from "./lib/carte-partage";
 import { IMAGE_PARTAGE_ACCUEIL } from "./lib/partage";
 import { positionDuCadrage } from "./lib/point-interet";
 
@@ -56,7 +57,7 @@ export interface SafeHomeArticle {
 // ==============================================================================
 // 2. SEO (Armure Globale de la Page d'Accueil - MISE À JOUR 1/1000)
 // ==============================================================================
-export const metadata: Metadata = {
+export const metadata: Metadata = carteSansMelange({
   // Titre Hybride : N'Ko souverain
   title: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko",
   
@@ -84,7 +85,7 @@ export const metadata: Metadata = {
     images: [IMAGE_PARTAGE_ACCUEIL],
     type: "website",
   },
-};
+});
 
 // ==============================================================================
 // 3. FACTORY DE SÉCURITÉ (Bouclier Anti-Crash)
