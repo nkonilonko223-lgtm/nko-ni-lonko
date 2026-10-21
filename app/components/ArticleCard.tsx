@@ -249,7 +249,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
 <div className="flex flex-1 flex-col p-6">
             
-            <div className="mb-4 flex items-center justify-between font-mono text-xs text-slate-500">
+            <div className="mb-4 flex items-center justify-between font-mono text-xs text-slate-400">
               <span className={`flex items-center gap-1.5 ${!isNko ? 'uppercase tracking-wide' : 'font-kigelia text-sm'}`}>
                 {isNko 
                   ? formatDateNkoFull(article.publishedAt) 
@@ -303,7 +303,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               {resume ? resume.nko : (isNko ? "ߞߣߐߘߐ ߣߌ߲߬ ߘߐߜߍ߫..." : "Découvrez les détails fascinants de cette recherche scientifique...")}
             </p>
             {resume?.fr && (
-              <p lang="fr" dir="ltr" className="mt-2 line-clamp-2 text-start font-sans text-xs leading-relaxed text-slate-500">
+              <p lang="fr" dir="ltr" className="mt-2 line-clamp-2 text-start font-sans text-xs leading-relaxed text-slate-400">
                 {resume.fr}
               </p>
             )}
@@ -324,7 +324,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
                {/* 🚀 L'ARME ABSOLUE : Le Dual-Stack Byline (Logique 1/1000) */}
                 <div className={`flex flex-col justify-center ${isNko ? 'items-end' : 'items-start'}`}>
-                  <span className={`text-[9px] uppercase tracking-widest text-slate-500 mb-1 ${isNko ? 'font-kigelia' : ''}`}>
+                  <span className={`text-[9px] uppercase tracking-widest text-slate-400 mb-1 ${isNko ? 'font-kigelia' : ''}`}>
                     {isNko ? 'ߛߓߍߦߟߊ' : 'Auteur'}
                   </span>
                   

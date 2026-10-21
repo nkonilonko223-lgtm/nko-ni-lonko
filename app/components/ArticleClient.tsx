@@ -346,7 +346,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         )}
         {/* Crédit de la couverture, en petit : N'Ko d'abord (si la rédaction l'a fourni), puis français */}
         {article.mainImageUrl && (article.mainImageRaw?.sourceNko || article.mainImageRaw?.source) && (
-          <p dir="rtl" className="mt-2 flex flex-wrap items-baseline justify-start gap-x-2 text-[10px] md:text-xs text-gray-500 print:text-gray-600">
+          <p dir="rtl" className="mt-2 flex flex-wrap items-baseline justify-start gap-x-2 text-[10px] md:text-xs text-gray-400 print:text-gray-600">
             {article.mainImageRaw.sourceNko && <span lang="nqo" className="font-kigelia text-xs md:text-sm">{article.mainImageRaw.sourceNko}</span>}
             {article.mainImageRaw.source && <span lang="fr" dir="ltr" translate="no">{article.mainImageRaw.source}</span>}
           </p>

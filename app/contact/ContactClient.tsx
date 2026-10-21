@@ -361,7 +361,7 @@ export default function ContactClient() {
                 <div className="mt-12 pt-8 border-t border-white/10">
                     <div className="mb-6 flex flex-col items-start" dir="rtl">
                         <h3 className="font-kigelia text-xl text-white mb-1">ߓߟߐߟߐ ߞߙߏߝߏ ߟߎ߬</h3>
-                        <span className="text-[10px] tracking-[0.2em] text-gray-500 uppercase font-bold" lang="fr" dir="ltr">Réseaux Officiels</span>
+                        <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold" lang="fr" dir="ltr">Réseaux Officiels</span>
                     </div>
                     <div className="flex flex-wrap gap-4">
                         {socialLinks.map((link, i) => (

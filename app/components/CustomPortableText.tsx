@@ -345,7 +345,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
 
                   {/* 4. Crédit et licence (obligatoire pour les images CC BY) : petit, même texte dans les deux langues */}
                   {imageValue.source && (
-                    <p dir="ltr" translate="no" className="text-[10px] md:text-xs text-gray-500 print:text-gray-600">
+                    <p dir="ltr" translate="no" className="text-[10px] md:text-xs text-gray-400 print:text-gray-600">
                       {imageValue.source}
                     </p>
                   )}
@@ -570,7 +570,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                 <p
                   dir="ltr"
                   lang="fr"
-                  className="font-sans text-sm md:text-base text-gray-500 text-center uppercase tracking-[0.3em] print:text-gray-600 mt-1"
+                  className="font-sans text-sm md:text-base text-gray-400 text-center uppercase tracking-[0.3em] print:text-gray-600 mt-1"
                 >
                   {sectionValue.titleFr}
                 </p>
