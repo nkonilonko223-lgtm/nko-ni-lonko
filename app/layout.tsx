@@ -149,15 +149,27 @@ export const metadata: Metadata = carteSansMelange({
 // 5. LE SCRIPT DE BLOCAGE ANTI-FLASH (OPTIMISÉ 1/1000)
 // ============================================================================
 // Exécution unique et ultra-légère avant le rendu React. Fini les ralentissements.
+// Traduction automatique (22 octobre 2026) : en mode N'Ko, le navigateur ne doit pas proposer
+// de traduire (<html translate="no">, envoyé par le serveur, + balise Google « notranslate »,
+// ajoutée ici) ; en mode français, la traduction reste possible. Même règle dans LanguageProvider.
 const themeInitScript = `
   (function() {
     try {
       var savedLang = localStorage.getItem('preferred-lang');
       var lang = (savedLang === 'fr' || savedLang === 'nko') ? savedLang : 'nko';
       var dir = lang === 'nko' ? 'rtl' : 'ltr';
-      
+
       document.documentElement.setAttribute('lang', lang === 'nko' ? 'nqo' : 'fr');
       document.documentElement.setAttribute('dir', dir);
+      if (lang === 'nko') {
+        var balise = document.createElement('meta');
+        balise.name = 'google';
+        balise.content = 'notranslate';
+        balise.id = 'sans-traduction';
+        document.head.appendChild(balise);
+      } else {
+        document.documentElement.removeAttribute('translate');
+      }
       document.body.setAttribute('dir', dir);
     } catch (e) {}
   })();

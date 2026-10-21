@@ -55,6 +55,22 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     document.body.setAttribute("dir", direction);
     // Code officiel ISO du N'Ko : « nqo » (la préférence interne reste « nko »)
     document.documentElement.setAttribute("lang", lang === "nko" ? "nqo" : "fr");
+    // N'Ko : pas de proposition de traduction (translate="no" + balise Google) ;
+    // français : traduction permise. Même règle que le script de app/layout.tsx
+    const sansTraduction = document.getElementById("sans-traduction");
+    if (lang === "nko") {
+      document.documentElement.setAttribute("translate", "no");
+      if (!sansTraduction) {
+        const balise = document.createElement("meta");
+        balise.name = "google";
+        balise.content = "notranslate";
+        balise.id = "sans-traduction";
+        document.head.appendChild(balise);
+      }
+    } else {
+      document.documentElement.removeAttribute("translate");
+      sansTraduction?.remove();
+    }
     localStorage.setItem("preferred-lang", lang);
   }, [lang, isMounted, existingContext]);
 
