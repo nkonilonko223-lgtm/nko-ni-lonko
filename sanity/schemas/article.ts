@@ -229,7 +229,7 @@ export default defineType({
               {
                 name: 'termeLexique',
                 type: 'object',
-                title: '📖 ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ / Terme du lexique',
+                title: '📖 ߞߎߡߊߘߋ߲ ߛߙߍߘߍ / Terme du lexique',
                 fields: [
                   {
                     name: 'terme',

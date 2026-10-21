@@ -36,7 +36,7 @@ const regleDoublon = (champ: 'termeFr' | 'termeNko') => (rule: import('sanity').
 
 export default defineType({
   name: 'terme',
-  title: 'ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ / Lexique',
+  title: 'ߞߎߡߊߘߋ߲ ߛߙߍߘߍ / Lexique',
   type: 'document',
   icon: () => '📖',
   // 🔒 Règle 6 : tout texte doit rester en Unicode normalisé (NFC). Avertissement non bloquant.

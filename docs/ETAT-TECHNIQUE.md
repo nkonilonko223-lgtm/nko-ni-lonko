@@ -12,7 +12,7 @@
 | Outil | Usage |
 |---|---|
 | **Presentation** (onglet en haut) | Voir un **brouillon sur le vrai site** avant de publier (bouton « Quitter » pour revenir à la vue publique) |
-| **Lexique** (ߞߎߡߊߘߋ߲߫ ߛߙߍߘߍ) | Créer un terme **une fois** (N'Ko + français + définitions + domaine), puis le relier dans le texte avec le bouton **📖** (menu « ⋯ » si l'éditeur est étroit) |
+| **Lexique** (ߞߎߡߊߘߋ߲ ߛߙߍߘߍ) | Créer un terme **une fois** (N'Ko + français + définitions + domaine), puis le relier dans le texte avec le bouton **📖** (menu « ⋯ » si l'éditeur est étroit) |
 | **Encadrés** | Définition · Le saviez-vous ? · Question · Information · Attention |
 | **Contrôles automatiques** | En **rouge** (bloque la publication) : titre, résumé, date, lien manquants. En **orange** (avertit) : texte N'Ko non NFC, terme relié dans une seule langue ou plusieurs fois, terme en double |
 
