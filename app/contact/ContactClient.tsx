@@ -208,7 +208,7 @@ export default function ContactClient() {
 
 
  return (
-    <div className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black">
+    <main className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black">
       
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Taille Affinée 1/10000) */}
       <button
@@ -541,6 +541,6 @@ export default function ContactClient() {
             </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

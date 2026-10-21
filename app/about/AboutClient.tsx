@@ -104,7 +104,7 @@ export default function AboutClient() {
   ];
 
   return (
-    <div className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black overflow-hidden">
+    <main className="relative text-white flex flex-col items-center justify-center px-6 pt-32 pb-24 text-center selection:bg-[#fbbf24] selection:text-black overflow-hidden">
       
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Version Épurée 1/10000) */}
       <button
@@ -290,6 +290,6 @@ export default function AboutClient() {
         </div>
 
       </div>
-    </div>
+    </main>
   );
 }
