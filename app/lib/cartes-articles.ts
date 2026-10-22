@@ -5,6 +5,7 @@
 // pages. Serveur uniquement : lit Sanity (version publiée, ou brouillons en mode aperçu).
 // ============================================================================
 
+import { client } from "../../sanity/client";
 import { getSanityClient } from "../../sanity/fetch";
 import { urlFor } from "../../sanity/image";
 import { positionDuCadrage } from "./point-interet";
@@ -121,3 +122,16 @@ export async function getArticlesCartes(valeursCategorie?: string[]): Promise<Sa
   }
 }
 
+// Valeurs de catégorie des articles publiés : une discipline n'a de page que si elle a des articles
+// (pages construites à l'avance et plan du site ; étiquette « article », vidée par la sonnette)
+export async function getValeursCategories(): Promise<string[]> {
+  try {
+    return await client.fetch<string[]>(
+      `array::unique(*[_type == "article" && defined(category)].category)`,
+      {},
+      { next: { tags: ["article"], revalidate: 3600 } }
+    );
+  } catch {
+    return [];
+  }
+}

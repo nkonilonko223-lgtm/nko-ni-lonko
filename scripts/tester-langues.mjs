@@ -30,7 +30,7 @@ const get = async (p, h = UA, redirect = "manual") => { const r = await fetch(BA
 const SITE = "https://www.nkonilonko.com".replace(/\/$/, "");
 
 // 1. Pages : les deux versions répondent, avec la bonne langue
-const chemins = ["/", "/about", "/contact", "/privacy", "/terms", "/numeros", "/lexique", "/article/le-geant-a-crete-du-niger", "/article/bienvenue-sur-n-ko-ni-lonko", "/offline", "/bibliotheque", "/auteurs/moustapha-camara"];
+const chemins = ["/", "/about", "/contact", "/privacy", "/terms", "/numeros", "/lexique", "/article/le-geant-a-crete-du-niger", "/article/bienvenue-sur-n-ko-ni-lonko", "/offline", "/bibliotheque", "/auteurs/moustapha-camara", "/categories/astronomie"];
 for (const c of chemins) {
   for (const [langue, p] of [["nqo", c], ["fr", c === "/" ? "/fr" : `/fr${c}`]]) {
     const { r, h } = await get(p);
@@ -42,7 +42,7 @@ for (const c of chemins) {
 }
 
 // 2. Cartes de partage, titres, canonique et hreflang par version (robot WhatsApp)
-for (const c of ["/", "/about", "/article/le-geant-a-crete-du-niger", "/lexique", "/numeros"]) {
+for (const c of ["/", "/about", "/article/le-geant-a-crete-du-niger", "/lexique", "/numeros", "/categories/astronomie"]) {
   for (const langue of ["nqo", "fr"]) {
     const p = langue === "fr" ? (c === "/" ? "/fr" : `/fr${c}`) : c;
     const { h } = await get(p, BOT);

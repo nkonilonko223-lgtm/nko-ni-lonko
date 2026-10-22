@@ -3,6 +3,8 @@ import { client } from '../sanity/client';
 import { getLiensNumeros } from './lib/numeros';
 import { adresse } from './lib/langue';
 import { getLiensAuteurs } from './lib/auteurs';
+import { getValeursCategories } from './lib/cartes-articles';
+import { DISCIPLINES, cleDeCategorie } from './lib/categories';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -67,6 +69,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // 🧭 Pages des disciplines (seulement celles qui ont au moins un article publié)
+  const clesUtilisees = new Set((await getValeursCategories()).map(cleDeCategorie));
+  const disciplineEntries: MetadataRoute.Sitemap = DISCIPLINES.filter((d) => clesUtilisees.has(d.cle)).map((d) => ({
+    url: `${baseUrl}/categories/${d.slug}`,
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
   // ✍️ Pages des auteurs (ceux qui ont au moins un article publié)
   const auteurEntries: MetadataRoute.Sitemap = (await getLiensAuteurs()).map((a) => ({
     url: `${baseUrl}/auteurs/${a.slug}`,
@@ -128,6 +138,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     ...numeroEntries,
+    ...disciplineEntries,
     ...auteurEntries,
     ...postEntries,
     {
