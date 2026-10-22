@@ -17,9 +17,10 @@
 import { readFileSync } from 'node:fs';
 
 type Parties = { nko: string | null; fr: string | null };
-const { separerLangues, descriptionDeCarte } = (await import(new URL('../app/components/numero/titre.ts', import.meta.url).href)) as {
+const { separerLangues, couperTexte, memeTexte } = (await import(new URL('../app/components/numero/titre.ts', import.meta.url).href)) as {
   separerLangues: (texte?: string | null) => Parties;
-  descriptionDeCarte: (titreFr: string, resumeFr?: string | null, max?: number) => string;
+  couperTexte: (texte: string, max?: number) => string;
+  memeTexte: (a: string, b: string) => boolean;
 };
 
 const estNko = (c: string) => { const n = c.codePointAt(0) ?? 0; return n >= 0x07c0 && n <= 0x07ff; };
@@ -60,21 +61,21 @@ verifier('vide', '', { nko: null, fr: null });
 verifier('parenthèse au début', `(Bienvenue sur N'Ko ni Lonko) ${A} ${B}`, { nko: `${A} ${B}`, fr: "Bienvenue sur N'Ko ni Lonko" });
 verifier('parenthèse au début, sans N\'Ko après', '(Note) Texte français', { nko: null, fr: '(Note) Texte français' });
 
-console.log('\n— Description des cartes : « titre français — résumé français », 155 caractères au plus');
-const description = (source: string, titreFr: string, resumeFr: string | null, attendu?: string) => {
-  const r = descriptionDeCarte(titreFr, resumeFr);
+console.log('\n— Résumé français des cartes : coupé sur un espace, 155 caractères au plus');
+const coupe = (source: string, texte: string, attendu?: string) => {
+  const r = couperTexte(texte);
   const problemes: string[] = [];
   if (attendu !== undefined && r !== attendu) problemes.push(`attendu « ${attendu} »`);
   if ([...r].length > 155) problemes.push(`${[...r].length} caractères`);
-  if (!r.startsWith(titreFr.slice(0, 20))) problemes.push('le titre ne vient pas en premier');
+  if (!texte.startsWith(r.replace(/…$/, ''))) problemes.push('texte réécrit');
   if (/[\s,;:—–-]…$/.test(r)) problemes.push('coupure mal placée');
   if (problemes.length) erreurs++;
   console.log(`${problemes.length ? '❌' : '✅'} ${source.slice(0, 40).padEnd(40)} ${[...r].length} car. « ${r} »${problemes.length ? `  ← ${problemes.join(' ; ')}` : ''}`);
 };
-description('titre et résumé', 'Le géant à crête du Niger', 'Quand le Sahara livre ses secrets', 'Le géant à crête du Niger — Quand le Sahara livre ses secrets');
-description('sans résumé', 'Le Soleil', null, 'Le Soleil');
-description('résumé = titre (majuscules)', 'Grand retour vers la Lune', 'GRAND RETOUR VERS LA LUNE', 'Grand retour vers la Lune');
-description('résumé long, coupé sur un espace', 'Toucher le Soleil', 'La sonde Parker Solar Probe est passée au plus près du Soleil, à six millions de kilomètres de sa surface, plus vite que tout autre objet construit par l\'humanité, et a traversé sa couronne.');
+coupe('court : inchangé', 'Quand le Sahara livre ses secrets', 'Quand le Sahara livre ses secrets');
+coupe('long : coupé sur un espace', 'La sonde Parker Solar Probe est passée au plus près du Soleil, à six millions de kilomètres de sa surface, plus vite que tout autre objet construit par l\'humanité, et a traversé sa couronne.');
+if (memeTexte('Grand retour vers la Lune', 'GRAND  RETOUR VERS LA LUNE')) console.log('✅ résumé qui répète le titre (majuscules, espaces) : reconnu');
+else { erreurs++; console.log('❌ résumé qui répète le titre : non reconnu'); }
 
 console.log('\n— Titres et résumés des articles publiés (Sanity, lecture seule)');
 const REQUETE = '*[_type == "article" && !(_id in path("drafts.**"))] | order(publishedAt asc) { "slug": slug.current, title, excerpt }';
@@ -94,11 +95,16 @@ for (const fichier of process.argv.slice(2)) {
 }
 for (const { source, texte } of textes) verifier(source, texte);
 
-console.log('\n— Description de la carte de chaque article publié');
+// Langue dans l'adresse (B6) : la version N'Ko a une carte en N'Ko, la version française en français
+console.log('\n— Carte de chaque article publié, par version');
+const lettresNkoDe = (t: string) => [...t].filter(estNko).length;
 for (const a of publies) {
-  const titreFr = separerLangues(a.title).fr;
-  if (titreFr) description(a.slug, titreFr, separerLangues(a.excerpt).fr);
-  else console.log(`ℹ️  ${a.slug.slice(0, 40).padEnd(40)} pas de titre français : description = résumé`);
+  const t = separerLangues(a.title), d = separerLangues(a.excerpt);
+  const resumeFr = d.fr && t.fr && !memeTexte(d.fr, t.fr) ? couperTexte(d.fr) : null;
+  const resumeNko = d.nko && t.nko && !memeTexte(d.nko, t.nko) ? d.nko : null;
+  const nko = `N'Ko : titre ${t.nko ? `${lettresNkoDe(t.nko)} lettres` : '—'}, résumé ${resumeNko ? `${lettresNkoDe(resumeNko)} lettres` : '—'}`;
+  const fr = `français : « ${t.fr ?? '(pas de titre français)'} », ${resumeFr ? `« ${resumeFr.slice(0, 50)} »` : 'description par défaut'}`;
+  console.log(`ℹ️  ${a.slug.slice(0, 34).padEnd(34)} ${nko} · ${fr}`);
 }
 
 console.log(erreurs ? `\n${erreurs} texte(s) mal traité(s).` : '\nTous les textes sont justes.');

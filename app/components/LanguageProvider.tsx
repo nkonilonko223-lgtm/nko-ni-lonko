@@ -2,8 +2,10 @@
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import fr from "../messages/fr.json"; 
+import { useRouter } from "next/navigation";
+import fr from "../messages/fr.json";
 import nko from "../messages/nko.json";
+import { cheminLangue, cheminSansLangue, langueAdresse } from "../lib/langue";
 
 type Dictionary = typeof fr;
 type Language = "fr" | "nko";
@@ -12,16 +14,23 @@ type LanguageContextType = {
   lang: Language;
   t: Dictionary;
   toggleLanguage: () => void;
+  // Lien interne dans la langue de la page : lien("/about") → « /about » (N'Ko) ou « /fr/about »
+  lien: (chemin: string) => string;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+// Langue dans l'adresse (B6, 22 octobre 2026) : la langue vient de l'adresse de la page
+// (prop « langue », donnée par app/[lang]/layout.tsx) et non plus du navigateur. Le choix
+// gardé (« preferred-lang ») ne sert plus qu'à l'accueil (script du gabarit) et à la
+// fenêtre de choix de la première visite.
+export function LanguageProvider({ children, langue }: { children: React.ReactNode; langue: Language }) {
   // 🚀 LE BOUCLIER ANTI-CLONE (Ingénierie Extrême)
   // Vérifie si un LanguageProvider Maître existe déjà au-dessus de lui.
   const existingContext = useContext(LanguageContext);
+  const router = useRouter();
 
-  const [lang, setLang] = useState<Language>("nko");
+  const lang = langue;
   const [isMounted, setIsMounted] = useState(false);
   const [showPortal, setShowPortal] = useState(false);
 
@@ -33,62 +42,49 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate(30);
   }, []);
 
+  // Fenêtre de choix de la langue : première visite (aucun choix gardé), sur l'accueil
+  // seulement. Un lien partagé (article, numéro…) s'ouvre directement dans sa langue.
   useEffect(() => {
+    if (existingContext) return;
     const timer = setTimeout(() => {
       setIsMounted(true);
-      const rawLang = localStorage.getItem("preferred-lang");
-      const savedLang: Language | null = (rawLang === "fr" || rawLang === "nko") ? rawLang : null;
-      if (savedLang) {
-        setLang(savedLang);
-      } else {
+      let choix: string | null = null;
+      try { choix = localStorage.getItem("preferred-lang"); } catch { /* stockage bloqué */ }
+      const accueil = window.location.pathname === "/" || window.location.pathname === "/fr";
+      if (!choix && accueil) {
         setShowPortal(true);
         document.body.style.overflow = "hidden";
         document.body.style.touchAction = "none";
       }
     }, 0);
     return () => clearTimeout(timer);
-  }, []);
+  }, [existingContext]);
 
-  useEffect(() => {
-    if (!isMounted || existingContext) return;
-    const direction = lang === "nko" ? "rtl" : "ltr";
-    document.body.setAttribute("dir", direction);
-    // Code officiel ISO du N'Ko : « nqo » (la préférence interne reste « nko »)
-    document.documentElement.setAttribute("lang", lang === "nko" ? "nqo" : "fr");
-    // N'Ko : pas de proposition de traduction (translate="no" + balise Google) ;
-    // français : traduction permise. Même règle que le script de app/layout.tsx
-    const sansTraduction = document.getElementById("sans-traduction");
-    if (lang === "nko") {
-      document.documentElement.setAttribute("translate", "no");
-      if (!sansTraduction) {
-        const balise = document.createElement("meta");
-        balise.name = "google";
-        balise.content = "notranslate";
-        balise.id = "sans-traduction";
-        document.head.appendChild(balise);
-      }
-    } else {
-      document.documentElement.removeAttribute("translate");
-      sansTraduction?.remove();
-    }
-    localStorage.setItem("preferred-lang", lang);
-  }, [lang, isMounted, existingContext]);
+  // Garde le choix du lecteur, puis ouvre la même page dans cette langue
+  const allerVers = useCallback((choix: Language) => {
+    try { localStorage.setItem("preferred-lang", choix); } catch { /* stockage bloqué */ }
+    if (choix === lang) return;
+    const { pathname, search, hash } = window.location;
+    router.push(cheminLangue(langueAdresse(choix), cheminSansLangue(pathname)) + search + hash);
+  }, [lang, router]);
 
   const toggleLanguage = useCallback(() => {
     const nextLang = lang === "fr" ? "nko" : "fr";
     if (nextLang === "nko") triggerRoyalVibration();
     else triggerLightVibration();
-    setLang(nextLang);
-  }, [lang, triggerRoyalVibration, triggerLightVibration]);
+    allerVers(nextLang);
+  }, [lang, allerVers, triggerRoyalVibration, triggerLightVibration]);
 
   const handleChooseLanguage = (selectedLang: Language) => {
     if (selectedLang === "nko") triggerRoyalVibration();
     else triggerLightVibration();
-    setLang(selectedLang);
     setShowPortal(false);
     document.body.style.overflow = "";
     document.body.style.touchAction = "";
+    allerVers(selectedLang);
   };
+
+  const lien = useCallback((chemin: string) => cheminLangue(langueAdresse(lang), chemin), [lang]);
 
   const t = lang === "fr" ? fr : nko;
 
@@ -100,7 +96,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   // LE PORTAIL MAÎTRE (Le Design World Class est de retour)
   return (
-    <LanguageContext.Provider value={{ lang, t, toggleLanguage }}>
+    <LanguageContext.Provider value={{ lang, t, toggleLanguage, lien }}>
       
       {isMounted && showPortal && (
         <div 

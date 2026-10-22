@@ -16,7 +16,7 @@ const RETOUR = { nko: "ߛߊ߬ߦߌ߲߬", fr: "Retour" };
 
 export default function PiluleRetour() {
   const router = useRouter();
-  const { lang } = useLanguage();
+  const { lang, lien } = useLanguage();
   const isNko = lang === "nko";
 
   const retour = () => {
@@ -32,7 +32,7 @@ export default function PiluleRetour() {
       depuisLeSite = false;
     }
     if (depuisLeSite && window.history.length > 1) router.back();
-    else router.push("/");
+    else router.push(lien("/"));
   };
 
   return (

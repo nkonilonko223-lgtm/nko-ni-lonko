@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import LienLangue from "../LienLangue";
 import type { ArticleDuSommaire, Numero, RubriqueCourte } from "../../lib/numeros";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
 import { contientNko, sensDe, separerTitre } from "./titre";
@@ -75,7 +75,7 @@ export function TitreArticle({ titre, grand }: { titre: string; grand?: boolean 
 function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean }) {
   const resume = article.excerpt ? sensDe(article.excerpt) : null;
   return (
-    <Link
+    <LienLangue
       href={`/article/${article.slug}`}
       className={`group flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-colors hover:border-[#fbbf24]/50 ${une ? "flex-col md:p-6" : "items-start"}`}
     >
@@ -93,7 +93,7 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
           </span>
         )}
       </span>
-    </Link>
+    </LienLangue>
   );
 }
 
@@ -175,9 +175,9 @@ export default function VueNumero({ numero }: { numero: Numero }) {
                 {edito.excerpt}
               </p>
             )}
-            <Link href={`/article/${edito.slug}`} className="mt-5 inline-flex min-h-11 items-center rounded-full border border-[#fbbf24]/50 px-5 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+            <LienLangue href={`/article/${edito.slug}`} className="mt-5 inline-flex min-h-11 items-center rounded-full border border-[#fbbf24]/50 px-5 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
               <LibelleEnLigne texte={TEXTES_NUMEROS.lireArticle} />
-            </Link>
+            </LienLangue>
           </section>
         )}
 
@@ -204,9 +204,9 @@ export default function VueNumero({ numero }: { numero: Numero }) {
         </section>
 
         <p className="text-center">
-          <Link href="/numeros" className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-5 text-white/80 transition-colors hover:border-[#fbbf24] hover:text-[#fbbf24]">
+          <LienLangue href="/numeros" className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-5 text-white/80 transition-colors hover:border-[#fbbf24] hover:text-[#fbbf24]">
             <LibelleEnLigne texte={TEXTES_NUMEROS.tousLesNumeros} />
-          </Link>
+          </LienLangue>
         </p>
       </div>
     </main>

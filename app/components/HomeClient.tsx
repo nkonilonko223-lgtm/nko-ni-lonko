@@ -176,13 +176,14 @@ interface MagneticLogoProps {
 
 function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
   const router = useRouter();
+  const { lien } = useLanguage();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePointerDown = () => {
     // 🚀 Le Secret du Bâtisseur : Redirection directe vers la vraie page About
     timerRef.current = setTimeout(() => {
       if (typeof navigator !== 'undefined' && navigator.vibrate) navigator.vibrate([100, 50, 100]);
-      router.push("/about");
+      router.push(lien("/about"));
       timerRef.current = null;
     }, 600);
   };
@@ -238,6 +239,7 @@ showInstallBtn?: boolean;
 }
 function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNko }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
+  const { lien } = useLanguage();
 
   useEffect(() => {
     if (!isOpen || !menuRef.current) return;
@@ -293,11 +295,11 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
               </li>
             )}
             {[
-              { href: "/", label: nav.home, active: true },
+              { href: lien("/"), label: nav.home, active: true },
               { href: "#articles", label: nav.articles },
-              { href: "/numeros", label: nav.numeros },
-              { href: "/about", label: nav.about },
-              { href: "/contact", label: nav.contact }
+              { href: lien("/numeros"), label: nav.numeros },
+              { href: lien("/about"), label: nav.about },
+              { href: lien("/contact"), label: nav.contact }
             ].map((link, i) => (
               <li key={i} className="w-full">
                 {link.href.startsWith('#') ? (
@@ -322,7 +324,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
 // 5. COMPOSANT PRINCIPAL
 // ==============================================================================
 export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
-  const { t, lang, toggleLanguage } = useLanguage();
+  const { t, lang, toggleLanguage, lien } = useLanguage();
   const isNko = lang === "nko";
   
   const typedT = t as unknown as TranslationData;
@@ -545,19 +547,19 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
 
         <ul className="nav-links">
           <li className="nav-item">
-            <Link href="/" aria-current="page">{typedT.nav.home}</Link>
+            <Link href={lien("/")} aria-current="page">{typedT.nav.home}</Link>
           </li>
           <li className="nav-item">
             <a href="#articles">{typedT.nav.articles}</a>
           </li>
           <li className="nav-item">
-            <Link href="/numeros">{typedT.nav.numeros}</Link>
+            <Link href={lien("/numeros")}>{typedT.nav.numeros}</Link>
           </li>
           <li className="nav-item">
-            <Link href="/about">{typedT.nav.about}</Link>
+            <Link href={lien("/about")}>{typedT.nav.about}</Link>
           </li>
           <li className="nav-item">
-            <Link href="/contact">{typedT.nav.contact}</Link>
+            <Link href={lien("/contact")}>{typedT.nav.contact}</Link>
           </li>
         </ul>
 
@@ -846,7 +848,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       <i className="ph-bold ph-caret-down" aria-hidden="true"></i>
     </button>
   ) : filteredArticles.length > MAX_ARTICLES_HOMEPAGE ? (
-    <Link href="/articles" className="cta-btn touch-manipulation" style={{
+    <Link href={lien("/articles")} className="cta-btn touch-manipulation" style={{
       background: "var(--gradient-panel)", color: "var(--color-gold)",
       border: "1px solid var(--color-border)", fontSize: "1rem", padding: "16px 40px",
     }}>

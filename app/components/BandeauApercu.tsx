@@ -21,6 +21,8 @@ export default function BandeauApercu() {
       className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-3 rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-lg print:hidden"
     >
       <span>Mode aperçu — brouillons visibles</span>
+      {/* Lien ordinaire voulu : quitter l'aperçu recharge tout le site (un <Link> le préchargerait et couperait l'aperçu). Depuis la langue dans l'adresse, la page « introuvable » attrape toutes les adresses : la règle croit que /api/… est une page. */}
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a
         href="/api/draft-mode/disable"
         className="rounded-full bg-white/20 px-3 py-1 hover:bg-white/30 transition-colors"

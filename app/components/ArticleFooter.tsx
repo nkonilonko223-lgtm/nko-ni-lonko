@@ -14,6 +14,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useLanguage } from "./LanguageProvider";
 import { urlFor } from "../../sanity/image";
 import { PortableTextBlock } from "@portabletext/types";
 import { Turnstile } from '@marsidev/react-turnstile';
@@ -85,6 +86,7 @@ interface ArticleFooterProps {
 // ==============================================================================
 
 export default function ArticleFooter({ lang, author, tags, relatedArticles, references }: ArticleFooterProps) {
+  const { lien } = useLanguage();
   const isNko = lang === 'nko';
   const dir = isNko ? "rtl" : "ltr";
   const alignClass = isNko ? "md:text-right" : "md:text-left";
@@ -544,7 +546,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
               const itemImageUrl = getSafeUrl(item.image);
               return (
                 <Link 
-                  href={`/article/${item.slug}`} 
+                  href={lien(`/article/${item.slug}`)} 
                   key={idx} 
                   onClick={triggerVibration}
                   // 🚀 ACTION A : Le délai de la cascade est calculé ici (idx * 150ms)

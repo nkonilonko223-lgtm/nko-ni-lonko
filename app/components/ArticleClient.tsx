@@ -91,7 +91,7 @@ interface Emplacements {
 }
 
 export default function ArticleClient({ article, bandeau, surtitre, navigation, texte }: { article: ClientArticleData } & Emplacements) {
-  const { lang, toggleLanguage, t } = useLanguage(); 
+  const { lang, toggleLanguage, t, lien } = useLanguage(); 
   // 🚀 RADAR 2 : Vérifie si la page Client a bien reçu la donnée
   const [fontScale, setFontScale] = useState(1.125); 
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -291,7 +291,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 <i className="ph-bold ph-translate text-lg"></i>
                 <span>{lang === 'nko' ? 'FR' : 'ߒߞߏ'}</span>
             </button>
-            <Link href="/" className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
+            <Link href={lien("/")} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
                     <i className={`ph-bold ${lang === 'nko' ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl md:text-lg`}></i>
                 </div>
@@ -430,7 +430,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
        {/* 🛡️ LE SCEAU HOLOGRAPHIQUE (Navigation Intuitive & Poids Optimisé) */}
         <Link 
-            href="/"
+            href={lien("/")}
             onClick={triggerVibration}
             className="w-24 h-24 md:w-28 md:h-28 mb-8 relative group flex items-center justify-center p-5 backdrop-blur-2xl bg-[#0b0f19]/80 border border-white/10 rounded-[2rem] shadow-[inset_0_0_30px_rgba(251,191,36,0.03)] overflow-hidden transition-all duration-700 hover:border-[#fbbf24]/50 hover:shadow-[0_20px_60px_-10px_rgba(251,191,36,0.25)] hover:-translate-y-2 z-10 touch-manipulation"
             title={lang === 'nko' ? 'ߞߐߛߊߦߌ߫ ߢߍߝߍ߬' : 'Retour à l\'accueil'}

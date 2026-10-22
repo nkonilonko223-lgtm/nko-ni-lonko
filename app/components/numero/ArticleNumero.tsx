@@ -1,4 +1,4 @@
-import Link from "next/link";
+import LienLangue from "../LienLangue";
 import type { LienDuSommaire, NumeroDeLArticle, RubriqueCourte } from "../../lib/numeros";
 import { TEXTES_NUMEROS, numeroFr, paruDansFr, paruDansNko } from "./textes";
 import { LibelleEnLigne, TitreArticle } from "./VueNumero";
@@ -15,14 +15,14 @@ import { LibelleEnLigne, TitreArticle } from "./VueNumero";
 export function BandeauNumero({ numero }: { numero: NumeroDeLArticle }) {
   return (
     <div className="mb-4 flex justify-center md:mb-6">
-      <Link
+      <LienLangue
         href={`/numeros/${numero.slug}`}
         className="inline-flex min-h-11 flex-wrap items-center justify-center gap-x-2 rounded-full border border-[#fbbf24]/40 px-4 py-1 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10 print:min-h-0 print:border-0 print:text-gray-600"
       >
         <span lang="nqo" dir="rtl" className="font-kigelia text-base">{paruDansNko(numero.numero)}</span>
         <span aria-hidden="true" className="text-white/30 print:text-gray-400">·</span>
         <span lang="fr" className="text-xs uppercase tracking-widest">{paruDansFr(numero.numero)}</span>
-      </Link>
+      </LienLangue>
     </div>
   );
 }
@@ -41,7 +41,7 @@ export function SurtitreRubrique({ rubrique }: { rubrique: RubriqueCourte }) {
 function Voisin({ article, sens }: { article: LienDuSommaire; sens: "precedent" | "suivant" }) {
   const libelle = sens === "precedent" ? TEXTES_NUMEROS.articlePrecedent : TEXTES_NUMEROS.articleSuivant;
   return (
-    <Link
+    <LienLangue
       href={`/article/${article.slug}`}
       rel={sens === "precedent" ? "prev" : "next"}
       className="group flex flex-col items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-center transition-colors hover:border-[#fbbf24]/50"
@@ -55,7 +55,7 @@ function Voisin({ article, sens }: { article: LienDuSommaire; sens: "precedent" 
       <span className="block w-full">
         <TitreArticle titre={article.title} />
       </span>
-    </Link>
+    </LienLangue>
   );
 }
 

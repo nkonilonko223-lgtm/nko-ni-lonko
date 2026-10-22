@@ -68,7 +68,30 @@ export function proxy(request: NextRequest) {
     report-to csp;
   `.replace(/\s{2,}/g, ' ').trim();
 
-  const response = NextResponse.next();
+  // ========================================================================
+  // 🌍 LANGUE DANS L'ADRESSE (point B6, 22 octobre 2026) — voir app/lib/langue.ts
+  // ========================================================================
+  // Les pages sont dans app/[lang]/ : « nqo » (N'Ko) et « fr » (français), préparées à l'avance.
+  // - /fr/…            : version française, servie telle quelle ;
+  // - toute autre page : version N'Ko (dossier interne /nqo), SANS changer l'adresse
+  //   (« N'Ko Is King » : les adresses déjà partagées restent valables) ;
+  // - /nqo/…           : adresse interne, renvoyée vers l'adresse publique (une seule
+  //   adresse par page pour Google) ;
+  // - fichiers (images, icônes, sw.js…) : servis tels quels depuis public/.
+  const { pathname } = request.nextUrl;
+  if (pathname === '/nqo' || pathname.startsWith('/nqo/')) {
+    const publique = request.nextUrl.clone();
+    publique.pathname = pathname.slice(4) || '/';
+    return NextResponse.redirect(publique, 308);
+  }
+  let response: NextResponse;
+  if (pathname === '/fr' || pathname.startsWith('/fr/') || /\.[a-z0-9]+$/i.test(pathname)) {
+    response = NextResponse.next();
+  } else {
+    const interne = request.nextUrl.clone();
+    interne.pathname = pathname === '/' ? '/nqo' : `/nqo${pathname}`;
+    response = NextResponse.rewrite(interne);
+  }
 
   // 🛡️ BOUCLIER 4 : VERROUILLAGE FINAL DE LA RÉPONSE (Headers)
   response.headers.set('Content-Security-Policy-Report-Only', cspHeader);

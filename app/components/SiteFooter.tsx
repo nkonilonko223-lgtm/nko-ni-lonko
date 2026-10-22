@@ -23,7 +23,7 @@ interface TranslationData {
 }
 
 export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFooterProps) {
-  const { t, lang } = useLanguage();
+  const { t, lang, lien } = useLanguage();
   const typedT = t as unknown as TranslationData;
   const isNko = lang === 'nko';
   
@@ -58,7 +58,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
     setActiveCategory(key);
     
     if (pathname !== '/') {
-      router.push('/');
+      router.push(lien('/'));
       if (typeof window !== 'undefined') sessionStorage.setItem('pending_category_scroll', 'true');
     } else {
       const articlesSection = document.getElementById('articles');
@@ -67,7 +67,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
     }
-  }, [pathname, router, setActiveCategory, triggerVibration]);
+  }, [pathname, router, setActiveCategory, triggerVibration, lien]);
 
   useEffect(() => {
     if (pathname === '/' && typeof window !== 'undefined') {
@@ -181,7 +181,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
        <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           
           <div className="flex flex-col gap-5">
-            <Link href="/" onClick={triggerVibration} className="group relative flex items-center gap-3 touch-manipulation w-fit">
+            <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center gap-3 touch-manipulation w-fit">
               <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
                 <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
                 <Image src="/icon-192x192.png" alt="Logo" width={30} height={30} className="rounded-md relative z-10 transition-transform group-hover:scale-105" />
@@ -300,11 +300,11 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </h3>
             <ul className="space-y-4">
               {[
-                { path: "/numeros", label: typedT?.nav?.numeros || "Numéros" },
-                { path: "/about", label: typedT?.nav?.about || "À propos" },
-                { path: "/contact", label: typedT?.footer?.contact || "Contact" },
-                { path: "/terms", label: typedT?.footer?.terms || "CGU" },
-                { path: "/privacy", label: typedT?.footer?.privacy || "Confidentialité" }
+                { path: lien("/numeros"), label: typedT?.nav?.numeros || "Numéros" },
+                { path: lien("/about"), label: typedT?.nav?.about || "À propos" },
+                { path: lien("/contact"), label: typedT?.footer?.contact || "Contact" },
+                { path: lien("/terms"), label: typedT?.footer?.terms || "CGU" },
+                { path: lien("/privacy"), label: typedT?.footer?.privacy || "Confidentialité" }
               ].map((link, i) => (
                 <li key={i}>
                   <Link href={link.path} onClick={triggerVibration} className={`group relative block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
@@ -333,7 +333,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                 <i className="ph-bold ph-map-pin text-xl text-gray-500 mt-0.5"></i>
                 {/* Adresse du siège (lien vers la page Contact), du plus petit au plus grand.
                     Textes N'Ko et français : app/lib/coordonnees.ts (SIEGE) */}
-                <Link href="/contact" onClick={triggerVibration} className="leading-relaxed hover:text-white transition-colors">
+                <Link href={lien("/contact")} onClick={triggerVibration} className="leading-relaxed hover:text-white transition-colors">
                   {isNko ? <span lang="nqo" dir="rtl">{SIEGE.quartierEtRepere.nko}</span> : <span lang="fr" dir="ltr">{SIEGE.quartierEtRepere.fr}</span>}<br/>
                   {isNko ? <span lang="nqo" dir="rtl">{SIEGE.ville.nko}</span> : <span lang="fr" dir="ltr">{SIEGE.ville.fr}</span>}
                 </Link>
@@ -348,7 +348,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-8 md:flex-row lg:px-8">
           
           <div className="flex flex-col md:flex-row items-center gap-4 order-3 md:order-1">
-            <Link href="/" onClick={triggerVibration} className="group relative flex items-center justify-center p-1 rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-[#fbbf24]/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] touch-manipulation overflow-hidden" aria-label="Retour à l'accueil">
+            <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center justify-center p-1 rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-[#fbbf24]/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] touch-manipulation overflow-hidden" aria-label="Retour à l'accueil">
               <div className="absolute inset-0 bg-[#fbbf24] blur-lg opacity-10 group-hover:opacity-30 transition-opacity"></div>
               <Image src="/icon-192x192.png" alt={typedT?.metadata?.siteName || "Logo"} width={44} height={44} className="rounded-lg relative z-10 transition-transform group-hover:scale-105" />
             </Link>
@@ -374,7 +374,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                { href: "https://instagram.com/nkonilonko", icon: "instagram-logo", label: "Instagram" },
                { href: "https://tiktok.com/@nkonilonko223", icon: "tiktok-logo", label: "TikTok" },
                // WhatsApp : vers la page Contact (aucun numéro dans le pied de page)
-               { href: LIEN_ICONE_WHATSAPP, icon: "whatsapp-logo", label: "WhatsApp" },
+               { href: lien(LIEN_ICONE_WHATSAPP), icon: "whatsapp-logo", label: "WhatsApp" },
                { href: TELEGRAM.lien, icon: "telegram-logo", label: "Telegram" }
              ].map((social, i) => (
                <a

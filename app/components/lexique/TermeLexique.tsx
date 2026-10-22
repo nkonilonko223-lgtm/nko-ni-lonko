@@ -12,6 +12,7 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { useLanguage } from "../LanguageProvider";
 import { TEXTES_LEXIQUE } from "./textes";
 
 export interface TermeLexiqueData {
@@ -33,6 +34,7 @@ export default function TermeLexique({
   nko: boolean;
   children: React.ReactNode;
 }) {
+  const { lien } = useLanguage();
   const [ouvert, setOuvert] = useState(false);
   const [mobile, setMobile] = useState(false);
   const [position, setPosition] = useState<{ top: number; left: number; auDessus: boolean } | null>(null);
@@ -131,7 +133,7 @@ export default function TermeLexique({
       </p>
       {terme.slug && (
         <Link
-          href={`/lexique/${terme.slug}`}
+          href={lien(`/lexique/${terme.slug}`)}
           className={`mt-3 inline-block text-blue-300 underline underline-offset-4 hover:text-white ${nko ? "font-kigelia text-sm" : "font-sans text-xs"}`}
         >
           {t("voirDansLeLexique")}

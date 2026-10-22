@@ -85,17 +85,15 @@ export function texteDePartage(titre: string): string {
   return `${[nko, fr].filter(Boolean).join("\n")}\n`;
 }
 
-// Description d'une carte de partage (article, numéro) : « titre français — résumé français »,
-// comme les grands médias (un titre, puis une ou deux phrases), coupée sur un espace vers
-// 155 caractères. Sans résumé, ou si le résumé répète le titre : le titre seul.
-const memeTexte = (a: string, b: string) => {
+// Deux textes identiques, à la casse et aux espaces près (un résumé qui répète le titre)
+export const memeTexte = (a: string, b: string) => {
   const simple = (t: string) => t.toLocaleLowerCase("fr").replace(/\s+/g, " ").trim();
   return simple(a) === simple(b);
 };
 
-export function descriptionDeCarte(titreFr: string, resumeFr?: string | null, max = 155): string {
-  const resume = resumeFr?.trim();
-  const texte = resume && !memeTexte(titreFr, resume) ? `${titreFr} — ${resume}` : titreFr;
+// Texte français d'une carte de partage coupé sur un espace vers 155 caractères (taille d'un
+// résumé de grand média), avec « … ». Jamais utilisé sur du N'Ko : l'application coupe elle-même.
+export function couperTexte(texte: string, max = 155): string {
   const lettres = [...texte];
   if (lettres.length <= max) return texte;
   const debut = lettres.slice(0, max - 1).join("");

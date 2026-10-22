@@ -124,7 +124,7 @@ function useCardPhysics() {
 // COMPOSANT PRINCIPAL
 // ==============================================================================
 export default function ArticleCard({ article, isPriority = false }: ArticleCardProps) {
-  const { t, lang } = useLanguage();
+  const { t, lang, lien } = useLanguage();
   const { divRef, position, opacity, tilt, handleMouseMove, handleMouseEnter, handleMouseLeave } = useCardPhysics();
   
   const isNko = lang === 'nko';
@@ -165,7 +165,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
   return (
     <Link 
-      href={`/article/${slugCurrent}`} 
+      href={lien(`/article/${slugCurrent}`)} 
       onClick={triggerVibration}
       className="group/card block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-[#fbbf24] rounded-[20px]"
       style={{ perspective: "1000px" }}

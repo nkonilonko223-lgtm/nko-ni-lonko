@@ -3,10 +3,12 @@
 // ============================================================================
 
 import Link from "next/link";
+import { useLanguage } from "../LanguageProvider";
 import { TEXTES_LEXIQUE } from "./textes";
 import type { TermeLexiqueData } from "./TermeLexique";
 
 export default function LexiqueArticle({ termes }: { termes: TermeLexiqueData[] }) {
+  const { lien } = useLanguage();
   if (!termes || termes.length === 0) return null;
 
   return (
@@ -47,7 +49,7 @@ export default function LexiqueArticle({ termes }: { termes: TermeLexiqueData[] 
             )}
             {terme.slug && (
               <Link
-                href={`/lexique/${terme.slug}`}
+                href={lien(`/lexique/${terme.slug}`)}
                 className="mt-3 inline-flex items-center gap-2 text-xs text-blue-300 underline underline-offset-4 hover:text-white print:hidden"
               >
                 <span lang="nqo" className="font-kigelia text-sm">{TEXTES_LEXIQUE.voirDansLeLexique.nko}</span>

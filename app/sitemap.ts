@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { client } from '../sanity/client';
 import { getLiensNumeros } from './lib/numeros';
+import { adresse } from './lib/langue';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -81,7 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   }));
 
-  return [
+  const pages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -126,4 +127,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...termeEntries,
   ];
+
+  // Langue dans l'adresse (B6, 22 octobre 2026) : chaque page en N'Ko (adresse sans préfixe)
+  // et en français (/fr), reliées entre elles (hreflang) pour que Google montre la bonne version
+  return pages.flatMap((page) => {
+    const chemin = page.url.slice(baseUrl.length) || "/";
+    const languages = { nqo: adresse("nqo", chemin), fr: adresse("fr", chemin), "x-default": adresse("nqo", chemin) };
+    return [
+      { ...page, url: languages.nqo, alternates: { languages } },
+      { ...page, url: languages.fr, alternates: { languages } },
+    ];
+  });
 }

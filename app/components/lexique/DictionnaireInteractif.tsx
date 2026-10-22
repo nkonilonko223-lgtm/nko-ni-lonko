@@ -11,6 +11,7 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { useLanguage } from "../LanguageProvider";
 import { AIDE_RECHERCHE, TEXTES_LEXIQUE } from "./textes";
 import { normaliser } from "./normaliser";
 
@@ -26,10 +27,11 @@ export interface TermeDictionnaire {
 const premiereLettre = (texte?: string) => normaliser(texte).charAt(0);
 
 function Carte({ t }: { t: TermeDictionnaire }) {
+  const { lien } = useLanguage();
   return (
     <li>
       <Link
-        href={`/lexique/${t.slug}`}
+        href={lien(`/lexique/${t.slug}`)}
         className="block h-full rounded-xl border border-white/10 bg-white/[0.02] p-4 transition-colors hover:border-blue-400/50 hover:bg-blue-400/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-400"
       >
         <span lang="nqo" dir="rtl" className="block font-kigelia text-lg font-bold text-blue-300">{t.termeNko}</span>
