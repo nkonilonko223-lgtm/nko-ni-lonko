@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { versionLangue } from "../../lib/carte-partage";
-import { langueDe } from "../../lib/langue";
+import { adresse, langueDe } from "../../lib/langue";
+import { jsonLd } from "../../lib/jsonld";
 import Image from "next/image";
 import LienLangue from "../../components/LienLangue";
 import { dateFr, dateNko } from "../../components/numero/VueNumero";
@@ -41,11 +42,28 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   return versionLangue(METADONNEES, langueDe((await params).lang), { chemin: "/numeros" });
 }
 
-export default async function PageNumeros() {
+export default async function PageNumeros({ params }: { params: Promise<{ lang: string }> }) {
+  const langue = langueDe((await params).lang);
   const numeros = await getNumeros();
+  // Données Google : l'archive est une collection des numéros parus, rattachés à la revue
+  const collection = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "url": adresse(langue, "/numeros"),
+    "isPartOf": { "@id": `${SITE_URL}/#website` },
+    "about": { "@id": `${SITE_URL}/#revue` },
+    "hasPart": numeros.map((n) => ({
+      "@type": "PublicationIssue",
+      "issueNumber": String(n.numero),
+      "url": adresse(langue, `/numeros/${n.slug}`),
+      ...(n.publishedAt ? { "datePublished": n.publishedAt.slice(0, 10) } : {}),
+      "isPartOf": { "@id": `${SITE_URL}/#revue` },
+    })),
+  };
 
   return (
     <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(collection) }} />
       <PiluleRetour />
       <header className="mx-auto mb-12 max-w-5xl text-center">
         <h1 className="flex flex-col items-center gap-1">

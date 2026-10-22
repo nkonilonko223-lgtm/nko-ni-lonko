@@ -412,9 +412,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
         "@type": "PublicationIssue",
         "@id": `${SITE_URL}/numeros/${article.numero.slug}`,
         "issueNumber": String(article.numero.numero),
-        "isPartOf": { "@type": "Periodical", "name": "N'Ko ni Lonko", "url": SITE_URL }
+        "isPartOf": { "@type": "Periodical", "@id": `${SITE_URL}/#revue`, "name": "N'Ko ni Lonko", "url": SITE_URL }
       }
-    } : {}),
+    } : {
+      // Hors numéro : l'article appartient directement à la revue (déclarée dans le gabarit)
+      "isPartOf": { "@id": `${SITE_URL}/#revue` }
+    }),
     // 👑 Auteurs avec réseaux sociaux — Google connaît chaque auteur
     "author": article.authors.map(author => ({
       "@type": "Person",

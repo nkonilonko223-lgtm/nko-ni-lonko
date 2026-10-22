@@ -81,7 +81,7 @@ export default async function PageNumero({ params }: { params: Promise<{ slug: s
     inLanguage: ["nqo", "fr"],
     ...(numero.couverture?.url ? { image: numero.couverture.url } : {}),
     ...(resumeDe(numero) ? { description: resumeDe(numero) } : {}),
-    isPartOf: { "@type": "Periodical", name: "N'Ko ni Lonko", url: SITE_URL },
+    isPartOf: { "@type": "Periodical", "@id": `${SITE_URL}/#revue`, name: "N'Ko ni Lonko", url: SITE_URL },
     hasPart: numero.sommaire.map((article) => ({
       "@type": "ScholarlyArticle",
       headline: article.title,

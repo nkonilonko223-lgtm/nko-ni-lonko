@@ -240,6 +240,19 @@ export default async function RootLayout({
           "https://www.tiktok.com/@nkonilonko223",
           URL_X
         ]
+      },
+      // La revue elle-même (22 octobre 2026) : Google et les annuaires scientifiques la
+      // reconnaissent comme une publication périodique ; les numéros (PublicationIssue) et les
+      // articles s'y rattachent par son identifiant « #revue ». ISSN à ajouter quand il existera.
+      {
+        "@type": "Periodical",
+        "@id": `${SITE_URL}/#revue`,
+        "name": "N'Ko ni Lonko",
+        "alternateName": NOM_NKO,
+        "url": SITE_URL,
+        "inLanguage": ["nqo", "fr"],
+        "publisher": { "@id": `${SITE_URL}/#organization` },
+        "isAccessibleForFree": true
       }
     ]
   };
