@@ -158,7 +158,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
       // Lettrine (voir avecLettrine) : en or à l'écran, en noir sur papier ; elle monte au-dessus de sa
       // ligne sans l'agrandir (interligne nul) : la place est réservée par le paragraphe (pt-…)
       lettrine: ({ children }) => (
-        <span className="text-[4em] md:text-[5em] leading-[0] text-[#fbbf24] print:text-black me-[0.12em]">
+        <span className="lettrine text-[4em] md:text-[5em] leading-[0] text-[#fbbf24] print:text-black me-[0.12em]">
           {children}
         </span>
       ),
