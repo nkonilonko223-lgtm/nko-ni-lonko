@@ -85,8 +85,11 @@ type PortableCodeProps = PortableTextComponentProps<CodeBlock>;
 // Identifiant stable d'un titre de chapitre (clé Sanity du bloc) : sommaire et liens directs partageables
 const ancre = (bloc: PortableTextBlock) => `titre-${bloc._key}`;
 
-const FadeInBlock = ({ children }: { children: React.ReactNode }) => (
-  <div className="apparition print:break-inside-avoid">{children}</div>
+// Impression : un bloc (image et légende, encadré, formule…) reste entier sur sa page ; un paragraphe
+// ou une liste (« coupable ») peut se couper, sinon il saute en entier à la page suivante et laisse
+// une demi-page vide (constat du 23 octobre 2026). Lignes minimales et titres : app/globals.css.
+const FadeInBlock = ({ children, coupable = false }: { children: React.ReactNode; coupable?: boolean }) => (
+  <div className={coupable ? "apparition" : "apparition print:break-inside-avoid"}>{children}</div>
 );
 
 // ==============================================================================
@@ -151,7 +154,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
           : { fontSize: '1.1em', lineHeight: '1.7' };
 
         return (
-          <FadeInBlock>
+          <FadeInBlock coupable>
             <p dir={dir} lang={nko ? "nqo" : "fr"} className={`text-gray-300 print:text-black ${fontClass} ${dropCapNko} ${dropCapFr} mb-5 md:mb-6 mt-0`} style={style}>
                {children}
             </p>
@@ -297,8 +300,8 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
       }
     },
     list: {
-      bullet: ({children}) => <FadeInBlock><ul className="list-disc pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black">{children}</ul></FadeInBlock>,
-      number: ({children}) => <FadeInBlock><ol className="list-decimal pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black marker:font-bold">{children}</ol></FadeInBlock>,
+      bullet: ({children}) => <FadeInBlock coupable><ul className="list-disc pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black">{children}</ul></FadeInBlock>,
+      number: ({children}) => <FadeInBlock coupable><ol className="list-decimal pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black marker:font-bold">{children}</ol></FadeInBlock>,
     },
     // Chaque élément de liste porte sa langue et son sens, comme les paragraphes (règle du projet,
     // et nécessaire au choix « langue de lecture »)
@@ -550,7 +553,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (!sectionValue?.titleNko && !sectionValue?.titleFr) return null;
         return (
           <FadeInBlock>
-            <div className="my-14 md:my-20 print:my-8">
+            <div className="titre-rubrique my-14 md:my-20 print:my-8">
               {/* Ligne décorative supérieure */}
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/40 to-transparent" />

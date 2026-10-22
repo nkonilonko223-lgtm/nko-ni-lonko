@@ -1557,6 +1557,24 @@ nav {
     text-shadow: none;
   }
 
+  /* Mise en page (23 octobre 2026) : un titre de chapitre ou de rubrique ne reste jamais seul en
+     bas de page ; un paragraphe peut se couper, avec au moins 3 lignes de chaque côté (une image
+     reste avec sa légende : CustomPortableText, FadeInBlock). Titres sobres : ni fond doré ni ombre */
+  .article-content .apparition:has(> :is(h1, h2, h3, h4, h5, h6, .titre-rubrique)) {
+    break-after: avoid;
+  }
+
+  .article-content :is(p, li) {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .article-content :is(h2, h3, h4) {
+    background: none !important;
+    border-color: #000 !important;
+    filter: none !important;
+  }
+
   .article-content a {
     color: black;
     text-decoration: underline;
