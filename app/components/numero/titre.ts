@@ -84,3 +84,21 @@ export function texteDePartage(titre: string): string {
   const { nko, fr } = separerLangues(titre);
   return `${[nko, fr].filter(Boolean).join("\n")}\n`;
 }
+
+// Description d'une carte de partage (article, numéro) : « titre français — résumé français »,
+// comme les grands médias (un titre, puis une ou deux phrases), coupée sur un espace vers
+// 155 caractères. Sans résumé, ou si le résumé répète le titre : le titre seul.
+const memeTexte = (a: string, b: string) => {
+  const simple = (t: string) => t.toLocaleLowerCase("fr").replace(/\s+/g, " ").trim();
+  return simple(a) === simple(b);
+};
+
+export function descriptionDeCarte(titreFr: string, resumeFr?: string | null, max = 155): string {
+  const resume = resumeFr?.trim();
+  const texte = resume && !memeTexte(titreFr, resume) ? `${titreFr} — ${resume}` : titreFr;
+  const lettres = [...texte];
+  if (lettres.length <= max) return texte;
+  const debut = lettres.slice(0, max - 1).join("");
+  const espace = debut.lastIndexOf(" ");
+  return `${(espace > max / 2 ? debut.slice(0, espace) : debut).replace(/[\s,;:—–-]+$/, "")}…`;
+}

@@ -17,8 +17,9 @@
 import { readFileSync } from 'node:fs';
 
 type Parties = { nko: string | null; fr: string | null };
-const { separerLangues } = (await import(new URL('../app/components/numero/titre.ts', import.meta.url).href)) as {
+const { separerLangues, descriptionDeCarte } = (await import(new URL('../app/components/numero/titre.ts', import.meta.url).href)) as {
   separerLangues: (texte?: string | null) => Parties;
+  descriptionDeCarte: (titreFr: string, resumeFr?: string | null, max?: number) => string;
 };
 
 const estNko = (c: string) => { const n = c.codePointAt(0) ?? 0; return n >= 0x07c0 && n <= 0x07ff; };
@@ -59,6 +60,22 @@ verifier('vide', '', { nko: null, fr: null });
 verifier('parenthèse au début', `(Bienvenue sur N'Ko ni Lonko) ${A} ${B}`, { nko: `${A} ${B}`, fr: "Bienvenue sur N'Ko ni Lonko" });
 verifier('parenthèse au début, sans N\'Ko après', '(Note) Texte français', { nko: null, fr: '(Note) Texte français' });
 
+console.log('\n— Description des cartes : « titre français — résumé français », 155 caractères au plus');
+const description = (source: string, titreFr: string, resumeFr: string | null, attendu?: string) => {
+  const r = descriptionDeCarte(titreFr, resumeFr);
+  const problemes: string[] = [];
+  if (attendu !== undefined && r !== attendu) problemes.push(`attendu « ${attendu} »`);
+  if ([...r].length > 155) problemes.push(`${[...r].length} caractères`);
+  if (!r.startsWith(titreFr.slice(0, 20))) problemes.push('le titre ne vient pas en premier');
+  if (/[\s,;:—–-]…$/.test(r)) problemes.push('coupure mal placée');
+  if (problemes.length) erreurs++;
+  console.log(`${problemes.length ? '❌' : '✅'} ${source.slice(0, 40).padEnd(40)} ${[...r].length} car. « ${r} »${problemes.length ? `  ← ${problemes.join(' ; ')}` : ''}`);
+};
+description('titre et résumé', 'Le géant à crête du Niger', 'Quand le Sahara livre ses secrets', 'Le géant à crête du Niger — Quand le Sahara livre ses secrets');
+description('sans résumé', 'Le Soleil', null, 'Le Soleil');
+description('résumé = titre (majuscules)', 'Grand retour vers la Lune', 'GRAND RETOUR VERS LA LUNE', 'Grand retour vers la Lune');
+description('résumé long, coupé sur un espace', 'Toucher le Soleil', 'La sonde Parker Solar Probe est passée au plus près du Soleil, à six millions de kilomètres de sa surface, plus vite que tout autre objet construit par l\'humanité, et a traversé sa couronne.');
+
 console.log('\n— Titres et résumés des articles publiés (Sanity, lecture seule)');
 const REQUETE = '*[_type == "article" && !(_id in path("drafts.**"))] | order(publishedAt asc) { "slug": slug.current, title, excerpt }';
 const url = `https://yfsyhc2p.apicdn.sanity.io/v2025-02-19/data/query/production?query=${encodeURIComponent(REQUETE)}`;
@@ -76,6 +93,13 @@ for (const fichier of process.argv.slice(2)) {
   }
 }
 for (const { source, texte } of textes) verifier(source, texte);
+
+console.log('\n— Description de la carte de chaque article publié');
+for (const a of publies) {
+  const titreFr = separerLangues(a.title).fr;
+  if (titreFr) description(a.slug, titreFr, separerLangues(a.excerpt).fr);
+  else console.log(`ℹ️  ${a.slug.slice(0, 40).padEnd(40)} pas de titre français : description = résumé`);
+}
 
 console.log(erreurs ? `\n${erreurs} texte(s) mal traité(s).` : '\nTous les textes sont justes.');
 if (avertissements) console.log(`${avertissements} avertissement(s) : partie N'Ko contenant des lettres latines.`);
