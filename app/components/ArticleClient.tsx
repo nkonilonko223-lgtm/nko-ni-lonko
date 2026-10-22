@@ -435,9 +435,25 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       <header className="pt-24 md:pt-32 print:pt-0 pb-0 px-4 md:px-8 max-w-7xl mx-auto text-center">
         {bandeau}
-        <span className={`text-[#fbbf24] print:text-gray-600 uppercase tracking-[0.3em] font-bold mb-4 md:mb-6 block ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
-            {categoryLabel}
-        </span>
+        {/* Fil d'Ariane (23 octobre 2026) : Accueil › discipline ; la discipline mène à sa page
+            (« Revue Mensuelle » : aux numéros). Le chevron se retourne tout seul en N'Ko. */}
+        <nav aria-label={lang === 'nko' ? undefined : "Fil d'Ariane"} className="mb-4 md:mb-6">
+          <ol className={`flex items-center justify-center gap-2 uppercase tracking-[0.3em] font-bold ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
+            <li className="print:hidden">
+              <Link href={lien("/")} className="text-white/50 transition-colors hover:text-white">
+                {lang === 'nko' ? messagesNko.nav.home : 'Accueil'}
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-white/30 print:hidden">›</li>
+            <li>
+              {cheminCategorie ? (
+                <Link href={lien(cheminCategorie)} className="text-[#fbbf24] print:text-gray-600 transition-colors hover:text-white">{categoryLabel}</Link>
+              ) : (
+                <span className="text-[#fbbf24] print:text-gray-600">{categoryLabel}</span>
+              )}
+            </li>
+          </ol>
+        </nav>
         {surtitre}
         <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
             <span {...sensDe(nkoTitle)} className={`block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : ''}`}>
@@ -591,7 +607,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 socials: article.authors[0].socials,
                 slug: article.authors[0].slug
             } : undefined}
-            tags={categoryLabel ? [categoryLabel] : []}
+            tags={categoryLabel ? [{ libelle: categoryLabel, href: cheminCategorie ? lien(cheminCategorie) : null }] : []}
             relatedArticles={[]} 
             references={article.references} // 🚀 LE TUYAU EST CONNECTÉ ! Les references vont s'afficher.
         />

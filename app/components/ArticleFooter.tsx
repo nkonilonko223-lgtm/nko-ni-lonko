@@ -77,7 +77,8 @@ interface ReferenceProps {
 interface ArticleFooterProps {
   lang: string;
   author?: AuthorProps;
-  tags?: string[];
+  // Étiquettes : libellé et adresse (page de la discipline) ; sans adresse, simple texte
+  tags?: { libelle: string; href?: string | null }[];
   relatedArticles?: RelatedArticleProps[];
   references?: ReferenceProps[]; // 🚀 NOUVEAU : Le tableau des references scientifiques
 }
@@ -243,9 +244,15 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
       {/* 1. LES TAGS */}
       {tags && tags.length > 0 && (
         <div className={`flex flex-wrap gap-2 md:gap-3 mb-10 md:mb-16 ${isNko ? 'justify-end' : 'justify-start'}`}>
-          {tags.map((tag, i) => (
-            <span key={i} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 hover:border-[#fbbf24] hover:text-[#fbbf24] hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] transition-all cursor-pointer bg-[#02040a] ${isNko ? 'font-kigelia' : ''}`}>
-              # {tag}
+          {/* 23 octobre 2026 : l'étiquette avait l'air d'un bouton (main, or au survol) mais ne
+              menait nulle part ; c'est maintenant un vrai lien vers la page de la discipline */}
+          {tags.map((tag, i) => tag.href ? (
+            <Link key={i} href={tag.href} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 hover:border-[#fbbf24] hover:text-[#fbbf24] hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#fbbf24] transition-all bg-[#02040a] ${isNko ? 'font-kigelia' : ''}`}>
+              # {tag.libelle}
+            </Link>
+          ) : (
+            <span key={i} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 bg-[#02040a] ${isNko ? 'font-kigelia' : ''}`}>
+              # {tag.libelle}
             </span>
           ))}
         </div>

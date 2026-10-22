@@ -15,6 +15,9 @@ import IMAGES_PARTAGE_ARTICLES from "../../../lib/images-partage-articles.json";
 import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../../lib/numeros";
 import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../../components/numero/ArticleNumero";
 import { jsonLd } from "../../../lib/jsonld";
+import { cheminDeCle, cleDeCategorie } from "../../../lib/categories";
+import messagesNko from "../../../messages/nko.json";
+import messagesFr from "../../../messages/fr.json";
 import { choisirVoirAussi, type Voisin } from "../../../lib/voir-aussi";
 import VoirAussi from "../../../components/VoirAussi";
 import { decouperNom, estLaRevue } from "../../../lib/citations";
@@ -399,6 +402,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
   const { numero, rubrique, body, voirAussi, ...donnees } = article;
   // A4 — Langue de lecture proposée seulement si le texte contient les deux langues
   const deuxLangues = contientDeuxLangues(body);
+  // Discipline (23 octobre 2026) : sa page et son nom dans la langue de la version, pour le fil
+  // d'Ariane et la rubrique de Google ; « Revue Mensuelle » mène aux numéros (app/lib/categories.ts)
+  const cleCategorie = cleDeCategorie(article.category);
+  const cheminCategorie = cheminDeCle(cleCategorie);
+  const nomsCategories: Record<string, string> = (langue === "fr" ? messagesFr : messagesNko).home.categories;
+  const nomCategorie = cleCategorie === "review"
+    ? (langue === "fr" ? messagesFr : messagesNko).nav.numeros
+    : nomsCategories[cleCategorie] ?? article.category;
 
   // 👑 JSON-LD 1 : L'Article Scientifique (ScholarlyArticle)
   const articleJsonLd = {
@@ -420,7 +431,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
       ...article.tags,
       ...article.authors.flatMap(a => a.expertise)
     ].filter(Boolean),
-    "articleSection": article.category,
+    "articleSection": nomsCategories[cleCategorie] ?? article.category,
     "wordCount": article.wordCount,
     "timeRequired": `PT${article.readingTime}M`,
     "isAccessibleForFree": true,
@@ -517,16 +528,16 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
         "name": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
         "item": adresse(langue, "/")
       },
-      {
+      // Discipline : sa vraie page (avant le 23 octobre : « /?category=… », adresse qui ne filtrait rien)
+      ...(cheminCategorie ? [{
         "@type": "ListItem",
         "position": 2,
-        // 👑 Catégorie N'Ko
-        "name": article.category,
-        "item": adresse(langue, `/?category=${encodeURIComponent(article.category)}`)
-      },
+        "name": nomCategorie,
+        "item": adresse(langue, cheminCategorie)
+      }] : []),
       {
         "@type": "ListItem",
-        "position": 3,
+        "position": cheminCategorie ? 3 : 2,
         "name": article.title,
         "item": adresseArticle
       }
