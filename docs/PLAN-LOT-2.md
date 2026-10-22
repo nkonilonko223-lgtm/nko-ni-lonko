@@ -38,6 +38,8 @@
 
 **Quand.** Après le 30 octobre, sur une branche dédiée. Travail moyen, risque moyen (toutes les pages et les liens internes sont concernés) : **pas pendant le gel**.
 
+**État (22 octobre 2026) : FAIT sur la branche `lot2/b6-langue-adresse`, NON fusionnée.** MckV a décidé d'avancer B6 (cartes de partage entièrement dans une langue, résumé compris ; nom du site toujours bilingue). Décisions : N'Ko sans préfixe, français en `/fr` ; fenêtre de choix seulement à la première visite de l'accueil ; un lecteur qui a choisi le français est envoyé vers `/fr` **sur l'accueil seulement** ; un lien partagé n'est jamais redirigé. Le moment de la fusion se décide après lecture du rapport (conseil : avant le 25 ou après le 30 octobre, jamais pendant l'import du N°003). Test : `node scripts/tester-langues.mjs <adresse>`.
+
 ---
 
 ## Modèle de traduction N'Ko ↔ français (ByT5) — la méthode

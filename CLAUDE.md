@@ -94,14 +94,16 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 
 | Chemin | Rôle |
 |---|---|
-| `app/article/[slug]/page.tsx` | Page article (serveur) : requête GROQ, métadonnées, JSON-LD, lexique de l'article |
+| **Langue dans l'adresse (B6)** : `app/[lang]/` · `app/lib/langue.ts` · `proxy.ts` | Toutes les pages sont dans `app/[lang]/` (« nqo » = N'Ko, « fr » = français), préparées à l'avance dans les deux langues. **N'Ko : adresses sans préfixe** (`/article/<slug>`, inchangées) ; **français : `/fr/…`**. `proxy.ts` sert la version N'Ko (dossier interne `/nqo`) aux adresses sans `/fr` et renvoie `/nqo/…` vers l'adresse publique. Langue, sens et traduction fixés par le serveur (`app/[lang]/layout.tsx`). **Liens internes** : `lien("/chemin")` de `useLanguage()` (composants client) ou `<LienLangue>` (`app/components/LienLangue.tsx`, composants serveur) — jamais un chemin en dur. Métadonnées de chaque version : `versionLangue()` (`app/lib/carte-partage.ts`). Test : `node scripts/tester-langues.mjs <adresse>` |
+| `app/[lang]/article/[slug]/page.tsx` | Page article (serveur) : requête GROQ, métadonnées, JSON-LD, lexique de l'article |
 | `app/components/ArticleClient.tsx` | Affichage d'un article (client) + lexique de fin. Emplacements `bandeau`, `surtitre`, `navigation` et `texte` remplis par la page (composants serveur) |
-| `app/numeros/` · `app/lib/numeros.ts` | Archive `/numeros` et page d'un numéro `/numeros/[slug]` (404 si absent ou non publié) ; requêtes des numéros (une par page) |
+| `app/[lang]/numeros/` · `app/lib/numeros.ts` | Archive `/numeros` et page d'un numéro `/numeros/[slug]` (404 si absent ou non publié) ; requêtes des numéros (une par page) |
 | `app/components/numero/` | `textes.ts` (N'Ko de l'interface, fourni par la rédaction, et chiffres N'Ko), `titre.ts` (titre N'Ko / français, testé par `scripts/tester-titres.mts`), `VueNumero.tsx` (page d'un numéro), `ArticleNumero.tsx` (« Paru dans le N° », rubrique, précédent / suivant sur la page article) |
 | `app/components/CustomPortableText.tsx` | **Moteur de rendu du texte**, composant **serveur** : détection N'Ko/français par bloc, h1–h6, citations, images + légendes, encadrés, titres de rubrique, termes du lexique, formules (KaTeX). Îlots client dans `app/components/texte/` (visionneuse, vidéo YouTube) ; outils partagés dans `texte/outils.ts`. **Ne pas l'importer depuis un fichier « use client »** (il repartirait dans le navigateur) |
 | `app/components/lexique/` | Lexique : `textes.ts` (N'Ko de l'interface, fourni par la rédaction), `TermeLexique.tsx` (fiche/bulle), `LexiqueArticle.tsx`, `DictionnaireInteractif.tsx`, `CiterTerme.tsx`, `normaliser.ts` |
-| `app/lexique/` | Dictionnaire public `/lexique` et `/lexique/[slug]` |
-| `app/desabonnement/page.tsx` | Page de désinscription (bouton POST) |
+| `app/[lang]/lexique/` | Dictionnaire public `/lexique` et `/lexique/[slug]` |
+| `app/[lang]/desabonnement/page.tsx` | Page de désinscription (bouton POST) |
+| `app/studio/layout.tsx` | Gabarit propre au Studio (depuis B6, le gabarit du site est dans `app/[lang]/`) |
 | `app/api/newsletter` · `verify` · `unsubscribe` | Inscription, confirmation, désinscription (fiches **privées** `subscriber.<uuid>`) |
 | `app/api/contact` | Formulaire de contact (e-mail Resend, rien n'est stocké) |
 | `app/api/cron/cleanup` | Nettoyage nocturne (Vercel Cron, protégé par `CRON_SECRET`) |
@@ -111,7 +113,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts`, `rubrique.ts`, `numero.ts` (`index.ts` est un reste inutilisé) |
 | `sanity.config.ts` | Studio : outils, onglet Presentation, interdiction de créer/dupliquer un abonné |
 | `sanity.cli.ts` | Projet et dataset ; `deployment.appId` = le Studio officiel **https://www.nkonilonko.com/studio** (`sofo4rzn3y9lp9608748cxio`). **Ne pas ouvrir le Studio sur une adresse d'aperçu Vercel** : il s'y enregistre tout seul (c'est ce qui a créé le doublon `xsdgnlztnsa462mh2v6t5iyk` le 4 octobre, supprimé le 16 octobre) |
-| `proxy.ts` · `app/api/csp-rapport` | Filtre anti-robots + CSP (en mode « rapport seulement », sans « nonce » : les pages sont préparées à l'avance). Les violations arrivent dans les journaux Vercel (« [CSP] ») ; passage en mode appliqué : `docs/PLAN-LOT-2.md` |
+| `proxy.ts` · `app/api/csp-rapport` | Langue dans l'adresse (voir plus haut) + filtre anti-robots + CSP (en mode « rapport seulement », sans « nonce » : les pages sont préparées à l'avance). Les violations arrivent dans les journaux Vercel (« [CSP] ») ; passage en mode appliqué : `docs/PLAN-LOT-2.md` |
 | `app/icones-phosphor.css` · `public/icones/` | Icônes Phosphor **auto-hébergées** (seulement celles du site, 4 épaisseurs) : fichiers **générés** par `scripts/icones/generer-icones.mjs`, ne pas les modifier à la main |
 | `app/fonts/` · `public/arriere-plan.avif` | Police Kigelia en **WOFF2** (les OTF de `public/fonts` servent aux e-mails et aux images de partage) ; motif de fond en AVIF, WebP en repli (`image-set` dans `globals.css`) |
 | `app/components/BandeauApercuDiffere.tsx` | Bandeau du mode aperçu chargé **à la demande**. Ne jamais importer directement dans `layout.tsx` un composant qui utilise `next-sanity/hooks` : ses outils (≈ 240 Ko) partiraient chez tous les visiteurs |
@@ -138,10 +140,10 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 
 ## 7. Conventions N'Ko
 
-- **Jamais** de N'Ko écrit par l'IA. Les textes d'interface en N'Ko sont fournis par la rédaction (voir `app/components/lexique/textes.ts`, `app/desabonnement/page.tsx`). Si un texte manque : laisser l'emplacement **vide** (seul le français s'affiche) et le demander.
+- **Jamais** de N'Ko écrit par l'IA. Les textes d'interface en N'Ko sont fournis par la rédaction (voir `app/components/lexique/textes.ts`, `app/[lang]/desabonnement/page.tsx`). Si un texte manque : laisser l'emplacement **vide** (seul le français s'affiche) et le demander.
 - Vérifier après chaque modification que les passages N'Ko d'un fichier sont **identiques** avant/après et en **NFC**.
 - Données Sanity : **tout le texte est en NFC** depuis le 5 octobre 2026 (87 groupes remis dans l'ordre ; sauvegarde et script dans `C:\Dev\archives\`). Dans le code, désigner une marque N'Ko par son **code** (`U+07F2`), pas par le caractère.
-- Chaque bloc a `dir` **et** `lang` (`nqo` / `fr`). Le `<html>` est `lang="nqo"` : le français doit donc être marqué `lang="fr"`.
+- Chaque bloc a `dir` **et** `lang` (`nqo` / `fr`). Sur la version N'Ko, le `<html>` est `lang="nqo"` : le français doit donc être marqué `lang="fr"` (et inversement sur la version française `/fr`, `lang="fr"` : le N'Ko garde `lang="nqo"`).
 - Propriétés Tailwind **logiques** de préférence (`ms-`, `ps-`, `border-s-`, `text-start`…).
 - Chiffres N'Ko : ߀ ߁ ߂ ߃ ߄ ߅ ߆ ߇ ߈ ߉ (U+07C0 à U+07C9).
 - **Numéro de la revue en N'Ko** (règle validée le 18 octobre 2026) : abréviation, « ° » **collé** aux chiffres N'Ko, puis **toujours** la nasalisation `U+07F2` après le dernier chiffre (il se lit « troisième numéro ») ; la marque n'est **jamais doublée** (ex. dans « Paru dans le … »). Le code applique la règle dans `app/components/numero/textes.ts` (`numeroNko`, `paruDansNko`) : ne jamais écrire un numéro N'Ko à la main ailleurs. Archive : `C:\Dev\archives\traductions\decisions-redaction-2026-10-16.txt`.
