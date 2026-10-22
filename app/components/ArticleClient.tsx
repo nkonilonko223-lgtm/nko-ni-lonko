@@ -513,14 +513,23 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         )}
       </div>
 
-      {/* A4 — LANGUE DE LECTURE : N'Ko d'abord (de droite à gauche), les deux langues par défaut */}
+      {/* A4 — LANGUE DE LECTURE : N'Ko d'abord (de droite à gauche), les deux langues par défaut.
+          23 octobre 2026 : trop discret (contour presque invisible, 36 px de haut, rien n'expliquait
+          son rôle) → un seul bloc avec son nom au-dessus, contour net, cibles de 44 px. Nom N'Ko à
+          demander à la rédaction : le français s'affiche en attendant. */}
       {article.deuxLangues && (
-        <>
+        <div className="mx-auto mb-10 md:mb-12 flex max-w-3xl flex-col items-center gap-2.5 px-4 print:hidden">
+          <p id="langue-lecture" className="flex items-center gap-2 text-white/70">
+            <i className="ph-bold ph-translate text-lg text-[#fbbf24]" aria-hidden="true"></i>
+            {lang === 'nko' && LANGUE_LECTURE.nko
+              ? <span lang="nqo" dir="rtl" className="font-kigelia text-base">{LANGUE_LECTURE.nko}</span>
+              : <span lang="fr" dir="ltr" className="font-fr text-xs font-semibold uppercase tracking-[0.2em]">{LANGUE_LECTURE.fr}</span>}
+          </p>
           <div
             role="radiogroup"
-            aria-label={lang === 'nko' && LANGUE_LECTURE.nko ? LANGUE_LECTURE.nko : LANGUE_LECTURE.fr}
+            aria-labelledby="langue-lecture"
             dir="rtl"
-            className="mx-auto mb-6 flex max-w-3xl justify-center gap-2 px-4 print:hidden"
+            className="inline-flex gap-1 rounded-full border border-white/40 bg-white/[0.06] p-1 shadow-[0_0_30px_rgba(251,191,36,0.08)]"
           >
             {MODES_LECTURE.map((m) => (
               <button
@@ -529,13 +538,13 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 role="radio"
                 aria-checked={modeLecture === m.id}
                 onClick={() => choisirModeLecture(m.id)}
-                className={`rounded-full border px-4 py-1.5 text-sm transition-colors touch-manipulation ${modeLecture === m.id ? 'border-[#fbbf24] bg-[#fbbf24] font-bold text-black' : 'border-white/15 text-white/70 hover:border-[#fbbf24]/60 hover:text-white'}`}
+                className={`min-h-[2.75rem] rounded-full px-4 md:px-5 text-[15px] transition-colors touch-manipulation focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#fbbf24] ${modeLecture === m.id ? 'bg-[#fbbf24] font-bold text-black shadow-[0_2px_12px_rgba(251,191,36,0.35)]' : 'text-white/90 hover:bg-white/10 hover:text-white'}`}
               >
-                <bdi lang={m.lang} className={m.lang === 'nqo' ? 'font-kigelia' : 'font-fr'}>{m.libelle}</bdi>
+                <bdi lang={m.lang} className={m.lang === 'nqo' ? 'font-kigelia text-base' : 'font-fr'}>{m.libelle}</bdi>
               </button>
             ))}
           </div>
-        </>
+        </div>
       )}
 
       <article
