@@ -21,6 +21,8 @@ let erreurs = 0;
 const ok = (cond, texte) => { if (!cond) erreurs++; console.log(`${cond ? "✅" : "❌"} ${texte}`); };
 const nko = (t) => [...(t || "")].some((c) => { const n = c.codePointAt(0); return n >= 0x07c0 && n <= 0x07ff; });
 const latin = (t) => /[A-Za-zÀ-ÿ]/.test(t || "");
+// Affichage : chaque suite de lettres N'Ko devient « # » (la plage est donnée par ses numéros)
+const masquerNko = (t) => [...t].map((c) => (nko(c) ? "#" : c)).join("").replace(/#+/g, "#");
 const dec = (t) => t?.replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 const meta = (h, k) => dec((h.match(new RegExp(`(?:property|name)="${k}" content="([^"]*)"`)) || [])[1]);
 const lien = (h, rel, attr = "") => (h.match(new RegExp(`<link rel="${rel}"${attr}[^>]*href="([^"]*)"`)) || h.match(new RegExp(`<link[^>]*rel="${rel}"[^>]*href="([^"]*)"`)) || [])[1];
@@ -53,7 +55,7 @@ for (const c of ["/", "/about", "/article/le-geant-a-crete-du-niger", "/lexique"
     const titreOk = langue === "nqo" ? nko(titre) && !latin(titre) : latin(titre) && !nko(titre);
     const descOk = !desc || (langue === "nqo" ? nko(desc) : !nko(desc));
     const ongletOk = langue === "nqo" ? nko(tab) : latin(tab) && !nko(tab);
-    ok(titreOk && descOk && nko(site) && latin(site) && ongletOk && uneLangue(desc), `${p.padEnd(44)} carte : titre ${langue === "nqo" ? "N'Ko" : "français"} ${titreOk ? "ok" : "MÉLANGE"} · description ${desc ? (descOk ? "ok" : "MAUVAISE LANGUE") : "aucune"} · site bilingue · onglet « ${(tab || "").replace(/[߀-߿]+/g, "#").slice(0, 50)} »`);
+    ok(titreOk && descOk && nko(site) && latin(site) && ongletOk && uneLangue(desc), `${p.padEnd(44)} carte : titre ${langue === "nqo" ? "N'Ko" : "français"} ${titreOk ? "ok" : "MÉLANGE"} · description ${desc ? (descOk ? "ok" : "MAUVAISE LANGUE") : "aucune"} · site bilingue · onglet « ${masquerNko(tab || "").slice(0, 50)} »`);
     // On compare les chemins : en local, l'adresse du site n'a pas de « www »
     const chemin = (u) => (u ? new URL(u).pathname.replace(/\/$/, "") || "/" : null);
     const cheminAttendu = chemin(attendue), cheminNqo = c, cheminFr = c === "/" ? "/fr" : `/fr${c}`;
