@@ -23,6 +23,7 @@ import { fabriquerImageCitation, partagerImage, PARTAGER_IMAGE } from "./texte/i
 import messagesNko from "../messages/nko.json";
 import { lireSignets, ecrireSignets, prevenirLectureHorsLigne } from "../lib/bibliotheque";
 import { cheminSansLangue } from "../lib/langue";
+import { chargerImagesPourImpression, demanderImagesArticle } from "./texte/impression";
 
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
@@ -395,11 +396,32 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
     setTimeout(() => URL.revokeObjectURL(lien.href), 1000);
   };
 
-  const handlePrint = () => {
+  // Imprimer : toutes les images du texte d'abord (sinon cadres vides sur le papier), puis l'impression
+  const [preparationImpression, setPreparationImpression] = useState(false);
+  const handlePrint = async () => {
     triggerVibration();
     setIsExpanded(false); // 🛡️ Ferme le cockpit mobile
-    if (typeof window !== 'undefined') window.print();
+    setPreparationImpression(true);
+    await chargerImagesPourImpression();
+    setPreparationImpression(false);
+    window.print();
   };
+
+  // Ctrl+P (sans le bouton) : les images sont demandées au dernier moment ; sur ordinateur (là où
+  // l'on imprime), elles sont aussi demandées 5 s après l'ouverture de la page, pour être prêtes.
+  // Jamais sur téléphone ni en mode « économie de données » (forfaits mobiles).
+  useEffect(() => {
+    const avantImpression = () => { demanderImagesArticle(); };
+    window.addEventListener("beforeprint", avantImpression);
+    const economie = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const minuteur = !economie && window.matchMedia("(min-width: 1024px)").matches
+      ? window.setTimeout(demanderImagesArticle, 5000)
+      : undefined;
+    return () => {
+      window.removeEventListener("beforeprint", avantImpression);
+      window.clearTimeout(minuteur);
+    };
+  }, []);
   const wrapZoomIn = () => { triggerVibration(); onZoomIn(); };
   const wrapZoomOut = () => { triggerVibration(); onZoomOut(); };
 
@@ -684,12 +706,13 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
             {/* BOUTON IMPRIMER (Caché sur mobile) */}
             <button 
-                onClick={handlePrint} 
+                onClick={handlePrint}
+                aria-busy={preparationImpression}
                 className="hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
                 title={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
                 aria-label={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
             >
-              <i className="ph-bold ph-printer text-xl"></i>
+              <i className={`ph-bold ph-printer text-xl ${preparationImpression ? 'animate-pulse text-[#fbbf24]' : ''}`} aria-hidden="true"></i>
             </button>
 
             {/* A7 — SIGNALER UNE ERREUR : formulaire de contact prérempli avec l'adresse de l'article */}
