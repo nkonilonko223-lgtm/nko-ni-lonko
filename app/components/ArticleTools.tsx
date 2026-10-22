@@ -361,10 +361,14 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
   };
 
   // « Citer » ouvre un panneau : APA, MLA, BibTeX (à copier) et RIS (fichier pour Zotero, Mendeley)
+  // Téléphone : un seul panneau à la fois (la liste des outils se ferme quand « Citer » ou le sommaire s'ouvre)
+  const fermerOutilsSurTelephone = () => { if (window.innerWidth < 768) setIsExpanded(false); };
+
   const handleCite = () => {
     triggerVibration();
     setShowToc(false);
     setShowCite((v) => !v);
+    fermerOutilsSurTelephone();
   };
 
   const donneesCitation = (): DonneesCitation => {
@@ -508,11 +512,14 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       )}
 
      {/* 🚀 L'ÎLE DYNAMIQUE (Cockpit + Sommaire) */}
-      <aside className={`fixed z-[9995] print:hidden flex flex-col items-end md:items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-        isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none md:translate-y-0 md:opacity-100 md:pointer-events-auto'
+      {/* Téléphone : bouton en bas, panneaux au-dessus (flex-col-reverse). Ordinateur : barre centrée en
+          hauteur, jamais collée au bord (23 octobre 2026 : en haut au quart, elle dépassait sur les
+          écrans de 720 px), sommaire et « Citer » ouverts à côté de la barre */}
+      <aside className={`fixed z-[9995] print:hidden flex flex-col-reverse items-end md:items-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+        isVisible ? 'translate-y-0 opacity-100 md:-translate-y-1/2' : 'translate-y-20 opacity-0 pointer-events-none md:-translate-y-1/2 md:opacity-100 md:pointer-events-auto'
       } ${
         isNko ? 'left-4 md:left-8 items-start md:items-center' : 'right-4 md:right-8 items-end md:items-center'
-      } bottom-4 md:bottom-auto md:top-1/4 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]`}>
+      } bottom-4 md:bottom-auto md:top-1/2 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]`}>
         
         {/* BOUTON TOGGLE MOBILE (Ancré et Dynamique) */}
         <button 
@@ -521,14 +528,15 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             isExpanded ? 'bg-[#fbbf24] text-black border-[#fbbf24] rotate-90 scale-95' : 'bg-black/85 text-[#fbbf24] border-white/20 rotate-0 scale-100'
           }`}
           aria-label={isNko ? "ߢߍߥߟߊ ߟߊߞߊ߬" : "Ouvrir le menu"}
+          aria-expanded={isExpanded}
         >
           <i className={`ph-bold ${isExpanded ? 'ph-x' : 'ph-dots-three-outline-vertical'} text-2xl`}></i>
         </button>
 
-        <div className={`flex flex-col-reverse md:flex-col gap-4 ${isNko ? 'items-start md:items-center' : 'items-end md:items-center'}`}>
+        <div className={`flex flex-col gap-3 ${isNko ? 'items-start md:items-center' : 'items-end md:items-center'}`}>
           
           {/* LE PANNEAU DE SOMMAIRE (Radar) */}
-         <div className={`overflow-hidden origin-bottom-right md:origin-top-right backdrop-blur-2xl bg-black/85 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
+         <div className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-black/85 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
             showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
           }`}>
             <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
@@ -569,7 +577,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
           {/* LE PANNEAU « CITER » : formats internationaux, titre N'Ko d'abord (app/lib/citations.ts) */}
           {showCite && (
-            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className="w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-black/90 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200">
+            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4' : 'md:right-full md:mr-4'} w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-black/90 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200`}>
               <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
                 <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-[#fbbf24] font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
                   {isNko ? CITER.nko : CITER.fr}
@@ -642,17 +650,21 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
           )}
 
          {/* LE COCKPIT D'OUTILS (Tiroir Horizontal Mobile / Vertical PC) */}
-          <div className={`absolute bottom-0 md:relative flex flex-row-reverse md:flex-col items-center gap-1.5 md:gap-4 p-1.5 md:p-3 rounded-full md:rounded-[2rem] bg-black/85 backdrop-blur-2xl border border-white/15 shadow-[0_0_40px_rgba(0,0,0,0.8)] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-            isNko ? 'left-14 md:left-auto origin-left flex-row' : 'right-14 md:right-auto origin-right'
+          {/* Téléphone (23 octobre 2026) : la rangée d'icônes faisait 424 px de large, plus que l'écran
+              (360–390 px) : 3 ou 4 outils étaient hors d'atteinte. C'est maintenant une colonne au-dessus
+              du bouton, chaque outil AVEC son nom (classe « outil », app/globals.css), qui défile si
+              l'écran est petit. Ordinateur : colonne d'icônes plus serrée, défilante si la fenêtre est basse. */}
+          <div className={`outils-lecture flex-col items-stretch md:items-center gap-1 md:gap-2 p-2 md:p-3 w-64 md:w-auto max-h-[calc(100dvh-7rem)] md:max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain rounded-3xl md:rounded-[2rem] bg-black/90 backdrop-blur-2xl border border-white/15 shadow-[0_0_40px_rgba(0,0,0,0.8)] ${
+            isNko ? 'origin-bottom-left' : 'origin-bottom-right'
           } ${
-            isExpanded ? 'scale-100 opacity-100 translate-x-0' : 'scale-50 opacity-0 pointer-events-none md:scale-100 md:opacity-100 md:pointer-events-auto'
+            isExpanded ? 'flex animate-in fade-in zoom-in-95 duration-200 md:animate-none' : 'hidden md:flex'
           }`}>
             
             {/* BOUTON BOUSSOLE (SOMMAIRE) */}
             {headings.length > 0 && (
               <button 
-                  onClick={() => { triggerVibration(); setShowCite(false); setShowToc(!showToc); }}
-                  className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showToc ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
+                  onClick={() => { triggerVibration(); setShowCite(false); setShowToc(!showToc); fermerOutilsSurTelephone(); }}
+                  className={`outil group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showToc ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
                   title={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
                   aria-label={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
               >
@@ -663,7 +675,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* BOUTON SIGNET */}
             <button 
                 onClick={toggleBookmark} 
-                className="group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                className="outil group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko ? "ߊ߬ ߟߊߡߙߊ߬" : "Sauvegarder l'article"}
                 aria-label={isNko ? "ߊ߬ ߟߊߡߙߊ߬" : "Sauvegarder l'article"}
             >
@@ -673,7 +685,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* BOUTON MODE ZEN */}
             <button 
                 onClick={toggleZenMode} 
-                className="hidden md:flex group relative w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
+                className="outil hidden md:flex group relative w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
                 title={isNko ? "ߘߊ߬ߣߊ߲߬ߥߟߊ ߟߝߊ" : "Mode Zen (Plein Écran)"}
                 aria-label={isNko ? "ߘߊ߬ߣߊ߲߬ߥߟߊ ߟߝߊ" : "Mode Zen (Plein Écran)"}
             >
@@ -681,12 +693,12 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             </button>
 
             {/* SÉPARATEUR ADAPTATIF */}
-            <div className="w-[1px] h-6 md:w-6 md:h-[1px] bg-white/15 mx-0.5 md:mx-auto"></div>
+            <div className="h-px w-full my-1 md:my-0 md:w-6 md:mx-auto bg-white/15"></div>
 
             {/* BOUTON PARTAGER */}
             <button 
                 onClick={handleShare} 
-                className="group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                className="outil group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
                 aria-label={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
             >
@@ -696,7 +708,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* BOUTON CITER : ouvre le panneau des formats */}
             <button 
                 onClick={handleCite} 
-                className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showCite ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
+                className={`outil group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showCite ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
                 title={isNko ? CITER.nko : CITER.fr}
                 aria-label={isNko ? CITER.nko : CITER.fr}
                 aria-expanded={showCite}
@@ -708,7 +720,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             <button 
                 onClick={handlePrint}
                 aria-busy={preparationImpression}
-                className="hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
+                className="outil hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
                 title={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
                 aria-label={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
             >
@@ -720,7 +732,8 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               <Link
                 href={lien(`/contact?article=${encodeURIComponent(slug)}`)}
                 onClick={triggerVibration}
-                className="flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                lang={isNko && !SIGNALER.nko ? "fr" : undefined}
+                className="outil flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}
                 aria-label={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}
               >
@@ -729,12 +742,12 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             )}
 
             {/* SÉPARATEUR ADAPTATIF */}
-            <div className="w-[1px] h-6 md:w-6 md:h-[1px] bg-white/15 mx-0.5 md:mx-auto"></div>
+            <div className="h-px w-full my-1 md:my-0 md:w-6 md:mx-auto bg-white/15"></div>
 
             {/* ZOOM + */}
             <button 
                 onClick={wrapZoomIn} 
-                className="w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                className="outil w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
                 title={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
                 aria-label={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
             >
@@ -745,7 +758,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* ZOOM - */}
             <button 
                 onClick={wrapZoomOut} 
-                className="w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                className="outil w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
                 title={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
                 aria-label={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
             >
