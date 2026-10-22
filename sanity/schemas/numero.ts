@@ -260,6 +260,22 @@ export default defineType({
       validation: (rule) => rule.max(200).warning('Le résumé ne doit pas dépasser 200 caractères.'),
       components: { input: ChampAuto },
     }),
+    // Résumé français des cartes de partage (22 octobre 2026), comme pour les articles
+    defineField({
+      name: 'excerptFr',
+      title: 'Résumé français (cartes de partage)',
+      description: "Facultatif. Une ou deux phrases en français, 160 caractères au plus : elles suivent « N°… — titre français » sur les cartes WhatsApp, Telegram et X. Vide : le résumé français de l'édito, sinon le titre seul.",
+      type: 'text',
+      group: 'seo',
+      rows: 2,
+      validation: (rule) => [
+        rule.max(160).warning('Au-delà de 160 caractères, le résumé sera coupé sur les cartes.'),
+        rule
+          .custom((texte) => (typeof texte === 'string' && contientNko(texte) ? 'Ce champ est en français : le N\'Ko va dans « Résumé ».' : true))
+          .warning(),
+      ],
+      components: { input: ChampLtr },
+    }),
   ],
   orderings: [
     { title: 'Numéro (le plus récent en premier)', name: 'numeroDesc', by: [{ field: 'numero', direction: 'desc' }] },

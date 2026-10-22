@@ -541,6 +541,31 @@ export default defineType({
       ],
       components: { input: SmartBidiInput }
     }),
+
+    // Résumé français des cartes de partage (22 octobre 2026) : « titre français — résumé
+    // français » sur WhatsApp, Telegram et X (app/lib/carte-partage.ts). Servira aussi de
+    // résumé à la future page française (langue dans l'adresse, point B6 du Lot 2).
+    defineField({
+      name: 'excerptFr',
+      title: 'Résumé français (cartes de partage)',
+      description: "Facultatif. Une ou deux phrases en français, 160 caractères au plus : elles suivent le titre français sur les cartes WhatsApp, Telegram et X. Vide : la partie française du « Court Résumé », sinon le titre français seul.",
+      type: 'text',
+      group: 'seo',
+      rows: 2,
+      validation: (rule) => [
+        rule.max(160).warning('Au-delà de 160 caractères, le résumé sera coupé sur les cartes.'),
+        rule
+          .custom((texte) => {
+            const nko = typeof texte === 'string' && [...texte].some((c) => {
+              const code = c.codePointAt(0) ?? 0;
+              return code >= 0x07c0 && code <= 0x07ff;
+            });
+            return nko ? 'Ce champ est en français : le N\'Ko va dans « Court Résumé ».' : true;
+          })
+          .warning(),
+      ],
+      components: { input: SmartBidiInput }
+    }),
   ],
 
   // 🚀 PREVIEW

@@ -51,6 +51,7 @@ interface SanityArticleRaw {
   body: PortableTextBlock[];
   wordCount?: number;
   excerpt?: string;
+  excerptFr?: string; // résumé français des cartes de partage (facultatif)
   category?: string;
   categories?: { title: string }[];
   
@@ -84,6 +85,7 @@ export interface SafeArticleData {
   body: PortableTextBlock[];
   wordCount?: number;
   excerpt: string;
+  excerptFr: string | null;
   category: string;
   readingTime: number; 
   tags: string[];
@@ -147,6 +149,7 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
     updatedAt: raw.updatedAt && raw.publishedAt && raw.updatedAt > raw.publishedAt ? raw.updatedAt : raw.publishedAt || new Date().toISOString(),
     body: raw.body || [],
     excerpt: raw.excerpt || "",
+    excerptFr: raw.excerptFr?.trim() || null,
     category: category,
     readingTime: readingTime,
     wordCount: groqWordCount,
@@ -193,6 +196,7 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
       termeNko, termeFr, definitionNko, definitionFr, "slug": slug.current
     },
     excerpt,
+    excerptFr,
     category,
     "rubrique": rubrique->{ titleNko, titleFr, "slug": slug.current },
     "numero": ${PROJECTION_NUMERO_DE_L_ARTICLE},
@@ -341,7 +345,7 @@ export async function generateMetadata(
       creator: COMPTE_X,
       site: COMPTE_X,
     },
-  }, { descriptionDuTitre: true });
+  }, { descriptionDuTitre: true, resumeFr: article.excerptFr });
 }
 
 // ==============================================================================

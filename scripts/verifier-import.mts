@@ -239,6 +239,8 @@ for (const d of docs) {
     if (!d.title) erreurs.push(`[${id}] article : « title » obligatoire.`);
     if (!d.excerpt) erreurs.push(`[${id}] article : « excerpt » (résumé) obligatoire.`);
     else if (String(d.excerpt).length > 200) avertissements.push(`[${id}] résumé de plus de 200 caractères.`);
+    if (d.excerptFr && [...String(d.excerptFr)].length > 160) avertissements.push(`[${id}] résumé français (excerptFr) de plus de 160 caractères : il sera coupé sur les cartes.`);
+    if (d.excerptFr && contientNko(String(d.excerptFr))) avertissements.push(`[${id}] le résumé français (excerptFr) contient du N'Ko.`);
     if (!d.publishedAt || Number.isNaN(Date.parse(String(d.publishedAt)))) erreurs.push(`[${id}] article : « publishedAt » obligatoire (date ISO).`);
     if (!slugValide(lienDe(d))) erreurs.push(`[${id}] article : slug.current invalide (a-z, chiffres, tirets).`);
     if (!d.category || !CATEGORIES.has(String(d.category))) erreurs.push(`[${id}] article : catégorie absente ou non autorisée.`);
@@ -346,6 +348,8 @@ for (const d of docs) {
     }
     if (d.seoTitle && String(d.seoTitle).length > 60) avertissements.push(`[${id}] numéro : titre SEO de plus de 60 caractères.`);
     if (d.excerpt && String(d.excerpt).length > 200) avertissements.push(`[${id}] numéro : résumé de plus de 200 caractères.`);
+    if (d.excerptFr && [...String(d.excerptFr)].length > 160) avertissements.push(`[${id}] numéro : résumé français (excerptFr) de plus de 160 caractères : il sera coupé sur les cartes.`);
+    if (d.excerptFr && contientNko(String(d.excerptFr))) avertissements.push(`[${id}] numéro : le résumé français (excerptFr) contient du N'Ko.`);
   } else {
     erreurs.push(`[${id}] type « ${d._type} » non prévu dans un import (seulement « article », « terme », « rubrique » et « numero »).`);
   }

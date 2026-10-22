@@ -52,6 +52,8 @@
 
 Champs obligatoires : `title`, `excerpt` (≤ 200 caractères conseillés), `publishedAt` (date ISO), `slug.current` (`a-z0-9-`), `category` (valeur de la liste du schéma), `authors` (références vers des auteurs **existants**), `mainImage` (image téléversée + `alt`), `body`.
 
+Champ facultatif `excerptFr` (onglet SEO, ajouté le 22 octobre 2026) : **résumé français** d'une ou deux phrases, **160 caractères au plus**, **sans N'Ko**. Il suit le titre français sur les cartes de partage (WhatsApp, Telegram, X) : « titre français — résumé français ». Vide : la partie française de `excerpt` (entre parenthèses), sinon le titre français seul. Le texte vient de la rédaction (version validée), jamais rédigé par l'IA. `scripts/verifier-import.mts` avertit au-delà de 160 caractères ou si le champ contient du N'Ko.
+
 ### Le corps (`body`) — types de blocs autorisés
 
 | Bloc | Utilisation | Champs |
@@ -142,7 +144,8 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
   "aLaUne": { "_type": "reference", "_ref": "article-nkl-003-gs", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
   "couverture": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…" }, "alt": "…", "captionNko": "<rédaction>", "caption": "…", "source": "NASA/SDO — domaine public" },
   "seoTitle": "Facultatif (≤ 60 caractères)",
-  "excerpt": "Facultatif (≤ 200 caractères) ; s'il est vide, la page utilise le résumé de l'édito"
+  "excerpt": "Facultatif (≤ 200 caractères) ; s'il est vide, la page utilise le résumé de l'édito",
+  "excerptFr": "Facultatif : résumé français des cartes de partage (≤ 160 caractères, sans N'Ko) ; vide : celui de l'édito"
 }
 ```
 

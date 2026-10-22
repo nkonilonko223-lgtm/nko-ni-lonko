@@ -29,6 +29,7 @@ export type ArticleDuSommaire = {
   _id: string;
   title: string;
   excerpt?: string;
+  excerptFr?: string; // résumé français des cartes de partage (facultatif)
   slug: string;
   image?: ImageNumero | null;
   rubrique?: RubriqueCourte | null;
@@ -42,6 +43,7 @@ export type Numero = {
   publishedAt: string;
   seoTitle?: string;
   excerpt?: string;
+  excerptFr?: string; // résumé français des cartes de partage (facultatif)
   slug: string;
   couverture?: ImageNumero | null;
   editoRef?: string;
@@ -63,11 +65,11 @@ export const PROJECTION_NUMERO_DE_L_ARTICLE = `*[_type == "numero" && references
 const IMAGE = `{ alt, captionNko, caption, source, sourceNko, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip, "hotspot": hotspot{ x, y } }`;
 
 const REQUETE_NUMERO = `*[_type == "numero" && slug.current == $slug][0] {
-  numero, saison, titleNko, titleFr, publishedAt, seoTitle, excerpt, "slug": slug.current,
+  numero, saison, titleNko, titleFr, publishedAt, seoTitle, excerpt, excerptFr, "slug": slug.current,
   "couverture": couverture${IMAGE},
   "editoRef": edito._ref, "aLaUneRef": aLaUne._ref,
   "sommaire": sommaire[]->{
-    _id, title, excerpt, "slug": slug.current,
+    _id, title, excerpt, excerptFr, "slug": slug.current,
     "image": mainImage${IMAGE},
     "rubrique": rubrique->{ titleNko, titleFr, "slug": slug.current }
   }

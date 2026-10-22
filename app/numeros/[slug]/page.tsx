@@ -25,6 +25,9 @@ const titreDe = (numero: Numero) =>
   numero.seoTitle || `${numeroNko(numero.numero)} · ${numeroFr(numero.numero)}${numero.titleFr ? ` — ${numero.titleFr}` : ""}`;
 // Résumé du numéro ; à défaut, celui de l'édito (décision du propriétaire)
 const resumeDe = (numero: Numero) => numero.excerpt || numero.sommaire.find((a) => a._id === numero.editoRef)?.excerpt;
+// Résumé français de la carte de partage : celui du numéro ; à défaut, celui de l'édito
+const resumeFrDe = (numero: Numero) =>
+  numero.excerptFr?.trim() || numero.sommaire.find((a) => a._id === numero.editoRef)?.excerptFr?.trim() || null;
 // Image de partage : celle fabriquée par scripts/images-partage/numeros.mjs (couverture + bandeau fin :
 // nom N'Ko de la revue et numéro, comme les grands magazines) ; sinon la couverture recadrée en
 // 1200×630 autour du point d'intérêt ; à défaut, l'image de l'accueil (jamais next/og).
@@ -57,7 +60,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     alternates: { canonical: url, languages: { nqo: url, "fr-FR": url, "x-default": url } as Record<string, string> },
     openGraph: { title: titre, description, url, siteName: "N'Ko ni Lonko", locale: "nqo", alternateLocale: ["fr_FR"], type: "website", images: [image] },
     twitter: { card: "summary_large_image", title: titre, description, images: [image], creator: COMPTE_X, site: COMPTE_X },
-  }, { descriptionDuTitre: true });
+  }, { descriptionDuTitre: true, resumeFr: resumeFrDe(numero) });
 }
 
 export default async function PageNumero({ params }: { params: Promise<{ slug: string }> }) {
