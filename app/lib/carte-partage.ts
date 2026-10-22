@@ -84,6 +84,8 @@ export function versionLangue(metadonnees: Metadata, langue: Langue, o: OptionsL
       ...m.alternates,
       canonical: url,
       languages: { nqo: adresse("nqo", o.chemin), fr: adresse("fr", o.chemin), "x-default": adresse("nqo", o.chemin) } as Record<string, string>,
+      // Flux RSS de la version (app/lib/flux-rss.ts) : trouvé tout seul par les lecteurs de flux
+      types: { "application/rss+xml": [{ url: fr ? "/rss-fr.xml" : "/rss.xml", title: fr ? "N'Ko ni Lonko (français)" : NOM_NKO }] },
     },
     ...(og
       ? { openGraph: { ...og, ...carte, url, siteName: NOM_SITE_CARTE, locale: fr ? "fr_FR" : "nqo", alternateLocale: [fr ? "nqo" : "fr_FR"] } }
