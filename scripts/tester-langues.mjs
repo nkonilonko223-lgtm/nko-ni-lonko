@@ -30,7 +30,7 @@ const get = async (p, h = UA, redirect = "manual") => { const r = await fetch(BA
 const SITE = "https://www.nkonilonko.com".replace(/\/$/, "");
 
 // 1. Pages : les deux versions répondent, avec la bonne langue
-const chemins = ["/", "/about", "/contact", "/privacy", "/terms", "/numeros", "/lexique", "/article/le-geant-a-crete-du-niger", "/article/bienvenue-sur-n-ko-ni-lonko", "/offline"];
+const chemins = ["/", "/about", "/contact", "/privacy", "/terms", "/numeros", "/lexique", "/article/le-geant-a-crete-du-niger", "/article/bienvenue-sur-n-ko-ni-lonko", "/offline", "/bibliotheque", "/auteurs/moustapha-camara"];
 for (const c of chemins) {
   for (const [langue, p] of [["nqo", c], ["fr", c === "/" ? "/fr" : `/fr${c}`]]) {
     const { r, h } = await get(p);

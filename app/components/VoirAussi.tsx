@@ -29,7 +29,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
             >
               {a.image?.url && (
                 <span className="relative aspect-[16/9] w-full overflow-hidden">
-                  <Image src={a.image.url} alt={a.image.alt || ""} fill sizes="(min-width: 768px) 320px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src={a.image.url} alt={a.image.alt?.trim() || ""} fill sizes="(min-width: 768px) 320px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                 </span>
               )}
               <span className="flex-1 p-4 text-start">

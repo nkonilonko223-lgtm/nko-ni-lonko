@@ -99,7 +99,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
       <article className="mx-auto max-w-3xl">
         <header className="flex flex-col items-center gap-4 text-center">
           {image && (
-            <Image src={image} alt={auteur.image?.alt || auteur.name} width={160} height={160} priority className="h-32 w-32 rounded-full border-2 border-[#fbbf24]/40 object-cover md:h-40 md:w-40" />
+            <Image src={image} alt={auteur.image?.alt?.trim() || auteur.name} width={160} height={160} priority className="h-32 w-32 rounded-full border-2 border-[#fbbf24]/40 object-cover md:h-40 md:w-40" />
           )}
           <h1 className="flex flex-col items-center gap-1">
             {auteur.nameNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{auteur.nameNko}</span>}
@@ -172,7 +172,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
                   <LienLangue href={`/article/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50">
                     {a.image?.url && (
                       <span className="relative aspect-[16/9] w-full overflow-hidden">
-                        <Image src={a.image.url} alt={a.image.alt || ""} fill priority={i < 2} sizes="(min-width: 640px) 360px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <Image src={a.image.url} alt={a.image.alt?.trim() || ""} fill priority={i < 2} sizes="(min-width: 640px) 360px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                       </span>
                     )}
                     <span className="flex-1 p-4 text-start">
