@@ -1,7 +1,7 @@
 # N'Ko ni Lonko — Mémoire du projet (CLAUDE.md)
 
 > Revue scientifique bilingue **N'Ko / français** — https://www.nkonilonko.com
-> Ce fichier est lu au début de chaque session. Mis à jour le 18 octobre 2026.
+> Ce fichier est lu au début de chaque session. Mis à jour le 22 octobre 2026.
 
 ---
 
@@ -188,5 +188,5 @@ Secrets (serveur uniquement) : `SANITY_API_WRITE_TOKEN` (rôle **Editor**), `SAN
 - **Chantiers A et B (18 octobre 2026, vitesse, qualité, sécurité)** : le détail de chaque point est dans son message de commit (« A1 » à « A10 », « B1 » à « B11 ») ; les suites (langue dans l'adresse « B6 », CSP appliquée, petits constats) sont dans **`docs/PLAN-LOT-2.md`**.
 - **Lot 2 : ne pas commencer avant le 30 octobre.** Ordre et méthode (dont le modèle de traduction ByT5, jeu de données **privé**, Google Colab) : **`docs/PLAN-LOT-2.md`**.
 - **Lot 2 préparé en avance (19 – 20 octobre 2026, accord du propriétaire)** : 20 branches empilées `lot2/…`, **rien de fusionné** ; liste, ordre et gestes après fusion dans **`docs/PLAN-LOT-2.md`** (« État au 20 octobre »). Textes N'Ko à demander et constats pour la rédaction : **`docs/TEXTES-NKO-A-DEMANDER.md`**. Branche à part `correctif/navigation-scholar` (depuis `main`, corrections de choses en ligne) : fusionnable avant le 30.
-- **22 octobre 2026 : B6 et pile reposée** : 6 branches empilées (`lot2/b6-langue-adresse` → `lot2/securite-entetes` → `lot2/flux-rss` → `lot2/donnees-google` → `lot2/accessibilite-suite` → `lot2/pile-sur-b6`), **rien de fusionné**. Les anciennes branches `lot2/…` du 20 octobre sont **remplacées** par `lot2/pile-sur-b6` (ne pas les fusionner). Ordre, tests, conseils de date et gestes après fusion : **`docs/RAPPORT-22-OCTOBRE.md`**.
+- **22 octobre 2026 : B6 et pile reposée** : 6 branches empilées (`lot2/b6-langue-adresse` → `lot2/securite-entetes` → `lot2/flux-rss` → `lot2/donnees-google` → `lot2/accessibilite-suite` → `lot2/pile-sur-b6`), **fusionnées et en ligne le 22 octobre 2026** (`main` = `9608f15`, Production vérifiée, deux schémas Sanity mis à jour). Les anciennes branches `lot2/…` du 20 octobre sont **remplacées** (ne plus les fusionner). Ordre, tests, conseils de date et gestes après fusion : **`docs/RAPPORT-22-OCTOBRE.md`**.
 - **Liste du Lot 2** : corpus N'Ko – français pour le modèle ByT5 (export daté, privé), politique d'usage de l'IA et clause « IA » du pacte des auteurs, images de partage des articles avec leur titre N'Ko (même méthode que `scripts/images-partage/generer.mjs`, `next/og` ne lie pas les lettres N'Ko), lettre d'information, PDF du numéro, édition visuelle cliquable (stega), audio des termes, « voir aussi », conversion des anciens encadrés de définition, application hors ligne (Serwist incompatible avec Turbopack), image de partage des articles (erreur `fit-content`), faille `basic-ftp` (outil d'import Sanity), option `isHighlighted` obsolète, choix manuel de la « langue du paragraphe » dans le Studio (aujourd'hui : un paragraphe qui contient du N'Ko s'affiche en N'Ko — règle mesurée le 5 octobre 2026 comme la plus juste : 0 erreur sur 756 paragraphes ; seule limite, un paragraphe français citant un mot N'Ko).

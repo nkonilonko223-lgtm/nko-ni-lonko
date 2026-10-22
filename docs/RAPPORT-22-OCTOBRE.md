@@ -1,7 +1,8 @@
 # Rapport du 22 octobre 2026 — Langue dans l'adresse (B6) et suite du Lot 2
 
-> À lire **avant** toute fusion. **Rien n'est fusionné**, rien n'est en ligne, rien n'a été écrit dans Sanity.
-> Le site en ligne est exactement celui de ce matin (`main` = `a8cc4e7`).
+> **FUSIONNÉ le 22 octobre 2026 vers 20 h 25 (UTC)**, à la demande écrite du propriétaire (« fusionner », tout) : `main` = `9608f15`, mise en ligne **Production** réussie, `tester-langues` réussi sur https://www.nkonilonko.com, contrôles GitHub au vert. Les deux schémas Sanity ont été mis à jour après une sauvegarde complète (`C:/Dev/archives/exports/avant-schema-lot2-2026-10-22.tar.gz`, 67 documents, 54 images). Il reste les gestes du propriétaire (partie 9, « Vous faites »).
+>
+> (Texte d'origine : ce rapport était à lire **avant** la fusion ; le site était alors celui de `main` = `a8cc4e7`.)
 
 ---
 

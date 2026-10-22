@@ -2,7 +2,9 @@
 
 > **Ne pas commencer avant la publication du N°003** (règle du propriétaire). Même méthode qu'au Lot 1 : Synthèse → Audit → Stratégie → Génération → Validation, une branche par sujet, un changement par commit, aperçu Vercel, fusion après « fusionner ».
 
-## État au 20 octobre 2026 (préparé en avance, sur des branches, RIEN de fusionné)
+## État au 20 octobre 2026 (préparé en avance, sur des branches)
+
+> **Mise à jour du 22 octobre 2026** : toute cette pile a été reposée sur B6 (`lot2/pile-sur-b6`) puis **fusionnée et mise en ligne** le 22 octobre (`main` = `9608f15`). Les branches ci-dessous sont remplacées : ne plus les fusionner. Détail : `docs/RAPPORT-22-OCTOBRE.md`.
 
 Décision du propriétaire (19 octobre) : préparer tout le Lot 2 pendant le gel, sans rien mettre en ligne avant le 30 octobre, sans écriture dans Sanity, sans e-mail. Branches **empilées** (chacune contient les précédentes) : fusionner la dernière revient à tout fusionner ; on peut aussi s'arrêter à une branche.
 
@@ -150,7 +152,7 @@ Règle : **l'IA propose, l'humain valide** ; jamais de N'Ko publié sans la réd
 
 **Quand.** Après le 30 octobre, sur une branche dédiée. Travail moyen, risque moyen (toutes les pages et les liens internes sont concernés) : **pas pendant le gel**.
 
-**État (22 octobre 2026) : FAIT sur la branche `lot2/b6-langue-adresse`, NON fusionnée.** MckV a décidé d'avancer B6 (cartes de partage entièrement dans une langue, résumé compris ; nom du site toujours bilingue). Décisions : N'Ko sans préfixe, français en `/fr` ; fenêtre de choix seulement à la première visite de l'accueil ; un lecteur qui a choisi le français est envoyé vers `/fr` **sur l'accueil seulement** ; un lien partagé n'est jamais redirigé. Le moment de la fusion se décide après lecture du rapport (conseil : avant le 25 ou après le 30 octobre, jamais pendant l'import du N°003). Test : `node scripts/tester-langues.mjs <adresse>`.
+**État (22 octobre 2026) : FAIT et EN LIGNE** (fusionné le 22 octobre avec toute la pile, `main` = `9608f15` ; voir `docs/RAPPORT-22-OCTOBRE.md`). MckV a décidé d'avancer B6 (cartes de partage entièrement dans une langue, résumé compris ; nom du site toujours bilingue). Décisions : N'Ko sans préfixe, français en `/fr` ; fenêtre de choix seulement à la première visite de l'accueil ; un lecteur qui a choisi le français est envoyé vers `/fr` **sur l'accueil seulement** ; un lien partagé n'est jamais redirigé. Le moment de la fusion se décide après lecture du rapport (conseil : avant le 25 ou après le 30 octobre, jamais pendant l'import du N°003). Test : `node scripts/tester-langues.mjs <adresse>`.
 
 _(Plan du 19 octobre ci-dessous, gardé pour l'historique : la réalisation du 22 octobre a choisi un dossier `app/[lang]/` et le filtre `proxy.ts` plutôt que deux groupes de routes.)_
 
