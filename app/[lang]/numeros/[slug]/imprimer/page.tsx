@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import VueImpression from "../../../components/numero/VueImpression";
-import { numeroFr } from "../../../components/numero/textes";
-import { getLiensNumeros, getNumeroComplet } from "../../../lib/numeros";
+import VueImpression from "../../../../components/numero/VueImpression";
+import { numeroFr } from "../../../../components/numero/textes";
+import { getLiensNumeros, getNumeroComplet } from "../../../../lib/numeros";
 
 // ============================================================================
 // N'KO NI LONKO — Version imprimable d'un numéro (source du PDF), ex. /numeros/003/imprimer

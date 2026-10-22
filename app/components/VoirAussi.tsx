@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import LienLangue from "./LienLangue";
 import type { Voisin } from "../lib/voir-aussi";
 import { TitreArticle } from "./numero/VueNumero";
 
@@ -23,7 +23,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
       <ul className="grid gap-4 md:grid-cols-3">
         {articles.map((a) => (
           <li key={a.slug}>
-            <Link
+            <LienLangue
               href={`/article/${a.slug}`}
               className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50"
             >
@@ -35,7 +35,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
               <span className="flex-1 p-4 text-start">
                 <TitreArticle titre={a.title} />
               </span>
-            </Link>
+            </LienLangue>
           </li>
         ))}
       </ul>

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import LienLangue from "../LienLangue";
 import type { TermeDictionnaire } from "./DictionnaireInteractif";
 import { TEXTES_LEXIQUE } from "./textes";
 
@@ -31,14 +31,14 @@ export default function TermeDuJour({ termes }: { termes: TermeDictionnaire[] })
       {t.termeFr && <p lang="fr" dir="ltr" className="mt-1 text-lg text-blue-200">{t.termeFr}</p>}
       {t.definitionNko && <p lang="nqo" dir="rtl" className="mt-4 line-clamp-3 font-kigelia text-lg leading-loose text-white/85">{t.definitionNko}</p>}
       {t.definitionFr && <p lang="fr" dir="ltr" className="mt-2 line-clamp-3 text-sm leading-relaxed text-white/65">{t.definitionFr}</p>}
-      <Link
+      <LienLangue
         href={`/lexique/${t.slug}`}
         className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full border border-blue-400/50 px-5 text-blue-200 transition-colors hover:bg-blue-400/10"
       >
         <span lang="nqo" dir="rtl" className="font-kigelia">{TEXTES_LEXIQUE.voirDansLeLexique.nko}</span>
         <span aria-hidden="true" className="text-white/30">·</span>
         <span lang="fr" className="text-sm">{TEXTES_LEXIQUE.voirDansLeLexique.fr}</span>
-      </Link>
+      </LienLangue>
     </section>
   );
 }

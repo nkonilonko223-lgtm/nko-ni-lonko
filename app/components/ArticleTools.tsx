@@ -22,6 +22,7 @@ import { isNko as contientDuNko } from "./texte/outils";
 import { fabriquerImageCitation, partagerImage, PARTAGER_IMAGE } from "./texte/imageCitation";
 import messagesNko from "../messages/nko.json";
 import { lireSignets, ecrireSignets, prevenirLectureHorsLigne } from "../lib/bibliotheque";
+import { cheminSansLangue } from "../lib/langue";
 
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
@@ -45,7 +46,7 @@ interface ArticleToolsProps {
 }
 
 export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slug }: ArticleToolsProps) {
-  const { lang } = useLanguage();
+  const { lang, lien } = useLanguage();
   const isNko = lang === 'nko';
   
   // États de l'Île Dynamique
@@ -253,7 +254,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
   // 🚀 SÉCURITÉ HYDRATATION & LINTER : Décalage asynchrone (0ms)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsBookmarked(lireSignets().includes(window.location.pathname));
+      setIsBookmarked(lireSignets().includes(cheminSansLangue(window.location.pathname)));
     }, 0);
     return () => clearTimeout(timer);
   }, []);
@@ -297,16 +298,19 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
   const toggleBookmark = () => {
     triggerVibration();
-    const chemin = window.location.pathname;
+    // Langue dans l'adresse (B6) : le signet est gardé SANS la langue (« /article/<slug> ») : le même
+    // article en N'Ko ou en français. La page gardée hors connexion est celle de la langue lue.
+    const page = window.location.pathname;
+    const chemin = cheminSansLangue(page);
     const signets = lireSignets();
     if (signets.includes(chemin)) {
       ecrireSignets(signets.filter((s) => s !== chemin));
-      prevenirLectureHorsLigne("oublier", chemin);
+      prevenirLectureHorsLigne("oublier", page);
       setIsBookmarked(false);
       setSignetAjoute(false);
     } else {
       ecrireSignets([...signets, chemin]);
-      prevenirLectureHorsLigne("garder", chemin); // lisible sans connexion
+      prevenirLectureHorsLigne("garder", page); // lisible sans connexion
       setIsBookmarked(true);
       setSignetAjoute(true);
     }
@@ -411,7 +415,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                 ? <span lang="nqo" dir="rtl" className="font-kigelia">{SAUVEGARDE.nko}</span>
                 : <span lang="fr" dir="ltr" className="font-fr">{SAUVEGARDE.fr}</span>}
             </span>
-            <Link href="/bibliotheque" className="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+            <Link href={lien("/bibliotheque")} className="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
               {isNko && MA_BIBLIOTHEQUE.nko
                 ? <span lang="nqo" dir="rtl" className="font-kigelia">{MA_BIBLIOTHEQUE.nko}</span>
                 : <span lang="fr" dir="ltr" className="font-fr">{MA_BIBLIOTHEQUE.fr}</span>}
@@ -691,7 +695,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* A7 — SIGNALER UNE ERREUR : formulaire de contact prérempli avec l'adresse de l'article */}
             {slug && (
               <Link
-                href={`/contact?article=${encodeURIComponent(slug)}`}
+                href={lien(`/contact?article=${encodeURIComponent(slug)}`)}
                 onClick={triggerVibration}
                 className="flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}

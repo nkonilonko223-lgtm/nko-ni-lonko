@@ -39,7 +39,7 @@ const TEXTES = {
 const serveur = () => null; // côté serveur, la liste n'est pas connue : rien n'est affiché
 
 export default function MaBibliotheque({ articles }: { articles: ArticleSauvegardable[] }) {
-  const { lang } = useLanguage();
+  const { lang, lien } = useLanguage();
   const enNko = lang === "nko";
   const brut = useSyncExternalStore(abonnerSignets, signetsBruts, serveur);
 
@@ -60,7 +60,7 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
   const retirer = (chemin: string) => {
     if (brut === null) return;
     ecrireSignets(analyserSignets(brut).filter((c) => c !== chemin));
-    prevenirLectureHorsLigne("oublier", chemin);
+    prevenirLectureHorsLigne("oublier", lien(chemin));
   };
 
   // Lecture hors ligne (public/sw.js) : quels articles sont gardés sur l'appareil ? Ceux qui
@@ -73,13 +73,14 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
     (async () => {
       const gardes = new Set<string>();
       for (const chemin of chemins.split("|")) {
-        if (await lisibleHorsLigne(chemin)) gardes.add(chemin);
-        else if (navigator.onLine) prevenirLectureHorsLigne("garder", chemin);
+        // Signet sans la langue ; la page gardée hors connexion est celle de la langue lue (B6)
+        if (await lisibleHorsLigne(lien(chemin))) gardes.add(chemin);
+        else if (navigator.onLine) prevenirLectureHorsLigne("garder", lien(chemin));
       }
       if (actif) setHorsLigne(gardes);
     })();
     return () => { actif = false; };
-  }, [chemins]);
+  }, [chemins, lien]);
 
   return (
     <div className="mx-auto max-w-5xl">
@@ -93,7 +94,7 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
         <div className="mx-auto flex max-w-xl flex-col items-center gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-8 text-center text-white/70">
           <i className="ph-bold ph-bookmark-simple text-4xl text-white/40" aria-hidden="true"></i>
           <p>{libelle(TEXTES.vide)}</p>
-          <Link href="/numeros" className="rounded-full border border-[#fbbf24]/50 px-5 py-2 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+          <Link href={lien("/numeros")} className="rounded-full border border-[#fbbf24]/50 px-5 py-2 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
             {libelle(TEXTES.numeros, enNko ? "text-lg" : "")}
           </Link>
         </div>
@@ -107,7 +108,7 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
             return (
               <li key={chemin} className="relative">
                 <Link
-                  href={chemin}
+                  href={lien(chemin)}
                   className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50"
                 >
                   <span className="relative block aspect-[16/9] w-full bg-white/5">

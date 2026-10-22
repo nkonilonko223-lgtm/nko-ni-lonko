@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import LienLangue from "../../../components/LienLangue";
 import { notFound } from "next/navigation";
-import { TitreArticle } from "../../components/numero/VueNumero";
-import { sensDe } from "../../components/numero/titre";
-import { getAuteur, getLiensAuteurs, type Auteur } from "../../lib/auteurs";
-import { estLaRevue } from "../../lib/citations";
-import { jsonLd } from "../../lib/jsonld";
-import PiluleRetour from "../../components/PiluleRetour";
-import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
-import messagesNko from "../../messages/nko.json";
+import { TitreArticle } from "../../../components/numero/VueNumero";
+import { sensDe } from "../../../components/numero/titre";
+import { getAuteur, getLiensAuteurs, type Auteur } from "../../../lib/auteurs";
+import { estLaRevue } from "../../../lib/citations";
+import { jsonLd } from "../../../lib/jsonld";
+import PiluleRetour from "../../../components/PiluleRetour";
+import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../../lib/partage";
+import { versionLangue } from "../../../lib/carte-partage";
+import { langueDe } from "../../../lib/langue";
+import messagesNko from "../../../messages/nko.json";
 
 // ============================================================================
 // N'KO NI LONKO — Page d'un auteur (ex. /auteurs/moustapha-camara), composant serveur
@@ -32,8 +34,8 @@ export async function generateStaticParams() {
   return (await getLiensAuteurs()).map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: string }> }): Promise<Metadata> {
+  const { slug, lang } = await params;
   const auteur = await getAuteur(slug);
   if (!auteur) return { title: "Auteur" };
   const url = urlDe(auteur);
@@ -42,13 +44,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const image = auteur.image?.url
     ? { url: `${auteur.image.url}?w=1200&h=630&fit=crop&fm=jpg&q=80`, width: 1200, height: 630, alt: auteur.name }
     : IMAGE_PARTAGE_ACCUEIL;
-  return {
+  // Deux versions (B6) : nom N'Ko / nom français, biographie de la langue de la version
+  return versionLangue({
     title: titre,
     description,
     alternates: { canonical: url },
     openGraph: { title: titre, description, url, siteName: "N'Ko ni Lonko", locale: "nqo", alternateLocale: ["fr_FR"], type: "profile", images: [image] },
     twitter: { card: "summary_large_image", title: titre, description, images: [image], creator: COMPTE_X, site: COMPTE_X },
-  };
+  }, langueDe(lang), { chemin: `/auteurs/${slug}`, resumeNko: auteur.bioNko, resumeFr: description });
 }
 
 export default async function PageAuteur({ params }: { params: Promise<{ slug: string }> }) {
@@ -166,7 +169,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
             <ul className="grid gap-4 sm:grid-cols-2">
               {auteur.articles.map((a, i) => (
                 <li key={a.slug}>
-                  <Link href={`/article/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50">
+                  <LienLangue href={`/article/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50">
                     {a.image?.url && (
                       <span className="relative aspect-[16/9] w-full overflow-hidden">
                         <Image src={a.image.url} alt={a.image.alt || ""} fill priority={i < 2} sizes="(min-width: 640px) 360px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -175,7 +178,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
                     <span className="flex-1 p-4 text-start">
                       <TitreArticle titre={a.title} />
                     </span>
-                  </Link>
+                  </LienLangue>
                 </li>
               ))}
             </ul>

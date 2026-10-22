@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { client } from "../../sanity/client";
-import PiluleRetour from "../components/PiluleRetour";
-import MaBibliotheque, { type ArticleSauvegardable } from "../components/bibliotheque/MaBibliotheque";
+import { client } from "../../../sanity/client";
+import PiluleRetour from "../../components/PiluleRetour";
+import MaBibliotheque, { type ArticleSauvegardable } from "../../components/bibliotheque/MaBibliotheque";
 
 // ============================================================================
 // N'KO NI LONKO — « Ma bibliothèque » (/bibliotheque) : les articles sauvegardés par le lecteur
