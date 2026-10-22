@@ -9,6 +9,7 @@ import SiteFooter from "./SiteFooter";
 import { useLanguage } from "./LanguageProvider";
 import { normaliser } from "./lexique/normaliser";
 import { cleDeCategorie } from "../lib/categories";
+import { toNkoDigits } from "./texte/outils";
 
 
 // ==============================================================================
@@ -479,6 +480,22 @@ useEffect(() => {
 
   const siteName = typedT.metadata?.siteName || "Kiba";
   const categories = typedT.home?.categories || {};
+  // Nombre d'articles par catégorie (23 octobre 2026) : une catégorie sans article n'est plus
+  // proposée (avant : 10 choix, dont 6 menaient à une liste vide) ; le nombre s'affiche à côté
+  const nombreParCategorie = useMemo(() => {
+    const nombres = new Map<string, number>();
+    for (const article of articles) {
+      const cle = cleDeCategorie(article.category);
+      nombres.set(cle, (nombres.get(cle) ?? 0) + 1);
+    }
+    return nombres;
+  }, [articles]);
+  const nombreDe = (cle: string) => nombreParCategorie.get(cle) ?? 0;
+  const compte = (cle: string) => (
+    <span className="ms-1.5 rounded-full bg-white/10 px-1.5 text-[0.75em] tabular-nums opacity-80">
+      {isNko ? toNkoDigits(nombreDe(cle)) : nombreDe(cle)}
+    </span>
+  );
   const visibleArticles = filteredArticles.slice(0, visibleCount);
   const MAX_ARTICLES_HOMEPAGE = 36;
 const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ARTICLES_HOMEPAGE;
@@ -717,8 +734,8 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <span>{isNko ? 'ߛߎ߯ߦߊ ߟߎ߬ ߓߍ߯' : 'Toutes les catégories'}</span>
       </button>
 
-      {/* Revue Mensuelle (Premium) - Position 2 */}
-      <button
+      {/* Revue Mensuelle (Premium) - Position 2 ; seulement si elle a des articles */}
+      {nombreDe('review') > 0 && (<button
         type="button"
         aria-pressed={activeCategory === 'review'}
         onClick={() => handleCategorySelect('review')}
@@ -726,11 +743,12 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       >
         <i className="ph-bold ph-calendar-star"></i>
         <span>{isNko ? 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ' : 'Revue Mensuelle'}</span>
-      </button>
+        {compte('review')}
+      </button>)}
 
-      {/* Autres catégories */}
+      {/* Autres catégories (seulement celles qui ont des articles) */}
       {Object.entries(categories)
-        .filter(([key]) => key !== 'review')
+        .filter(([key]) => key !== 'review' && nombreDe(key) > 0)
         .map(([key, label]) => (
           <button
             type="button"
@@ -741,6 +759,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           >
             <i className={`ph-bold ${getCategoryIconClass(key)}`}></i>
             <span>{label}</span>
+            {compte(key)}
           </button>
         ))}
     </div>
@@ -763,7 +782,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
             <span>{typedT.home?.allCategories || (isNko ? "ߓߍ߯" : "Tout")}</span>
           </button>
 
-          {Object.entries(categories).map(([key, label]) => {
+          {Object.entries(categories).filter(([key]) => nombreDe(key) > 0).map(([key, label]) => {
             // 🚀 LE RADAR DE L'ÉLITE : Si c'est la Revue Mensuelle, on active la Pépite d'Or
             const isPremium = key === "review";
             
@@ -776,6 +795,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
               >
                 <i className={`ph-bold ${getCategoryIconClass(key)}`} aria-hidden="true"></i>
                 <span className={isNko ? "font-kigelia" : ""}>{label}</span>
+                {compte(key)}
               </button>
             );
           })}
