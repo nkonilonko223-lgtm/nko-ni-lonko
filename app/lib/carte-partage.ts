@@ -5,11 +5,17 @@
 // lignes qu'ils coupent eux-mêmes : une ligne qui mêle le N'Ko (droite à gauche) et le
 // français (gauche à droite) s'y affiche en désordre (« du) … (Niger »).
 // Règle (22 octobre 2026, demande de MckV) : titre de la carte = partie N'Ko ;
-// description = partie française ; nom du site = « N'Ko ni Lonko ». Le <title> de la page
-// (onglet, Google) ne change pas. Le texte n'est jamais réécrit : voir separerLangues.
+// description = partie française ; nom du site dans les deux langues (NOM_SITE_CARTE,
+// décision du 22 octobre 2026). Le <title> de la page (onglet, Google) ne change pas.
+// Le texte n'est jamais réécrit : voir separerLangues.
 // ============================================================================
 import type { Metadata } from "next";
 import { separerLangues } from "../components/numero/titre";
+
+// Nom du site sur les cartes, dans les deux langues (N'Ko d'abord) : court et sans parenthèses,
+// il s'affiche proprement (Telegram, captures du 22 octobre 2026). Texte recopié de la page
+// article (app/article/[slug]/page.tsx), jamais tapé.
+export const NOM_SITE_CARTE = "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ | N'Ko ni Lonko";
 
 const texte = (v: unknown) => (typeof v === "string" ? v : undefined);
 
@@ -27,7 +33,7 @@ export function carteSansMelange(m: Metadata, { descriptionDuTitre = false } = {
   };
   return {
     ...m,
-    ...(og ? { openGraph: { ...og, ...carte, siteName: "N'Ko ni Lonko" } } : {}),
+    ...(og ? { openGraph: { ...og, ...carte, siteName: NOM_SITE_CARTE } } : {}),
     ...(m.twitter ? { twitter: { ...m.twitter, ...carte } } : {}),
   };
 }
