@@ -62,6 +62,7 @@
    - la page du numéro `/numeros/003` (couverture, édito, à la une, sommaire dans le bon ordre) et l'archive `/numeros` ;
    - sur chaque article : « Paru dans le N°003 », la rubrique au-dessus du titre, article précédent / suivant ;
    - le plan du site `/sitemap.xml` contient les nouvelles adresses (dont `/numeros/003`).
+   - **Impression des articles** : `node scripts/tester-impression.mjs` → « Impression juste » pour tous les articles publiés ; relire le PDF d'un article du N°003 (`--article <slug> --pdf <dossier>`).
    - **PDF du numéro** : `node scripts/pdf-numero/generer.mjs --numero 3` (après la publication du numéro), relire le PDF (couverture, sommaire, articles), puis l'envoyer avec les images de partage (même branche) : le lien « Télécharger le PDF » apparaît sur `/numeros/003`.
    - **Images de partage** des articles (photo, bandeau discret : nom N'Ko, numéro, catégorie ; visuels « servir telle quelle » sans bandeau) : `node scripts/images-partage/articles.mjs`, et celle du **numéro** (couverture sans texte + bandeau fin à droite : nom N'Ko et « N°003 ») : `node scripts/images-partage/numeros.mjs` ; puis une seule branche → aperçu → « fusionner » (détail : `docs/GUIDE-IMPORT-IA.md` § 7). À faire **avant** l'annonce : WhatsApp garde la première image vue.
 4. **Partage** : s'envoyer le lien d'un article sur **WhatsApp** (ajouter `?v=1` à la fin si le lien a déjà été partagé) et le tester dans l'outil **Facebook** (https://developers.facebook.com/tools/debug/ → coller seulement l'adresse de l'article → « Re-collecter »).

@@ -15,7 +15,7 @@
 | L8 | Dernière mise à jour : octobre 2026 | En-tête des Conditions (la date N'Ko actuelle dit « février 2026 » : à changer avec le français, en même temps) | `app/terms/TermsClient.tsx` (en-tête) |
 | L9 | Clause « Intelligence artificielle » du pacte des auteurs | Pacte des auteurs | `docs/PACTE-AUTEURS-CLAUSE-IA.md` (après validation du texte français) |
 | L10 | Reprendre la lecture | Article : bouton proposé au retour du lecteur | `app/components/ArticleClient.tsx` → `REPRENDRE.nko` |
-| L11 | Langue de lecture | Article : nom (lecteurs d'écran) du choix « N'Ko + FR / N'Ko / FR » | `app/components/ArticleClient.tsx` → `LANGUE_LECTURE.nko` |
+| L11 | Langue de lecture | Article : nom affiché au-dessus du choix « N'Ko + FR / N'Ko / FR » (depuis le 23 octobre ; en version N'Ko, l'icône seule s'affiche en attendant) | `app/components/ArticleClient.tsx` → `LANGUE_LECTURE.nko` |
 | L12 | Signaler une erreur | Article : bouton de la barre d'outils | `app/components/ArticleTools.tsx` → `SIGNALER.nko` |
 | L13 | Partager en image | Article (barre de sélection) et fiche d'un terme du lexique | `app/components/texte/imageCitation.ts` → `PARTAGER_IMAGE.nko` (un seul endroit pour les deux) |
 | L14 | Sauvegardé · Ma bibliothèque | Article : message après le signet | `app/components/ArticleTools.tsx` → `SAUVEGARDE.nko`, `MA_BIBLIOTHEQUE.nko` |
