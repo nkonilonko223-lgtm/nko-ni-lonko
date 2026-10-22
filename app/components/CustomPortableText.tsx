@@ -17,7 +17,7 @@
 
 import Image from "next/image";
 import { PortableText, PortableTextComponents, PortableTextComponentProps } from "@portabletext/react";
-import { PortableTextBlock } from "@portabletext/types";
+import { PortableTextBlock, PortableTextSpan } from "@portabletext/types";
 import { urlFor } from "../../sanity/image";
 import TermeLexique from "./lexique/TermeLexique";
 import Visionneuse, { ZoneAgrandissable } from "./texte/Visionneuse";
@@ -92,6 +92,39 @@ const FadeInBlock = ({ children, coupable = false }: { children: React.ReactNode
   <div className={coupable ? "apparition" : "apparition print:break-inside-avoid"}>{children}</div>
 );
 
+// Lettrine (23 octobre 2026, demande du propriétaire) : une « initiale montante », posée sur la
+// première ligne — elle se lit avec sa ligne et le reste du paragraphe garde toute sa largeur (la
+// lettrine flottante décalait plusieurs lignes et couvrait les boutons de langue). Elle prend la
+// première lettre AVEC ses marques (ton, nasalisation…) mais SANS la ponctuation qui la suit (ex. le
+// point d'exclamation N'Ko U+07F9, que ::first-letter ajoutait d'office). Le texte n'est pas
+// modifié : son premier morceau est seulement coupé en deux (mêmes caractères, même ordre) et la
+// lettre porte la marque d'affichage « lettrine ».
+const estMorceau = (enfant: unknown): enfant is PortableTextSpan =>
+  typeof enfant === "object" && enfant !== null && (enfant as { _type?: unknown })._type === "span" &&
+  typeof (enfant as { text?: unknown }).text === "string";
+
+function avecLettrine(blocs: PortableTextBlock[] | undefined, cle?: string): PortableTextBlock[] {
+  if (!blocs || !cle) return blocs ?? [];
+  return blocs.map((bloc) => {
+    if (bloc._key !== cle || !Array.isArray(bloc.children)) return bloc;
+    const [premier, ...suite] = bloc.children;
+    if (!estMorceau(premier)) return bloc;
+    const lettres = [...premier.text];
+    let debut = 0;
+    while (debut < lettres.length && /\s/.test(lettres[debut])) debut++;
+    if (debut >= lettres.length || !/[\p{L}\p{N}]/u.test(lettres[debut])) return bloc;
+    let fin = debut + 1;
+    while (fin < lettres.length && /\p{M}/u.test(lettres[fin])) fin++;
+    const marques = premier.marks ?? [];
+    const morceaux: PortableTextSpan[] = [
+      ...(debut > 0 ? [{ ...premier, _key: `${premier._key}-avant`, text: lettres.slice(0, debut).join("") }] : []),
+      { ...premier, _key: `${premier._key}-lettrine`, text: lettres.slice(debut, fin).join(""), marks: [...marques, "lettrine"] },
+      ...(fin < lettres.length ? [{ ...premier, text: lettres.slice(fin).join("") }] : []),
+    ];
+    return { ...bloc, children: [...morceaux, ...suite] };
+  });
+}
+
 // ==============================================================================
 // 4. LE COMPOSANT DE RENDU PRINCIPAL
 // ==============================================================================
@@ -122,6 +155,13 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
           </a>
         );
       },
+      // Lettrine (voir avecLettrine) : en or à l'écran, en noir sur papier ; elle monte au-dessus de sa
+      // ligne sans l'agrandir (interligne nul) : la place est réservée par le paragraphe (pt-…)
+      lettrine: ({ children }) => (
+        <span className="text-[4em] md:text-[5em] leading-[0] text-[#fbbf24] print:text-black me-[0.12em]">
+          {children}
+        </span>
+      ),
       // 📖 TERME DU LEXIQUE : le mot ouvre sa définition (fiche sur téléphone, bulle sur ordinateur)
       termeLexique: ({ value: markValue, children, text }) => (
         <TermeLexique terme={markValue?.terme} nko={isNko(text || '')}>
@@ -138,16 +178,19 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         const dir = nko ? "rtl" : "ltr";
         const fontClass = nko ? "font-kigelia" : "font-sans"; 
         
-        const isFirst = blockValue._key === firstTextBlockKey;
-        
-        const dropCapNko = isFirst && nko 
-          /* 🚀 MODIF : first-letter:text-[4em] (mobile) et md:first-letter:text-[5em] (PC) */
-          ? "first-letter:text-[4em] md:first-letter:text-[5em] first-letter:text-[#fbbf24] first-letter:float-right first-letter:ml-3 md:first-letter:ml-4 first-letter:-mt-4 md:first-letter:-mt-6 first-letter:-mb-3 md:first-letter:-mb-5 first-letter:leading-[0.5] first-letter:drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] print:first-letter:text-black" 
-          : "";
-        const dropCapFr = isFirst && !nko 
-          /* 🚀 MODIF : first-letter:text-[4em] (mobile) et md:first-letter:text-[5em] (PC) */
-          ? "first-letter:text-[4em] md:first-letter:text-[5em] first-letter:text-[#fbbf24] first-letter:float-left first-letter:mr-3 md:first-letter:mr-4 first-letter:-mt-2 md:first-letter:-mt-10 first-letter:-mb-3 md:first-letter:-mb-5 first-letter:leading-[0.5] first-letter:drop-shadow-[0_0_15px_rgba(251,191,36,0.4)] print:first-letter:text-black" 
-          : "";
+        // Place de la lettrine au-dessus de la première ligne, en « em » (elle suit la taille du texte,
+        // boutons A+ / A−) : mesurée le 23 octobre 2026 avec les marques N'Ko les plus hautes ; moins
+        // haute en français (capitales latines)
+        // Une lettre N'Ko avec une marque AU-DESSUS (tons U+07EB à U+07F1, double point U+07F3) monte
+        // presque deux fois plus haut qu'une lettre seule (60–64 px contre 31–42 px).
+        const lettrine = (blockValue.children ?? []).find((enfant) => estMorceau(enfant) && enfant.marks?.includes("lettrine"));
+        const marqueHaute = estMorceau(lettrine) && [...lettrine.text].some((c) => {
+          const n = c.codePointAt(0) ?? 0;
+          return (n >= 0x07eb && n <= 0x07f1) || n === 0x07f3;
+        });
+        const placeLettrine = !lettrine ? ""
+          : !nko ? "pt-[2.8em] md:pt-[3.7em]"
+          : marqueHaute ? "pt-[3.1em] md:pt-[3.85em]" : "pt-[1.7em] md:pt-[2.15em]";
 
         const style = nko 
           ? { fontSize: '1.3em', lineHeight: '2.1' } 
@@ -155,7 +198,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
 
         return (
           <FadeInBlock coupable>
-            <p dir={dir} lang={nko ? "nqo" : "fr"} className={`text-gray-300 print:text-black ${fontClass} ${dropCapNko} ${dropCapFr} mb-5 md:mb-6 mt-0`} style={style}>
+            <p dir={dir} lang={nko ? "nqo" : "fr"} className={`text-gray-300 print:text-black ${fontClass} ${placeLettrine} mb-5 md:mb-6 mt-0`} style={style}>
                {children}
             </p>
           </FadeInBlock>
@@ -632,7 +675,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
   // La visionneuse (îlot client) entoure le texte : elle s'affiche après lui, comme avant
   return (
     <Visionneuse>
-      <PortableText value={value} components={components} />
+      <PortableText value={avecLettrine(value, firstTextBlockKey)} components={components} />
     </Visionneuse>
   );
 }
