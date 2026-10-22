@@ -518,12 +518,14 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           son rôle) → un seul bloc avec son nom au-dessus, contour net, cibles de 44 px. Nom N'Ko à
           demander à la rédaction : le français s'affiche en attendant. */}
       {article.deuxLangues && (
-        <div className="mx-auto mb-10 md:mb-12 flex max-w-3xl flex-col items-center gap-2.5 px-4 print:hidden">
+        <div className="mx-auto mb-6 md:mb-8 flex max-w-3xl flex-col items-center gap-2.5 px-4 print:hidden">
           <p id="langue-lecture" className="flex items-center gap-2 text-white/70">
             <i className="ph-bold ph-translate text-lg text-[#fbbf24]" aria-hidden="true"></i>
+            {/* Version N'Ko sans texte N'Ko de la rédaction : l'icône seule (pas de français affiché),
+                le nom reste lu par les lecteurs d'écran */}
             {lang === 'nko' && LANGUE_LECTURE.nko
               ? <span lang="nqo" dir="rtl" className="font-kigelia text-base">{LANGUE_LECTURE.nko}</span>
-              : <span lang="fr" dir="ltr" className="font-fr text-xs font-semibold uppercase tracking-[0.2em]">{LANGUE_LECTURE.fr}</span>}
+              : <span lang="fr" dir="ltr" className={`font-fr text-xs font-semibold uppercase tracking-[0.2em] ${lang === 'nko' ? 'sr-only' : ''}`}>{LANGUE_LECTURE.fr}</span>}
           </p>
           <div
             role="radiogroup"
