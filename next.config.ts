@@ -80,15 +80,29 @@ minimumCacheTTL: 2592000,
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
           },
-          // 🛡️ NOUVEAU BOUCLIER 2 : Protection anti-injections
+          // 🛡️ NOUVEAU BOUCLIER 2 : ancien filtre anti-injections des navigateurs, retiré partout et
+          // lui-même source de failles : « 0 » le désactive (recommandation OWASP, 22 octobre 2026).
+          // La vraie protection est la CSP (proxy.ts).
          {
             key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            value: '0',
           },
           // 🛡️ NOUVEAU BOUCLIER 3 : Désactive les capteurs inutiles
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(), payment=()',
+          },
+        ],
+      },
+      {
+        // 🛡️ BOUCLIER 4 (22 octobre 2026) : une page ouverte par un autre site ne peut plus agir
+        // sur la nôtre (window.opener). « allow-popups » : les fenêtres que NOUS ouvrons (partage
+        // X, WhatsApp…) gardent leur lien. Pas sur le Studio, qui a ses propres fenêtres de connexion.
+        source: '/((?!studio).*)',
+        headers: [
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
           },
         ],
       },
