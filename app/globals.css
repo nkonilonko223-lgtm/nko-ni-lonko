@@ -1528,8 +1528,11 @@ nav {
    PRINT — Styles d'impression pour articles
    =========================================== */
 @media print {
+  /* Fond blanc partout : la classe sombre du <body> (bg-[#02040a]) l'emportait sur cette règle,
+     et la fin de la dernière page s'imprimait en noir (constat du 23 octobre 2026) */
+  html,
   body {
-    background: white;
+    background: #fff !important;
     color: black;
   }
 

@@ -25,6 +25,7 @@ import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
 import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
+import { adresse, langueAdresse } from "../lib/langue";
 import messagesNko from "../messages/nko.json"; // « Accueil » en N'Ko (nom du lien flèche, lecteurs d'écran)
 
 // ==============================================================================
@@ -554,7 +555,8 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 {/* 🖨️ PIED DE PAGE D'IMPRESSION INVISIBLE SUR ÉCRAN */}
       <div className="hidden print:block max-w-3xl mx-auto border-t-2 border-black pt-4 mt-8 text-center px-4">
         <p className="text-sm font-bold text-black font-kigelia mb-1">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ - N&apos;Ko ni Lonko</p>
-        <p className="text-xs text-gray-600 italic">Document imprimé depuis le site officiel : https://nkonilonko.com/article/{article.slug}</p>
+        {/* Adresse exacte de la version lue (N'Ko sans préfixe, français en /fr) */}
+        <p className="text-xs text-gray-600 italic">Document imprimé depuis le site officiel : {adresse(langueAdresse(lang), `/article/${article.slug}`)}</p>
         {/* 🚀 SÉCURITÉ : Ciblage du 1er auteur pour le Copyright */}
         <p suppressHydrationWarning className="text-[10px] text-gray-500 mt-2">© {new Date().getFullYear()} {article.authors?.[0]?.name || 'Moustapha CAMARA'}. Tous droits réservés.</p>
       </div>
