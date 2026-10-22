@@ -1584,6 +1584,13 @@ nav {
     line-height: 1.6;
   }
 
+  /* Taille de revue sur papier (23 octobre 2026) : la taille choisie à l'écran (A+ / A−, posée
+     sur l'article) l'emportait, et le texte s'imprimait à 12 pt (N'Ko 15,6 pt). 10,5 pt pour le
+     français, N'Ko 13,7 pt (plus grand pour ses marques). Le PDF du numéro garde son réglage. */
+  article.article-content {
+    font-size: 10.5pt !important;
+  }
+
   .article-content :is(h1, h2, h3)[dir="rtl"],
   .article-content :is(h1, h2, h3)[dir="ltr"] {
     color: black;
