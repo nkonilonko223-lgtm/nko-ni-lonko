@@ -335,19 +335,19 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                   
                   {/* 1. N'Ko en Majesté : 15px/16px (Dominant & Doré) */}
                   {imageValue.captionNko && (
-                    <p dir="rtl" lang="nqo" className="leading-relaxed text-[#fbbf24] font-kigelia text-right text-[15px] md:text-[16px] drop-shadow-sm">
+                    <p dir="rtl" lang="nqo" className="leading-relaxed text-[#fbbf24] print:text-black print:drop-shadow-none font-kigelia text-right text-[15px] md:text-[16px] drop-shadow-sm">
                       {imageValue.captionNko}
                     </p>
                   )}
                   
                   {/* 2. Le Séparateur Nette et Fluide */}
                   {imageValue.captionNko && imageValue.caption && (
-                    <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto my-1 rounded-full"></div>
+                    <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto my-1 rounded-full print:hidden"></div>
                   )}
 
                   {/* 3. Français Subordonné : 13px/14px (Discret, Blanc/Gris & Italique) */}
                   {imageValue.caption && (
-                    <p dir="ltr" lang="fr" className="leading-relaxed text-white/70 font-sans text-left text-[13px] md:text-[14px] italic">
+                    <p dir="ltr" lang="fr" className="leading-relaxed text-white/70 print:text-gray-700 font-sans text-left text-[13px] md:text-[14px] italic">
                       {imageValue.caption}
                     </p>
                   )}
