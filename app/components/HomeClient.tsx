@@ -8,6 +8,7 @@ import ArticleCard from "./ArticleCard";
 import SiteFooter from "./SiteFooter";
 import { useLanguage } from "./LanguageProvider";
 import { normaliser } from "./lexique/normaliser";
+import { cleDeCategorie } from "../lib/categories";
 
 
 // ==============================================================================
@@ -40,21 +41,6 @@ const CATEGORY_ICONS: Record<string, string> = {
   review: "ph-calendar-star",
   revue: "ph-calendar-star",
   default: "ph-hash",
-};
-
-// 🚀 LE PONT INVERSE (Traduit le N'Ko de Sanity vers la clé JSON)
-const CATEGORY_REVERSE_MAP: Record<string, string> = {
-  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
-  'ߘߐ߬ߞߏ': 'physics',
-  'ߣߌߡߊߞߊߙߊ߲': 'biology',
-  'ߘߡߊ߬ߟߐ߲': 'mathematics',
-  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
-  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
-  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
-  'ߘߐ߬ߝߐ': 'history',
-  'ߞߍ߲ߘߍߦߊ': 'health',
-  // 🚀 NOUVEAU : Pont pour la Revue Mensuelle
-  'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ': 'review',
 };
 
 // 🛡️ DOGME 2 : Typage natif BeforeInstallPrompt (Zéro any)
@@ -428,9 +414,8 @@ const handleCategorySelect = useCallback((key: string) => {
     return articles.filter((article) => {
       let matchesCategory = true;
       if (activeCategory !== "all") {
-        const artCatRaw = (article.category || "").trim();
         // On convertit le N'Ko de Sanity en clé universelle (ex: "astronomy")
-        const artCatKey = CATEGORY_REVERSE_MAP[artCatRaw] || artCatRaw.toLowerCase();
+        const artCatKey = cleDeCategorie(article.category);
         // On compare cette clé avec la catégorie cliquée
         matchesCategory = artCatKey === activeCategory.toLowerCase();
       }

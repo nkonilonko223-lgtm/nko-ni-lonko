@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
+import { cleDeCategorie } from "../lib/categories";
 import { useState, useMemo, useRef, useCallback } from "react";
 import { contientNko, sensDe, separerTitre } from "./numero/titre";
 
@@ -37,25 +38,6 @@ const ICON_MAP: Record<string, string> = {
   'histoire': "ph-scroll", 'history': "ph-scroll",
   'santé': "ph-heartbeat", 'health': "ph-heartbeat",
   'science': "ph-flask"
-};
-
-// --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
-// Traduit le N'Ko brut de Sanity vers la clé universelle du JSON
-// --- 2. LE PONT INVERSE (REVERSE DICTIONARY 1/1000) ---
-// Exportée : la page article s'en sert aussi pour son étiquette de catégorie
-export const CATEGORY_REVERSE_MAP: Record<string, string> = {
-  'ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ': 'astronomy',
-  'ߘߐ߬ߞߏ': 'physics',
-  'ߣߌߡߊߞߊߙߊ߲': 'biology',
-  'ߘߡߊ߬ߟߐ߲': 'mathematics',
-  'ߖߎ߯ߛߊߟߐ߲ߘߐߦߊ': 'chemistry',
-  'ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ': 'geology',
-  'ߛߋߒߞߏߟߊߘߐߦߊ': 'technology',
-  'ߘߐ߬ߝߐ': 'history',
-  'ߞߍ߲ߘߍߦߊ': 'health',
-  'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ': 'review', // 🚀 AJOUTE CETTE LIGNE
-  'Science': 'science',
-  'ߟߐ߲ߞߏ': 'science'
 };
 
 // Les fonctions de date restent intactes
@@ -135,7 +117,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
   const categoriesMap = (t.home?.categories || {}) as Record<string, string>;
   const rawCategory = article.category || 'Science';
   // 1. On trouve la clé système (ex: astronomy)
-  const categoryKey = CATEGORY_REVERSE_MAP[rawCategory.trim()] || rawCategory.toLowerCase();
+  const categoryKey = cleDeCategorie(rawCategory);
   // 2. On affiche le mot du dictionnaire actif
   const displayCategory = categoriesMap[categoryKey] || rawCategory;
 

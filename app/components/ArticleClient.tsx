@@ -21,7 +21,7 @@ import { PortableTextBlock } from "@portabletext/types";
 import { CLE_LANGUE_LECTURE, formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
-import { CATEGORY_REVERSE_MAP } from "./ArticleCard";
+import { cheminDeCle, cleDeCategorie } from "../lib/categories";
 import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
@@ -290,7 +290,9 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   const categoriesMap = tHome?.categories || {};
   // La catégorie arrive en N'Ko brut depuis Sanity : on la convertit en clé (ex. « astronomy »),
   // comme les cartes de l'accueil, puis on prend le mot du dictionnaire de la langue active
-  const categoryKey = article.category ? (CATEGORY_REVERSE_MAP[article.category.trim()] || article.category.toLowerCase()) : "";
+  const categoryKey = article.category ? cleDeCategorie(article.category) : "";
+  // Où mène la catégorie (page de la discipline, ou les numéros pour « Revue Mensuelle »)
+  const cheminCategorie = cheminDeCle(categoryKey);
   const categoryLabel = article.category ? (categoriesMap[categoryKey] || article.category) : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
 
   return (
