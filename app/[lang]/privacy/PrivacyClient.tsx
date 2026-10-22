@@ -248,7 +248,7 @@ export default function PrivacyClient() {
                         {/* Titre de Section */}
                         <div className="mb-6 flex flex-col items-start border-b border-white/10 pb-6 print:border-black print:pb-2" dir="rtl">
                             <h2 className="font-kigelia text-3xl md:text-4xl text-[#fbbf24] mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
-                            <span className="text-xs md:text-sm tracking-[0.2em] text-gray-400 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
+                            <span className="text-xs md:text-sm tracking-[0.2em] text-gray-300 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
                         </div>
                         
                         {/* Corps de Section */}

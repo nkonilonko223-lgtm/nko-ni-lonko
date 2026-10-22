@@ -212,7 +212,7 @@ function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
         <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
         <Image 
           src="/icon-192x192.png" 
-          alt={siteName} 
+          alt="" // décorative : le nom de la revue suit juste après, en texte
           width={34} 
           height={34} 
           className="rounded-md relative z-10 transition-transform group-active:scale-90"
@@ -623,8 +623,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         isNko={isNko}
       />
 
+      <main>
       {/* 🚀 TOAST DE TRIOMPHE (Abonnement Confirmé) */}
-      <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
+      <div role="status" className={`fixed top-24 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
         <div className="bg-black/95 backdrop-blur-xl border border-green-500/50 text-green-400 px-6 py-4 rounded-full shadow-[0_10px_40px_rgba(34,197,94,0.2)] flex items-center gap-3">
           <i className="ph-fill ph-check-circle text-2xl animate-pulse"></i>
           <span className={`text-sm md:text-base font-bold tracking-wide ${isNko ? 'font-kigelia text-lg' : ''}`}>
@@ -633,7 +634,6 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         </div>
       </div>
 
-      <main>
       <header className="hero pt-24 pb-2 md:py-0 flex flex-col justify-center min-h-[40vh] md:min-h-[70vh]">
         {/* 🚀 MODIF 1/1000 : Clé "key" pour forcer la réanimation fluide sans bug fantôme */}
         <h1 className={`reveal mb-1 md:mb-6 ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
@@ -689,9 +689,11 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
 <div className="md:hidden w-full mb-6 px-6">
   <div className="category-dropdown-wrapper">
     <button
+      id="filtre-categories"
       onClick={handleDropdownToggle}
       className={`category-dropdown-trigger ${dropdownOpen ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
       aria-expanded={dropdownOpen}
+      aria-controls="menu-categories"
       aria-label={isNko ? "ߛߎ߯ߦߊ ߓߟߐߡߊ ߟߎ߬" : "Filtrer par catégorie"}
     >
       <span className="flex items-center gap-2">
@@ -712,37 +714,44 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
     />
 
     {/* Menu */}
-    <div className={`category-dropdown-menu ${dropdownOpen ? 'open' : ''}`}>
+    {/* Groupe nommé par le bouton qui l'ouvre ; fermé, il est caché au clavier (globals.css) */}
+    <div id="menu-categories" role="group" aria-labelledby="filtre-categories" className={`category-dropdown-menu ${dropdownOpen ? 'open' : ''}`}>
       {/* Toutes */}
-      <div
+      <button
+        type="button"
+        aria-pressed={activeCategory === 'all'}
         onClick={() => handleCategorySelect('all')}
         className={`category-dropdown-option ${activeCategory === 'all' ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
       >
         <i className="ph-bold ph-squares-four"></i>
         <span>{isNko ? 'ߛߎ߯ߦߊ ߟߎ߬ ߓߍ߯' : 'Toutes les catégories'}</span>
-      </div>
+      </button>
 
       {/* Revue Mensuelle (Premium) - Position 2 */}
-      <div
+      <button
+        type="button"
+        aria-pressed={activeCategory === 'review'}
         onClick={() => handleCategorySelect('review')}
         className={`category-dropdown-option premium ${activeCategory === 'review' ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
       >
         <i className="ph-bold ph-calendar-star"></i>
         <span>{isNko ? 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ' : 'Revue Mensuelle'}</span>
-      </div>
+      </button>
 
       {/* Autres catégories */}
       {Object.entries(categories)
         .filter(([key]) => key !== 'review')
         .map(([key, label]) => (
-          <div
+          <button
+            type="button"
             key={key}
+            aria-pressed={activeCategory === key}
             onClick={() => handleCategorySelect(key)}
             className={`category-dropdown-option ${activeCategory === key ? 'active' : ''} ${isNko ? 'font-kigelia' : ''}`}
           >
             <i className={`ph-bold ${getCategoryIconClass(key)}`}></i>
             <span>{label}</span>
-          </div>
+          </button>
         ))}
     </div>
   </div>

@@ -1646,6 +1646,8 @@ nav {
   opacity: 0;
   transform: translateY(-10px) scale(0.98);
   pointer-events: none;
+  /* Fermé : caché aussi au clavier et aux lecteurs d'écran (les choix sont des boutons) */
+  visibility: hidden;
   transition: all var(--duration-normal) var(--ease-out-expo);
 }
 
@@ -1653,6 +1655,7 @@ nav {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
+  visibility: visible;
 }
 
 /* Scrollbar custom doré */
@@ -1690,6 +1693,14 @@ nav {
   font-weight: 500;
   user-select: none;
   position: relative;
+  /* Ce sont des boutons (clavier, lecteurs d'écran) : toute la largeur, texte au début */
+  width: 100%;
+  text-align: start;
+}
+
+.category-dropdown-option:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: -2px;
 }
 
 .category-dropdown-option:last-child {
