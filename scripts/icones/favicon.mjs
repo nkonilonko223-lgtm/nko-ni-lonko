@@ -13,24 +13,10 @@
 // ============================================================================
 import { writeFileSync } from "node:fs";
 import sharp from "sharp";
+import { SOURCE_LOGO as SOURCE, reperageDuLogo } from "./logo.mjs";
 
-const SOURCE = "public/icon-512x512.png";
-
-// Zone du logo : pixels lumineux ayant au moins 3 voisins lumineux (une étoile isolée n'en a pas)
-const { data, info } = await sharp(SOURCE).removeAlpha().greyscale().raw().toBuffer({ resolveWithObject: true });
-const W = info.width;
-const H = info.height;
-const lumineux = (x, y) => data[y * W + x] >= 70;
-let x0 = W, y0 = H, x1 = 0, y1 = 0;
-for (let y = 1; y < H - 1; y++) {
-  for (let x = 1; x < W - 1; x++) {
-    if (!lumineux(x, y)) continue;
-    let voisins = 0;
-    for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]]) if (lumineux(x + dx, y + dy)) voisins++;
-    if (voisins < 3) continue;
-    x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y);
-  }
-}
+// Zone du logo (outil partagé avec scripts/application/generer.mjs)
+const { W, H, x0, y0, x1, y1 } = await reperageDuLogo(sharp, SOURCE);
 // Carré centré sur le logo, avec une petite marge (12 %)
 const cote = Math.min(W, H, Math.round(Math.max(x1 - x0, y1 - y0) * 1.12));
 const left = Math.min(W - cote, Math.max(0, Math.round((x0 + x1 - cote) / 2)));
