@@ -97,8 +97,8 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
   );
 }
 
-// PDF du numéro (scripts/pdf-numero/generer.mjs) ; libellé N'Ko à demander à la rédaction : vide pour l'instant
-const TELECHARGER_PDF: Libelle = { nko: "", fr: "Télécharger le PDF" };
+// PDF du numéro (scripts/pdf-numero/generer.mjs) ; libellé N'Ko : L3 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
+const TELECHARGER_PDF: Libelle = { nko: "ߘߐ߬ߛߙߋ «ߔߋ.ߘߋ.ߍߝ» ߟߊߖߌ߰", fr: "Télécharger le PDF" };
 const tailleFr = (octets: number) => `${(octets / 1024 / 1024).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} Mo`;
 
 export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fichier: string; octets: number } | null }) {

@@ -68,9 +68,9 @@ const valeurDe = (fichier: string, apres: string, cle: string) => {
 };
 const NOM: Bilingue = { nko: valeurDe('app/page.tsx', 'openGraph:', 'title').split(' | ')[0], fr: "N'Ko ni Lonko" };
 const DESABONNER: Bilingue = { nko: valeurDe('app/desabonnement/page.tsx', 'TEXTES_NKO', 'titre'), fr: 'Se désabonner' };
-// Libellés sans N'Ko fourni par la rédaction : vides, seul le français s'affiche (à demander)
-const LIRE_NUMERO: Bilingue = { nko: '', fr: 'Lire le numéro en ligne' };
-const POURQUOI: Bilingue = { nko: '', fr: "Vous recevez cette lettre parce que vous êtes abonné(e) à N'Ko ni Lonko." };
+// Libellés N'Ko : L4 et L5 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
+const LIRE_NUMERO: Bilingue = { nko: "ߝߙߍߕߍ ߞߊ߬ߙߊ߲߬ ߓߟߐߟߐ ߛߊ߲ߝߍ߬", fr: 'Lire le numéro en ligne' };
+const POURQUOI: Bilingue = { nko: "ߊߟߎ߫ ߦߋ߫ ߛߓߍ ߣߌ߲߬ ߟߊߛߐ߬ߘߐ߲߬ ߠߊ߫߸ ߓߊߏ߬ ߊߟߎ߫ ߡߊߝߘߎ߬ߣߍ߲ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߡߊ߬ ߟߋ߬߹", fr: "Vous recevez cette lettre parce que vous êtes abonné(e) à N'Ko ni Lonko." };
 for (const t of [NOM, DESABONNER, ...Object.values(T.TEXTES_NUMEROS)]) {
   if (t.nko !== t.nko.normalize('NFC')) throw new Error('Libellé N\'Ko non NFC');
 }
