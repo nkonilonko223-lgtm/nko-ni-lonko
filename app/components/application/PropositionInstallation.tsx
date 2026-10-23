@@ -91,6 +91,7 @@ export default function PropositionInstallation() {
       {proposable && montreeSur === pathname && (
         <div
           role="region"
+          data-proposition-installation=""
           aria-label={texteLangue(INSTALLER_APPLICATION, nko)}
           className="fixed inset-x-3 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[9990] mx-auto max-w-md rounded-2xl border border-[#fbbf24]/30 bg-[#0b1121]/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl print:hidden motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500 md:bottom-6"
         >

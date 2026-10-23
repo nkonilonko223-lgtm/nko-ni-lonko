@@ -299,12 +299,13 @@ return (
           <NetworkBoundary>
             {children}
           </NetworkBoundary>
+          {/* Installation (proposition, guide iPhone) : DANS LanguageProvider (elle utilise la langue) */}
+          <Application />
         </LanguageProvider>
 
         <Analytics />
         <PredictiveProvider />
         <LectureHorsLigne />
-        <Application />
         {/* Mode aperçu seulement : bandeau + connecteur avec l'onglet « Presentation » du Studio */}
         {apercu && (
           <>
