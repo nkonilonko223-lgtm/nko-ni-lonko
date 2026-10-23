@@ -217,9 +217,9 @@ try {
       || (await (await fetch(`https://yfsyhc2p.apicdn.sanity.io/v2025-02-19/data/query/production?query=${encodeURIComponent(REQUETE)}`)).json()).result;
     // « defilement » : la capture montre la page plus bas (en hauteurs d'écran)
     const PAGES = [
-      { nom: "1-accueil", chemin: "/", label: "Accueil de la revue", formats: ["etroit", "large"] },
-      { nom: "2-article", chemin: `/article/${slug}`, label: "Un article, en N'Ko et en français", formats: ["etroit", "large"] },
-      { nom: "3-lecture", chemin: `/article/${slug}`, defilement: 1.3, label: "La lecture : le N'Ko d'abord, puis le français", formats: ["etroit"] },
+      { nom: "1-accueil", chemin: "/", formats: ["etroit", "large"] },
+      { nom: "2-article", chemin: `/article/${slug}`, formats: ["etroit", "large"] },
+      { nom: "3-lecture", chemin: `/article/${slug}`, defilement: 1.3, formats: ["etroit"] },
     ];
     const FORMATS = { etroit: { largeur: 360, hauteur: 740, echelle: 3, mobile: true }, large: { largeur: 1280, hauteur: 720, echelle: 1.5, mobile: false } };
     for (const f of readdirSync(join(DOSSIER, "captures"))) rmSync(join(DOSSIER, "captures", f));
@@ -244,7 +244,6 @@ try {
         }
       }
     }
-    writeFileSync(join(DOSSIER, "captures", "legendes.json"), JSON.stringify(Object.fromEntries(PAGES.map((p) => [p.nom, p.label])), null, 2) + "\n", "utf8");
   }
 } finally {
   await chrome.quitter();
@@ -255,7 +254,12 @@ try {
 // libellés ; aucune ne peut remplacer l'autre lors d'une mise à jour. Pas d'orientation imposée
 // (tablettes en paysage, critère d'accessibilité WCAG 1.3.4).
 const actuel = JSON.parse(readFileSync(join(PROJET, "public/manifest.json"), "utf8"));
-const legendes = existsSync(join(DOSSIER, "captures", "legendes.json")) ? JSON.parse(readFileSync(join(DOSSIER, "captures", "legendes.json"), "utf8")) : {};
+// Légendes des captures (manifeste français ; le N'Ko viendra de la rédaction, s'il est demandé)
+const LEGENDES = {
+  "1-accueil": "Accueil de la revue",
+  "2-article": "Un article, en N'Ko et en français",
+  "3-lecture": "La lecture : le N'Ko d'abord, puis le français",
+};
 const captures = async (langue) => {
   const liste = [];
   for (const format of ["etroit", "large"]) {
@@ -267,8 +271,7 @@ const captures = async (langue) => {
         sizes: `${width}x${height}`,
         type: "image/webp",
         form_factor: format === "etroit" ? "narrow" : "wide",
-        // Légendes en français seulement (le N'Ko viendra de la rédaction, s'il est demandé)
-        ...(langue === "fr" && legendes[nom] ? { label: legendes[nom] } : {}),
+        ...(langue === "fr" && LEGENDES[nom] ? { label: LEGENDES[nom] } : {}),
       });
     }
   }
