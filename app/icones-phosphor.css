@@ -7,7 +7,7 @@
 /* ---- regular : 81 glyphes ---- */
 @font-face {
   font-family: "Phosphor";
-  src: url("/icones/Phosphor.woff2") format("woff2");
+  src: url("/icones/Phosphor.woff2?v=af9715af19") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -283,7 +283,7 @@
 /* ---- bold : 81 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Bold";
-  src: url("/icones/Phosphor-Bold.woff2") format("woff2");
+  src: url("/icones/Phosphor-Bold.woff2?v=42c50fc0f1") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -559,7 +559,7 @@
 /* ---- fill : 81 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Fill";
-  src: url("/icones/Phosphor-Fill.woff2") format("woff2");
+  src: url("/icones/Phosphor-Fill.woff2?v=ef9b32b2e9") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -835,7 +835,7 @@
 /* ---- duotone : 162 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Duotone";
-  src: url("/icones/Phosphor-Duotone.woff2") format("woff2");
+  src: url("/icones/Phosphor-Duotone.woff2?v=4da0ac7f08") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;

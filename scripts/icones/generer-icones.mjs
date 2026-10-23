@@ -72,7 +72,8 @@ try {
       const selecteur = selecteurBrut.trim();
       if (selecteur === "@font-face") {
         const famille = (corps.match(/font-family: ?"([^"]+)"/) || [])[1];
-        gardees.push(`@font-face {\n  font-family: "${famille}";\n  src: url("/icones/${police}") format("woff2");\n  font-weight: normal;\n  font-style: normal;\n  font-display: block;\n}`);
+        // « ?v=__VERSION__ » : remplacé plus bas par l'empreinte de la police produite
+        gardees.push(`@font-face {\n  font-family: "${famille}";\n  src: url("/icones/${police}?v=__VERSION__") format("woff2");\n  font-weight: normal;\n  font-style: normal;\n  font-display: block;\n}`);
         continue;
       }
       const m = selecteur.match(selecteurIcone);
@@ -90,7 +91,10 @@ try {
     const unicodes = [...codes].map((c) => "U+" + c.toString(16).toUpperCase()).join(",");
     execFileSync(PYTHON, ["-m", "fontTools.subset", join(travail, police), `--unicodes=${unicodes}`, "--flavor=woff2",
       `--output-file=${join(RACINE, "public/icones", police)}`], { stdio: "inherit" });
-    sortieCss.push(`/* ---- ${dossier} : ${codes.size} glyphes ---- */\n` + gardees.join("\n"));
+    // Version dans l'adresse = empreinte du contenu : une police refaite change d'adresse, et aucune
+    // copie ancienne (navigateur, lecture hors ligne public/sw.js) ne peut plus être servie à sa place
+    const version = createHash("sha256").update(readFileSync(join(RACINE, "public/icones", police))).digest("hex").slice(0, 10);
+    sortieCss.push(`/* ---- ${dossier} : ${codes.size} glyphes ---- */\n` + gardees.join("\n").replace("__VERSION__", version));
     console.log(`${dossier.padEnd(8)} ${String(codes.size).padStart(3)} glyphes, police ${statSync(join(RACINE, "public/icones", police)).size} octets (origine ${statSync(join(travail, police)).size})`);
   }
   writeFileSync(join(RACINE, "public/icones/LICENSE-phosphor.txt"), await telecharger("LICENSE", LICENCE_SHA));
