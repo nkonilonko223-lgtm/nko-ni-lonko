@@ -22,10 +22,13 @@ const config: ClientConfig = {
   dataset,
   apiVersion,
   
-  // ✨ STRATÉGIE CDN HYBRIDE (Vitesse Fulgurante vs Temps Réel) :
-  // En production : CDN activé pour des temps de réponse instantanés (Mobile First).
-  // En développement : CDN désactivé pour voir les modifications en direct.
-  useCdn: process.env.NODE_ENV === "production",
+  // SANS le cache de Sanity (CDN), même en production (23 octobre 2026). Ce client ne sert QUE côté
+  // serveur : les visiteurs reçoivent des pages déjà faites, gardées par Next.js et vidées par la
+  // sonnette Sanity (/api/revalidate). Avec le CDN, la page reconstruite juste après la sonnette
+  // pouvait recevoir l'ANCIENNE version du document et la garder une heure (constat : article
+  // reclassé, accueil et page de l'article restés anciens). C'est la recommandation de next-sanity
+  // pour la mise à jour par étiquettes ; Sanity n'est interrogé qu'à la fabrication des pages.
+  useCdn: false,
 
   // --------------------------------------------------------------------------
   // ANTICIPATION CACHE NEXT.JS (App Router)
