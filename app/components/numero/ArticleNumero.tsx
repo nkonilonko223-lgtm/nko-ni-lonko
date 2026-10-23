@@ -27,14 +27,32 @@ export function BandeauNumero({ numero }: { numero: NumeroDeLArticle }) {
   );
 }
 
-// Rubrique de l'article, juste au-dessus du titre
+// Rubrique de l'article, juste au-dessus du titre ; elle mène à la page de la rubrique
+// (/rubriques/<slug>, 23 octobre 2026), qui regroupe la rubrique numéro après numéro
 export function SurtitreRubrique({ rubrique }: { rubrique: RubriqueCourte }) {
   if (!rubrique.titleNko && !rubrique.titleFr) return null;
+  if (rubrique.slug) {
+    return (
+      <p className="-mt-2 mb-6 flex justify-center md:-mt-3 md:mb-8">
+        <LienLangue href={`/rubriques/${rubrique.slug}`} className="flex flex-wrap items-baseline justify-center gap-x-3 rounded-md transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#fbbf24]">
+          <ContenuRubrique rubrique={rubrique} />
+        </LienLangue>
+      </p>
+    );
+  }
   return (
     <p className="-mt-2 mb-6 flex flex-wrap items-baseline justify-center gap-x-3 md:-mt-3 md:mb-8">
+      <ContenuRubrique rubrique={rubrique} />
+    </p>
+  );
+}
+
+function ContenuRubrique({ rubrique }: { rubrique: RubriqueCourte }) {
+  return (
+    <>
       {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-lg text-white/80 print:text-gray-700">{rubrique.titleNko}</span>}
       {rubrique.titleFr && <span lang="fr" className="text-[11px] uppercase tracking-widest text-white/50 print:text-gray-600">{rubrique.titleFr}</span>}
-    </p>
+    </>
   );
 }
 

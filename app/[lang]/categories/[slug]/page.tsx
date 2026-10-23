@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import ArticleCard from "../../../components/ArticleCard";
 import LienLangue from "../../../components/LienLangue";
 import PiluleRetour from "../../../components/PiluleRetour";
+import { GRILLE_FIXE } from "../../../components/numero/VueRubrique";
 import { toNkoDigits } from "../../../components/texte/outils";
 import { DISCIPLINES, cleDeCategorie, disciplineDeSlug, valeursDeCle } from "../../../lib/categories";
 import { getArticlesCartes, getValeursCategories } from "../../../lib/cartes-articles";
@@ -127,7 +128,7 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
         </p>
       </header>
 
-      <div className="grid-container mx-auto max-w-6xl">
+      <div className="grid-container mx-auto max-w-6xl" style={GRILLE_FIXE}>
         {d.articles.map((article, i) => (
           <ArticleCard key={article.slug} article={article} isPriority={i < 3} />
         ))}

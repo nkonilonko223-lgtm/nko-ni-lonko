@@ -86,7 +86,7 @@ export function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArt
 // 4. RÉCUPÉRATION (Edge Computing & Hybrid Cache)
 // ==============================================================================
 // Champs d'une carte (aussi pour les articles d'une rubrique, app/lib/rubriques.ts)
-export const PROJECTION_CARTE = `{
+export const CHAMPS_CARTE = `
     title,
     slug,
     mainImage,
@@ -98,14 +98,14 @@ export const PROJECTION_CARTE = `{
       name,
       nameNko,
       image
-    }
-  }`;
+    }`;
 
 // Tous les articles (accueil) ou ceux d'une discipline (valeurs Sanity : app/lib/categories.ts)
 export async function getArticlesCartes(valeursCategorie?: string[]): Promise<SafeHomeArticle[]> {
   // 🚀 REQUÊTE GROQ 1/1000 : Extraction optimisée avec "authors[]->"
   const filtre = valeursCategorie ? " && category in $valeurs" : "";
-  const query = `*[_type == "article"${filtre}] | order(publishedAt desc) ${PROJECTION_CARTE}`;
+  const query = `*[_type == "article"${filtre}] | order(publishedAt desc) {${CHAMPS_CARTE}
+  }`;
 
   try {
     // Mode aperçu (Studio) : brouillons inclus, sans cache ; sinon : version publiée

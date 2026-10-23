@@ -5,6 +5,7 @@ import { adresse } from './lib/langue';
 import { getLiensAuteurs } from './lib/auteurs';
 import { getValeursCategories } from './lib/cartes-articles';
 import { DISCIPLINES, cleDeCategorie } from './lib/categories';
+import { getLiensRubriques } from './lib/rubriques';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -77,6 +78,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  // 🗂️ Pages des rubriques (celles qui ont au moins un article publié)
+  const rubriqueEntries: MetadataRoute.Sitemap = (await getLiensRubriques()).map((r) => ({
+    url: `${baseUrl}/rubriques/${r.slug}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
+  }));
+
   // ✍️ Pages des auteurs (ceux qui ont au moins un article publié)
   const auteurEntries: MetadataRoute.Sitemap = (await getLiensAuteurs()).map((a) => ({
     url: `${baseUrl}/auteurs/${a.slug}`,
@@ -139,6 +147,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...numeroEntries,
     ...disciplineEntries,
+    ...rubriqueEntries,
     ...auteurEntries,
     ...postEntries,
     {
