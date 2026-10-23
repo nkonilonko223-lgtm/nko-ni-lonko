@@ -5,6 +5,14 @@ import { useRouter } from "next/navigation"; // 🚀 IMPORT DU ROUTEUR NATIF
 import { useLanguage } from "../../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
 import Link from "next/link";
 
+// Partie « Intelligence artificielle » (19 octobre 2026) : une phrase, le détail est dans les
+// Conditions d'utilisation (partie 10). N'Ko : L7 a à c (rédaction, 23 octobre 2026 ; copié tel quel)
+const IA = {
+  titre: { nko: "ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲", fr: "Intelligence artificielle" },
+  phrase: { nko: "ߊߟߎ߫ ߞߊ߲߬ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߕߍ߫ ߞߍ߫ ߟߊ߫ ߞߵߊ߲ ߠߊ߫ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߟߊߘߋ߬ߙߌ߬ ߝߋߎ߫߹", fr: "Vos données ne servent jamais à entraîner une intelligence artificielle." },
+  lien: { nko: "ߊ߲ ߠߊ߫ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߟߊߓߊ߯ߙߊߟߌ (ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬߸ ߝߊ߲߬ ߁߀߲)", fr: "Notre usage de l'IA (Conditions d'utilisation, partie 10)" },
+};
+
 export default function PrivacyClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE & NAVIGATION
   const router = useRouter();
@@ -299,13 +307,19 @@ export default function PrivacyClient() {
                     </section>
                 ))}
 
-                {/* INTELLIGENCE ARTIFICIELLE (19 octobre 2026) : une phrase, le détail est dans les Conditions
-                    d'utilisation (partie 10). Version N'Ko à fournir par la rédaction : le français s'affiche seul. */}
-                <section id="intelligence-artificielle" lang="fr" dir="ltr" className="scroll-mt-40 rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/[0.04] p-6 text-left print:border-black">
-                    <h2 className="mb-2 text-base md:text-lg font-bold uppercase tracking-[0.15em] text-[#fbbf24] print:text-black">Intelligence artificielle</h2>
-                    <p className="font-light text-lg text-gray-300 leading-relaxed print:text-black">
-                        Vos données ne servent jamais à entraîner une intelligence artificielle.{" "}
-                        <Link href={lien("/terms#intelligence-artificielle")} className="text-[#fbbf24] underline underline-offset-4">Notre usage de l&apos;IA (Conditions d&apos;utilisation, partie 10)</Link>
+                {/* INTELLIGENCE ARTIFICIELLE (constante IA, en haut du fichier) : N'Ko d'abord, de droite à gauche */}
+                <section id="intelligence-artificielle" className="scroll-mt-40 flex flex-col gap-4 rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/[0.04] p-6 print:border-black">
+                    <h2 className="flex flex-col gap-1">
+                        <span lang="nqo" dir="rtl" className="text-right font-kigelia text-2xl md:text-3xl font-bold text-[#fbbf24] print:text-black">{IA.titre.nko}</span>
+                        <span lang="fr" dir="ltr" className="text-left text-base md:text-lg font-bold uppercase tracking-[0.15em] text-[#fbbf24] print:text-black">{IA.titre.fr}</span>
+                    </h2>
+                    <p lang="nqo" dir="rtl" className="text-right font-kigelia text-xl md:text-2xl text-gray-200 leading-[1.9] print:text-black">
+                        {IA.phrase.nko}{" "}
+                        <Link href={lien("/terms#intelligence-artificielle")} className="text-[#fbbf24] underline underline-offset-4">{IA.lien.nko}</Link>
+                    </p>
+                    <p lang="fr" dir="ltr" className="text-left font-light text-lg text-gray-300 leading-relaxed print:text-black">
+                        {IA.phrase.fr}{" "}
+                        <Link href={lien("/terms#intelligence-artificielle")} className="text-[#fbbf24] underline underline-offset-4">{IA.lien.fr}</Link>
                     </p>
                 </section>
 
