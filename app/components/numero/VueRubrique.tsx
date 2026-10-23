@@ -33,7 +33,7 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
     <>
       <header className="mx-auto mb-12 max-w-5xl text-center">
         {/* Fil d'Ariane : le chevron se retourne tout seul en N'Ko */}
-        <nav aria-label={fr ? "Fil d'Ariane" : undefined} className="mb-6">
+        <div role="navigation" aria-label="Fil d'Ariane" className="mb-6">
           <ol className="flex flex-wrap items-center justify-center gap-2 text-sm text-white/60">
             <li>
               <LienLangue href="/" className="transition-colors hover:text-[#fbbf24]"><Libelle texte={ACCUEIL} fr={fr} /></LienLangue>
@@ -47,7 +47,7 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
               <span lang={nom === rubrique.titleNko ? "nqo" : "fr"} dir={nom === rubrique.titleNko ? "rtl" : "ltr"} className={nom === rubrique.titleNko ? "font-kigelia" : ""}>{nom}</span>
             </li>
           </ol>
-        </nav>
+        </div>
         <h1 className="flex flex-col items-center gap-1">
           {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{rubrique.titleNko}</span>}
           {rubrique.titleFr && (
@@ -58,7 +58,7 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
         <p className="mt-4 flex items-center justify-center gap-2 text-sm text-white/60">
           <span lang="nqo" dir="rtl" className="font-kigelia text-base">{ARTICLES.nko} · {toNkoDigits(nombre)}</span>
           <span aria-hidden="true">·</span>
-          <span lang="fr">{nombre} {nombre > 1 ? "articles" : "article"}</span>
+          <span lang="fr" dir="ltr">{nombre} {nombre > 1 ? "articles" : "article"}</span>
         </p>
       </header>
 

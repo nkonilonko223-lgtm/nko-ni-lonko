@@ -437,7 +437,9 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         {bandeau}
         {/* Fil d'Ariane (23 octobre 2026) : Accueil › discipline ; la discipline mène à sa page
             (« Revue Mensuelle » : aux numéros). Le chevron se retourne tout seul en N'Ko. */}
-        <nav aria-label={lang === 'nko' ? undefined : "Fil d'Ariane"} className="mb-4 md:mb-6">
+        {/* Pas de balise <nav> : la règle générale « nav » de globals.css (menu du site) la rendrait
+            collante en haut de l'écran, avec fond et trait ; role="navigation" garde le même sens */}
+        <div role="navigation" aria-label="Fil d'Ariane" className="mb-4 md:mb-6">
           <ol className={`flex items-center justify-center gap-2 uppercase tracking-[0.3em] font-bold ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
             <li className="print:hidden">
               <Link href={lien("/")} className="text-white/50 transition-colors hover:text-white">
@@ -453,7 +455,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
               )}
             </li>
           </ol>
-        </nav>
+        </div>
         {surtitre}
         <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
             <span {...sensDe(nkoTitle)} className={`block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : ''}`}>

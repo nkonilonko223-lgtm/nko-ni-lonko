@@ -103,7 +103,7 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
       <PiluleRetour />
       <header className="mx-auto mb-12 max-w-5xl text-center">
         {/* Fil d'Ariane : Accueil › discipline (le chevron se retourne tout seul en N'Ko) */}
-        <nav aria-label={fr ? "Fil d'Ariane" : undefined} className="mb-6">
+        <div role="navigation" aria-label="Fil d'Ariane" className="mb-6">
           <ol className="flex items-center justify-center gap-2 text-sm text-white/60">
             <li>
               <LienLangue href="/" className="transition-colors hover:text-[#fbbf24]">
@@ -115,7 +115,7 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
               {fr ? <span lang="fr">{d.fr}</span> : <span lang="nqo" dir="rtl" className="font-kigelia">{d.nko}</span>}
             </li>
           </ol>
-        </nav>
+        </div>
         <i className={`ph-bold ${d.discipline.icone} text-4xl text-[#fbbf24]`} aria-hidden="true"></i>
         <h1 className="mt-3 flex flex-col items-center gap-1">
           <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{d.nko}</span>
@@ -124,7 +124,7 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
         <p className="mt-4 flex items-center justify-center gap-2 text-sm text-white/60">
           <span lang="nqo" dir="rtl" className="font-kigelia text-base">{ARTICLES.nko} · {toNkoDigits(nombre)}</span>
           <span aria-hidden="true">·</span>
-          <span lang="fr">{nombre} {nombre > 1 ? "articles" : "article"}</span>
+          <span lang="fr" dir="ltr">{nombre} {nombre > 1 ? "articles" : "article"}</span>
         </p>
       </header>
 
