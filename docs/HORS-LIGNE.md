@@ -7,9 +7,11 @@
 ## Ce que voit le lecteur
 
 - Une page déjà lue s'ouvre **sans connexion** (la dernière version lue).
-- Un article mis dans **« Ma bibliothèque »** (le signet) est gardé à part, sans limite :
-  il reste lisible sans connexion, et la carte affiche « Lisible sans connexion ».
-- Une page jamais lue, sans connexion : la page `/offline` (« pas de connexion »).
+- Un article mis dans **« Ma bibliothèque »** (le signet) est gardé à part, sans limite, avec
+  ses images : il reste lisible sans connexion, et la carte affiche « Lisible sans connexion ».
+- Un **numéro téléchargé** (bouton de la page du numéro) se lit entièrement sans connexion.
+- Une page jamais lue, sans connexion : la page `/offline` (« pas de connexion »), dans la langue
+  du lecteur, avec la liste de ce qui est disponible sur l'appareil.
 - Connecté, le lecteur voit **toujours la version en ligne** (le réseau passe d'abord).
 
 ## Règles
@@ -17,11 +19,13 @@
 | Quoi | Règle |
 |---|---|
 | Pages | Réseau d'abord ; la copie ne sert que sans connexion ; 60 pages au plus (+ la bibliothèque) |
-| « Ma bibliothèque » | Copie gardée quand on met le signet, oubliée quand on l'enlève (N'Ko `/article/…` et français `/fr/article/…`) |
+| « Ma bibliothèque » | Copie gardée **avec ses images** quand on met le signet, oubliée (images comprises) quand on l'enlève (N'Ko `/article/…` et français `/fr/article/…`) |
+| Numéros téléchargés | « Télécharger le numéro » : page du numéro et articles, avec leurs images, dans un cache par numéro et par langue (`nko-numero-003-nqo`), sans limite ; « Retirer de l'appareil » l'efface (`docs/APPLICATION.md`) |
+| Copies gardées (bibliothèque, numéros) | Mises à jour à chaque lecture connectée |
 | Page « pas de connexion » | `/offline` (N'Ko) ou `/fr/offline` (français), selon l'adresse ; gardée à part, jamais effacée par la limite des 60 pages |
 | Fichiers aux noms uniques (`/_next/static`) ou versionnés (polices d'icônes `/icones/…?v=…`) | Gardés une fois pour toutes ; une seule version par fichier |
 | Fichiers à adresse fixe (polices `/fonts`, motif de fond) | Copie montrée tout de suite, mise à jour en arrière-plan |
-| Images (`/_next/image`) | Copie montrée tout de suite, mise à jour en arrière-plan ; 200 au plus |
+| Images (`/_next/image`) | Images de Sanity (adresse unique) : la copie suffit, rien n'est retéléchargé (données mobiles épargnées). Autres : copie montrée tout de suite, mise à jour en arrière-plan. 200 au plus (hors bibliothèque et numéros). Sans connexion, à défaut de la taille demandée : la même image à une autre taille |
 
 **Polices d'icônes** : leur adresse contient l'empreinte de leur contenu (`?v=…`, ajoutée par
 `scripts/icones/generer-icones.mjs`). Une police refaite change donc d'adresse : le lecteur ne

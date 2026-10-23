@@ -64,6 +64,10 @@ node scripts/verifier-nko-code.mts --depuis main     # garde du N'Ko : NFC parto
 node scripts/tester-correcteur.mts [--export <sauvegarde.tar.gz>]   # correcteur N'Ko du Studio
 node scripts/tester-impression.mjs [adresse] [--article <slug>] [--pdf <dossier>]   # impression des articles : images, fond blanc, légendes, coupures, lettrine (lecture seule)
 node scripts/tester-hors-ligne.mjs [adresse] [--article <slug>]   # lecture hors ligne, réseau vraiment coupé (défaut : serveur local « next start » sur le port 3100)
+node scripts/tester-application.mjs [adresse] [--telechargement <page d'un numéro>] [--captures <dossier>]   # application : manifestes, proposition, guide iPhone, numéro téléchargé (docs/APPLICATION.md)
+
+# Fichiers de l'application (manifestes, icônes, écrans de démarrage ; --captures : captures du site en ligne)
+node scripts/application/generer.mjs [--captures]
 # Les mêmes contrôles tournent sur GitHub à chaque envoi (.github/workflows/verifications.yml, onglet « Actions »)
 
 # Sanity (connexion faite avec le compte GitHub du propriétaire : npx sanity login --provider github)
@@ -140,7 +144,8 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/icones-phosphor.css` · `public/icones/` | Icônes Phosphor **auto-hébergées** (seulement celles du site, 4 épaisseurs) : fichiers **générés** par `scripts/icones/generer-icones.mjs`, ne pas les modifier à la main |
 | `app/fonts/` · `public/arriere-plan.avif` | Police Kigelia en **WOFF2** (les OTF de `public/fonts` servent aux e-mails et aux images de partage) ; motif de fond en AVIF, WebP en repli (`image-set` dans `globals.css`) |
 | `app/bibliotheque/` · `app/lib/bibliotheque.ts` | « Ma bibliothèque » : articles sauvegardés avec le signet (dans le navigateur du lecteur, clé `nko_bookmarks`), lisibles sans connexion |
-| `public/sw.js` · `app/components/LectureHorsLigne.tsx` | **Lecture hors ligne** (service worker écrit à la main ; Serwist retiré). Réseau d'abord pour les pages ; jamais `/studio`, `/api`. Arrêt d'urgence : `docs/HORS-LIGNE.md` |
+| `public/sw.js` · `app/components/LectureHorsLigne.tsx` | **Lecture hors ligne** (service worker écrit à la main ; Serwist retiré). Réseau d'abord pour les pages ; jamais `/studio`, `/api`. Bibliothèque et numéros téléchargés gardés avec leurs images. Arrêt d'urgence : `docs/HORS-LIGNE.md` |
+| `app/components/application/` · `app/lib/installation.ts` · `public/manifest*.json` · `public/application/` | **Application du site** (étapes 1 et 2) : un manifeste par langue, icônes masquables, raccourcis, captures, écrans de démarrage iPhone (fabriqués par `scripts/application/generer.mjs`) ; proposition d'installer (2ᵉ article), guide iPhone, « Télécharger le numéro », page « pas de connexion » qui liste ce qui est gardé. Textes : `application/textes.ts`. Détails : `docs/APPLICATION.md` |
 | `app/auteurs/[slug]/` · `app/lib/auteurs.ts` | Pages auteurs (biographie N'Ko puis française, articles). **WhatsApp jamais publié** (numéro de téléphone) |
 | `app/components/PiluleRetour.tsx` | Bouton « Retour » des pages sans navigation (numéros, auteurs, bibliothèque) : venu d'un autre site → accueil |
 | `sanity/correcteur-nko.ts` | Correcteur N'Ko du Studio (avertissements, ne corrige jamais) : marques doublées, mots « écrits autrement » que dans les articles publiés |
