@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ArticleCard from "./ArticleCard";
@@ -9,6 +9,7 @@ import SiteFooter from "./SiteFooter";
 import { useLanguage } from "./LanguageProvider";
 import { normaliser } from "./lexique/normaliser";
 import { cleDeCategorie, iconeDeCle } from "../lib/categories";
+import { abonnerInstallation, installer, modeInstallation, modeInstallationServeur } from "../lib/installation";
 import { toNkoDigits } from "./texte/outils";
 
 
@@ -19,12 +20,6 @@ import { toNkoDigits } from "./texte/outils";
 // 1. CONFIGURATION VISUELLE & PONT DE TRADUCTION
 // ==============================================================================
 // Icônes des catégories : une seule liste pour tout le site (app/lib/categories.ts, iconeDeCle)
-
-// 🛡️ DOGME 2 : Typage natif BeforeInstallPrompt (Zéro any)
-interface BeforeInstallPromptEvent extends Event {
-  prompt(): Promise<void>;
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
-}
 
 const ARTICLES_PER_PAGE = 6;
 
@@ -301,9 +296,6 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
   const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [showInstallBtn, setShowInstallBtn] = useState(false);
-
   const scrolled = useScrollDetection(50);
   const { spaceRef, patternRef, baobabRef } = useParallax();
   const debouncedQuery = useDebounce(searchQuery, 300);
@@ -359,25 +351,14 @@ const handleCategorySelect = useCallback((key: string) => {
   setDropdownOpen(false);
 }, [handleCategoryChange, triggerVibration]);
 
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-      setShowInstallBtn(true);
-    };
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    return () => window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-  }, []);
+  // Installation : état partagé avec tout le site (lib/installation.ts). Le bouton apparaît aussi
+  // quand le lecteur arrive par un article, et sur iPhone / iPad (il ouvre alors le guide).
+  const modeInstall = useSyncExternalStore(abonnerInstallation, modeInstallation, modeInstallationServeur);
+  const showInstallBtn = modeInstall === "fenetre" || modeInstall === "guide";
 
-  const handleInstallClick = async () => {
+  const handleInstallClick = () => {
     triggerVibration();
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") {
-      setShowInstallBtn(false);
-    }
-    setDeferredPrompt(null);
+    void installer();
   };
 
   // Recherche tolérante : sans marques de ton N'Ko ni accents (« eruption » trouve « Éruption »)

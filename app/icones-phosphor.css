@@ -2,12 +2,12 @@
    Icônes Phosphor 2.1.2 (licence MIT, public/icones/LICENSE-phosphor.txt), AUTO-HÉBERGÉES.
    FICHIER GÉNÉRÉ par scripts/icones/generer-icones.mjs — ne pas modifier à la main :
    relancer le générateur après l'ajout d'une nouvelle icône dans le code.
-   81 icônes trouvées dans le code.
+   83 icônes trouvées dans le code.
    ============================================================================ */
-/* ---- regular : 81 glyphes ---- */
+/* ---- regular : 83 glyphes ---- */
 @font-face {
   font-family: "Phosphor";
-  src: url("/icones/Phosphor.woff2?v=af9715af19") format("woff2");
+  src: url("/icones/Phosphor.woff2?v=dfca4c1db8") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -126,6 +126,9 @@
 .ph.ph-envelope-simple-open:before {
   content: "\e21a";
 }
+.ph.ph-export:before {
+  content: "\eaf0";
+}
 .ph.ph-facebook-logo:before {
   content: "\e226";
 }
@@ -191,6 +194,9 @@
 }
 .ph.ph-play:before {
   content: "\e3d0";
+}
+.ph.ph-plus-square:before {
+  content: "\ed4a";
 }
 .ph.ph-printer:before {
   content: "\e3dc";
@@ -280,10 +286,10 @@
   content: "\e4fc";
 }
 
-/* ---- bold : 81 glyphes ---- */
+/* ---- bold : 83 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Bold";
-  src: url("/icones/Phosphor-Bold.woff2?v=42c50fc0f1") format("woff2");
+  src: url("/icones/Phosphor-Bold.woff2?v=e95f50411c") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -402,6 +408,9 @@
 .ph-bold.ph-envelope-simple-open:before {
   content: "\e21a";
 }
+.ph-bold.ph-export:before {
+  content: "\eaf0";
+}
 .ph-bold.ph-facebook-logo:before {
   content: "\e226";
 }
@@ -467,6 +476,9 @@
 }
 .ph-bold.ph-play:before {
   content: "\e3d0";
+}
+.ph-bold.ph-plus-square:before {
+  content: "\ed4a";
 }
 .ph-bold.ph-printer:before {
   content: "\e3dc";
@@ -556,10 +568,10 @@
   content: "\e4fc";
 }
 
-/* ---- fill : 81 glyphes ---- */
+/* ---- fill : 83 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Fill";
-  src: url("/icones/Phosphor-Fill.woff2?v=ef9b32b2e9") format("woff2");
+  src: url("/icones/Phosphor-Fill.woff2?v=b5e5d150f1") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -678,6 +690,9 @@
 .ph-fill.ph-envelope-simple-open:before {
   content: "\e21a";
 }
+.ph-fill.ph-export:before {
+  content: "\eaf0";
+}
 .ph-fill.ph-facebook-logo:before {
   content: "\e226";
 }
@@ -743,6 +758,9 @@
 }
 .ph-fill.ph-play:before {
   content: "\e3d0";
+}
+.ph-fill.ph-plus-square:before {
+  content: "\ed4a";
 }
 .ph-fill.ph-printer:before {
   content: "\e3dc";
@@ -832,10 +850,10 @@
   content: "\e4fc";
 }
 
-/* ---- duotone : 162 glyphes ---- */
+/* ---- duotone : 166 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Duotone";
-  src: url("/icones/Phosphor-Duotone.woff2?v=4da0ac7f08") format("woff2");
+  src: url("/icones/Phosphor-Duotone.woff2?v=ac66a34986") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -1094,6 +1112,14 @@
   content: "\e21b";
   margin-left: -1em;
 }
+.ph-duotone.ph-export:before {
+  content: "\eaf0";
+  opacity: 0.2;
+}
+.ph-duotone.ph-export:after {
+  content: "\eaf1";
+  margin-left: -1em;
+}
 .ph-duotone.ph-facebook-logo:before {
   content: "\e226";
   opacity: 0.2;
@@ -1268,6 +1294,14 @@
 }
 .ph-duotone.ph-play:after {
   content: "\e3d1";
+  margin-left: -1em;
+}
+.ph-duotone.ph-plus-square:before {
+  content: "\ed4a";
+  opacity: 0.2;
+}
+.ph-duotone.ph-plus-square:after {
+  content: "\ed56";
   margin-left: -1em;
 }
 .ph-duotone.ph-printer:before {
