@@ -9,9 +9,9 @@
 >
 > **État au 23 octobre 2026 (soir)** — fichier reçu : `NKO/Revue/Site/textes-nko-L1-L20.txt` (43 textes validés par MckV) :
 > - **L1 à L8 et L10 à L16 : fournis et intégrés** (39 textes, branche `textes/nko-l1-l16`), copiés par programme, contrôlés identiques au fichier caractère par caractère et en NFC. L14 b, L15 a et L16 sont le même texte (« Ma bibliothèque »), utilisé à trois endroits.
-> - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, avant l'import du 25 : accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
+> - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
 > - **L9 : à fournir** (son texte français n'est pas encore validé).
-> - **L21 à L34 : à fournir** (demandés le 23 octobre 2026) : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion). Tous dans **un seul fichier** du code : `app/components/application/textes.ts` (champ `nko`, vide en attendant). Mise en ligne prévue **après le 30 octobre** : pas d'urgence avant l'import du N°003.
+> - **L21 à L34 : à fournir** (demandés le 23 octobre 2026) : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion). Tous dans **un seul fichier** du code : `app/components/application/textes.ts` (champ `nko`, vide en attendant). Mise en ligne prévue **après le 30 octobre** : pas d'urgence avant la publication du N°003.
 
 | # | Français | Où il s'affiche | Fichier et emplacement |
 |---|---|---|---|
@@ -65,5 +65,5 @@ Déjà fournis et réutilisés tels quels : « Sommaire », « Édito », « À 
 ## Autres contenus à fournir (dans le Studio, pas dans le code) — 23 octobre 2026
 
 1. **Résumé N'Ko** (champ « Résumé ») différent du titre, pour 3 articles publiés : leur carte de partage N'Ko n'a que le titre. `l-humanite-retourne-vers-la-lune`, `un-evenement-sans-precedent-sur-l-iss`, `tempete-solaire-historique`.
-2. **Résumé français** (champ « Résumé français », en français, pas une traduction à faire par l'IA) : vide pour tous les articles ; en priorité `bienvenue-sur-n-ko-ni-lonko`, `l-humanite-retourne-vers-la-lune`, `grand-retour-vers-la-lune`, `james-webb-devoile-les-secrets-des-trous-noirs`, `tempete-solaire-historique` (leur carte française a aujourd'hui la phrase par défaut). Pour le N°003 : à remplir dès l'import.
+2. **Résumé français** (champ « Résumé français », en français, pas une traduction à faire par l'IA) : vide pour tous les articles ; en priorité `bienvenue-sur-n-ko-ni-lonko`, `l-humanite-retourne-vers-la-lune`, `grand-retour-vers-la-lune`, `james-webb-devoile-les-secrets-des-trous-noirs`, `tempete-solaire-historique` (leur carte française a aujourd'hui la phrase par défaut). Pour le N°003 (déjà entièrement dans Sanity, en brouillon) : à vérifier avant la publication du 30 octobre.
 3. **Après le 30 octobre** (décision du propriétaire du 23 octobre : 13 disciplines) : reclasser les 3 articles « Revue Mensuelle » — « Le géant à crête du Niger » → Paléontologie et Archéologie ; « Grand retour vers la Lune » → Astronomie ; « Bienvenue sur N'Ko ni Lonko » → rubrique Édito, sans discipline. Puis « Revue Mensuelle » quitte la liste des disciplines. Écriture dans Sanity : sauvegarde puis accord écrit du propriétaire.
