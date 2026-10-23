@@ -7,7 +7,10 @@
 >
 > **Comment rendre les traductions** : un seul fichier texte (ex. `textes-nko-L1-L20.txt`), une ligne par texte, **commençant par son numéro** (`L1 : …`, `L15 c : …`). Pour une ligne qui contient plusieurs textes (L6, L7, L14, L15), une ligne par texte, dans l'ordre du tableau (`L15 a`, `L15 b`…). Le fichier est remis au propriétaire, qui le donne à Claude Code : chaque texte est copié par programme, tel quel.
 >
-> **État au 23 octobre 2026 : L1 à L20, tous à fournir** (vérifié dans le code : aucun n'a encore son N'Ko).
+> **État au 23 octobre 2026 (soir)** — fichier reçu : `NKO/Revue/Site/textes-nko-L1-L20.txt` (43 textes validés par MckV) :
+> - **L1 à L8 et L10 à L16 : fournis et intégrés** (39 textes, branche `textes/nko-l1-l16`), copiés par programme, contrôlés identiques au fichier caractère par caractère et en NFC. L14 b, L15 a et L16 sont le même texte (« Ma bibliothèque »), utilisé à trois endroits.
+> - **L17 à L20 : fournis, à intégrer APRÈS le 30 octobre** (changement du schéma, avec les nouvelles disciplines) ; le fichier reçu fait foi.
+> - **L9 : à fournir** (son texte français n'est pas encore validé).
 
 | # | Français | Où il s'affiche | Fichier et emplacement |
 |---|---|---|---|
@@ -21,7 +24,7 @@
 | L8 | Dernière mise à jour : octobre 2026 | En-tête des Conditions (la date N'Ko actuelle dit « février 2026 » : à changer avec le français, en même temps) | `app/[lang]/terms/TermsClient.tsx` (en-tête) |
 | L9 | Clause « Intelligence artificielle » du pacte des auteurs | Pacte des auteurs | `docs/PACTE-AUTEURS-CLAUSE-IA.md` (après validation du texte français) |
 | L10 | Reprendre la lecture | Article : bouton proposé au retour du lecteur | `app/components/ArticleClient.tsx` → `REPRENDRE.nko` |
-| L11 | Langue de lecture | Article : nom affiché au-dessus du choix « N'Ko + FR / N'Ko / FR » (depuis le 23 octobre ; en version N'Ko, l'icône seule s'affiche en attendant) | `app/components/ArticleClient.tsx` → `LANGUE_LECTURE.nko` |
+| L11 | Langue de lecture | Article : nom affiché au-dessus du choix « N'Ko + FR / N'Ko / FR » (depuis le 23 octobre) | `app/components/ArticleClient.tsx` → `LANGUE_LECTURE.nko` |
 | L12 | Signaler une erreur | Article : bouton de la barre d'outils | `app/components/ArticleTools.tsx` → `SIGNALER.nko` |
 | L13 | Partager en image | Article (barre de sélection) et fiche d'un terme du lexique | `app/components/texte/imageCitation.ts` → `PARTAGER_IMAGE.nko` (un seul endroit pour les deux) |
 | L14 | Sauvegardé · Ma bibliothèque | Article : message après le signet | `app/components/ArticleTools.tsx` → `SAUVEGARDE.nko`, `MA_BIBLIOTHEQUE.nko` |
