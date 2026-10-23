@@ -128,7 +128,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/api/newsletter` · `verify` · `unsubscribe` | Inscription, confirmation, désinscription (fiches **privées** `subscriber.<uuid>`) ; désinscription « en un clic » des messageries (RFC 8058) pour la lettre (`scripts/lettre/envoyer.mts`) |
 | `app/api/contact` | Formulaire de contact (e-mail Resend, rien n'est stocké) |
 | `app/api/cron/cleanup` | Nettoyage nocturne (Vercel Cron, protégé par `CRON_SECRET`) |
-| `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique, numéros dès une publication (filtre du webhook : `_type in ["article","terme","numero","rubrique"]`) |
+| `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique, numéros, auteurs dès une publication (filtre du webhook, dans sanity.io/manage → API → Webhooks : `_type in ["article","terme","numero","rubrique","author"]`). Le site lit Sanity **sans CDN** (`sanity/client.ts`, 23 octobre 2026) : sinon la page reconstruite juste après la sonnette pouvait garder l'ancienne version une heure |
 | `app/api/draft-mode/enable` · `disable` | Aperçu des brouillons (onglet **Presentation** du Studio) |
 | `sanity/fetch.ts` | `getSanityClient()` : brouillons en mode aperçu (clé Viewer), sinon contenu publié |
 | `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts`, `rubrique.ts`, `numero.ts` (`index.ts` est un reste inutilisé) |
