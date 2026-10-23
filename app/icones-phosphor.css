@@ -2,9 +2,9 @@
    Icônes Phosphor 2.1.2 (licence MIT, public/icones/LICENSE-phosphor.txt), AUTO-HÉBERGÉES.
    FICHIER GÉNÉRÉ par scripts/icones/generer-icones.mjs — ne pas modifier à la main :
    relancer le générateur après l'ajout d'une nouvelle icône dans le code.
-   78 icônes trouvées dans le code.
+   81 icônes trouvées dans le code.
    ============================================================================ */
-/* ---- regular : 78 glyphes ---- */
+/* ---- regular : 81 glyphes ---- */
 @font-face {
   font-family: "Phosphor";
   src: url("/icones/Phosphor.woff2") format("woff2");
@@ -57,6 +57,9 @@
 .ph.ph-atom:before {
   content: "\e5e4";
 }
+.ph.ph-bone:before {
+  content: "\e7f2";
+}
 .ph.ph-book-open:before {
   content: "\e0e6";
 }
@@ -105,6 +108,9 @@
 .ph.ph-corners-out:before {
   content: "\e1d0";
 }
+.ph.ph-cpu:before {
+  content: "\e610";
+}
 .ph.ph-dna:before {
   content: "\e924";
 }
@@ -126,17 +132,17 @@
 .ph.ph-flask:before {
   content: "\e79e";
 }
-.ph.ph-function:before {
-  content: "\ebe4";
-}
 .ph.ph-github-logo:before {
   content: "\e576";
 }
+.ph.ph-globe-hemisphere-east:before {
+  content: "\e28a";
+}
+.ph.ph-grains:before {
+  content: "\ec68";
+}
 .ph.ph-hash:before {
   content: "\e2a2";
-}
-.ph.ph-heartbeat:before {
-  content: "\e2ac";
 }
 .ph.ph-image:before {
   content: "\e2ca";
@@ -171,8 +177,14 @@
 .ph.ph-paper-plane-tilt:before {
   content: "\e398";
 }
+.ph.ph-pen-nib:before {
+  content: "\e3ac";
+}
 .ph.ph-phone:before {
   content: "\e3b8";
+}
+.ph.ph-pi:before {
+  content: "\ec80";
 }
 .ph.ph-planet:before {
   content: "\e652";
@@ -188,9 +200,6 @@
 }
 .ph.ph-quotes:before {
   content: "\e660";
-}
-.ph.ph-robot:before {
-  content: "\e762";
 }
 .ph.ph-rocket-launch:before {
   content: "\e3fe";
@@ -222,8 +231,8 @@
 .ph.ph-squares-four:before {
   content: "\e464";
 }
-.ph.ph-star:before {
-  content: "\e46a";
+.ph.ph-stethoscope:before {
+  content: "\e7ea";
 }
 .ph.ph-telegram-logo:before {
   content: "\e5bc";
@@ -271,7 +280,7 @@
   content: "\e4fc";
 }
 
-/* ---- bold : 78 glyphes ---- */
+/* ---- bold : 81 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Bold";
   src: url("/icones/Phosphor-Bold.woff2") format("woff2");
@@ -324,6 +333,9 @@
 .ph-bold.ph-atom:before {
   content: "\e5e4";
 }
+.ph-bold.ph-bone:before {
+  content: "\e7f2";
+}
 .ph-bold.ph-book-open:before {
   content: "\e0e6";
 }
@@ -372,6 +384,9 @@
 .ph-bold.ph-corners-out:before {
   content: "\e1d0";
 }
+.ph-bold.ph-cpu:before {
+  content: "\e610";
+}
 .ph-bold.ph-dna:before {
   content: "\e924";
 }
@@ -393,17 +408,17 @@
 .ph-bold.ph-flask:before {
   content: "\e79e";
 }
-.ph-bold.ph-function:before {
-  content: "\ebe4";
-}
 .ph-bold.ph-github-logo:before {
   content: "\e576";
 }
+.ph-bold.ph-globe-hemisphere-east:before {
+  content: "\e28a";
+}
+.ph-bold.ph-grains:before {
+  content: "\ec68";
+}
 .ph-bold.ph-hash:before {
   content: "\e2a2";
-}
-.ph-bold.ph-heartbeat:before {
-  content: "\e2ac";
 }
 .ph-bold.ph-image:before {
   content: "\e2ca";
@@ -438,8 +453,14 @@
 .ph-bold.ph-paper-plane-tilt:before {
   content: "\e398";
 }
+.ph-bold.ph-pen-nib:before {
+  content: "\e3ac";
+}
 .ph-bold.ph-phone:before {
   content: "\e3b8";
+}
+.ph-bold.ph-pi:before {
+  content: "\ec80";
 }
 .ph-bold.ph-planet:before {
   content: "\e652";
@@ -455,9 +476,6 @@
 }
 .ph-bold.ph-quotes:before {
   content: "\e660";
-}
-.ph-bold.ph-robot:before {
-  content: "\e762";
 }
 .ph-bold.ph-rocket-launch:before {
   content: "\e3fe";
@@ -489,8 +507,8 @@
 .ph-bold.ph-squares-four:before {
   content: "\e464";
 }
-.ph-bold.ph-star:before {
-  content: "\e46a";
+.ph-bold.ph-stethoscope:before {
+  content: "\e7ea";
 }
 .ph-bold.ph-telegram-logo:before {
   content: "\e5bc";
@@ -538,7 +556,7 @@
   content: "\e4fc";
 }
 
-/* ---- fill : 78 glyphes ---- */
+/* ---- fill : 81 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Fill";
   src: url("/icones/Phosphor-Fill.woff2") format("woff2");
@@ -591,6 +609,9 @@
 .ph-fill.ph-atom:before {
   content: "\e5e4";
 }
+.ph-fill.ph-bone:before {
+  content: "\e7f2";
+}
 .ph-fill.ph-book-open:before {
   content: "\e0e6";
 }
@@ -639,6 +660,9 @@
 .ph-fill.ph-corners-out:before {
   content: "\e1d0";
 }
+.ph-fill.ph-cpu:before {
+  content: "\e610";
+}
 .ph-fill.ph-dna:before {
   content: "\e924";
 }
@@ -660,17 +684,17 @@
 .ph-fill.ph-flask:before {
   content: "\e79e";
 }
-.ph-fill.ph-function:before {
-  content: "\ebe4";
-}
 .ph-fill.ph-github-logo:before {
   content: "\e576";
 }
+.ph-fill.ph-globe-hemisphere-east:before {
+  content: "\e28a";
+}
+.ph-fill.ph-grains:before {
+  content: "\ec68";
+}
 .ph-fill.ph-hash:before {
   content: "\e2a2";
-}
-.ph-fill.ph-heartbeat:before {
-  content: "\e2ac";
 }
 .ph-fill.ph-image:before {
   content: "\e2ca";
@@ -705,8 +729,14 @@
 .ph-fill.ph-paper-plane-tilt:before {
   content: "\e398";
 }
+.ph-fill.ph-pen-nib:before {
+  content: "\e3ac";
+}
 .ph-fill.ph-phone:before {
   content: "\e3b8";
+}
+.ph-fill.ph-pi:before {
+  content: "\ec80";
 }
 .ph-fill.ph-planet:before {
   content: "\e652";
@@ -722,9 +752,6 @@
 }
 .ph-fill.ph-quotes:before {
   content: "\e660";
-}
-.ph-fill.ph-robot:before {
-  content: "\e762";
 }
 .ph-fill.ph-rocket-launch:before {
   content: "\e3fe";
@@ -756,8 +783,8 @@
 .ph-fill.ph-squares-four:before {
   content: "\e464";
 }
-.ph-fill.ph-star:before {
-  content: "\e46a";
+.ph-fill.ph-stethoscope:before {
+  content: "\e7ea";
 }
 .ph-fill.ph-telegram-logo:before {
   content: "\e5bc";
@@ -805,7 +832,7 @@
   content: "\e4fc";
 }
 
-/* ---- duotone : 156 glyphes ---- */
+/* ---- duotone : 162 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Duotone";
   src: url("/icones/Phosphor-Duotone.woff2") format("woff2");
@@ -881,6 +908,14 @@
 }
 .ph-duotone.ph-atom:after {
   content: "\e5e5";
+  margin-left: -1em;
+}
+.ph-duotone.ph-bone:before {
+  content: "\e7f2";
+  opacity: 0.2;
+}
+.ph-duotone.ph-bone:after {
+  content: "\e7f3";
   margin-left: -1em;
 }
 .ph-duotone.ph-book-open:before {
@@ -1011,6 +1046,14 @@
   content: "\e1d1";
   margin-left: -1em;
 }
+.ph-duotone.ph-cpu:before {
+  content: "\e610";
+  opacity: 0.2;
+}
+.ph-duotone.ph-cpu:after {
+  content: "\e611";
+  margin-left: -1em;
+}
 .ph-duotone.ph-dna:before {
   content: "\e924";
   opacity: 0.2;
@@ -1067,14 +1110,6 @@
   content: "\e79f";
   margin-left: -1em;
 }
-.ph-duotone.ph-function:before {
-  content: "\ebe4";
-  opacity: 0.2;
-}
-.ph-duotone.ph-function:after {
-  content: "\ebe5";
-  margin-left: -1em;
-}
 .ph-duotone.ph-github-logo:before {
   content: "\e576";
   opacity: 0.2;
@@ -1083,20 +1118,28 @@
   content: "\e577";
   margin-left: -1em;
 }
+.ph-duotone.ph-globe-hemisphere-east:before {
+  content: "\e28a";
+  opacity: 0.2;
+}
+.ph-duotone.ph-globe-hemisphere-east:after {
+  content: "\e28b";
+  margin-left: -1em;
+}
+.ph-duotone.ph-grains:before {
+  content: "\ec68";
+  opacity: 0.2;
+}
+.ph-duotone.ph-grains:after {
+  content: "\ec69";
+  margin-left: -1em;
+}
 .ph-duotone.ph-hash:before {
   content: "\e2a2";
   opacity: 0.2;
 }
 .ph-duotone.ph-hash:after {
   content: "\e2a3";
-  margin-left: -1em;
-}
-.ph-duotone.ph-heartbeat:before {
-  content: "\e2ac";
-  opacity: 0.2;
-}
-.ph-duotone.ph-heartbeat:after {
-  content: "\e2ad";
   margin-left: -1em;
 }
 .ph-duotone.ph-image:before {
@@ -1187,12 +1230,28 @@
   content: "\e399";
   margin-left: -1em;
 }
+.ph-duotone.ph-pen-nib:before {
+  content: "\e3ac";
+  opacity: 0.2;
+}
+.ph-duotone.ph-pen-nib:after {
+  content: "\e3ad";
+  margin-left: -1em;
+}
 .ph-duotone.ph-phone:before {
   content: "\e3b8";
   opacity: 0.2;
 }
 .ph-duotone.ph-phone:after {
   content: "\e3b9";
+  margin-left: -1em;
+}
+.ph-duotone.ph-pi:before {
+  content: "\ec80";
+  opacity: 0.2;
+}
+.ph-duotone.ph-pi:after {
+  content: "\ec81";
   margin-left: -1em;
 }
 .ph-duotone.ph-planet:before {
@@ -1233,14 +1292,6 @@
 }
 .ph-duotone.ph-quotes:after {
   content: "\e661";
-  margin-left: -1em;
-}
-.ph-duotone.ph-robot:before {
-  content: "\e762";
-  opacity: 0.2;
-}
-.ph-duotone.ph-robot:after {
-  content: "\e763";
   margin-left: -1em;
 }
 .ph-duotone.ph-rocket-launch:before {
@@ -1323,12 +1374,12 @@
   content: "\e465";
   margin-left: -1em;
 }
-.ph-duotone.ph-star:before {
-  content: "\e46a";
+.ph-duotone.ph-stethoscope:before {
+  content: "\e7ea";
   opacity: 0.2;
 }
-.ph-duotone.ph-star:after {
-  content: "\e46b";
+.ph-duotone.ph-stethoscope:after {
+  content: "\e7eb";
   margin-left: -1em;
 }
 .ph-duotone.ph-telegram-logo:before {

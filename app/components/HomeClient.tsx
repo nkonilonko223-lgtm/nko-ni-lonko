@@ -8,7 +8,7 @@ import ArticleCard from "./ArticleCard";
 import SiteFooter from "./SiteFooter";
 import { useLanguage } from "./LanguageProvider";
 import { normaliser } from "./lexique/normaliser";
-import { cleDeCategorie } from "../lib/categories";
+import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { toNkoDigits } from "./texte/outils";
 
 
@@ -18,31 +18,7 @@ import { toNkoDigits } from "./texte/outils";
 // ==============================================================================
 // 1. CONFIGURATION VISUELLE & PONT DE TRADUCTION
 // ==============================================================================
-const CATEGORY_ICONS: Record<string, string> = {
-  astronomy: "ph-star",
-  astronomie: "ph-star",
-  physics: "ph-atom",
-  physique: "ph-atom",
-  biology: "ph-dna",
-  biologie: "ph-dna",
-  mathematics: "ph-function",
-  "mathématiques": "ph-function",
-  chemistry: "ph-flask",
-  chimie: "ph-flask",
-  geology: "ph-mountains",
-  "géologie": "ph-mountains",
-  technology: "ph-robot",
-  technologie: "ph-robot",
- history: "ph-scroll",
-  histoire: "ph-scroll",
-  health: "ph-heartbeat",
-  "santé": "ph-heartbeat",
-  science: "ph-flask",
-  // 🚀 NOUVEAU : Icône pour la Revue Mensuelle
-  review: "ph-calendar-star",
-  revue: "ph-calendar-star",
-  default: "ph-hash",
-};
+// Icônes des catégories : une seule liste pour tout le site (app/lib/categories.ts, iconeDeCle)
 
 // 🛡️ DOGME 2 : Typage natif BeforeInstallPrompt (Zéro any)
 interface BeforeInstallPromptEvent extends Event {
@@ -472,11 +448,7 @@ useEffect(() => {
   };
 }, [dropdownOpen]);
 
-  const getCategoryIconClass = useCallback((key: string) => {
-    const normalizedKey = key.toLowerCase();
-    const iconKey = Object.keys(CATEGORY_ICONS).find((k) => normalizedKey.includes(k)) || "default";
-    return CATEGORY_ICONS[iconKey] || CATEGORY_ICONS["default"];
-  }, []);
+  const getCategoryIconClass = useCallback((key: string) => iconeDeCle(key), []);
 
   const siteName = typedT.metadata?.siteName || "Kiba";
   const categories = typedT.home?.categories || {};

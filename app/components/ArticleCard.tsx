@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
-import { cleDeCategorie } from "../lib/categories";
+import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { useState, useMemo, useRef, useCallback } from "react";
 import { contientNko, sensDe, separerTitre } from "./numero/titre";
 
@@ -26,19 +26,7 @@ export interface ArticleCardProps {
   isPriority?: boolean; 
 }
 
-// --- 1. ICÔNES (MAPPING) ---
-const ICON_MAP: Record<string, string> = {
-  'astronomie': "ph-star", 'astronomy': "ph-star",
-  'physique': "ph-atom", 'physics': "ph-atom", 'physique quantique': "ph-atom",
-  'biologie': "ph-dna", 'biology': "ph-dna",
-  'mathématiques': "ph-function", 'mathematics': "ph-function",
-  'chimie': "ph-flask", 'chemistry': "ph-flask",
-  'géologie': "ph-mountains", 'geology': "ph-mountains",
-  'technologie': "ph-robot", 'technology': "ph-robot", 'tech': "ph-robot",
-  'histoire': "ph-scroll", 'history': "ph-scroll",
-  'santé': "ph-heartbeat", 'health': "ph-heartbeat",
-  'science': "ph-flask"
-};
+// --- 1. ICÔNES : une seule liste pour tout le site (app/lib/categories.ts, iconeDeCle) ---
 
 // Les fonctions de date restent intactes
 const NKO_MONTHS = [
@@ -59,13 +47,6 @@ function formatDateNkoFull(dateString: string): string {
   const month = NKO_MONTHS[date.getUTCMonth()];
   const year = toNkoDigits(date.getUTCFullYear());
   return `${year} ${month} ߕߋ߬ߟߋ߫ ${day}`;
-}
-
-function getCategoryIcon(category: string): string {
-  if (!category) return "ph-star";
-  const normalizedKey = category.toLowerCase().trim();
-  const foundKey = Object.keys(ICON_MAP).find(key => normalizedKey.includes(key));
-  return foundKey ? ICON_MAP[foundKey] : "ph-star";
 }
 
 // ==============================================================================
@@ -222,7 +203,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                   ? 'font-kigelia text-sm px-4 py-1.5' 
                   : 'text-[10px] font-bold uppercase tracking-widest px-3 py-1.5'} 
               `}>
-                <i className={`ph-fill ${getCategoryIcon(categoryKey)}`}></i>
+                <i className={`ph-fill ${iconeDeCle(categoryKey)}`} aria-hidden="true"></i>
                 {displayCategory}
               </span>
             </div>
