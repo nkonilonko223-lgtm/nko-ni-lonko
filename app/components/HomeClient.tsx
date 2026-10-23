@@ -216,6 +216,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
   return (
     <div
       ref={menuRef}
+      id="mobile-menu" // cible de aria-controls du bouton du menu (manquait)
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
