@@ -1,0 +1,143 @@
+{
+  "id": "/fr",
+  "name": "N'Ko ni Lonko",
+  "short_name": "N'Ko ni Lonko",
+  "description": "Revue scientifique bilingue N'Ko – français. Lecture en plein écran, même sans connexion.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "/fr",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#02040a",
+  "theme_color": "#02040a",
+  "categories": [
+    "education",
+    "magazines",
+    "news"
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  },
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/application/icone-masquable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/application/icone-masquable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Numéros",
+      "url": "/fr/numeros",
+      "icons": [
+        {
+          "src": "/application/raccourci-numeros.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "/application/raccourci-numeros.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    },
+    {
+      "name": "Lexique",
+      "url": "/fr/lexique",
+      "icons": [
+        {
+          "src": "/application/raccourci-lexique.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "/application/raccourci-lexique.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    },
+    {
+      "name": "Ma bibliothèque",
+      "url": "/fr/bibliotheque",
+      "icons": [
+        {
+          "src": "/application/raccourci-bibliotheque.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "/application/raccourci-bibliotheque.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/application/captures/fr-etroit-1-accueil.webp",
+      "sizes": "1080x2220",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Accueil de la revue"
+    },
+    {
+      "src": "/application/captures/fr-etroit-2-article.webp",
+      "sizes": "1080x2220",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Un article, en N'Ko et en français"
+    },
+    {
+      "src": "/application/captures/fr-etroit-3-lecture.webp",
+      "sizes": "1080x2220",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "La lecture : le N'Ko d'abord, puis le français"
+    },
+    {
+      "src": "/application/captures/fr-large-1-accueil.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Accueil de la revue"
+    },
+    {
+      "src": "/application/captures/fr-large-2-article.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Un article, en N'Ko et en français"
+    }
+  ]
+}
