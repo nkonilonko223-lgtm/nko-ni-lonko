@@ -47,6 +47,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ revalidated: true, now: Date.now() });
     }
 
+    // ✍️ Auteur (nom, photo, biographie, ORCID) : pages des auteurs, plan du site et encadré « auteur »
+    // sous les articles (23 octobre 2026). Le webhook Sanity doit avoir « author » dans son filtre.
+    if (body?._type === 'author') {
+      revalidateTag('author', { expire: 0 });
+      revalidateTag('article', { expire: 0 });
+      console.info("🔔 [Revalidate] Auteurs et articles mis à jour.");
+      return NextResponse.json({ revalidated: true, now: Date.now() });
+    }
+
     if (body?._type !== 'article') {
       return NextResponse.json({ revalidated: false, message: 'Type ignoré' });
     }
