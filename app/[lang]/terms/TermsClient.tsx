@@ -51,6 +51,7 @@ export default function TermsClient() {
 type Clause = {
   id: string; titleNko: string; titleFr: string; tldrNko: string; tldrFr: string; textNko: string; textFr: string;
   paragraphesFr?: { titre: string; texte: string }[]; // texte français en plusieurs parties
+  paragraphesNko?: { titre: string; texte: string }[]; // texte N'Ko en plusieurs parties (même ordre)
 };
 
 const clauses: Clause[] = [
@@ -136,14 +137,25 @@ const clauses: Clause[] = [
       textFr: "Afin de maintenir l'excellence de notre standard mondial, notre comité de lecture se réserve le droit souverain de refuser, de corriger (orthographe, syntaxe N'Ko) ou de retirer tout article qui ne répondrait pas à notre charte d'exigence scientifique et linguistique."
     },
     {
-      // Texte validé par le propriétaire le 19 octobre 2026. Version N'Ko à fournir par la rédaction.
+      // Texte validé par le propriétaire le 19 octobre 2026. Version N'Ko : L6 a à r (rédaction,
+      // 23 octobre 2026 ; copiée telle quelle par programme) ; les 8 parties dans l'ordre du français.
       id: "intelligence-artificielle",
-      titleNko: "",
+      titleNko: "߁߀. ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲",
       titleFr: "10. Intelligence artificielle",
-      tldrNko: "",
+      tldrNko: "ߊ߬ ߞߘߐ ߜߍߘߐߕߊ: ߡߐ߱ ߟߎ߬ ߟߋ߬ ߦߴߊ߬ ߘߐߡߙߌ߫ ߟߊ߫߸ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߧߋ߫ ߘߍ߬ߡߍ߲߬ߠߌ߲ ߞߍ߫ ߟߊ߫߹ ߒߞߏ ߛߌ߫ ߕߍ߫ ߛߓߍ߫ ߟߊ߫ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߓߟߏ߫ ߘߋ߬߸ ߊ߬ ߣߌ߫ ߊ߲ ߠߊ߫ ߘߟߊߡߌߣߊߟߌ ߟߎ߬ ߟߊߘߋ߬ߙߌ߬ߟߌ ߓߊ߯ߙߊߟߊ߲ ߧߋ߫ ߕߏ߫ ߟߊ߫ ߜߎ߲߬ߘߏ߬ߦߊ ߟߋ߬ ߘߐ߫߹",
       tldrFr: "En clair : des humains décident, l'IA aide. Aucun N'Ko n'est écrit par une IA, et l'entraînement de notre outil de traduction reste privé.",
       textNko: "",
       textFr: "",
+      paragraphesNko: [
+        { titre: "ߊ߲ ߠߊ߫ ߛߙߊߕߌ : ߡߐ߱ ߟߎ߬ ߦߋ߫ ߟߊߕߍ߰ ߞߍ߫ ߟߊ߫߸ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߧߋ߫ ߘߍ߬ߡߍ߲߬ߣߊ߲ ߘߌ߫", texte: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߘߐ߫߸ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ (ߤ.ߡ) ߦߋ߫ ߓߊ߯ߙߊߟߊ߲ ߠߋ߬ ߘߌ߫߹ ߊ߬ ߕߍ߫ ߝߋ߲߫ ߓߍ߯ ߞߍ߫ ߟߊ߫߸ ߊ߬ ߕߍ߫ ߟߊߕߍ߰ߟߌ ߛߌ߫ ߞߍ߫ ߟߊ߫: ߝߐߡߊ (ߞߎ߲߬ߞߊ߲߬ߞߏ) ߟߎ߬ ߛߎߥߊ߲ߘߌߟߌ߸ ߛߓߍߟߌ߸ ߘߟߊߡߌߣߊߟߌ߸ ߘߐ߬ߜߍ߬ߘߍ߲߬ߠߌ߲ ߣߌ߫ ߟߊ߬ߖߍ߲߬ߛߍ߲߬ߠߌ߲߸ ߏ߬ ߓߍ߯ ߦߋ߫ ߞߍ߫ ߟߊ߫ ߡߐ߱ ߟߎ߬ ߟߋ߬ ߓߟߏ߫߸ ߛߓߍߦߊߟߌ ߣߌ߫ ߛߓߍߦߟߊ ߟߎ߬ ߝߍ߬߹ ߝߋ߲߫ ߡߍ߲ ߠߎ߬ ߦߋ߫ ߟߊߖߍ߲ߛߍ߲߫ ߠߊ߫߸ ߏ߬ ߖߋ߬ߓߌ߬ߦߊ߬ߟߌ ߞߎ߲߬ߞߏ ߦߋ߫ ߛߓߍߦߊߟߌ ߞߙߎ ߡߊ߬ ߛߊ߫߹" },
+        { titre: "ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߧߋ߫ ߡߌ߲ ߞߍ߫ ߟߊ߫ ߓߌ߬", texte: "ߊ߬ ߦߋ߫ ߘߍ߬ߡߍ߲߬ߠߌ߲ ߞߍ߫ ߟߊ߫ ߛߋ߲ߞߏߟߦߊ ߓߊ߯ߙߊ ߟߎ߬ ߟߋ߬ ߘߐ߫: ߞߟߏߜߍ ߟߎ߬ ߟߊߘߏ߲߬ߠߌ߲ ߊ߲ ߠߊ߫ ߟߊ߬ߖߍ߲߬ߛߍ߲߬ߠߌ߲ ߓߊ߯ߙߊߟߊ߲ ߞߣߐ߫߸ ߜߋ߬ߟߎ߲߬ߣߌ߲ ߞߍ߲ߖߘߍߡߊ ߟߎ߬ (ߒߞߏ ߛߓߍߢߊ ߘߐߓߍ߲߬ߣߌ߲߸ ߛߘߌ߬ߜߋ߲ ߠߎ߬߸ ߖߌ߬ߦߊ߬ߓߍ ߟߎ߬)߹ ߞߟߏߜߍ ߓߍ߯ ߦߋ߫ ߡߊߝߟߍ߫ ߟߊ߫ ߞߵߊ߬ ߟߊߛߙߋߦߊ߫ ߝߐ߰ߓߍ ߛߓߍߦߊߟߌ ߞߙߎ ߓߟߏ߫ ߞߊ߬ ߞߐ߲߰ ߊ߬ ߟߊ߬ߖߍ߲߬ߛߍ߲߬ߠߌ߲ ߢߍ߫߹" },
+        { titre: "ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߕߍ߫ ߡߌ߲ ߞߍ߫ ߟߊ߫ ߝߋߎ߫", texte: "ߊ߬ ߕߍ߫ ߞߟߏߜߍ߫ ߛߌ߫ ߛߓߍ߫ ߟߊ߫ ߒߞߏ ߘߐ߫: ߒߞߏ ߞߎߡߊߘߋ߲ ߟߊߖߍ߲ߛߍ߲ߣߍ߲߫ ߠߎ߬ ߓߍ߯ ߦߋ߫ ߓߐ߫ ߟߊ߫ ߛߓߍߦߊߟߌ ߞߙߎ ߟߋ߬ ߓߟߏ߫߹ ߊ߬ ߕߍ߫ ߞߎߡߘߊ ߛߌ߫ ߛߓߍߦߟߊ ߘߌ߫ ߝߋߎ߫߹ ߊ߬ ߕߍ߫ ߝߏߌ߫ ߟߊߖߍ߲ߛߍ߲߫ ߠߊ߫ ߝߣߊ߫ ߊ߬ ߖߍ߬ߘߍ ߡߊ߬߹" },
+        { titre: "ߊ߲ ߠߊ߫ ߘߟߊߡߌߣߊߟߌ ߓߊ߯ߙߊߟߊ߲ : ߟߊߘߋ߬ߙߌ߬ߟߌ ߘߎ߲߬ߘߎ߬ߡߊ", texte: "ߊ߲ ߧߋ߫ ߒߞߏ ↔ ߝߊ߬ߙߊ߲߬ߛߌ߫ ߞߊ߲ ߘߟߊߡߌߣߊߟߌ ߓߊ߯ߙߊߟߊ߲ ߘߏ߫ ߟߊߓߍ߲߬ ߠߊ߫߸ ߊ߬ ߟߊߘߋ߬ߙߌ߬ߣߍ߲߫ ߝߐ߰ߓߍ ߛߓߍߟߌ ߟߊߖߍ߲ߛߍ߲ߣߍ߲ ߠߎ߬ ߣߌ߫ ߊ߬ ߟߊ߫ ߞߎߡߊߘߋ߲ ߠߋ߬ ߞߊ߲߬߸ ߛߓߍߦߟߊ ߟߎ߬ ߟߊ߫ ߘߌ߬ߢߍ߬ ߞߐߝߍ߬߹ ߟߊߘߋ߬ߙߌ߬ߟߌ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ ߦߋ߫ ߜߎ߲߬ߘߏ߬ߡߊ ߟߋ߬ ߘߌ߫: ߊ߬ߟߎ߬ ߕߍ߫ ߝߙߋ߬ ߟߊ߫߸ ߊ߬ߟߎ߬ ߕߍ߫ ߘߐߕߟߊ߫ ߟߊ߫߸ ߊ߬ߟߎ߬ ߕߍ߫ ߟߊߖߍ߲ߛߍ߲߫ ߠߊ߫߹ ߞߍߟߊ߲ ߘߟߊߡߌߣߊߟߌ ߛߌ߫ ߕߍ߫ ߟߊߖߍ߲ߛߍ߲߫ ߠߊ߫߸ ߣߴߊ߬ ߡߊ߫ ߡߊߝߟߍ߫ ߡߐ߱ ߝߍ߬ ߝߟߐ߫߹" },
+        { titre: "ߦߙߐ ߡߍ߲ ߠߎ߬ ߘߐ߫ ߊ߲ ߠߊ߫ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߓߊ߯ߙߊߟߊ߲ ߠߎ߬ ߦߋ߫ ߡߊ߬ߞߏߢߊ߬ ߟߊ߫", texte: "ߕߎ߬ߡߊ ߣߌ߲߬ ߘߐ߫߸ ߊ߬ߟߎ߬ ߦߋ߫ ߝߐ߰ߓߍ ߓߊ߯ߙߊ ߊ߬ ߣߌ߫ ߓߟߐߟߐ ߞߐߜߍ ߣߌ߲߬ ߞߊ߲߬ ߓߊ߯ߙߊ ߟߎ߬ ߘߐߙߐ߲߫ ߠߋ߬ ߞߍ߫ ߟߊ߫߹ ߏ߬ ߘߌߣߊ߬ ߡߊߝߊ߬ߟߋ߲߬ ߞߐߟߊ߫߸ ߌߦߏ߫ ߘߟߊߡߌߣߊߟߌ ߓߊ߯ߙߊߟߊ߲ ߘߏ߫ ߡߍ߲ ߘߌ߫ ߟߊߞߊ߬ ߒߞߏߟߊ߲ߘߌ ߟߎ߬ ߦߋ߫: ߊ߲ ߘߌߣߊ߬ ߊ߬ ߝߐ߫ ߦߊ߲߬ ߞߊ߬ ߞߐ߲߬ ߊ߬ ߕߎ߬ߡߊ ߢߍ߫߸ ߊ߲ ߘߌߣߊ߬ ߛߓߍߦߟߊ ߟߎ߬ ߟߊ߫ ߘߌ߬ߢߍ߬ ߢߌߣߌ߲߫߸ ߊ߬ ߣߌ߫ ߝߊ߲߭ ߣߌ߲߬ ߘߌߣߊ߬ ߡߊߝߊ߬ߟߋ߲߬ ߟߊ߬ߞߎ߬ߘߦߊ߬ߟߌ ߕߎ߬ߡߊ ߟߊ߫߹" },
+        { titre: "ߊߟߎ߫ ߞߊ߲߬ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬", texte: "ߞߊ߬ߙߊ߲߬ߓߊ߮ ߟߎ߬ ߟߊ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߎ߬ (ߡߊߝߘߎ߬ߣߍ߲ ߠߎ߬ ߟߊ߫ ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ ߟߎ߬߸ ߟߊ߬ߛߘߐ߬ߢߊ ߞߐߜߍ ߗߋߛߓߍ ߟߎ߬) ߕߍ߫ ߞߍ߫ ߟߊ߫ ߞߵߊ߲ ߠߊ߫ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߟߊߘߋ߬ߙߌ߬ ߝߋߎ߫߹" },
+        { titre: "ߊ߲ ߠߊ߫ ߞߟߏߜߍ ߟߎ߬ ߣߌ߫ ߡߐ߰ ߜߘߍ߫ ߟߎ߬ ߟߊ߫ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߠߎ߬", texte: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߊ߬ ߟߊ߫ ߞߟߏߜߍ ߟߎ߬ ߤߊߞߍ ߓߍ߯ ߟߊߡߊ߬ߙߊ߬ ߟߊ߫ ߊ߬ ߖߍ߬ߘߍ ߘߐߙߐ߲߫ ߧߋ߫ ߟߋ߬: ߣߌ߫ ߊ߲ ߠߊ߫ ߘߌ߬ߢߍ߬ ߛߓߍߣߍ߲ ߖߍ߬ߘߍ ߕߍ߫߸ ߡߐ߰ ߛߌ߫ ߞߊߣߊ߬ ߊ߬ߟߎ߬ ߟߊߘߍ߬߸ ߥߟߊ߫ ߞߵߊ߬ߟߎ߬ ߟߊߓߊ߯ߙߊ߫ ߞߊ߬ ߤߟߌߟߊ߲ߘߌ ߡߊߘߍ߲ߣߍ߲ ߘߏ߫ ߟߊߘߋ߬ߙߌ߬߹ ߤߊߞߍ ߟߊߡߊ߬ߙߊ߬ߟߌ ߣߌ߲߬ ߓߘߊ߫ ߦߌ߬ߘߊ߬ ߓߟߐߟߐ ߡߐ߰ߡߐ߮ ߟߎ߬ ߟߊ߫ (robots.txt ߣߌ߫ tdmrep.json ߞߐߜߍ ߟߎ߬)߸ ߞߊ߬ ߓߍ߲߬ ߛߓߍߦߟߊ ߤߊߞߍ ߛߙߊߕߌ ߟߎ߬ ߡߊ߬߹ ߒ߬ߓߊ߬ ߓߟߐߟߐ ߛߏ߲߯ߓߊߟߌߟߊ߲ ߠߎ߬ ߟߊ߫ ߕߏߟߌ ߛߣߍߦߊߣߍ߲ ߠߋ߬ ߊ߬ ߞߊ߲߬߹" },
+        { titre: "ߢߌ߬ߣߌ߲߬ߞߊ߬ߟߌ ߘߏ߫؟", texte: "ߊߟߎ߫ ߦߋ߫ ߛߓߍ ߗߋ߫ ߊ߲ ߡߊ߬ ߟߊ߬ߛߘߐ߬ߢߊ ߞߐߜߍ ߝߍ߬߹ ߝߊ߲߬ ߏ߬ ߓߘߊ߫ ߟߊ߬ߞߎ߬ߘߦߊ߬ ߞߏ߲ߓߌߕߌ߮ ߂߀߂߆ ߟߊ߫߹" },
+      ],
       paragraphesFr: [
         { titre: "Notre principe : des humains décident, l'IA aide", texte: "À N'Ko ni Lonko, l'intelligence artificielle (IA) est un outil. Elle ne fait pas tout et ne prend aucune décision : le choix des sujets, l'écriture, la traduction, la relecture et la publication sont faits par des personnes, la rédaction et les auteurs. La rédaction reste responsable de tout ce qui est publié." },
         { titre: "Ce que l'IA fait aujourd'hui", texte: "Elle aide pour des tâches techniques : saisie des textes dans notre outil de publication, contrôles automatiques (écriture N'Ko correcte, liens, images). Chaque texte est relu et validé par la rédaction avant sa publication." },
@@ -237,8 +249,8 @@ useEffect(() => {
             </h1>
             
             <div className="flex flex-col items-center gap-2">
-                <p className="font-kigelia text-[#fbbf24] text-xl print:text-gray-800">ߟߊ߬ߞߎ߬ߘߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߞߏߜߍ ߂߀߂߆</p>
-                <p lang="fr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
+                <p lang="nqo" dir="rtl" className="font-kigelia text-[#fbbf24] text-xl print:text-gray-800">{"ߟߊ߬ߞߎ߬ߘߦߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߓߌߕߌ߮ ߂߀߂߆"}</p>
+                <p lang="fr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Octobre 2026</p>
             </div>
         </div>
 {/* 🚀 NAVIGATION MOBILE (Swipeable Pills Bilingues 1/10000) */}
@@ -329,17 +341,29 @@ useEffect(() => {
                                 </div>
                             </div>
 
-                            {/* BLOC N'KO (absent tant que la rédaction ne l'a pas fourni) */}
-                            {clause.textNko && (
+                            {/* BLOC N'KO (absent tant que la rédaction ne l'a pas fourni) ; en plusieurs
+                                parties (titre et texte), comme le français, pour la partie 10 */}
+                            {(clause.textNko || clause.paragraphesNko) && (
                             <>
                             <div
                               className={`transition-opacity duration-500 ${focusedLang === 'fr' ? 'opacity-30 blur-[1px]' : 'opacity-100'} print:opacity-100 print:blur-none`}
                               onMouseEnter={() => setFocusedLang('nko')}
                               onMouseLeave={() => setFocusedLang('none')}
                             >
+                                {clause.paragraphesNko ? (
+                                  <div lang="nqo" dir="rtl" className="flex flex-col gap-6 text-right">
+                                    {clause.paragraphesNko.map((p) => (
+                                      <div key={p.titre}>
+                                        <h3 className="mb-2 font-kigelia text-xl md:text-2xl font-bold text-[#fbbf24] print:text-black">{p.titre}</h3>
+                                        <p className="font-kigelia text-2xl md:text-3xl text-[#fbbf24]/90 leading-[1.8] md:leading-[2] drop-shadow-sm print:text-black print:drop-shadow-none">{p.texte}</p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
                                 <p className="font-kigelia text-2xl md:text-3xl text-[#fbbf24] leading-[1.8] md:leading-[2] text-right drop-shadow-sm print:text-black print:drop-shadow-none" dir="rtl">
                                     {clause.textNko}
                                 </p>
+                                )}
                             </div>
 
                             <div className="flex items-center justify-center opacity-20 print:hidden">
