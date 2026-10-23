@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
   "short_name": "ߒߞߏ ߟߐ߲ߞߏ",
   "description": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫ ߟߐ߲ߞߏ ߟߊߛߋߟߌ ߞߊߡߊ߬ ߝߘߊ߬ߝߌ߲߬ߠߊ",
@@ -7,10 +8,19 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#02040a",
-  "theme_color": "#fbbf24",
-  "categories": ["education", "news"],
+  "theme_color": "#02040a",
+  "categories": [
+    "education",
+    "magazines",
+    "news"
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "navigate-existing",
+      "auto"
+    ]
+  },
   "icons": [
     {
       "src": "/icon-192x192.png",
@@ -22,23 +32,107 @@
       "src": "/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/application/icone-masquable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/application/icone-masquable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "maskable"
     }
   ],
   "shortcuts": [
     {
-      "name": "ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ",
-      "short_name": "Astronomie",
-      "description": "Articles d'Astronomie en N'Ko",
-      "url": "/?category=%E0%DF%9B%E0%DF%8A%E0%DF%B2%E0%DF%A1%E0%DF%9B%E0%DF%8B%E0%DF%93%E0%DF%8E%E0%DF%B2%E0%DF%98%E0%DF%8E%E0%DF%B2%E0%DF%A6%E0%DF%8E",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "name": "ߝߙߍߕߍ ߟߎ߬",
+      "url": "/numeros",
+      "icons": [
+        {
+          "src": "/application/raccourci-numeros.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "/application/raccourci-numeros.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
     },
     {
-      "name": "ߣߌߡߊߞߊߙߊ߲",
-      "short_name": "Biologie",
-      "description": "Articles de Biologie en N'Ko",
-      "url": "/?category=%E0%DF%A3%E0%DF%8C%E0%DF%A1%E0%DF%8A%E0%DF%90%E0%DF%9B%E0%DF%8A%E0%DF%B2",
-      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+      "name": "ߞߎߡߊߘߋ߲ ߛߙߍߘߍ",
+      "url": "/lexique",
+      "icons": [
+        {
+          "src": "/application/raccourci-lexique.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "/application/raccourci-lexique.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    },
+    {
+      "name": "ߒ ߠߊ߫ ߟߍߙߘߊ",
+      "url": "/bibliotheque",
+      "icons": [
+        {
+          "src": "/application/raccourci-bibliotheque.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "any"
+        },
+        {
+          "src": "/application/raccourci-bibliotheque.png",
+          "sizes": "192x192",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/application/captures/nqo-etroit-1-accueil.webp",
+      "sizes": "1080x2220",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/application/captures/nqo-etroit-2-article.webp",
+      "sizes": "1080x2220",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/application/captures/nqo-etroit-3-lecture.webp",
+      "sizes": "1080x2220",
+      "type": "image/webp",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/application/captures/nqo-large-1-accueil.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/application/captures/nqo-large-2-article.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "form_factor": "wide"
     }
   ]
 }

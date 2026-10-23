@@ -22,6 +22,7 @@ import { draftMode } from "next/headers";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../lib/partage";
 import { jsonLd } from "../lib/jsonld";
+import ECRANS_DEMARRAGE from "../lib/ecrans-demarrage.json"; // scripts/application/generer.mjs
 
 // ============================================================================
 // 1. CONSTANTES GLOBALES (SÉCURITÉ ET CENTRALISATION)
@@ -105,10 +106,16 @@ const METADONNEES: Metadata = {
     } as Record<string, string>,
   },
 
+  // Application ajoutée à l'écran d'accueil de l'iPhone / iPad (23 octobre 2026) :
+  // - barre d'état NOIRE opaque : avec « black-translucent », le haut du site passait sous l'heure
+  //   et la batterie (rien n'est prévu pour cet espace) ; le fond du site est presque noir ;
+  // - écrans de démarrage (sinon : écran blanc à l'ouverture), fabriqués par
+  //   scripts/application/generer.mjs pour chaque taille d'écran.
   appleWebApp: {
     capable: true,
-    statusBarStyle: "black-translucent",
+    statusBarStyle: "black",
     title: "N'Ko ni Lonko",
+    startupImage: ECRANS_DEMARRAGE.map(({ url, media }) => ({ url, media })),
   },
 
   // 🚀 L'ARMURE SOCIALE 1/10000 (WhatsApp, X, LinkedIn, Telegram)
@@ -162,6 +169,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const parDefaut = separerLangues(typeof titre === "object" && titre && "default" in titre ? titre.default : "");
   return {
     ...versionLangue(METADONNEES, langue, { chemin: "/" }),
+    // Application du site : une par langue (nom, raccourcis, ouverture sur /fr pour le français)
+    manifest: langue === "fr" ? "/manifest-fr.json" : "/manifest.json",
     title: langue === "fr"
       ? { default: parDefaut.fr ?? NOM_FR, template: `%s | ${NOM_FR}` }
       : { default: parDefaut.nko ?? NOM_NKO, template: `%s | ${NOM_NKO}` },
