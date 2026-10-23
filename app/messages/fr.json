@@ -34,7 +34,11 @@
       "geology": "Géologie",
       "technology": "Technologie",
       "history": "Histoire",
-      "health": "Santé"
+      "health": "Santé",
+      "environment": "Environnement et Climat",
+      "agronomy": "Agronomie",
+      "languages": "Langues et Écritures",
+      "paleontology": "Paléontologie et Archéologie"
     }
   },
   "article": {

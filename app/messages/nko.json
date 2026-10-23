@@ -34,7 +34,11 @@
       "geology": "ߘߎ߰ߘߐ߬ߟߐ߲ߘߐߦߊ",
       "technology": "ߛߋߒߞߏߟߊߘߐߦߊ",
       "history": "ߘߐ߬ߝߐ",
-      "health": "ߞߍ߲ߘߍߦߊ"
+      "health": "ߞߍ߲ߘߍߦߊ",
+      "environment": "ߓߐ߰ߝߍ ߣߌ߫ ߓߊ߲ߘߊߖߌߦߊ",
+      "agronomy": "ߛߣߍߟߐ߲ߘߐߦߊ",
+      "languages": "ߞߊ߲ ߣߌ߫ ߛߓߍߟߌ",
+      "paleontology": "ߣߘߐ߬ߟߐ߲ ߣߌ߫ ߕߐ߬ߞߘߐ߬ߟߐ߲ߘߐߦߊ"
     }
   },
   "article": {

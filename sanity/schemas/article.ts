@@ -168,6 +168,10 @@ export default defineType({
           { title: 'ߛߋߒߞߏߟߊߘߐߦߊ / Technologie', value: 'ߛߋߒߞߏߟߊߘߐߦߊ' }, 
           { title: 'ߘߐ߬ߝߐ / Histoire', value: 'ߘߐ߬ߝߐ' },
           { title: 'ߞߍ߲ߘߍߦߊ / Santé', value: 'ߞߍ߲ߘߍߦߊ' },
+          { title: 'ߓߐ߰ߝߍ ߣߌ߫ ߓߊ߲ߘߊߖߌߦߊ / Environnement et Climat', value: 'ߓߐ߰ߝߍ ߣߌ߫ ߓߊ߲ߘߊߖߌߦߊ' },
+          { title: 'ߛߣߍߟߐ߲ߘߐߦߊ / Agronomie', value: 'ߛߣߍߟߐ߲ߘߐߦߊ' },
+          { title: 'ߞߊ߲ ߣߌ߫ ߛߓߍߟߌ / Langues et Écritures', value: 'ߞߊ߲ ߣߌ߫ ߛߓߍߟߌ' },
+          { title: 'ߣߘߐ߬ߟߐ߲ ߣߌ߫ ߕߐ߬ߞߘߐ߬ߟߐ߲ߘߐߦߊ / Paléontologie et Archéologie', value: 'ߣߘߐ߬ߟߐ߲ ߣߌ߫ ߕߐ߬ߞߘߐ߬ߟߐ߲ߘߐߦߊ' },
           // 🚀 LA NOUVELLE PILULE DE VERRE
           { title: 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ / Revue Mensuelle', value: 'ߝߐ߬ߓߍ߬ߝߐߓߍ ߞߊߙߏߟߞߊ' },
         ],
