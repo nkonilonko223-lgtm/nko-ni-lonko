@@ -38,6 +38,10 @@ Rien n'est envoyé : tout reste sur l'appareil du lecteur (pas de données perso
 3. Onglet **Network** → cocher **Offline** → recharger l'article : il s'affiche.
 4. Ouvrir une page jamais lue : la page « pas de connexion » s'affiche.
 
+Contrôle automatique (Chrome sans fenêtre, réseau vraiment coupé, page **et** service worker) :
+`node scripts/tester-hors-ligne.mjs` sur le serveur d'essai local (`next start -p 3100` : le
+service worker ne s'installe pas avec `next dev`).
+
 ## Arrêt d'urgence
 
 Si un jour la lecture hors ligne pose problème : remplacer **tout** le contenu de `public/sw.js`

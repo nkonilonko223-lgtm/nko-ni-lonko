@@ -63,6 +63,7 @@ timeout 400 node node_modules/sanity/bin/sanity documents validate --yes --level
 node scripts/verifier-nko-code.mts --depuis main     # garde du N'Ko : NFC partout + N'Ko changé depuis main (à vérifier)
 node scripts/tester-correcteur.mts [--export <sauvegarde.tar.gz>]   # correcteur N'Ko du Studio
 node scripts/tester-impression.mjs [adresse] [--article <slug>] [--pdf <dossier>]   # impression des articles : images, fond blanc, légendes, coupures, lettrine (lecture seule)
+node scripts/tester-hors-ligne.mjs [adresse] [--article <slug>]   # lecture hors ligne, réseau vraiment coupé (défaut : serveur local « next start » sur le port 3100)
 # Les mêmes contrôles tournent sur GitHub à chaque envoi (.github/workflows/verifications.yml, onglet « Actions »)
 
 # Sanity (connexion faite avec le compte GitHub du propriétaire : npx sanity login --provider github)
