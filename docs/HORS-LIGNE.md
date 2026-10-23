@@ -26,12 +26,12 @@
 | Fichiers aux noms uniques (`/_next/static`) ou versionnés (polices d'icônes `/icones/…?v=…`) | Gardés une fois pour toutes ; une seule version par fichier |
 | Fichiers à adresse fixe (polices `/fonts`, motif de fond) | Copie montrée tout de suite, mise à jour en arrière-plan |
 | Images (`/_next/image`) | Images de Sanity (adresse unique) : la copie suffit, rien n'est retéléchargé (données mobiles épargnées). Autres : copie montrée tout de suite, mise à jour en arrière-plan. 200 au plus (hors bibliothèque et numéros). Sans connexion, à défaut de la taille demandée : la même image à une autre taille |
+| **Jamais** | `/studio`, `/api/…`, navigation interne de Next.js (`?_rsc=`), réponses « no-store » (aperçu des brouillons), autres sites |
 
 **Polices d'icônes** : leur adresse contient l'empreinte de leur contenu (`?v=…`, ajoutée par
 `scripts/icones/generer-icones.mjs`). Une police refaite change donc d'adresse : le lecteur ne
 peut jamais garder l'ancienne (correction du 23 octobre 2026 : avant, une copie ancienne pouvait
 montrer des carrés vides à la place des nouvelles icônes).
-| **Jamais** | `/studio`, `/api/…`, navigation interne de Next.js (`?_rsc=`), réponses « no-store » (aperçu des brouillons), autres sites |
 
 Rien n'est envoyé : tout reste sur l'appareil du lecteur (pas de données personnelles).
 
