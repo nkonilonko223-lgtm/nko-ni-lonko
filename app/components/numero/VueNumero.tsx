@@ -4,6 +4,7 @@ import type { ArticleDuSommaire, Numero, RubriqueCourte } from "../../lib/numero
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
 import { contientNko, sensDe, separerTitre } from "./titre";
 import { positionDuCadrage } from "../../lib/point-interet";
+import TelechargerNumero from "../application/TelechargerNumero";
 
 // ============================================================================
 // N'KO NI LONKO — Affichage d'un numéro (composant serveur, sans JavaScript)
@@ -206,6 +207,9 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
             ))}
           </ol>
         </section>
+
+        {/* Lecture sans connexion : le numéro entier, avec ses images, gardé sur l'appareil */}
+        <TelechargerNumero numero={numero.slug} chemins={[`/numeros/${numero.slug}`, ...sommaire.map((a) => `/article/${a.slug}`)]} />
 
         {pdf && (
           <p className="text-center">
