@@ -7,10 +7,10 @@ import { TEXTES_LEXIQUE } from "./textes";
 // ============================================================================
 // Un terme différent chaque jour, le même pour tout le monde ce jour-là (jour UTC). La page est
 // préparée à l'avance et remise à jour au plus tard une heure après minuit.
-// Libellé N'Ko « Terme du jour » à demander à la rédaction : vide pour l'instant (français seul).
+// Libellé N'Ko « Terme du jour » : L2 (rédaction, 23 octobre 2026 ; copié tel quel par programme).
 // ============================================================================
 
-const TERME_DU_JOUR = { nko: "", fr: "Terme du jour" };
+const TERME_DU_JOUR = { nko: "ߓߌ߬ ߞߎߡߊߘߋ߲", fr: "Terme du jour" };
 
 export function termeDuJour(termes: TermeDictionnaire[], date = new Date()) {
   if (!termes.length) return null;

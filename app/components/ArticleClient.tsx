@@ -79,10 +79,10 @@ interface ClientArticleData {
   }>;
 }
 
-// Réglages gardés sur l'appareil du lecteur (A2, A5). Libellé N'Ko « Reprendre la lecture » à
-// demander à la rédaction : vide pour l'instant (le français s'affiche seul)
+// Réglages gardés sur l'appareil du lecteur (A2, A5). Libellé N'Ko « Reprendre la lecture » :
+// L10 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
 const CLE_TAILLE = "nko_taille_texte";
-const REPRENDRE = { nko: "", fr: "Reprendre la lecture" };
+const REPRENDRE = { nko: "ߞߐߛߊ߬ߦߌ߲߬ ߞߊ߬ߙߊ߲ ߡߊ߬", fr: "Reprendre la lecture" };
 // A4 — Langue de lecture. Le nom « N'Ko » en N'Ko est repris tel quel du bouton de langue (texte existant)
 const NOM_NKO = "ߒߞߏ";
 type ModeLecture = "deux" | "nko" | "fr";
@@ -91,7 +91,7 @@ const MODES_LECTURE: { id: ModeLecture; libelle: string; lang: string }[] = [
   { id: "nko", libelle: NOM_NKO, lang: "nqo" },
   { id: "fr", libelle: "FR", lang: "fr" },
 ];
-const LANGUE_LECTURE = { nko: "", fr: "Langue de lecture" }; // libellé N'Ko à demander à la rédaction
+const LANGUE_LECTURE = { nko: "ߞߊ߬ߙߊ߲ ߞߊ߲", fr: "Langue de lecture" }; // libellé N'Ko : L11 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
 
 // 🚀 ARME ANTI-CRASH : Typage strict pour les catégories traduites
 interface TranslationHome {
@@ -535,8 +535,8 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       {/* A4 — LANGUE DE LECTURE : N'Ko d'abord (de droite à gauche), les deux langues par défaut.
           23 octobre 2026 : trop discret (contour presque invisible, 36 px de haut, rien n'expliquait
-          son rôle) → un seul bloc avec son nom au-dessus, contour net, cibles de 44 px. Nom N'Ko à
-          demander à la rédaction : le français s'affiche en attendant. */}
+          son rôle) → un seul bloc avec son nom au-dessus, contour net, cibles de 44 px. Nom N'Ko : L11
+          (rédaction, 23 octobre 2026). */}
       {article.deuxLangues && (
         <div className="mx-auto mb-6 md:mb-8 flex max-w-3xl flex-col items-center gap-2.5 px-4 print:hidden">
           <p id="langue-lecture" className="flex items-center gap-2 text-white/70">

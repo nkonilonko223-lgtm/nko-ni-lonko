@@ -16,8 +16,8 @@ export type ParametresImage = {
   enTete?: { nko: string; fr: string | null }; // en grand, en haut (ex. le terme du lexique)
 };
 
-// Libellé du bouton (article et lexique). N'Ko à demander à la rédaction : vide = français seul
-export const PARTAGER_IMAGE = { nko: "", fr: "Partager en image" };
+// Libellé du bouton (article et lexique). N'Ko : L13 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
+export const PARTAGER_IMAGE = { nko: "ߊ߬ ߟߊߖߍ߲ߛߍ߲߫ ߖߌ߬ߦߊ߬ߓߍ ߞߍߢߊ ߘߐ߫", fr: "Partager en image" };
 
 // Partage le fichier (téléphone : WhatsApp, Instagram…) ou, à défaut, le télécharge
 export async function partagerImage(blob: Blob, nomFichier: string, adresse: string) {

@@ -28,14 +28,14 @@ import { chargerImagesPourImpression, demanderImagesArticle } from "./texte/impr
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
 const CITATION_COPIEE = { nko: "ߞߊ߲ߕߏ߲߫ ߘߐߡߌ߬ߣߊ", fr: "Citation copiée !" }; // repris tel quel de l'ancien bouton
-// Libellé N'Ko « Signaler une erreur » à demander à la rédaction : vide pour l'instant (français seul)
-const SIGNALER = { nko: "", fr: "Signaler une erreur" };
+// Libellé N'Ko « Signaler une erreur » : L12 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
+const SIGNALER = { nko: "ߝߎ߬ߕߎ߲߬ߕߌ߫ ߘߏ߫ ߦߌ߬ߘߊ߬", fr: "Signaler une erreur" };
 // Citation N'Ko : « en ligne » repris tel quel de l'ancienne citation N'Ko du site ; « N'Ko » repris du bouton de langue
 const EN_LIGNE_NKO = "ߓߟߐߟߐ";
 const NOM_NKO = "ߒߞߏ";
-// Libellés N'Ko « Sauvegardé » et « Ma bibliothèque » à demander à la rédaction : vides pour l'instant (français seul)
-const SAUVEGARDE = { nko: "", fr: "Sauvegardé" };
-const MA_BIBLIOTHEQUE = { nko: "", fr: "Ma bibliothèque" };
+// Libellés N'Ko « Sauvegardé » et « Ma bibliothèque » : L14 a et b (rédaction, 23 octobre 2026 ; copié tel quel par programme)
+const SAUVEGARDE = { nko: "ߊ߬ ߓߘߊ߫ ߟߊߡߊ߬ߙߊ߬", fr: "Sauvegardé" };
+const MA_BIBLIOTHEQUE = { nko: "ߒ ߠߊ߫ ߟߍߙߘߊ", fr: "Ma bibliothèque" };
 
 interface ArticleToolsProps {
   onZoomIn: () => void;

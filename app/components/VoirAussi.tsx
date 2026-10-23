@@ -7,10 +7,10 @@ import { TitreArticle } from "./numero/VueNumero";
 // N'KO NI LONKO — « À lire aussi » (composant serveur, fin de la page article)
 // ============================================================================
 // Jusqu'à 3 articles proches (app/lib/voir-aussi.ts). Caché à l'impression.
-// Libellé N'Ko « À lire aussi » à demander à la rédaction : vide pour l'instant (français seul).
+// Libellé N'Ko « À lire aussi » : L1 (rédaction, 23 octobre 2026 ; copié tel quel par programme).
 // ============================================================================
 
-const A_LIRE_AUSSI = { nko: "", fr: "À lire aussi" };
+const A_LIRE_AUSSI = { nko: "ߊߟߎ߫ ߦߋ߫ ߣߌ߲߬ ߠߎ߬ ߝߣߊ߫ ߞߊ߬ߙߊ߲߬", fr: "À lire aussi" };
 
 export default function VoirAussi({ articles }: { articles: Voisin[] }) {
   if (!articles.length) return null;
