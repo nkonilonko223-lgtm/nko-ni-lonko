@@ -11,6 +11,7 @@
 > - **L1 à L8 et L10 à L16 : fournis et intégrés** (39 textes, branche `textes/nko-l1-l16`), copiés par programme, contrôlés identiques au fichier caractère par caractère et en NFC. L14 b, L15 a et L16 sont le même texte (« Ma bibliothèque »), utilisé à trois endroits.
 > - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, avant l'import du 25 : accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
 > - **L9 : à fournir** (son texte français n'est pas encore validé).
+> - **L21 à L34 : à fournir** (demandés le 23 octobre 2026) : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion). Tous dans **un seul fichier** du code : `app/components/application/textes.ts` (champ `nko`, vide en attendant). Mise en ligne prévue **après le 30 octobre** : pas d'urgence avant l'import du N°003.
 
 | # | Français | Où il s'affiche | Fichier et emplacement |
 |---|---|---|---|
@@ -34,6 +35,22 @@
 | L18 | Agronomie | Nouvelle discipline (même endroits que L17) | idem L17 |
 | L19 | Langues et Écritures (le N'Ko et les langues mandingues) | Nouvelle discipline (même endroits que L17) | idem L17 |
 | L20 | Paléontologie et Archéologie | Nouvelle discipline (même endroits que L17) | idem L17 |
+| L21 | Lisez la revue en plein écran, même sans connexion. | Proposition d'installer l'application (bas de l'écran, à partir du 2ᵉ article lu ; jamais à la première visite) | `app/components/application/textes.ts` → `INSTALLER_POURQUOI` |
+| L22 | Plus tard | Même endroit (bouton pour refuser ; la proposition revient au plus tôt 2 mois après) | `textes.ts` → `PLUS_TARD` |
+| L23 | Ajouter N'Ko ni Lonko à l'écran d'accueil | Guide iPhone et iPad (titre). L'iPhone n'a pas de bouton « Installer » : le guide montre les gestes | `textes.ts` → `GUIDE_TITRE` |
+| L24 | 1. Touchez « Partager » (si vous ne le voyez pas : d'abord « ⋯ ») · 2. Choisissez « Sur l'écran d'accueil » · 3. Touchez « Ajouter » | Guide iPhone et iPad (3 étapes). Les mots entre « » sont ceux de l'iPhone en français : à garder tels quels ou à expliquer | `textes.ts` → `GUIDE_ETAPES` (a, b, c) |
+| L25 | Télécharger le numéro | Page d'un numéro (bouton) | `textes.ts` → `TELECHARGER_NUMERO` |
+| L26 | Tous ses articles et leurs images, lisibles sans connexion. | Page d'un numéro (sous le bouton) | `textes.ts` → `TELECHARGER_POURQUOI` |
+| L27 | Téléchargement… | Pendant le téléchargement (suivi du nombre d'articles, ex. « 3 / 8 ») | `textes.ts` → `TELECHARGEMENT` |
+| L28 | Disponible sans connexion | Après le téléchargement | `textes.ts` → `DISPONIBLE` |
+| L29 | Retirer de l'appareil | Après le téléchargement (bouton : libère la place sur le téléphone) | `textes.ts` → `RETIRER` |
+| L30 | Reprendre le téléchargement | Si le téléchargement a été interrompu | `textes.ts` → `REPRENDRE` |
+| L31 | Pas de connexion : réessayez plus tard. | Si le téléchargement échoue | `textes.ts` → `ERREUR_CONNEXION` |
+| L32 | Disponible sur cet appareil | Page « pas de connexion » (titre de la liste de ce qu'on peut lire) | `textes.ts` → `DISPONIBLE_APPAREIL` |
+| L33 | Numéros téléchargés | Page « pas de connexion » | `textes.ts` → `NUMEROS_TELECHARGES` |
+| L34 | Pages lues récemment | Page « pas de connexion » | `textes.ts` → `PAGES_RECENTES` |
+
+**Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 
 **Important pour L17 à L20** : le nom N'Ko d'une discipline est **aussi la valeur enregistrée dans Sanity** pour chaque article. Il doit donc être **définitif** : le changer plus tard obligerait à modifier tous les articles de cette discipline.
 
