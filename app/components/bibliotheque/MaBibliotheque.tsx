@@ -13,7 +13,7 @@ import messagesNko from "../../messages/nko.json";
 // ============================================================================
 // Reçoit la fiche courte de chaque article publié ; montre seulement ceux que le lecteur a
 // sauvegardés (le plus récent d'abord). Un article retiré du site disparaît de la liste.
-// Libellés N'Ko à demander à la rédaction : vides pour l'instant (seul le français s'affiche).
+// Libellés N'Ko : L15 a à e (rédaction, 23 octobre 2026 ; copié tel quel par programme).
 // Le N'Ko de « Numéros » est repris du dictionnaire du site (app/messages/nko.json).
 // ============================================================================
 
@@ -28,11 +28,11 @@ export type ArticleSauvegardable = {
 type Libelle = { nko: string; fr: string };
 
 const TEXTES = {
-  titre: { nko: "", fr: "Ma bibliothèque" },
-  explication: { nko: "", fr: "Les articles sauvegardés avec le signet restent sur cet appareil. Rien n'est envoyé." },
-  vide: { nko: "", fr: "Aucun article sauvegardé pour l'instant. Touchez le signet d'un article pour le retrouver ici." },
-  retirer: { nko: "", fr: "Retirer de ma bibliothèque" },
-  horsLigne: { nko: "", fr: "Lisible sans connexion" },
+  titre: { nko: "ߒ ߠߊ߫ ߟߍߙߘߊ", fr: "Ma bibliothèque" },
+  explication: { nko: "ߞߎߡߘߊ ߟߊߡߊ߬ߙߊ߬ߣߍ߲ ߠߎ߬ ߓߍ߯ ߦߋ߫ ߕߏ߫ ߟߊ߫ ߣߐ߲߬ߕߐ߲ ߘߐ߫ ߣߌ߲߬ ߞߍߟߊ߲ ߞߣߐ߫ ߦߊ߲߬߸ ߝߏߌ߫ ߕߍ߫ ߗߋ߫ ߟߊ߫߹", fr: "Les articles sauvegardés avec le signet restent sur cet appareil. Rien n'est envoyé." },
+  vide: { nko: "ߞߎߡߘߊ ߛߌ߫ ߡߊ߫ ߟߊߡߊ߬ߙߊ߬ ߝߟߐ߫߹ ߊߟߎ߫ ߦߋ߫ ߡߊ߰ ߞߎߡߘߊ ߘߏ߫ ߟߊ߫ ߣߐ߲߬ߕߐ߲ ߝߍ߬߸ ߛߊ߫ ߞߵߏ߬ ߟߊߛߐ߬ߘߐ߲߬ ߦߊ߲߬߹", fr: "Aucun article sauvegardé pour l'instant. Touchez le signet d'un article pour le retrouver ici." },
+  retirer: { nko: "ߊ߬ ߓߐ߫ ߒ ߠߊ߫ ߟߍߙߘߊ ߞߣߐ߫", fr: "Retirer de ma bibliothèque" },
+  horsLigne: { nko: "ߊ߬ ߘߌ߫ ߛߋ߫ ߞߊ߬ߙߊ߲߬ ߠߊ߫ ߓߟߐߟߐ ߞߐߞߊ߲߫", fr: "Lisible sans connexion" },
   numeros: { nko: messagesNko.nav.numeros, fr: "Numéros" },
 } satisfies Record<string, Libelle>;
 
