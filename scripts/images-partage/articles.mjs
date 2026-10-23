@@ -58,11 +58,10 @@ if (point && (point.length !== 2 || point.some((v) => !(v >= 0 && v <= 1)))) thr
 // --- Textes et outils du site (jamais recopiés à la main) ------------------------------
 const { separerTitre } = await importer('app/components/numero/titre.ts');
 const messages = { nko: exiger('./app/messages/nko.json'), fr: exiger('./app/messages/fr.json') };
-// Catégorie N'Ko (Sanity) → clé du dictionnaire : même table que les cartes (ArticleCard.tsx)
-const carte = readFileSync(join(PROJET, 'app/components/ArticleCard.tsx'), 'utf8');
-const debutTable = carte.indexOf('CATEGORY_REVERSE_MAP');
-const TABLE = Object.fromEntries([...carte.slice(debutTable, carte.indexOf('};', debutTable)).matchAll(/'([^']+)':[ ]*'([^']+)'/g)].map((m) => [m[1], m[2]]));
-if (Object.keys(TABLE).length < 5) throw new Error('Table des catégories illisible dans ArticleCard.tsx');
+// Catégorie N'Ko (Sanity) → clé du dictionnaire : la table unique du site (app/lib/categories.ts ;
+// avant le 23 octobre 2026, elle était lue dans ArticleCard.tsx, où elle n'est plus)
+const { CATEGORY_REVERSE_MAP: TABLE } = await importer('app/lib/categories.ts');
+if (Object.keys(TABLE).length < 5) throw new Error('Table des catégories illisible dans app/lib/categories.ts');
 
 // --- Articles : API publique (publiés) ou sauvegarde (brouillons compris) -------------
 async function articlesPublies() {
