@@ -17,9 +17,16 @@
 | Quoi | Règle |
 |---|---|
 | Pages | Réseau d'abord ; la copie ne sert que sans connexion ; 60 pages au plus (+ la bibliothèque) |
-| « Ma bibliothèque » | Copie gardée quand on met le signet, oubliée quand on l'enlève |
-| Fichiers du site (`/_next/static`, polices, icônes, motif) | Gardés une fois pour toutes (leurs noms changent à chaque version) |
+| « Ma bibliothèque » | Copie gardée quand on met le signet, oubliée quand on l'enlève (N'Ko `/article/…` et français `/fr/article/…`) |
+| Page « pas de connexion » | `/offline` (N'Ko) ou `/fr/offline` (français), selon l'adresse ; gardée à part, jamais effacée par la limite des 60 pages |
+| Fichiers aux noms uniques (`/_next/static`) ou versionnés (polices d'icônes `/icones/…?v=…`) | Gardés une fois pour toutes ; une seule version par fichier |
+| Fichiers à adresse fixe (polices `/fonts`, motif de fond) | Copie montrée tout de suite, mise à jour en arrière-plan |
 | Images (`/_next/image`) | Copie montrée tout de suite, mise à jour en arrière-plan ; 200 au plus |
+
+**Polices d'icônes** : leur adresse contient l'empreinte de leur contenu (`?v=…`, ajoutée par
+`scripts/icones/generer-icones.mjs`). Une police refaite change donc d'adresse : le lecteur ne
+peut jamais garder l'ancienne (correction du 23 octobre 2026 : avant, une copie ancienne pouvait
+montrer des carrés vides à la place des nouvelles icônes).
 | **Jamais** | `/studio`, `/api/…`, navigation interne de Next.js (`?_rsc=`), réponses « no-store » (aperçu des brouillons), autres sites |
 
 Rien n'est envoyé : tout reste sur l'appareil du lecteur (pas de données personnelles).
