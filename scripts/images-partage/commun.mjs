@@ -3,7 +3,7 @@
 // ============================================================================
 // Rendu par Google Chrome (lettres N'Ko liées), jamais par next/og. Utilisé par
 // scripts/images-partage/articles.mjs et scripts/images-partage/numeros.mjs.
-// N'Ko JAMAIS retapé : nom du site lu dans app/page.tsx, numéro fabriqué par numeroNko
+// N'Ko JAMAIS retapé : nom du site lu dans app/[lang]/page.tsx, numéro fabriqué par numeroNko
 // (règle de la rédaction). Rien n'est écrit dans Sanity.
 // ============================================================================
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -30,7 +30,7 @@ export const importer = (fichier) => import(pathToFileURL(join(PROJET, fichier))
 export const { numeroNko, numeroFr } = await importer('app/components/numero/textes.ts');
 const { createImageUrlBuilder } = await import(pathToFileURL(exiger.resolve('@sanity/image-url')).href);
 export const images = createImageUrlBuilder({ projectId: 'yfsyhc2p', dataset: 'production' });
-const page = readFileSync(join(PROJET, 'app/page.tsx'), 'utf8');
+const page = readFileSync(join(PROJET, 'app/[lang]/page.tsx'), 'utf8');
 export const nomNko = page.slice(page.indexOf('openGraph:')).split(SAUT).find((l) => l.trim().startsWith('title: "')).split('"')[1].split(' | ')[0];
 
 // --- Sauvegarde Sanity (.tar.gz) --------------------------------------------------------

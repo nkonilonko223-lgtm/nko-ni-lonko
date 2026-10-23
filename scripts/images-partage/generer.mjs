@@ -38,9 +38,9 @@ const champOg = (fichier, cle) => {
   const og = source.slice(source.indexOf('openGraph:'));
   return og.split('\n').find((l) => l.trim().startsWith(cle + ': "')).split('"')[1];
 };
-const [nomNko, nomFr] = champOg('app/page.tsx', 'title').split(' | ');
-const accrocheNko = champOg('app/page.tsx', 'description').split('. ')[0]; // phrase approuvée par le propriétaire (5 octobre 2026)
-const aproposNko = champOg('app/about/page.tsx', 'title').split(' | ')[0]; // le mot N'Ko placé avant « | À Propos »
+const [nomNko, nomFr] = champOg('app/[lang]/page.tsx', 'title').split(' | ');
+const accrocheNko = champOg('app/[lang]/page.tsx', 'description').split('. ')[0]; // phrase approuvée par le propriétaire (5 octobre 2026)
+const aproposNko = champOg('app/[lang]/about/page.tsx', 'title').split(' | ')[0]; // le mot N'Ko placé avant « | À Propos »
 const { TEXTES_LEXIQUE } = await import(pathToFileURL(join(PROJET, 'app/components/lexique/textes.ts')).href);
 const T = {
   nomNko, nomFr, accrocheNko, accrocheFr: 'Science et savoir pour tous',

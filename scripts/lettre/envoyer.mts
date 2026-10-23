@@ -66,8 +66,8 @@ const valeurDe = (fichier: string, apres: string, cle: string) => {
   if (!ligne) throw new Error(`Texte introuvable : ${cle} dans ${fichier}`);
   return ligne.split('"')[1];
 };
-const NOM: Bilingue = { nko: valeurDe('app/page.tsx', 'openGraph:', 'title').split(' | ')[0], fr: "N'Ko ni Lonko" };
-const DESABONNER: Bilingue = { nko: valeurDe('app/desabonnement/page.tsx', 'TEXTES_NKO', 'titre'), fr: 'Se désabonner' };
+const NOM: Bilingue = { nko: valeurDe('app/[lang]/page.tsx', 'openGraph:', 'title').split(' | ')[0], fr: "N'Ko ni Lonko" };
+const DESABONNER: Bilingue = { nko: valeurDe('app/[lang]/desabonnement/page.tsx', 'TEXTES_NKO', 'titre'), fr: 'Se désabonner' };
 // Libellés N'Ko : L4 et L5 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
 const LIRE_NUMERO: Bilingue = { nko: "ߝߙߍߕߍ ߞߊ߬ߙߊ߲߬ ߓߟߐߟߐ ߛߊ߲ߝߍ߬", fr: 'Lire le numéro en ligne' };
 const POURQUOI: Bilingue = { nko: "ߊߟߎ߫ ߦߋ߫ ߛߓߍ ߣߌ߲߬ ߟߊߛߐ߬ߘߐ߲߬ ߠߊ߫߸ ߓߊߏ߬ ߊߟߎ߫ ߡߊߝߘߎ߬ߣߍ߲ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߡߊ߬ ߟߋ߬߹", fr: "Vous recevez cette lettre parce que vous êtes abonné(e) à N'Ko ni Lonko." };
