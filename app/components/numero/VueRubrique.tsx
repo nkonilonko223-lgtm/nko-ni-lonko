@@ -62,6 +62,8 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
         </p>
       </header>
 
+      {/* Titre de niveau 2 (lecteurs d'écran) : les titres des cartes sont de niveau 3 */}
+      <h2 className="sr-only">{fr ? <span lang="fr">{ARTICLES.fr}</span> : <span lang="nqo" dir="rtl">{ARTICLES.nko}</span>}</h2>
       <div className="grid-container mx-auto max-w-6xl" style={GRILLE_FIXE}>
         {rubrique.articles.map((article, i) => (
           <div key={article.slug} className="flex flex-col gap-3">

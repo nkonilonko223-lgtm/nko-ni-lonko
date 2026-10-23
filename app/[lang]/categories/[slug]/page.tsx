@@ -128,6 +128,8 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
         </p>
       </header>
 
+      {/* Titre de niveau 2 (lecteurs d'écran) : les titres des cartes sont de niveau 3 */}
+      <h2 className="sr-only">{fr ? <span lang="fr">{ARTICLES.fr}</span> : <span lang="nqo" dir="rtl">{ARTICLES.nko}</span>}</h2>
       <div className="grid-container mx-auto max-w-6xl" style={GRILLE_FIXE}>
         {d.articles.map((article, i) => (
           <ArticleCard key={article.slug} article={article} isPriority={i < 3} />
