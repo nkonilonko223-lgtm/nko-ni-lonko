@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useLanguage } from "../../components/LanguageProvider";
+import DisponibleHorsLigne from "../../components/application/DisponibleHorsLigne";
 
 export default function OfflinePage() {
   const { lang, lien } = useLanguage();
@@ -89,6 +90,9 @@ export default function OfflinePage() {
 
         </div>
       )}
+
+      {/* Ce que l'on peut lire sans connexion : numéros téléchargés, bibliothèque, pages lues */}
+      {!isOnline && <DisponibleHorsLigne />}
     </div>
   );
 }
