@@ -9,7 +9,7 @@
 >
 > **État au 23 octobre 2026 (soir)** — fichier reçu : `NKO/Revue/Site/textes-nko-L1-L20.txt` (43 textes validés par MckV) :
 > - **L1 à L8 et L10 à L16 : fournis et intégrés** (39 textes, branche `textes/nko-l1-l16`), copiés par programme, contrôlés identiques au fichier caractère par caractère et en NFC. L14 b, L15 a et L16 sont le même texte (« Ma bibliothèque »), utilisé à trois endroits.
-> - **L17 à L20 : fournis, à intégrer APRÈS le 30 octobre** (changement du schéma, avec les nouvelles disciplines) ; le fichier reçu fait foi.
+> - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, avant l'import du 25 : accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
 > - **L9 : à fournir** (son texte français n'est pas encore validé).
 
 | # | Français | Où il s'affiche | Fichier et emplacement |
