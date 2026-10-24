@@ -1058,6 +1058,21 @@ nav {
     font-family: var(--font-fr);
   }
 
+  /* LECTURE (novembre 2026) : le texte français des articles en Literata, police à empattements
+     dessinée pour la lecture longue sur écran (app/fonts/lecture.ts, chargée seulement sur les
+     articles). Titres, encadrés et interface gardent Montserrat ; le N'Ko garde Kigelia. */
+  .article-content :is(p, li, blockquote)[lang|="fr"] {
+    font-family: var(--font-lecture, var(--font-fr));
+    font-weight: 400;
+    letter-spacing: normal;
+  }
+
+  /* N'Ko d'abord : le paragraphe N'Ko prend l'encre pleine, le français (sa traduction) une
+     encre à peine plus douce (gray-300 du paragraphe) */
+  .article-content p[lang="nqo"] {
+    color: rgb(var(--rgb-texte));
+  }
+
   .article-content :is(h1, h2, h3)[dir="ltr"] {
     color: var(--color-gold);
     text-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
