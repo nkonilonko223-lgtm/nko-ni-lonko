@@ -1,4 +1,4 @@
-# Textes N'Ko à demander à la rédaction — LISTE UNIQUE (mise à jour le 23 octobre 2026)
+# Textes N'Ko à demander à la rédaction — LISTE UNIQUE (mise à jour le 24 octobre 2026)
 
 > **Ce fichier est la seule liste à jour** de tous les textes N'Ko qui manquent sur le site (19 – 23 octobre 2026). Adresse pour Cowork : `docs/TEXTES-NKO-A-DEMANDER.md` du dépôt GitHub `nkonilonko223-lgtm/nko-ni-lonko`, branche `main`.
 >
@@ -12,6 +12,7 @@
 > - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
 > - **L9 : à fournir** (son texte français n'est pas encore validé).
 > - **L21 à L34 : à fournir** (demandés le 23 octobre 2026) : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion). Tous dans **un seul fichier** du code : `app/components/application/textes.ts` (champ `nko`, vide en attendant). Mise en ligne prévue **après le 30 octobre** : pas d'urgence avant la publication du N°003.
+> - **L35 à L37 : à fournir** (24 octobre 2026) : bouton **« Ambiance »** des articles (nouveau design « Nuit du Mandé », branche `lot2/design-nuit-du-mande`, mise en ligne prévue début novembre). Champ `nko` vide en attendant : le bouton s'affiche en français.
 
 | # | Français | Où il s'affiche | Fichier et emplacement |
 |---|---|---|---|
@@ -49,6 +50,9 @@
 | L32 | Disponible sur cet appareil | Page « pas de connexion » (titre de la liste de ce qu'on peut lire) | `textes.ts` → `DISPONIBLE_APPAREIL` |
 | L33 | Numéros téléchargés | Page « pas de connexion » | `textes.ts` → `NUMEROS_TELECHARGES` |
 | L34 | Pages lues récemment | Page « pas de connexion » | `textes.ts` → `PAGES_RECENTES` |
+| L35 | Ambiance : Nuit | Article : bouton « ambiance de lecture » de la barre d'outils (couleurs de la page : nuit, papier crème, jour) — nouveau design, novembre 2026 | `app/components/ArticleTools.tsx` → `AMBIANCE.nuit.nko` |
+| L36 | Ambiance : Papier | Même bouton (l'ambiance « papier » : fond crème, encre brune) | `ArticleTools.tsx` → `AMBIANCE.papier.nko` |
+| L37 | Ambiance : Jour | Même bouton (l'ambiance « jour » : fond blanc cassé, pour le plein soleil) | `ArticleTools.tsx` → `AMBIANCE.jour.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 
