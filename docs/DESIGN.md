@@ -76,7 +76,14 @@ Bouton **« Ambiance »** dans la barre d'outils de l'article : **Nuit → Papie
 4. Contrôles automatiques : `node scripts/tester-impression.mjs`, `node scripts/tester-langues.mjs`,
    `node scripts/tester-application.mjs`, `node scripts/tester-hors-ligne.mjs`.
 
-## 6. Reste à décider (propositions)
+## 6. Images de partage (Facebook, WhatsApp, X…)
 
-- Images de partage (`public/og/`, `scripts/images-partage/`) : encore sur l'ancien fond `#02040a`.
-  Les passer au bleu nuit demande de toutes les refaire (changer `VERSION`) : à décider.
+Même palette (24 octobre 2026) : fond et voiles bleu nuit `#0e1322`, texte ivoire `#ebe5d8`, or `#f2b544`
+(le dictionnaire garde son bleu). Scripts : `scripts/images-partage/` (`commun.mjs`, `generer.mjs`,
+`articles.mjs`, `numeros.mjs`).
+- Pages générales : `public/og/*-v3.jpg` (`VERSION = 3` dans `generer.mjs` ET `app/lib/partage.ts`).
+  Les anciennes `-v1` et `-v2` restent : les messages déjà partagés gardent leur image.
+- Articles : `MODELE = 3` (`articles.mjs`), numéros : `MODELE = 2` (`numeros.mjs`) : nouvelle adresse
+  pour chaque image, les réseaux sociaux reprennent la nouvelle.
+- Après la mise en ligne du design, relancer `node scripts/images-partage/articles.mjs` pour les
+  articles publiés entre-temps (N°003), et `numeros.mjs` pour le numéro.

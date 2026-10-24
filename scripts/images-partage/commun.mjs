@@ -92,25 +92,25 @@ export const modelePhoto = ({ numero, categorie, bandeau, fin = false }) => `<!d
 <style>
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia1.otf')});font-weight:700}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1200px;height:630px;overflow:hidden;background:#02040a}
+html,body{width:1200px;height:630px;overflow:hidden;background:#0e1322}
 .abs{position:absolute;inset:0}
 .fond{background:url(couverture.jpg) center/cover}
 .voile{background:${fin
-  ? 'linear-gradient(180deg,rgba(2,4,10,0) 0%,rgba(2,4,10,0) 78%,rgba(2,4,10,.5) 90%,rgba(2,4,10,.85) 100%)'
-  : 'linear-gradient(180deg,rgba(2,4,10,0) 0%,rgba(2,4,10,0) 64%,rgba(2,4,10,.55) 82%,rgba(2,4,10,.9) 100%)'}}
+  ? 'linear-gradient(180deg,rgba(14,19,34,0) 0%,rgba(14,19,34,0) 78%,rgba(14,19,34,.5) 90%,rgba(14,19,34,.85) 100%)'
+  : 'linear-gradient(180deg,rgba(14,19,34,0) 0%,rgba(14,19,34,0) 64%,rgba(14,19,34,.55) 82%,rgba(14,19,34,.9) 100%)'}}
 .bas{position:absolute;left:40px;right:40px;bottom:${fin ? '22px' : '28px'};display:flex;align-items:center;justify-content:${fin ? 'flex-start;gap:16px' : 'space-between'};direction:rtl}
 .nko{font-family:Kigelia;direction:rtl}
 .fr{font-family:Montserrat}
 .marque{display:flex;align-items:center;gap:12px}
 .marque img{width:64px;height:64px;margin:-16px -10px -16px -12px;mix-blend-mode:screen}
-.marque .nko{font-weight:700;font-size:26px;color:#fff;line-height:1.2;text-shadow:0 1px 10px rgba(0,0,0,.6)}
-.marque .point{color:rgba(251,191,36,.8);font-size:20px}
-.marque .fr{font-weight:600;font-size:15px;letter-spacing:.18em;color:rgba(251,191,36,.95)}
+.marque .nko{font-weight:700;font-size:26px;color:#ebe5d8;line-height:1.2;text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.marque .point{color:rgba(242,181,68,.8);font-size:20px}
+.marque .fr{font-weight:600;font-size:15px;letter-spacing:.18em;color:rgba(242,181,68,.95)}
 .pastilles{display:flex;gap:10px;direction:ltr}
-.pastille{display:flex;align-items:center;gap:10px;padding:5px 16px;border:1px solid rgba(251,191,36,.55);border-radius:999px;background:rgba(2,4,10,.65)}
-.pastille .nko{font-weight:700;font-size:21px;color:#fbbf24;line-height:1.35}
-.pastille .fr{font-weight:700;font-size:12px;letter-spacing:.22em;color:#fbbf24;padding-left:.22em}
-.pastille .sep{width:1px;height:18px;background:rgba(251,191,36,.5)}
+.pastille{display:flex;align-items:center;gap:10px;padding:5px 16px;border:1px solid rgba(242,181,68,.55);border-radius:999px;background:rgba(14,19,34,.65)}
+.pastille .nko{font-weight:700;font-size:21px;color:#f2b544;line-height:1.35}
+.pastille .fr{font-weight:700;font-size:12px;letter-spacing:.22em;color:#f2b544;padding-left:.22em}
+.pastille .sep{width:1px;height:18px;background:rgba(242,181,68,.5)}
 </style></head><body>
 <div class="abs fond"></div>
 ${bandeau ? `<div class="abs voile"></div>

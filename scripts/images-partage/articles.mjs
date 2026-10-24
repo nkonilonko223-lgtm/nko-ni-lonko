@@ -38,7 +38,7 @@ import {
   imageDeLaSauvegarde, f, echapper, pastille, modelePhoto, preparerCouverture, rendreEnJpeg,
 } from './commun.mjs'; // outils partagés avec scripts/images-partage/numeros.mjs
 
-const MODELE = 2; // à augmenter si l'apparence change : toutes les images reçoivent une nouvelle adresse
+const MODELE = 3; // 3 : palette « Nuit du Mandé » (24 octobre 2026) ; à augmenter si l'apparence change : toutes les images reçoivent une nouvelle adresse
 const DOSSIER = join(PROJET, 'public/og/articles');
 const LISTE = join(PROJET, 'app/lib/images-partage-articles.json');
 
@@ -92,29 +92,29 @@ const modele =({ titre, numero, categorie, couverture }) => `<!doctype html><htm
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:400}
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia1.otf')});font-weight:700}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1200px;height:630px;overflow:hidden;background:#02040a}
+html,body{width:1200px;height:630px;overflow:hidden;background:#0e1322}
 .abs{position:absolute;inset:0}
 .fond{background:url(couverture.jpg) center/cover}
 .motif{background:url(${f('arriere-plan.webp')}) center/240px repeat;opacity:.16}
-.halo{background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(251,191,36,.16) 0%,transparent 60%)}
-.voile{background:linear-gradient(180deg,rgba(2,4,10,.25) 0%,rgba(2,4,10,.40) 28%,rgba(2,4,10,.88) 60%,rgba(2,4,10,.97) 100%)}
-.cadre{position:absolute;inset:22px;border:1px solid rgba(251,191,36,.25);border-radius:6px}
+.halo{background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(242,181,68,.16) 0%,transparent 60%)}
+.voile{background:linear-gradient(180deg,rgba(14,19,34,.25) 0%,rgba(14,19,34,.40) 28%,rgba(14,19,34,.88) 60%,rgba(14,19,34,.97) 100%)}
+.cadre{position:absolute;inset:22px;border:1px solid rgba(242,181,68,.25);border-radius:6px}
 .bas{position:absolute;left:70px;right:70px;bottom:50px;display:flex;flex-direction:column;align-items:center;text-align:center}
 .nko{font-family:Kigelia;direction:rtl}
 .fr{font-family:Montserrat}
 .pastilles{display:flex;gap:14px;margin-bottom:22px}
-.pastille{display:flex;align-items:center;gap:12px;padding:6px 20px;border:1px solid rgba(251,191,36,.55);border-radius:999px;background:rgba(2,4,10,.6)}
-.pastille .nko{font-weight:700;font-size:24px;color:#fbbf24;line-height:1.35}
-.pastille .fr{font-weight:700;font-size:14px;letter-spacing:.24em;color:#fbbf24;padding-left:.24em}
-.pastille .sep{width:1px;height:20px;background:rgba(251,191,36,.5)}
-#titre{font-weight:700;font-size:60px;line-height:1.45;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.7);max-height:174px;overflow:hidden}
-#titrefr{font-weight:600;font-size:26px;line-height:1.3;color:#fbbf24;margin-top:8px;max-height:68px;overflow:hidden}
-.filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#fbbf24,transparent);margin:20px 0 14px}
+.pastille{display:flex;align-items:center;gap:12px;padding:6px 20px;border:1px solid rgba(242,181,68,.55);border-radius:999px;background:rgba(14,19,34,.6)}
+.pastille .nko{font-weight:700;font-size:24px;color:#f2b544;line-height:1.35}
+.pastille .fr{font-weight:700;font-size:14px;letter-spacing:.24em;color:#f2b544;padding-left:.24em}
+.pastille .sep{width:1px;height:20px;background:rgba(242,181,68,.5)}
+#titre{font-weight:700;font-size:60px;line-height:1.45;color:#ebe5d8;text-shadow:0 2px 24px rgba(0,0,0,.7);max-height:174px;overflow:hidden}
+#titrefr{font-weight:600;font-size:26px;line-height:1.3;color:#f2b544;margin-top:8px;max-height:68px;overflow:hidden}
+.filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#f2b544,transparent);margin:20px 0 14px}
 .marque{display:flex;align-items:center;gap:14px}
 .marque img{width:76px;height:76px;margin:-20px -12px -20px -16px;mix-blend-mode:screen}
-.marque .nko{font-weight:700;font-size:25px;color:#fff;line-height:1.2}
-.marque .point{color:rgba(251,191,36,.7);font-size:22px}
-.marque .fr{font-weight:600;font-size:16px;letter-spacing:.18em;color:rgba(251,191,36,.9)}
+.marque .nko{font-weight:700;font-size:25px;color:#ebe5d8;line-height:1.2}
+.marque .point{color:rgba(242,181,68,.7);font-size:22px}
+.marque .fr{font-weight:600;font-size:16px;letter-spacing:.18em;color:rgba(242,181,68,.9)}
 </style></head><body>
 ${couverture ? '<div class="abs fond"></div>' : '<div class="abs motif"></div><div class="abs halo"></div>'}<div class="abs voile"></div><div class="cadre"></div>
 <div class="bas">

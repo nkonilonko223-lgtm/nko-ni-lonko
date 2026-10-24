@@ -27,7 +27,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { PROJET, SAUT, images, lireSauvegarde, versionsAJour, imageDeLaSauvegarde, modelePhoto, preparerCouverture, rendreEnJpeg } from './commun.mjs';
 
-const MODELE = 1; // à augmenter si l'apparence change : les images reçoivent une nouvelle adresse
+const MODELE = 2; // 2 : palette « Nuit du Mandé » (24 octobre 2026) ; à augmenter si l'apparence change : les images reçoivent une nouvelle adresse
 const DOSSIER = join(PROJET, 'public/og/numeros');
 const LISTE = join(PROJET, 'app/lib/images-partage-numeros.json');
 

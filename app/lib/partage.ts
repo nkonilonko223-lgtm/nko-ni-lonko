@@ -12,7 +12,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://nkonilonko.com";
 
 // Accueil et pages générales. Texte alternatif : nom et phrase d'accroche du site (copiés de app/page.tsx).
 export const IMAGE_PARTAGE_ACCUEIL = {
-  url: `${SITE_URL}/og/accueil-v2.jpg`, // v2 : logo HD harmonisé (24 octobre 2026)
+  url: `${SITE_URL}/og/accueil-v3.jpg`, // v2 : logo HD harmonisé ; v3 : palette « Nuit du Mandé » (24 octobre 2026)
   width: 1200,
   height: 630,
   type: "image/jpeg",
@@ -21,7 +21,7 @@ export const IMAGE_PARTAGE_ACCUEIL = {
 
 // Dictionnaire et pages des termes
 export const IMAGE_PARTAGE_LEXIQUE = {
-  url: `${SITE_URL}/og/lexique-v2.jpg`,
+  url: `${SITE_URL}/og/lexique-v3.jpg`,
   width: 1200,
   height: 630,
   type: "image/jpeg",
@@ -30,7 +30,7 @@ export const IMAGE_PARTAGE_LEXIQUE = {
 
 // Page « À propos » : la peinture du baobab
 export const IMAGE_PARTAGE_A_PROPOS = {
-  url: `${SITE_URL}/og/a-propos-v2.jpg`,
+  url: `${SITE_URL}/og/a-propos-v3.jpg`,
   width: 1200,
   height: 630,
   type: "image/jpeg",
