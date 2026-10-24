@@ -43,7 +43,7 @@ export default function Visionneuse({ children }: { children: ReactNode }) {
       {/* 🚀 LA LOUPE CINÉMATIQUE (Plein écran scrolable) */}
       {lightbox && (
         <div 
-          className="fixed inset-0 z-[999999] flex flex-col bg-black/98 backdrop-blur-2xl transition-all duration-300 print:hidden"
+          className="ambiance-nuit fixed inset-0 z-[999999] flex flex-col bg-black/98 backdrop-blur-2xl transition-all duration-300 print:hidden"
         >
           <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/80 to-transparent z-50 flex items-center justify-end px-6 pointer-events-none">
             <button 

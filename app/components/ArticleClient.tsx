@@ -345,7 +345,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       {/* TOAST DE NOTIFICATION */}
       <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-500 ease-out print:hidden ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
-        <div className="bg-black/80 backdrop-blur-xl border border-or/50 text-or px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(251,191,36,0.2)] flex items-center gap-3">
+        <div className="bg-surface/95 backdrop-blur-xl border border-or/50 text-or px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(251,191,36,0.2)] flex items-center gap-3">
           <i className="ph-fill ph-check-circle text-xl"></i>
           <span className={`text-sm font-bold ${lang === 'nko' ? 'font-kigelia' : ''}`}>
             {lang === 'nko' ? 'ߛߘߌ߬ߜߋ߲ ߓߘߊ߫ ߓߌ߬ߟߊ߬ ߟߊ߬ߡߙߊ߬ߟߌ ߘߐ߫' : 'Lien copié dans le presse-papiers'}
@@ -356,7 +356,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       {/* A5 — REPRENDRE MA LECTURE (proposé, jamais imposé ; disparaît seul) */}
       {reprise !== null && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] print:hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="flex items-center gap-1 rounded-full border border-or/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl">
+          <div className="flex items-center gap-1 rounded-full border border-or/50 bg-surface/95 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl">
             <button type="button" onClick={reprendreLecture} className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-or transition-colors hover:bg-or/10">
               <i className="ph-fill ph-play" aria-hidden="true"></i>
               {lang === 'nko' && REPRENDRE.nko
@@ -381,7 +381,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       <div className="fixed inset-0 z-[-1] print:hidden">
          <div className="absolute inset-0 bg-void"></div> 
-         <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-void to-void"></div>
+         <div className="absolute inset-0 bg-gradient-to-b from-surface/70 via-void to-void"></div>
       </div>
 
       <div className="print:hidden">
@@ -397,7 +397,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       <nav className={`fixed top-0 left-0 w-full z-50 px-4 md:px-6 transition-all duration-300 flex justify-between items-center print:hidden ${
           isScrolled 
           ? "bg-void/95 backdrop-blur-md border-b border-white/10 py-3 md:py-4 shadow-xl" 
-          : "bg-gradient-to-b from-black/90 to-transparent py-4 md:py-6"
+          : "bg-gradient-to-b from-void/90 to-transparent py-4 md:py-6"
       }`}>
         <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 text-or font-bold font-mono tracking-widest text-sm">
             <div className="flex items-center gap-2">
@@ -529,7 +529,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             )}
           </div>
         ) : (
-         <span className={`inline-block bg-black/40 print:bg-transparent backdrop-blur-md border border-white/10 print:border-none px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 print:text-gray-600 italic shadow-[0_0_20px_rgba(251,191,36,0.1)] print:shadow-none ${lang === 'nko' ? 'font-kigelia' : ''}`}>
+         <span className={`inline-block bg-surface/60 print:bg-transparent backdrop-blur-md border border-white/10 print:border-none px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 print:text-gray-600 italic shadow-[0_0_20px_rgba(251,191,36,0.1)] print:shadow-none ${lang === 'nko' ? 'font-kigelia' : ''}`}>
             {captionText}
          </span>
         )}
@@ -617,7 +617,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         />
       </div>
 {/* 🚀 1/1000 : LE SCEAU DE FIN DE LECTURE */}
-      <footer className="border-t border-white/5 print:hidden py-16 md:py-24 text-center bg-gradient-to-b from-void to-black backdrop-blur-3xl mt-12 relative overflow-hidden flex flex-col items-center">
+      <footer className="border-t border-white/5 print:hidden py-16 md:py-24 text-center bg-gradient-to-b from-void to-surface backdrop-blur-3xl mt-12 relative overflow-hidden flex flex-col items-center">
         {/* 🌌 Lueur abyssale arrière */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-or/5 blur-[100px] rounded-full pointer-events-none"></div>
 
@@ -661,7 +661,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       {coverLightbox && article.mainImageUrl && (
         <div 
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-300 p-4 md:p-8 print:hidden"
+          className="ambiance-nuit fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-black/95 backdrop-blur-xl transition-all duration-300 p-4 md:p-8 print:hidden"
           onClick={() => setCoverLightbox(false)}
         >
           <button 

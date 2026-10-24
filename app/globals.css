@@ -12,12 +12,15 @@
    LAYER 1 — DESIGN TOKENS (Variables)
    =========================================== */
 @layer base {
-  :root {
+  /* .ambiance-nuit : îlot toujours sombre (visionneuses d'images), quelle que soit l'ambiance */
+  :root,
+  .ambiance-nuit {
     /* --- PALETTE « NUIT DU MANDÉ » (novembre 2026) ---
        Un bleu nuit chaud au lieu du noir, un texte ivoire au lieu du blanc pur (moins de
        fatigue en lecture longue), l'or un peu adouci. Chaque couleur est écrite en trois
        nombres (rouge vert bleu) : Tailwind l'utilise avec son opacité (tailwind.config.ts,
-       « jeton »). Contrastes (WCAG) : texte 14,7:1, secondaire 8,8:1, discret 6,1:1, or 10,1:1. */
+       « jeton »). Les ambiances de lecture (plus bas, html[data-ambiance]) ne changent QUE
+       ces nombres. Contrastes (WCAG) : texte 14,7:1, secondaire 8,8:1, discret 6,1:1, or 10,1:1. */
     --rgb-void: 14 19 34;          /* fond #0e1322 */
     --rgb-surface: 21 28 48;       /* panneaux #151c30 */
     --rgb-texte: 235 229 216;      /* texte #ebe5d8 (« white » dans les classes) */
@@ -97,6 +100,59 @@
     /* LAYOUT */
     --content-max-width: 1400px;
     --content-padding: 5%;
+  }
+
+  /* AMBIANCES DE LECTURE des articles (novembre 2026) : choisies avec le bouton « Ambiance »
+     (ArticleTools.tsx), posées sur <html data-ambiance> AVANT l'affichage (petit script de la
+     page article), retirées en quittant l'article. Sans choix : celle du téléphone (clair → Jour).
+     Écran seulement : l'impression garde ses propres couleurs (plus bas). */
+  @media screen {
+    /* Papier : crème chaud, encre brune (lecture longue, le soir comme le jour) */
+    html[data-ambiance="papier"] {
+      color-scheme: light;
+      --rgb-void: 244 236 218;     /* #f4ecda */
+      --rgb-surface: 235 224 200;  /* #ebe0c8 */
+      --rgb-texte: 42 33 25;       /* #2a2119 : 13,4:1 */
+      --rgb-texte-2: 61 49 39;
+      --rgb-second: 92 75 59;      /* 7,1:1 */
+      --rgb-discret: 111 95 80;    /* 5,2:1 */
+      --rgb-or: 138 82 16;         /* #8a5210 : 5,4:1 */
+      --rgb-bleu-50: 34 42 74;
+      --rgb-bleu-200: 38 58 117;
+      --rgb-bleu-300: 38 58 117;   /* #263a75 : 9,2:1 */
+      --rgb-bleu-400: 59 91 171;
+      --rgb-vert-400: 47 107 58;
+      --rgb-emeraude-300: 31 107 79;
+      --rgb-violet-300: 91 58 140;
+      --rgb-rouge-400: 163 38 42;
+      --rgb-rose-300: 155 44 72;
+    }
+
+    /* Jour : blanc cassé, encre grise (plein soleil) */
+    html[data-ambiance="jour"] {
+      color-scheme: light;
+      --rgb-void: 251 250 247;     /* #fbfaf7 */
+      --rgb-surface: 241 239 233;  /* #f1efe9 */
+      --rgb-texte: 35 36 42;       /* #23242a : 14,8:1 */
+      --rgb-texte-2: 58 60 68;
+      --rgb-second: 82 85 94;      /* 7,1:1 */
+      --rgb-discret: 102 106 115;  /* 5,2:1 */
+      --rgb-or: 148 89 12;         /* #94590c : 5,5:1 */
+      --rgb-bleu-50: 31 42 80;
+      --rgb-bleu-200: 43 63 143;
+      --rgb-bleu-300: 43 63 143;   /* #2b3f8f : 9,1:1 */
+      --rgb-bleu-400: 69 96 184;
+      --rgb-vert-400: 35 116 58;
+      --rgb-emeraude-300: 25 105 77;
+      --rgb-violet-300: 90 58 150;
+      --rgb-rouge-400: 161 42 42;
+      --rgb-rose-300: 155 44 72;
+    }
+
+    /* Sur le clair : pas de halo doré autour des titres (il brouille l'encre) */
+    html[data-ambiance] .article-content :is(h1, h2, h3, h4) {
+      text-shadow: none;
+    }
   }
 
   /* Impression : encre sur papier blanc, quelle que soit l'ambiance de l'écran. Le fond (void,
