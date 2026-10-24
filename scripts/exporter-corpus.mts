@@ -54,15 +54,15 @@ if (!rel || (!rel.startsWith('..') && !isAbsolute(rel))) {
 type Enfant = { text?: string };
 type Bloc = {
   _type: string; _key?: string; style?: string; listItem?: string; children?: Enfant[];
-  text?: string; titleNko?: string; titleFr?: string; captionNko?: string; caption?: string;
+  text?: string; titleNko?: string; titleFr?: string; captionNko?: string; caption?: string; altNko?: string; alt?: string;
 };
-type Image = { captionNko?: string; caption?: string };
+type Image = { captionNko?: string; caption?: string; altNko?: string; alt?: string };
 type Doc = {
   _id: string; _type: string; title?: string; slug?: { current?: string } | string; body?: Bloc[]; mainImage?: Image;
   termeNko?: string; termeFr?: string; definitionNko?: string; definitionFr?: string; domaine?: string;
   titleNko?: string; titleFr?: string;
 };
-type Nature = 'titre' | 'paragraphe' | 'section' | 'encadre' | 'titre-encadre' | 'legende' | 'intertitre' | 'terme' | 'definition' | 'rubrique';
+type Nature = 'titre' | 'paragraphe' | 'section' | 'encadre' | 'titre-encadre' | 'legende' | 'description-image' | 'intertitre' | 'terme' | 'definition' | 'rubrique';
 type Paire = { id: string; nqo: string; fr: string; nature: Nature; source: string; partie: string; controle: 'ok' | 'a-verifier'; raisons: string[] };
 
 const { separerTitre } = (await import(pathToFileURL(join(PROJET, 'app/components/numero/titre.ts')).href)) as {
@@ -154,6 +154,7 @@ for (const art of docs.filter((d) => d._type === 'article')) {
   const partie = partieDe('article:' + slug);
   if (art.title) { const t = separerTitre(art.title); ajouter(t.nko, t.fr, 'titre', slug, partie); }
   ajouter(art.mainImage?.captionNko, art.mainImage?.caption, 'legende', slug, partie);
+  ajouter(art.mainImage?.altNko, art.mainImage?.alt, 'description-image', slug, partie);
   // Suites de blocs de texte d'une même langue ; une image ou un intertitre de rubrique coupe la suite
   type Element = { texte: string; encadre: boolean };
   const suites: { nko: boolean; elements: Element[] }[] = [];
@@ -168,7 +169,10 @@ for (const art of docs.filter((d) => d._type === 'article')) {
     if (b._type === 'block') pousser(texteBloc(b), false);
     else if (b._type === 'callout') { pousser(propre(b.text), true); ajouter(b.titleNko, b.titleFr, 'titre-encadre', slug, partie); }
     else {
-      if (b._type === 'image') ajouter(b.captionNko, b.caption, 'legende', slug, partie);
+      if (b._type === 'image') {
+        ajouter(b.captionNko, b.caption, 'legende', slug, partie);
+        ajouter(b.altNko, b.alt, 'description-image', slug, partie);
+      }
       if (b._type === 'sectionHeader') ajouter(b.titleNko, b.titleFr, 'intertitre', slug, partie);
       suites.push({ nko: false, elements: [] }); // coupure
     }

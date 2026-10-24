@@ -61,7 +61,7 @@ Champ facultatif `excerptFr` (onglet SEO, ajouté le 22 octobre 2026) : **résum
 | `block` (paragraphe) | texte ; un paragraphe = **une seule langue** (N'Ko **ou** français) | `style` : `normal`, `h1`…`h6`, `blockquote` |
 | `callout` (encadré) | `intent` : `success` = **Définition** · `amazing` = **Le saviez-vous ?** · `question` = **Question** · `info` = Information · `warning` = Attention | `text` |
 | `sectionHeader` (titre de rubrique) | début de rubrique | `titleNko` (obligatoire), `titleFr` |
-| `image` | illustration | `alt` (conseillé), `captionNko`, `caption`, `source` |
+| `image` | illustration | `alt` (conseillé), `altNko`, `captionNko`, `caption`, `source` |
 
 Chaque bloc a un `_key` unique.
 
@@ -99,6 +99,7 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 | Stockage | L'image est **téléversée dans Sanity** (outil MCP `dataset_assets_upload_from_url` ou CLI), jamais liée au site d'origine |
 | Champ `source` | Crédit **et** licence, ex. « NASA/JPL-Caltech — domaine public » ou « ESO/M. Kornmesser — CC BY 4.0 ». Existe aussi sur les **couvertures** (`mainImage.source` de l'article, `couverture.source` du numéro, depuis le 17 octobre 2026) : il s'affiche en petit sous l'image, tel quel dans les deux langues |
 | Champ `alt` | Description en français, rédigée par l'IA (ce que montre l'image, en une phrase) |
+| Champ `altNko` | Description en N'Ko (depuis le 24 octobre 2026 ; images du texte, couverture de l'article `mainImage.altNko`, couverture du numéro `couverture.altNko`) : lue sur la version N'Ko du site. Fournie par la rédaction (traduction LONKO) ; sinon **laisser vide** (la version N'Ko reprend alors `alt`, simple avertissement dans le Studio) |
 | Champ `captionNko` | Fourni par la rédaction ; sinon **laisser vide** |
 | Champ `caption` | Légende française (rédaction, ou proposée par l'IA à partir de la source) |
 | Taille | Assez grande pour l'écran (≥ 1 200 px de large pour la couverture) |
@@ -142,7 +143,7 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
   ],
   "edito": { "_type": "reference", "_ref": "article-nkl-003-edito", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
   "aLaUne": { "_type": "reference", "_ref": "article-nkl-003-gs", "_weak": true, "_strengthenOnPublish": { "type": "article" } },
-  "couverture": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…" }, "alt": "…", "captionNko": "<rédaction>", "caption": "…", "source": "NASA/SDO — domaine public" },
+  "couverture": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…" }, "alt": "…", "altNko": "<rédaction, ou vide>", "captionNko": "<rédaction>", "caption": "…", "source": "NASA/SDO — domaine public" },
   "seoTitle": "Facultatif (≤ 60 caractères)",
   "excerpt": "Facultatif (≤ 200 caractères) ; s'il est vide, la page utilise le résumé de l'édito",
   "excerptFr": "Facultatif : résumé français des cartes de partage (≤ 160 caractères, sans N'Ko) ; vide : celui de l'édito"

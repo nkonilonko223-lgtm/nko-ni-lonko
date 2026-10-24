@@ -21,7 +21,7 @@
 | `lexique.jsonl` | Termes : N'Ko, français, définitions, domaine, `partie` |
 | `fiche.json` | Date, source, nombres (paires par nature, par partie, contrôles), sections alignées ou entières, doublons retirés |
 
-**Natures de paires** : `titre`, `paragraphe`, `section`, `encadre`, `titre-encadre`, `legende`, `intertitre`, `terme`, `definition`, `rubrique`.
+**Natures de paires** : `titre`, `paragraphe`, `section`, `encadre`, `titre-encadre`, `legende`, `description-image` (texte alternatif N'Ko / français des images, 24 octobre 2026), `intertitre`, `terme`, `definition`, `rubrique`.
 
 ## 3. Comment les paires sont faites
 
