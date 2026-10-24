@@ -4,7 +4,7 @@
 // ============================================================================
 // Pourquoi : l'outil next/og ne LIE pas les lettres N'Ko. Ici, Google Chrome
 // (déjà installé sur l'ordinateur) fait le rendu : le N'Ko est parfait.
-// Logo : public/icon-512x512.png (monogramme officiel, fond noir fondu en mode « screen »).
+// Logo : public/icon-512x512.png (logo HD sans fond, scripts/icones/favicon.mjs ; posé en mode « screen »).
 // Le N'Ko est LU dans les fichiers du site (jamais retapé) et vérifié en NFC.
 //
 // Usage (depuis la racine du projet, connexion Internet pour la police Montserrat) :
@@ -20,7 +20,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const VERSION = 1;
+const VERSION = 2; // 2 : logo HD harmonisé (24 octobre 2026)
 const PROJET = resolve(import.meta.dirname, '../..');
 const sharp = createRequire(join(PROJET, 'package.json'))('sharp');
 const CHROME = [
