@@ -36,8 +36,8 @@ import { iconeApplication, logoRecadre } from "../logo/logo.mjs";
 const PROJET = resolve(import.meta.dirname, "../..");
 const sharp = createRequire(join(PROJET, "package.json"))("sharp");
 const T = await import(pathToFileURL(join(PROJET, "app/components/application/textes.ts")).href);
-const FOND = "#02040a";
-const OR = "#fbbf24";
+const FOND = "#0e1322"; // bleu nuit du site (palette « Nuit du Mandé », app/globals.css)
+const OR = "#f2b544";
 const DOSSIER = join(PROJET, "public/application");
 const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -218,7 +218,9 @@ try {
       for (const p of PAGES) {
         for (const format of p.formats) {
           const o = await chrome.onglet(FORMATS[format]);
-          await chrome.envoyer("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }, o.sessionId);
+          // Téléphone en mode sombre : les articles s'affichent dans l'ambiance Nuit, celle du site
+          // (sinon, l'ambiance Jour d'un téléphone en mode clair, app/lib/ambiance.ts)
+          await chrome.envoyer("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }, { name: "prefers-color-scheme", value: "dark" }] }, o.sessionId);
           // Choix de langue déjà fait ; pas de bouton « Installer » sur la capture (Chrome le propose ici)
           await chrome.envoyer("Page.addScriptToEvaluateOnNewDocument", {
             source: `try { localStorage.setItem("preferred-lang", ${JSON.stringify(langue === "fr" ? "fr" : "nko")}); } catch (e) {}
