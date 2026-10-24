@@ -26,6 +26,7 @@ import { getBlockText, isNko } from "./texte/outils";
 
 // 🚀 IMPORTATION DU STANDARD MATHÉMATIQUE MONDIAL
 import { BlockMath } from 'react-katex';
+import { langueTexte } from "./numero/titre";
 import 'katex/dist/katex.min.css';
 
 // ==============================================================================
@@ -364,7 +365,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
               <ZoneAgrandissable image={{ url: imageUrl, alt: imageValue.alt?.trim() || '', captionNko: imageValue.captionNko, caption: imageValue.caption }}>
                  <Image
                    src={imageUrl} 
-                   alt={imageValue.alt?.trim() || 'Illustration scientifique'} 
+                   alt={imageValue.alt?.trim() || 'Illustration scientifique'} lang={langueTexte(imageValue.alt?.trim() || 'Illustration scientifique')} 
                    width={1200} 
                    height={800} 
                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02] print:scale-100" 

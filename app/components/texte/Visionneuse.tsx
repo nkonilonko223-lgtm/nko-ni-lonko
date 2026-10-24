@@ -12,6 +12,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { useLanguage } from "../LanguageProvider";
+import { langueTexte } from "../numero/titre";
 
 interface LightboxState {
   url: string;
@@ -62,7 +63,7 @@ export default function Visionneuse({ children }: { children: ReactNode }) {
             <div className="relative w-full h-full max-w-7xl max-h-[75vh] flex items-center justify-center cursor-zoom-out">
               <Image 
                 src={lightbox.url} 
-                alt={lightbox.alt} 
+                alt={lightbox.alt} lang={langueTexte(lightbox.alt)} 
                 fill
                 className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
                 sizes="100vw"

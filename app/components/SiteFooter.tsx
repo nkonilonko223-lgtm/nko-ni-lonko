@@ -197,7 +197,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
               <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-or/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
                 <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
                 {/* Version simplifiée du logo : le logo détaillé ne se lit pas à 30 px */}
-                <Image src="/application/onglet-192.png" alt="Logo" width={30} height={30} className="rounded-md relative z-10 transition-transform group-hover:scale-105" />
+                <Image src="/application/onglet-192.png" alt="Logo" lang="fr" width={30} height={30} className="rounded-md relative z-10 transition-transform group-hover:scale-105" />
               </div>
               <span className={`text-2xl font-bold text-white transition-colors group-hover:text-or ${isNko ? 'font-kigelia' : ''}`}>
                 {typedT?.metadata?.siteName || "N'Ko ni Lonko"}

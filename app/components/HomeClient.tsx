@@ -235,7 +235,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
       <div className="flex flex-col items-center justify-center h-full w-full px-8 pb-12">
         <div className="w-24 h-24 mb-10 relative flex items-center justify-center p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
             <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 rounded-full animate-pulse"></div>
-            <Image src="/logo/logo-sceau.png" alt="Sceau N'Ko ni Lonko" width={96} height={96} className="relative z-10 drop-shadow-lg" />
+            <Image src="/logo/logo-sceau.png" alt="Sceau N'Ko ni Lonko" lang="fr" width={96} height={96} className="relative z-10 drop-shadow-lg" />
         </div>
 
         <nav aria-label="Menu principal mobile" className="w-full max-w-sm">
@@ -467,7 +467,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <div className="bg-layer-space" ref={spaceRef} style={{ backgroundImage: 'none' }}>
           <Image 
             src="/jams-webb.png" 
-            alt="Espace cosmique" 
+            alt="Espace cosmique" lang="fr" 
             fill 
             priority 
             quality={60}
@@ -483,7 +483,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <div className="bg-layer-baobab" ref={baobabRef} style={{ backgroundImage: 'none' }}>
           <Image 
             src="/le-baobaob.png" 
-            alt="Baobab de la connaissance" 
+            alt="Baobab de la connaissance" lang="fr" 
             fill 
             priority 
             quality={60}

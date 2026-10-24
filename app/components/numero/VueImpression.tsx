@@ -2,7 +2,7 @@ import type { ArticleComplet, NumeroComplet } from "../../lib/numeros";
 import messagesNko from "../../messages/nko.json";
 import CustomPortableText from "../CustomPortableText";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
-import { sensDe, separerTitre } from "./titre";
+import { sensDe, separerTitre, langueTexte } from "./titre";
 import { dateFr, dateNko } from "./VueNumero";
 import { literata } from "../../fonts/lecture"; // texte français en Literata, comme sur le site
 
@@ -56,7 +56,7 @@ function Article({ article, marque }: { article: ArticleComplet; marque?: { nko:
       {article.image?.url && (
         <figure className="mt-6 break-inside-avoid">
           {/* eslint-disable-next-line @next/next/no-img-element -- impression : image chargée tout de suite (pas de chargement différé) */}
-          <img src={image(article.image.url, 1400)} alt={article.image.alt || ""} className="w-full rounded-lg" />
+          <img src={image(article.image.url, 1400)} alt={article.image.alt || ""} lang={langueTexte(article.image.alt || "")} className="w-full rounded-lg" />
           {(article.image.captionNko || article.image.caption || article.image.source) && (
             <figcaption className="mt-2 flex flex-col gap-1 text-center text-xs text-neutral-600">
               {article.image.captionNko && <span lang="nqo" dir="rtl" className="font-kigelia text-sm">{article.image.captionNko}</span>}
@@ -84,7 +84,7 @@ export default function VueImpression({ numero }: { numero: NumeroComplet }) {
       <section className="couverture relative flex flex-col items-center justify-end overflow-hidden bg-void px-10 pb-16 text-center text-blanc">
         {numero.couverture?.url ? (
           // eslint-disable-next-line @next/next/no-img-element -- impression : image chargée tout de suite
-          <img src={image(numero.couverture.url, 1600)} alt={numero.couverture.alt || ""} className="absolute inset-0 h-full w-full object-cover opacity-80" />
+          <img src={image(numero.couverture.url, 1600)} alt={numero.couverture.alt || ""} lang={langueTexte(numero.couverture.alt || "")} className="absolute inset-0 h-full w-full object-cover opacity-80" />
         ) : (
           // Sans couverture : le motif du site (symboles africains et molécules), atténué
           <span className="absolute inset-0 opacity-20" style={{ backgroundImage: "url(/arriere-plan.webp)", backgroundSize: "240px" }} aria-hidden="true" />

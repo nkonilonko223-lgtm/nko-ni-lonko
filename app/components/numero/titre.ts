@@ -19,6 +19,9 @@ export const contientNko = (texte = "") =>
   });
 // Sens et langue d'un texte libre (titre, résumé) : N'Ko s'il contient du N'Ko
 export const sensDe = (texte = "") => (contientNko(texte) ? ({ dir: "rtl", lang: "nqo" } as const) : ({ dir: "ltr", lang: "fr" } as const));
+// Langue de la description d'une image (attribut lang de <img>) : sinon, sur la version N'Ko, une
+// description française serait lue avec une voix N'Ko par les lecteurs d'écran
+export const langueTexte = (texte?: string | null) => sensDe(texte ?? "").lang;
 
 const contientLatin = (texte: string) => /[A-Za-zÀ-ÿ]/.test(texte);
 

@@ -19,6 +19,7 @@ import { urlFor } from "../../sanity/image";
 import { PortableTextBlock } from "@portabletext/types";
 import { Turnstile } from '@marsidev/react-turnstile';
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
+import { langueTexte } from "./numero/titre";
 
 // ==============================================================================
 // 1. TYPAGE STRICT & UTILITAIRES
@@ -576,7 +577,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                     {itemImageUrl ? (
                         <Image 
                           src={itemImageUrl} 
-                          alt={item.title} 
+                          alt={item.title} lang={langueTexte(item.title)} 
                           fill 
                           sizes="(max-width: 768px) 100vw, 33vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"

@@ -2,7 +2,7 @@ import Image from "next/image";
 import LienLangue from "../LienLangue";
 import type { ArticleDuSommaire, Numero, RubriqueCourte } from "../../lib/numeros";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
-import { contientNko, sensDe, separerTitre } from "./titre";
+import { contientNko, sensDe, separerTitre, langueTexte } from "./titre";
 import { positionDuCadrage } from "../../lib/point-interet";
 import TelechargerNumero from "../application/TelechargerNumero";
 
@@ -82,7 +82,7 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
     >
       {article.image?.url && (
         <span className={`relative shrink-0 overflow-hidden rounded-xl ${une ? "aspect-[16/9] w-full" : "h-20 w-20 md:h-28 md:w-28"}`}>
-          <Image src={article.image.url} alt={article.image.alt?.trim() || ""} fill sizes={une ? "(min-width: 768px) 720px, 100vw" : "112px"} className="object-cover" style={{ objectPosition: positionDuCadrage(article.image.hotspot) }} />
+          <Image src={article.image.url} alt={article.image.alt?.trim() || ""} lang={langueTexte(article.image.alt?.trim() || "")} fill sizes={une ? "(min-width: 768px) 720px, 100vw" : "112px"} className="object-cover" style={{ objectPosition: positionDuCadrage(article.image.hotspot) }} />
         </span>
       )}
       <span className="min-w-0 flex-1 text-start">
@@ -116,7 +116,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
           <figure className="relative h-[55vh] min-h-80 w-full overflow-hidden md:h-[70vh]">
             <Image
               src={couverture.url}
-              alt={couverture.alt?.trim() || ""}
+              alt={couverture.alt?.trim() || ""} lang={langueTexte(couverture.alt?.trim() || "")}
               fill
               priority
               sizes="100vw"

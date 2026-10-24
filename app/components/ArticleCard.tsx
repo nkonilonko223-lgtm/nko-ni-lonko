@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { useState, useMemo, useRef, useCallback } from "react";
-import { contientNko, sensDe, separerTitre } from "./numero/titre";
+import { contientNko, sensDe, separerTitre, langueTexte } from "./numero/titre";
 
 // --- INTERFACE STRICTE ET ROBUSTE ---
 export interface ArticleCardProps {
@@ -175,7 +175,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
             {article.mainImageUrl ? (
               <Image
                 src={article.mainImageUrl}
-                alt={article.mainImageAlt || article.title}
+                alt={article.mainImageAlt || article.title} lang={langueTexte(article.mainImageAlt || article.title)}
                 fill
                 priority={isPriority}
                 style={article.mainImagePosition ? { objectPosition: article.mainImagePosition } : undefined}

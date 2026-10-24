@@ -22,7 +22,7 @@ import { CLE_LANGUE_LECTURE, formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { cheminDeCle, cleDeCategorie } from "../lib/categories";
-import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage } from "./numero/titre";
+import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage, langueTexte } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
 import { adresse, langueAdresse } from "../lib/langue";
@@ -330,7 +330,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           {/* Version du logo pensée pour le papier (lettre noire, ombre et lumières grises) : un filtre
               « gris + contraste » sur le logo en couleurs effaçait l'or (scripts/icones/favicon.mjs) */}
           <div className="w-12 h-12 relative">
-            <Image src="/logo/logo-impression.png" alt="Logo" fill sizes="48px" className="object-contain" />
+            <Image src="/logo/logo-impression.png" alt="Logo" lang="fr" fill sizes="48px" className="object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="font-kigelia text-2xl font-bold text-black tracking-widest">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
@@ -489,7 +489,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           >
             <Image
               src={article.mainImageUrl}
-              alt={article.mainImageRaw?.alt?.trim() || article.title}
+              alt={article.mainImageRaw?.alt?.trim() || article.title} lang={langueTexte(article.mainImageRaw?.alt?.trim() || article.title)}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105 print:scale-100"
               style={{ objectPosition: positionDuCadrage(article.mainImageRaw?.hotspot) }}
@@ -636,7 +636,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 (112 px), sinon le téléphone télécharge une image jusqu'à 9 fois trop grande */}
             <Image
                 src="/logo/logo-sceau.png"
-                alt="Sceau N'Ko ni Lonko"
+                alt="Sceau N'Ko ni Lonko" lang="fr"
                 width={112}
                 height={112}
                 quality={90} // 🚀 OPTIMISATION : Qualité visuelle parfaite mais fichier allégé pour les forfaits mobiles
@@ -674,7 +674,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           <div className="relative w-full max-w-7xl h-full max-h-[85vh] rounded-lg overflow-hidden flex items-center justify-center">
             <Image 
               src={article.mainImageUrl} 
-              alt={article.mainImageRaw?.alt?.trim() || article.title} 
+              alt={article.mainImageRaw?.alt?.trim() || article.title} lang={langueTexte(article.mainImageRaw?.alt?.trim() || article.title)} 
               fill
               className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
               sizes="100vw"

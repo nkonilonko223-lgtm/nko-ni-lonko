@@ -10,6 +10,7 @@ import { getNumeros } from "../../lib/numeros";
 import { positionDuCadrage } from "../../lib/point-interet";
 import PiluleRetour from "../../components/PiluleRetour";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL } from "../../lib/partage";
+import { langueTexte } from "../../components/numero/titre";
 
 // ============================================================================
 // N'KO NI LONKO — Archive des numéros (/numeros), du plus récent au plus ancien
@@ -89,7 +90,7 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
                   {numero.couverture?.url && (
                     <Image
                       src={numero.couverture.url}
-                      alt={numero.couverture.alt?.trim() || ""}
+                      alt={numero.couverture.alt?.trim() || ""} lang={langueTexte(numero.couverture.alt?.trim() || "")}
                       fill
                       priority={i === 0}
                       sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw"

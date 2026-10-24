@@ -111,7 +111,7 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
                 <div className="absolute inset-0 bg-[#fbbf24] blur-2xl opacity-20 rounded-full animate-pulse duration-[3000ms]"></div>
                 <Image
                     src="/logo/logo-sceau.png"
-                    alt="Sceau N'Ko ni Lonko"
+                    alt="Sceau N'Ko ni Lonko" lang="fr"
                     width={128} 
                     height={128} 
                     className="relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)] pointer-events-none"
