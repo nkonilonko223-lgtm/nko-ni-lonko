@@ -7,7 +7,7 @@ import CustomPortableText from "../../../components/CustomPortableText";
 import { CLE_LANGUE_LECTURE, contientDeuxLangues } from "../../../components/texte/outils";
 import { SCRIPT_AMBIANCE } from "../../../lib/ambiance";
 import { Metadata } from "next";
-import { versionLangue } from "../../../lib/carte-partage";
+import { NOM_FR, versionLangue } from "../../../lib/carte-partage";
 import { adresse, langueDe } from "../../../lib/langue";
 import { notFound } from "next/navigation";
 import { PortableTextBlock } from "@portabletext/types";
@@ -15,6 +15,7 @@ import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../../lib/partage";
 import IMAGES_PARTAGE_ARTICLES from "../../../lib/images-partage-articles.json";
 import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../../lib/numeros";
 import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../../components/numero/ArticleNumero";
+import { separerLangues } from "../../../components/numero/titre";
 import { jsonLd } from "../../../lib/jsonld";
 import { cheminDeCle, cleDeCategorie } from "../../../lib/categories";
 import messagesNko from "../../../messages/nko.json";
@@ -412,6 +413,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
     ? (langue === "fr" ? messagesFr : messagesNko).nav.numeros
     : nomsCategories[cleCategorie] ?? article.category;
 
+  // Titre et résumé de la fiche Google dans la langue de la version, l'autre langue en titre
+  // secondaire (24 octobre 2026). Le texte n'est jamais réécrit : il est coupé (separerLangues).
+  const titres = separerLangues(article.title);
+  const titrePrincipal = (langue === "fr" ? titres.fr ?? titres.nko : titres.nko ?? titres.fr) ?? article.title;
+  const titreSecondaire = langue === "fr" ? titres.nko : titres.fr;
+  const resumes = separerLangues(article.excerpt);
+  const resumePage = langue === "fr" ? article.excerptFr || resumes.fr || article.excerpt : resumes.nko || article.excerpt;
+
   // 👑 JSON-LD 1 : L'Article Scientifique (ScholarlyArticle)
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -423,8 +432,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
     },
     // 👑 N'Ko is King : Bilingue, N'Ko d'abord
     "inLanguage": ["nqo", "fr"], // le texte de l'article est bilingue dans les deux versions
-    "headline": article.title,
-    "description": article.excerpt || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫",
+    "headline": titrePrincipal,
+    ...(titreSecondaire ? { "alternativeHeadline": titreSecondaire } : {}),
+    "description": resumePage || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߦߋ߫ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߝߟߐ߫ ߟߋ߬ ߘߌ߫",
     "keywords": [
       // 👑 N'Ko is King : Mots-clés N'Ko en premier
       "ߒߞߏ", "ߟߐ߲ߞߏ", "ߝߘߊ߬ߝߌ߲߬ߠߊ",
@@ -442,7 +452,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
       "width": 1200,
       "height": 630,
       "representativeOfPage": true,
-      "caption": article.title
+      "caption": titrePrincipal
     },
     "datePublished": article.publishedAt,
     "dateModified": article.updatedAt,
@@ -525,8 +535,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
       {
         "@type": "ListItem",
         "position": 1,
-        // 👑 N'Ko is King
-        "name": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
+        // 👑 N'Ko is King ; nom latin sur la version française (fil d'Ariane dans la langue de la page)
+        "name": langue === "fr" ? NOM_FR : "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
         "item": adresse(langue, "/")
       },
       // Discipline : sa vraie page (avant le 23 octobre : « /?category=… », adresse qui ne filtrait rien)
@@ -539,7 +549,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
       {
         "@type": "ListItem",
         "position": cheminCategorie ? 3 : 2,
-        "name": article.title,
+        "name": titrePrincipal,
         "item": adresseArticle
       }
     ]
