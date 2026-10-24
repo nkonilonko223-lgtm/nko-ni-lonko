@@ -187,7 +187,7 @@ export default function PrivacyClient() {
             
             <div className="flex flex-col items-center gap-2">
                 <p className="font-kigelia text-[#fbbf24] text-xl print:text-gray-800">ߟߊ߬ߞߎ߬ߘߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߞߏߜߍ ߂߀߂߆</p>
-                <p lang="fr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
+                <p lang="fr" dir="ltr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
             </div>
         </div>
 

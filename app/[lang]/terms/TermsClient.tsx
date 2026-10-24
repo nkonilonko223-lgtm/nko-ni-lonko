@@ -250,7 +250,7 @@ useEffect(() => {
             
             <div className="flex flex-col items-center gap-2">
                 <p lang="nqo" dir="rtl" className="font-kigelia text-[#fbbf24] text-xl print:text-gray-800">{"ߟߊ߬ߞߎ߬ߘߦߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߓߌߕߌ߮ ߂߀߂߆"}</p>
-                <p lang="fr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Octobre 2026</p>
+                <p lang="fr" dir="ltr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Octobre 2026</p>
             </div>
         </div>
 {/* 🚀 NAVIGATION MOBILE (Swipeable Pills Bilingues 1/10000) */}

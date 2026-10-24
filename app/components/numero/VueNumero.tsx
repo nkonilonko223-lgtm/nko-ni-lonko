@@ -134,7 +134,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
             {numeroNko(numero.numero)}
             {saison !== null && ` · ${saisonNko(saison)}`} · {dateNko(numero.publishedAt)}
           </p>
-          <p lang="fr" className="mt-1 text-xs uppercase tracking-widest text-white/60">
+          <p lang="fr" dir="ltr" className="mt-1 text-xs uppercase tracking-widest text-white/60">
             {numeroFr(numero.numero)}
             {saison !== null && ` · ${saisonFr(saison)}`} · {dateFr(numero.publishedAt)}
           </p>
@@ -148,7 +148,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
             {!numero.titleNko && !numero.titleFr && (
               <>
                 <span lang="nqo" dir="rtl" className="block font-kigelia text-4xl font-bold md:text-6xl">{numeroNko(numero.numero)}</span>
-                <span lang="fr" className="mt-2 block text-xl text-white/80">{numeroFr(numero.numero)}</span>
+                <span lang="fr" dir="ltr" className="mt-2 block text-xl text-white/80">{numeroFr(numero.numero)}</span>
               </>
             )}
           </h1>

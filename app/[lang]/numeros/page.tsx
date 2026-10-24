@@ -103,7 +103,7 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
                     {numeroNko(numero.numero)}
                     {typeof numero.saison === "number" && ` · ${saisonNko(numero.saison)}`}
                   </span>
-                  <span lang="fr" className="mt-1 block text-xs uppercase tracking-widest text-white/60">
+                  <span lang="fr" dir="ltr" className="mt-1 block text-xs uppercase tracking-widest text-white/60">
                     {numeroFr(numero.numero)}
                     {typeof numero.saison === "number" && ` · ${saisonFr(numero.saison)}`}
                   </span>

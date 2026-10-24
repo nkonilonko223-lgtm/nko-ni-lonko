@@ -94,7 +94,7 @@ export default async function PageLexique() {
         </header>
 
         {termes.length === 0 ? (
-          <p className="text-center text-white/50" lang="fr">Le lexique est en cours de préparation.</p>
+          <p className="text-center text-white/50" lang="fr" dir="ltr">Le lexique est en cours de préparation.</p>
         ) : (
           <>
             <TermeDuJour termes={termes} />

@@ -643,7 +643,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               </button>
               <p role="status" className="mt-2 h-5 text-center text-xs text-green-400">
                 {formatCopie && (
-                  <span lang={isNko ? "nqo" : "fr"} className={isNko ? "font-kigelia" : ""}>{isNko ? CITATION_COPIEE.nko : CITATION_COPIEE.fr}</span>
+                  <span lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={isNko ? "font-kigelia" : ""}>{isNko ? CITATION_COPIEE.nko : CITATION_COPIEE.fr}</span>
                 )}
               </p>
             </div>

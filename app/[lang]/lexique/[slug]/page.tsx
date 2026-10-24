@@ -148,9 +148,9 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
 
         {terme.domaine && (
           <p className="mb-8 flex flex-wrap items-center gap-2 text-sm">
-            <span lang="nqo" className="font-kigelia text-white/60">{TEXTES_LEXIQUE.domaine.nko}</span>
+            <span lang="nqo" dir="rtl" className="font-kigelia text-white/60">{TEXTES_LEXIQUE.domaine.nko}</span>
             <span className="text-white/30">/</span>
-            <span lang="fr" className="text-white/60">{TEXTES_LEXIQUE.domaine.fr} :</span>
+            <span lang="fr" dir="ltr" className="text-white/60">{TEXTES_LEXIQUE.domaine.fr} :</span>
             <span lang="nqo" dir="rtl" className="font-kigelia text-[#fbbf24]">{terme.domaine}</span>
           </p>
         )}

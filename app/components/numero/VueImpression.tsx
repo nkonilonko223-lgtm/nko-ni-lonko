@@ -94,14 +94,14 @@ export default function VueImpression({ numero }: { numero: NumeroComplet }) {
             {numeroNko(numero.numero)}
             {saison !== null && ` · ${saisonNko(saison)}`} · {dateNko(numero.publishedAt)}
           </p>
-          <p lang="fr" className="mt-1 text-xs uppercase tracking-[0.3em] text-white/70">
+          <p lang="fr" dir="ltr" className="mt-1 text-xs uppercase tracking-[0.3em] text-white/70">
             {numeroFr(numero.numero)}
             {saison !== null && ` · ${saisonFr(saison)}`} · {dateFr(numero.publishedAt)}
           </p>
           {numero.titleNko && <h1 lang="nqo" dir="rtl" className="mt-6 font-kigelia text-5xl font-bold leading-tight">{numero.titleNko}</h1>}
           {numero.titleFr && <p lang="fr" dir="ltr" className="mt-2 text-2xl text-white/85">{numero.titleFr}</p>}
           <p className="mt-10 font-kigelia text-3xl font-bold" lang="nqo" dir="rtl">{messagesNko.metadata.siteName}</p>
-          <p lang="fr" className="mt-1 text-xs uppercase tracking-[0.4em] text-[#fbbf24]">N&apos;Ko ni Lonko · nkonilonko.com</p>
+          <p lang="fr" dir="ltr" className="mt-1 text-xs uppercase tracking-[0.4em] text-[#fbbf24]">N&apos;Ko ni Lonko · nkonilonko.com</p>
         </div>
       </section>
 
