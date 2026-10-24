@@ -167,7 +167,7 @@ function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
       role="button"
       tabIndex={0}
     >
-      <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
+      <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-or/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
         <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
         <Image
           src="/application/onglet-192.png" // version simplifiée : le logo détaillé ne se lit pas à 34 px
@@ -178,7 +178,7 @@ function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
           priority
         />
       </div>
-      <span className={`transition-colors group-hover:text-[#fbbf24] ${isNko ? "font-kigelia" : ""}`}>
+      <span className={`transition-colors group-hover:text-or ${isNko ? "font-kigelia" : ""}`}>
         {siteName}
       </span>
     </div>
@@ -220,12 +220,12 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
-      className={`fixed inset-0 z-[9999] flex flex-col overscroll-contain bg-[#02040a]/95 backdrop-blur-3xl transition-all duration-700 ease-cinematic ${
+      className={`fixed inset-0 z-[9999] flex flex-col overscroll-contain bg-void/95 backdrop-blur-3xl transition-all duration-700 ease-cinematic ${
         isOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
       }`}
     >
       <button
-        className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[#fbbf24] hover:text-black hover:border-[#fbbf24] transition-all duration-300"
+        className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all duration-300"
         onClick={onClose}
         aria-label="Fermer le menu"
       >
@@ -244,11 +244,11 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
               <li className="mb-4 pb-6 border-b border-white/10">
                 <button 
                   onClick={() => { onInstallClick(); onClose(); }}
-                  className="w-full group relative px-6 py-4 rounded-2xl bg-[#fbbf24]/10 border border-[#fbbf24]/30 hover:bg-[#fbbf24] transition-all duration-500 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)] overflow-hidden"
+                  className="w-full group relative px-6 py-4 rounded-2xl bg-or/10 border border-or/30 hover:bg-[#fbbf24] transition-all duration-500 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)] overflow-hidden"
                 >
-                  <div className="absolute inset-0 bg-[#fbbf24]/20 blur-xl animate-pulse group-hover:opacity-0 transition-opacity"></div>
-                  <i className="ph-bold ph-download-simple text-3xl text-[#fbbf24] group-hover:text-black mb-2 relative z-10" aria-hidden="true"></i>
-                  <span className={`text-[#fbbf24] group-hover:text-black font-bold text-lg relative z-10 ${isNko ? "font-kigelia" : ""}`}>
+                  <div className="absolute inset-0 bg-or/20 blur-xl animate-pulse group-hover:opacity-0 transition-opacity"></div>
+                  <i className="ph-bold ph-download-simple text-3xl text-or group-hover:text-black mb-2 relative z-10" aria-hidden="true"></i>
+                  <span className={`text-or group-hover:text-black font-bold text-lg relative z-10 ${isNko ? "font-kigelia" : ""}`}>
                     {isNko ? "ߊ߬ ߟߊߖߌ߰ ߜߋߟߋ߲ߜߋߟߋ߲ ߞߣߐ߫" : "Installer l'application"}
                   </span>
                 </button>
@@ -263,11 +263,11 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
             ].map((link, i) => (
               <li key={i} className="w-full">
                 {link.href.startsWith('#') ? (
-                  <a href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-[#fbbf24] font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                  <a href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
                     {link.label}
                   </a>
                 ) : (
-                  <Link href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-[#fbbf24] font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                  <Link href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
                     {link.label}
                   </Link>
                 )}
@@ -541,23 +541,23 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           )}
 
          <button
-            className="btn-lang group relative flex items-center gap-2 overflow-hidden transition-all duration-500 hover:border-[#fbbf24]/50 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(251,191,36,0.2)] active:text-[#fbbf24]"
+            className="btn-lang group relative flex items-center gap-2 overflow-hidden transition-all duration-500 hover:border-or/50 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(251,191,36,0.2)] active:text-or"
             onClick={() => { triggerVibration(); toggleLanguage(); }}
             aria-label={isNko ? "Changer la langue en Français" : "ߞߊ߲ ߦߟߍ߬ߡߊ ߒߞߏ ߘߐ߫"}
           >
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full"></div>
             
-            {/* 🚀 MODIF 1/1000 : L'icône a maintenant "text-[#fbbf24]" EN PERMANENCE */}
+            {/* 🚀 MODIF 1/1000 : L'icône a maintenant "text-or" EN PERMANENCE */}
             <i 
-              className={`ph ph-translate transition-all duration-700 ease-bounce-soft text-[#fbbf24] ${isNko ? 'rotate-[360deg] scale-110' : 'rotate-0 scale-100'}`} 
+              className={`ph ph-translate transition-all duration-700 ease-bounce-soft text-or ${isNko ? 'rotate-[360deg] scale-110' : 'rotate-0 scale-100'}`} 
               aria-hidden="true"
             ></i>
 
             <div className="relative flex h-[20px] w-[35px] items-center justify-center">
-               <span className={`absolute transition-all duration-500 font-bold ${isNko ? 'opacity-0 scale-50 -translate-y-4' : 'opacity-100 scale-100 translate-y-0 text-[#fbbf24]'}`}>
+               <span className={`absolute transition-all duration-500 font-bold ${isNko ? 'opacity-0 scale-50 -translate-y-4' : 'opacity-100 scale-100 translate-y-0 text-or'}`}>
                  FR
                </span>
-               <span className={`absolute font-kigelia font-bold text-[#fbbf24] transition-all duration-500 ${isNko ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-4'}`}>
+               <span className={`absolute font-kigelia font-bold text-or transition-all duration-500 ${isNko ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-4'}`}>
                  ߒߞߏ
                </span>
             </div>
@@ -636,7 +636,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
               style={{ background: "transparent", color: "var(--color-text-muted)", width: "44px", height: "44px" }}
             >
               {/* C'est ta croix personnalisée (la seule visible désormais) */}
-              <i className="ph-fill ph-x-circle hover:text-[#fbbf24] transition-colors" aria-hidden="true"></i>
+              <i className="ph-fill ph-x-circle hover:text-or transition-colors" aria-hidden="true"></i>
             </button>
           )}
           <button className="search-btn" aria-label={isNko ? "ߢߊߢߌ߬ߣߌ߲߫" : "Rechercher"} onClick={triggerVibration}>
@@ -773,7 +773,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <a 
           href="#articles-grid" 
           onClick={triggerVibration}
-          className={`reveal text-[#fbbf24]/90 hover:text-[#fbbf24] transition-colors font-normal ml-4 ${isNko ? "font-kigelia text-base tracking-wider" : "text-sm tracking-wide"}`}
+          className={`reveal text-or/90 hover:text-or transition-colors font-normal ml-4 ${isNko ? "font-kigelia text-base tracking-wider" : "text-sm tracking-wide"}`}
         >
           {typedT.home?.featured?.viewAll}
         </a>

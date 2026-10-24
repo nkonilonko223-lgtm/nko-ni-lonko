@@ -47,7 +47,7 @@ export default function Visionneuse({ children }: { children: ReactNode }) {
         >
           <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/80 to-transparent z-50 flex items-center justify-end px-6 pointer-events-none">
             <button 
-              className="w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer backdrop-blur-md border border-white/20 hover:border-[#fbbf24] pointer-events-auto"
+              className="w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer backdrop-blur-md border border-white/20 hover:border-or pointer-events-auto"
               onClick={(e) => { e.stopPropagation(); setLightbox(null); }}
               aria-label={lang === 'nko' ? "ߊ߬ ߘߊߕߎ߲߯" : "Fermer l'image"}
             >
@@ -77,14 +77,14 @@ export default function Visionneuse({ children }: { children: ReactNode }) {
                 
                 {/* 1. N'Ko en Plein Écran : 17px/19px */}
                 {lightbox.captionNko && (
-                  <div dir="rtl" lang="nqo" className="text-[#fbbf24] font-kigelia text-right text-[17px] md:text-[19px] leading-relaxed drop-shadow-md">
+                  <div dir="rtl" lang="nqo" className="text-or font-kigelia text-right text-[17px] md:text-[19px] leading-relaxed drop-shadow-md">
                     {lightbox.captionNko}
                   </div>
                 )}
                 
                 {/* 2. Ligne de Lumière (Plus large en plein écran) */}
                 {lightbox.captionNko && lightbox.caption && (
-                  <div className="w-32 h-[1.5px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto rounded-full my-2"></div>
+                  <div className="w-32 h-[1.5px] bg-gradient-to-r from-transparent via-or/50 to-transparent mx-auto rounded-full my-2"></div>
                 )}
 
                 {/* 3. Français en Support : 14px/15px */}
@@ -108,7 +108,7 @@ export function ZoneAgrandissable({ image, children }: { image: LightboxState; c
   const ouvrir = useContext(OuvrirImage);
   return (
     <div
-      className="relative w-full overflow-hidden group cursor-zoom-in rounded-xl md:rounded-2xl border border-white/10 print:border-gray-300 shadow-2xl bg-[#02040a] print:bg-transparent"
+      className="relative w-full overflow-hidden group cursor-zoom-in rounded-xl md:rounded-2xl border border-white/10 print:border-gray-300 shadow-2xl bg-void print:bg-transparent"
       onClick={() => ouvrir(image)}
     >
       {children}

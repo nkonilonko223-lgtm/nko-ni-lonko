@@ -100,10 +100,10 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
       
       {isMounted && showPortal && (
         <div 
-          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#02040a]/95 backdrop-blur-3xl animate-in fade-in duration-1000"
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-void/95 backdrop-blur-3xl animate-in fade-in duration-1000"
           dir="ltr" 
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#fbbf24]/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-or/5 rounded-full blur-[100px] pointer-events-none"></div>
 
           <div className="relative z-10 flex flex-col items-center animate-in zoom-in-95 duration-700 delay-100 fill-mode-forwards px-6 w-full max-w-2xl">
             
@@ -120,7 +120,7 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
             </div>
 
             <h1 className="text-center flex flex-col gap-4 mb-16">
-                <span className="font-kigelia text-4xl md:text-5xl text-[#fbbf24] drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">ߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌ߫</span>
+                <span className="font-kigelia text-4xl md:text-5xl text-or drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">ߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌ߫</span>
                 <span className="text-white/50 text-xs md:text-sm uppercase tracking-[0.4em] border-t border-white/10 pt-4">
                   Choisissez votre langue
                 </span>
@@ -132,11 +132,11 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
               <button 
                 type="button"
                 onClick={() => handleChooseLanguage("nko")}
-                className="group relative px-10 py-6 w-full sm:w-64 rounded-2xl bg-[#fbbf24]/10 border border-[#fbbf24]/30 hover:bg-[#fbbf24] transition-colors duration-300 shadow-[0_0_30px_rgba(251,191,36,0.1)] flex flex-col items-center overflow-hidden touch-manipulation cursor-pointer"
+                className="group relative px-10 py-6 w-full sm:w-64 rounded-2xl bg-or/10 border border-or/30 hover:bg-[#fbbf24] transition-colors duration-300 shadow-[0_0_30px_rgba(251,191,36,0.1)] flex flex-col items-center overflow-hidden touch-manipulation cursor-pointer"
               >
                 <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
-                <span className="font-kigelia text-4xl text-[#fbbf24] group-hover:text-black mb-1 transition-colors relative z-10 pointer-events-none">ߒߞߏ</span>
-                <span className="text-[14px] text-[#fbbf24]/70 group-hover:text-black/70 tracking-widest uppercase transition-colors relative z-10 pointer-events-none"> ߒߞߏ ߕߊ߬</span>
+                <span className="font-kigelia text-4xl text-or group-hover:text-black mb-1 transition-colors relative z-10 pointer-events-none">ߒߞߏ</span>
+                <span className="text-[14px] text-or/70 group-hover:text-black/70 tracking-widest uppercase transition-colors relative z-10 pointer-events-none"> ߒߞߏ ߕߊ߬</span>
               </button>
 
               {/* BOUTON FRANÇAIS */}

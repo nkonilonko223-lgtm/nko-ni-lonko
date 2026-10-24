@@ -59,7 +59,7 @@ const montserrat = Montserrat({
 // 3. VIEWPORT 1/1000 (PWA NATIVE LOCK - DOGME 3)
 // ============================================================================
 export const viewport: Viewport = {
-  themeColor: "#02040a",
+  themeColor: "#0e1322", // bleu nuit du site (palette « Nuit du Mandé », app/globals.css)
   width: "device-width",
   initialScale: 1,
   // 🚀 CORRECTION : On supprime 'maximumScale' et 'userScalable' 
@@ -287,7 +287,7 @@ return (
           ${kigelia.variable} 
           ${montserrat.variable} 
           font-sans antialiased 
-          bg-[#02040a] text-white
+          bg-void text-white
           selection:bg-[#fbbf24] selection:text-black
         `}
       >

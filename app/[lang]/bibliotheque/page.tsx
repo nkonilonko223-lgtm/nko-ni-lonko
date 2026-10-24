@@ -38,7 +38,7 @@ async function getArticles(): Promise<ArticleSauvegardable[]> {
 export default async function PageBibliotheque() {
   const articles = await getArticles();
   return (
-    <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+    <main className="min-h-screen bg-void px-4 pb-20 pt-28 text-white md:pt-36">
       <PiluleRetour />
       <MaBibliotheque articles={articles} />
     </main>

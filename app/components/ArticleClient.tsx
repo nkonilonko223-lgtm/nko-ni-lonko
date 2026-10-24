@@ -296,7 +296,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   const categoryLabel = article.category ? (categoriesMap[categoryKey] || article.category) : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
 
   return (
-    <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-white print:text-black">
+    <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-blanc print:text-black">
       
       {/* 🖨️ LE SECRET 1/1000 : Contrôle absolu des marges de l'imprimante et encres forcées */}
      <style dangerouslySetInnerHTML={{ __html: `
@@ -345,7 +345,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       {/* TOAST DE NOTIFICATION */}
       <div className={`fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-500 ease-out print:hidden ${showToast ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
-        <div className="bg-black/80 backdrop-blur-xl border border-[#fbbf24]/50 text-[#fbbf24] px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(251,191,36,0.2)] flex items-center gap-3">
+        <div className="bg-black/80 backdrop-blur-xl border border-or/50 text-or px-6 py-3 rounded-full shadow-[0_10px_40px_rgba(251,191,36,0.2)] flex items-center gap-3">
           <i className="ph-fill ph-check-circle text-xl"></i>
           <span className={`text-sm font-bold ${lang === 'nko' ? 'font-kigelia' : ''}`}>
             {lang === 'nko' ? 'ߛߘߌ߬ߜߋ߲ ߓߘߊ߫ ߓߌ߬ߟߊ߬ ߟߊ߬ߡߙߊ߬ߟߌ ߘߐ߫' : 'Lien copié dans le presse-papiers'}
@@ -356,8 +356,8 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       {/* A5 — REPRENDRE MA LECTURE (proposé, jamais imposé ; disparaît seul) */}
       {reprise !== null && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[9999] print:hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div className="flex items-center gap-1 rounded-full border border-[#fbbf24]/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl">
-            <button type="button" onClick={reprendreLecture} className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+          <div className="flex items-center gap-1 rounded-full border border-or/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl">
+            <button type="button" onClick={reprendreLecture} className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-or transition-colors hover:bg-or/10">
               <i className="ph-fill ph-play" aria-hidden="true"></i>
               {lang === 'nko' && REPRENDRE.nko
                 ? <span lang="nqo" dir="rtl" className="font-kigelia">{REPRENDRE.nko}</span>
@@ -380,8 +380,8 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       </div>
 
       <div className="fixed inset-0 z-[-1] print:hidden">
-         <div className="absolute inset-0 bg-[#02040a]"></div> 
-         <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-[#02040a] to-[#02040a]"></div>
+         <div className="absolute inset-0 bg-void"></div> 
+         <div className="absolute inset-0 bg-gradient-to-b from-blue-900/10 via-void to-void"></div>
       </div>
 
       <div className="print:hidden">
@@ -396,10 +396,10 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       <nav className={`fixed top-0 left-0 w-full z-50 px-4 md:px-6 transition-all duration-300 flex justify-between items-center print:hidden ${
           isScrolled 
-          ? "bg-[#02040a]/95 backdrop-blur-md border-b border-white/10 py-3 md:py-4 shadow-xl" 
+          ? "bg-void/95 backdrop-blur-md border-b border-white/10 py-3 md:py-4 shadow-xl" 
           : "bg-gradient-to-b from-black/90 to-transparent py-4 md:py-6"
       }`}>
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 text-[#fbbf24] font-bold font-mono tracking-widest text-sm">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 text-or font-bold font-mono tracking-widest text-sm">
             <div className="flex items-center gap-2">
               <i className="ph-fill ph-calendar-blank text-lg"></i>
               {/* 🚀 BOUCLIER HYDRATATION */}
@@ -413,14 +413,14 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             </div>
 
             {categoryLabel && (
-              <div className="hidden md:flex items-center gap-2 text-[#fbbf24]/80 text-xs border border-[#fbbf24]/30 px-2 py-0.5 rounded-full uppercase">
+              <div className="hidden md:flex items-center gap-2 text-or/80 text-xs border border-or/30 px-2 py-0.5 rounded-full uppercase">
                  <span className={lang === 'nko' ? 'font-kigelia' : ''}>{categoryLabel}</span>
               </div>
             )}
         </div>
 
         <div className="flex items-center gap-3 md:gap-4">
-            <button onClick={handleShare} className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-[#fbbf24] transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
+            <button onClick={handleShare} className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
                 <i className="ph-bold ph-share-network text-xl md:text-lg"></i>
             </button>
             <button onClick={handleToggleLanguage} className="border border-gray-600 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold uppercase hover:bg-[#fbbf24] hover:text-black transition-all flex items-center gap-2 backdrop-blur-md active:scale-95 touch-manipulation">
@@ -428,7 +428,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 <span>{lang === 'nko' ? 'FR' : 'ߒߞߏ'}</span>
             </button>
             <Link href={lien("/")} aria-label={lang === 'nko' ? messagesNko.nav.home : 'Accueil'} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
-                <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-or group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
                     <i className={`ph-bold ${lang === 'nko' ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl md:text-lg`}></i>
                 </div>
             </Link>
@@ -451,16 +451,16 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             <li aria-hidden="true" className="text-white/30 print:hidden">›</li>
             <li>
               {cheminCategorie ? (
-                <Link href={lien(cheminCategorie)} className="text-[#fbbf24] print:text-gray-600 transition-colors hover:text-white">{categoryLabel}</Link>
+                <Link href={lien(cheminCategorie)} className="text-or print:text-gray-600 transition-colors hover:text-white">{categoryLabel}</Link>
               ) : (
-                <span className="text-[#fbbf24] print:text-gray-600">{categoryLabel}</span>
+                <span className="text-or print:text-gray-600">{categoryLabel}</span>
               )}
             </li>
           </ol>
         </div>
         {surtitre}
         <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
-            <span {...sensDe(nkoTitle)} className={`block !leading-[1.6] text-[#fbbf24] print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : ''}`}>
+            <span {...sensDe(nkoTitle)} className={`block !leading-[1.6] text-or print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : ''}`}>
                 {nkoTitle}
             </span>
             {frTitle && (
@@ -477,13 +477,13 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         </div>
 
         <div className="md:hidden flex justify-center items-center gap-2 text-gray-400 text-xs mb-6 font-mono print:hidden">
-             <i className="ph-bold ph-clock text-[#fbbf24]"></i>
+             <i className="ph-bold ph-clock text-or"></i>
              <span className={lang === 'nko' ? 'font-kigelia' : ''}>{readingTimeText}</span>
         </div>
         
         {article.mainImageUrl && (
           <div 
-            className="print-cover-wrapper relative w-full aspect-video rounded-xl md:rounded-[2rem] overflow-hidden border border-white/10 print:border-none shadow-2xl shadow-[#fbbf24]/10 z-10 print:shadow-none cursor-zoom-in group"
+            className="print-cover-wrapper relative w-full aspect-video rounded-xl md:rounded-[2rem] overflow-hidden border border-white/10 print:border-none shadow-2xl shadow-or/10 z-10 print:shadow-none cursor-zoom-in group"
             onClick={() => setCoverLightbox(true)}
           >
             <Image
@@ -515,12 +515,12 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         {article.mainImageUrl && (article.mainImageRaw?.captionNko || article.mainImageRaw?.caption) ? (
           <div className="max-w-3xl w-full px-4 flex flex-col gap-3">
             {article.mainImageRaw.captionNko && (
-              <p dir="rtl" lang="nqo" className="leading-relaxed text-[#fbbf24] print:text-black font-kigelia text-[15px] md:text-[16px]">
+              <p dir="rtl" lang="nqo" className="leading-relaxed text-or print:text-black font-kigelia text-[15px] md:text-[16px]">
                 {article.mainImageRaw.captionNko}
               </p>
             )}
             {article.mainImageRaw.captionNko && article.mainImageRaw.caption && (
-              <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto my-1 rounded-full print:hidden"></div>
+              <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-or/50 to-transparent mx-auto my-1 rounded-full print:hidden"></div>
             )}
             {article.mainImageRaw.caption && (
               <p dir="ltr" lang="fr" className="leading-relaxed text-white/70 print:text-gray-700 font-sans text-[13px] md:text-[14px] italic">
@@ -542,7 +542,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       {article.deuxLangues && (
         <div className="mx-auto mb-6 md:mb-8 flex max-w-3xl flex-col items-center gap-2.5 px-4 print:hidden">
           <p id="langue-lecture" className="flex items-center gap-2 text-white/70">
-            <i className="ph-bold ph-translate text-lg text-[#fbbf24]" aria-hidden="true"></i>
+            <i className="ph-bold ph-translate text-lg text-or" aria-hidden="true"></i>
             {/* Version N'Ko sans texte N'Ko de la rédaction : l'icône seule (pas de français affiché),
                 le nom reste lu par les lecteurs d'écran */}
             {lang === 'nko' && LANGUE_LECTURE.nko
@@ -562,7 +562,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 role="radio"
                 aria-checked={modeLecture === m.id}
                 onClick={() => choisirModeLecture(m.id)}
-                className={`min-h-[2.75rem] rounded-full px-4 md:px-5 text-[15px] transition-colors touch-manipulation focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#fbbf24] ${modeLecture === m.id ? 'bg-[#fbbf24] font-bold text-black shadow-[0_2px_12px_rgba(251,191,36,0.35)]' : 'text-white/90 hover:bg-white/10 hover:text-white'}`}
+                className={`min-h-[2.75rem] rounded-full px-4 md:px-5 text-[15px] transition-colors touch-manipulation focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-or ${modeLecture === m.id ? 'bg-[#fbbf24] font-bold text-black shadow-[0_2px_12px_rgba(251,191,36,0.35)]' : 'text-white/90 hover:bg-white/10 hover:text-white'}`}
               >
                 <bdi lang={m.lang} className={m.lang === 'nqo' ? 'font-kigelia text-base' : 'font-fr'}>{m.libelle}</bdi>
               </button>
@@ -617,19 +617,19 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         />
       </div>
 {/* 🚀 1/1000 : LE SCEAU DE FIN DE LECTURE */}
-      <footer className="border-t border-white/5 print:hidden py-16 md:py-24 text-center bg-gradient-to-b from-[#02040a] to-black backdrop-blur-3xl mt-12 relative overflow-hidden flex flex-col items-center">
+      <footer className="border-t border-white/5 print:hidden py-16 md:py-24 text-center bg-gradient-to-b from-void to-black backdrop-blur-3xl mt-12 relative overflow-hidden flex flex-col items-center">
         {/* 🌌 Lueur abyssale arrière */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#fbbf24]/5 blur-[100px] rounded-full pointer-events-none"></div>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-or/5 blur-[100px] rounded-full pointer-events-none"></div>
 
        {/* 🛡️ LE SCEAU HOLOGRAPHIQUE (Navigation Intuitive & Poids Optimisé) */}
         <Link 
             href={lien("/")}
             onClick={triggerVibration}
-            className="w-24 h-24 md:w-28 md:h-28 mb-8 relative group flex items-center justify-center p-5 backdrop-blur-2xl bg-[#0b0f19]/80 border border-white/10 rounded-[2rem] shadow-[inset_0_0_30px_rgba(251,191,36,0.03)] overflow-hidden transition-all duration-700 hover:border-[#fbbf24]/50 hover:shadow-[0_20px_60px_-10px_rgba(251,191,36,0.25)] hover:-translate-y-2 z-10 touch-manipulation"
+            className="w-24 h-24 md:w-28 md:h-28 mb-8 relative group flex items-center justify-center p-5 backdrop-blur-2xl bg-surface/80 border border-white/10 rounded-[2rem] shadow-[inset_0_0_30px_rgba(251,191,36,0.03)] overflow-hidden transition-all duration-700 hover:border-or/50 hover:shadow-[0_20px_60px_-10px_rgba(251,191,36,0.25)] hover:-translate-y-2 z-10 touch-manipulation"
             title={lang === 'nko' ? 'ߞߐߛߊߦߌ߫ ߢߍߝߍ߬' : 'Retour à l\'accueil'}
         >
             {/* Reflet dynamique au survol */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#fbbf24]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-or/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             
             {/* Sceau : logo sans fond recadré (scripts/icones/favicon.mjs) ; taille réelle d'affichage
                 (112 px), sinon le téléphone télécharge une image jusqu'à 9 fois trop grande */}
@@ -644,11 +644,11 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         </Link>
 
         {/* ➖ Ligne d'ancrage */}
-        <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-[#fbbf24]/30 to-transparent mb-6"></div>
+        <div className="w-12 h-[2px] bg-gradient-to-r from-transparent via-or/30 to-transparent mb-6"></div>
 
         {/* 📜 LE COPYRIGHT IMPÉRIAL (Alignement & Typographie Parfaits) */}
         <p 
-          className={`text-[#fbbf24]/70 hover:text-[#fbbf24] transition-colors duration-300 relative z-10 drop-shadow-sm px-4 ${
+          className={`text-or/70 hover:text-or transition-colors duration-300 relative z-10 drop-shadow-sm px-4 ${
             lang === 'nko' 
             ? 'font-kigelia text-sm md:text-base tracking-wide' 
             : 'font-mono text-xs md:text-sm tracking-widest uppercase'
@@ -665,7 +665,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           onClick={() => setCoverLightbox(false)}
         >
           <button 
-            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer z-50 backdrop-blur-md border border-white/20 hover:border-[#fbbf24]"
+            className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-[#fbbf24] text-white hover:text-black flex items-center justify-center transition-all cursor-pointer z-50 backdrop-blur-md border border-white/20 hover:border-or"
             onClick={(e) => { e.stopPropagation(); setCoverLightbox(false); }}
           >
             <i className="ph-bold ph-x text-2xl"></i>

@@ -38,7 +38,7 @@ export default function GuideIphone() {
       aria-labelledby="guide-iphone-titre"
       onClose={fermerGuide}
       onClick={(e) => { if (e.target === e.currentTarget) fermerGuide(); }}
-      className="mx-auto mb-0 mt-auto w-full max-w-lg rounded-t-3xl border border-white/10 bg-[#0b1121] p-0 text-white shadow-[0_-20px_50px_rgba(0,0,0,0.6)] backdrop:bg-black/70 print:hidden"
+      className="mx-auto mb-0 mt-auto w-full max-w-lg rounded-t-3xl border border-white/10 bg-surface p-0 text-white shadow-[0_-20px_50px_rgba(0,0,0,0.6)] backdrop:bg-black/70 print:hidden"
     >
       <div className="px-6 pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
         <h2 id="guide-iphone-titre" className="text-start text-lg font-bold">
@@ -47,7 +47,7 @@ export default function GuideIphone() {
         <ol className="mt-5 space-y-4">
           {GUIDE_ETAPES.map((etape, i) => (
             <li key={etape.fr} className="flex items-center gap-4">
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-2xl text-[#fbbf24]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-2xl text-or">
                 <i className={`ph-bold ${ICONES[i]}`} aria-hidden="true"></i>
               </span>
               <TexteLangue texte={etape} nko={nko} className="text-start text-base text-white/90" />
@@ -57,7 +57,7 @@ export default function GuideIphone() {
         <button
           type="button"
           onClick={fermerGuide}
-          className="mt-6 flex min-h-11 w-full items-center justify-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-[#fbbf24] hover:text-[#fbbf24]"
+          className="mt-6 flex min-h-11 w-full items-center justify-center rounded-full border border-white/20 text-white/80 transition-colors hover:border-or hover:text-or"
         >
           <TexteLangue texte={FERMER} nko={nko} />
         </button>

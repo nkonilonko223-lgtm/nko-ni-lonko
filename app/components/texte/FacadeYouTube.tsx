@@ -17,7 +17,7 @@ export default function FacadeYouTube({ videoId }: { videoId: string }) {
 
   return (
     <div 
-      className="my-8 md:my-12 relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-[#02040a] print:hidden group cursor-pointer" 
+      className="my-8 md:my-12 relative w-full aspect-video rounded-xl md:rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-void print:hidden group cursor-pointer" 
       onClick={() => setIsPlaying(true)}
       role="button"
       aria-label="Lire la vidéo scientifique"

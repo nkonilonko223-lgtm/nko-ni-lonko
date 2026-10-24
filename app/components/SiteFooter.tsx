@@ -165,7 +165,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   };
 
   return (
-    <footer className="relative mt-16 md:mt-32 border-t border-white/10 bg-[#02040a]/90 backdrop-blur-2xl shadow-[0_-10px_30px_rgba(251,191,36,0.03)] z-10 print:hidden overflow-hidden">
+    <footer className="relative mt-16 md:mt-32 border-t border-white/10 bg-void/90 backdrop-blur-2xl shadow-[0_-10px_30px_rgba(251,191,36,0.03)] z-10 print:hidden overflow-hidden">
       
       <div className="absolute inset-0 pointer-events-none -z-10 flex items-center justify-center opacity-[0.02] md:opacity-[0.03]">
         <Image 
@@ -182,12 +182,12 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           
           <div className="flex flex-col gap-5">
             <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center gap-3 touch-manipulation w-fit">
-              <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
+              <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-or/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
                 <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
                 {/* Version simplifiée du logo : le logo détaillé ne se lit pas à 30 px */}
                 <Image src="/application/onglet-192.png" alt="Logo" width={30} height={30} className="rounded-md relative z-10 transition-transform group-hover:scale-105" />
               </div>
-              <span className={`text-2xl font-bold text-white transition-colors group-hover:text-[#fbbf24] ${isNko ? 'font-kigelia' : ''}`}>
+              <span className={`text-2xl font-bold text-white transition-colors group-hover:text-or ${isNko ? 'font-kigelia' : ''}`}>
                 {typedT?.metadata?.siteName || "N'Ko ni Lonko"}
               </span>
             </Link>
@@ -197,7 +197,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </p>
             
             <div className="flex flex-col gap-3 mt-3">
-               <label className={`font-bold uppercase tracking-widest text-[#fbbf24] ${isNko ? 'font-kigelia text-lg' : 'text-sm'}`}>
+               <label className={`font-bold uppercase tracking-widest text-or ${isNko ? 'font-kigelia text-lg' : 'text-sm'}`}>
                   {isNko ? 'ߡߊ߬ߘߏ߬ߛߓߍ' : 'Newsletter'}
                </label>
                
@@ -207,7 +207,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                  onSubmit={handleNewsletterSubmit}
                  onFocusCapture={activerProtection}
                  onPointerDownCapture={activerProtection}
-                 className="relative flex items-center w-full rounded-xl bg-[#0b1121]/50 border border-white/10 overflow-hidden p-1 group transition-colors focus-within:border-white/30 focus-within:bg-[#0b1121]"
+                 className="relative flex items-center w-full rounded-xl bg-surface/50 border border-white/10 overflow-hidden p-1 group transition-colors focus-within:border-white/30 focus-within:bg-surface"
                >
                  {/* 🛡️ INJECTION INVISIBLE DU RADAR CLOUDFLARE */}
                  {protectionActive && (
@@ -242,7 +242,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                       ${emailSubscribed 
                         ? 'bg-green-500 text-black shadow-[0_0_15px_rgba(34,197,94,0.4)]' 
                         : isLoading
-                          ? 'bg-[#fbbf24]/50 text-black cursor-wait'
+                          ? 'bg-or/50 text-black cursor-wait'
                           : isValidEmail && turnstileToken
                             ? 'bg-[#fbbf24] text-black shadow-[0_0_15px_rgba(251,191,36,0.3)] hover:scale-105 active:scale-95 cursor-pointer' 
                             : 'bg-white/5 text-gray-500 cursor-not-allowed'
@@ -277,7 +277,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           </div>
 
           <div className="flex flex-col items-start">
-            <h3 className={`mb-5 font-bold uppercase tracking-widest text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
+            <h3 className={`mb-5 font-bold uppercase tracking-widest text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
                 {typedT?.nav?.articles || "Articles"}
             </h3>
             <ul className="space-y-4">
@@ -285,9 +285,9 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   <li key={key}>
                       <button 
                         onClick={() => handleCategoryClick(key)} 
-                        className={`group relative block transition-colors hover:text-white text-start touch-manipulation ${activeCategory === key ? 'text-[#fbbf24] font-bold' : 'text-gray-400'} ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}
+                        className={`group relative block transition-colors hover:text-white text-start touch-manipulation ${activeCategory === key ? 'text-or font-bold' : 'text-gray-400'} ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}
                       >
-                        <i className={`ph-bold ph-caret-right text-[#fbbf24] absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
+                        <i className={`ph-bold ph-caret-right text-or absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
                         {label as string}
                       </button>
                   </li>
@@ -296,7 +296,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           </div>
 
           <div className="flex flex-col items-start">
-            <h3 className={`mb-5 font-bold uppercase tracking-widest text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
+            <h3 className={`mb-5 font-bold uppercase tracking-widest text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
               {isNko ? 'ߝߙߍ' : 'Menu'}
             </h3>
             <ul className="space-y-4">
@@ -310,7 +310,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
               ].map((link, i) => (
                 <li key={i}>
                   <Link href={link.path} onClick={triggerVibration} className={`group relative block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
-                    <i className={`ph-bold ph-caret-right text-[#fbbf24] absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
+                    <i className={`ph-bold ph-caret-right text-or absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
                     {link.label}
                   </Link>
                 </li>
@@ -319,13 +319,13 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           </div>
 
           <div className="flex flex-col items-start">
-            <h3 className={`mb-5 font-bold uppercase tracking-widest text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
+            <h3 className={`mb-5 font-bold uppercase tracking-widest text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
                 {isNko ? 'ߟߊߛߘߐ߬ߢߊ' : 'Contact'}
             </h3>
             
             <ul className={`space-y-5 text-gray-400 ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
               <li className="flex items-start gap-3">
-                <i className="ph-bold ph-envelope-simple text-xl text-gray-500 mt-0.5 group-hover:text-[#fbbf24] transition-colors"></i>
+                <i className="ph-bold ph-envelope-simple text-xl text-gray-500 mt-0.5 group-hover:text-or transition-colors"></i>
                 <a href="mailto:contact@nkonilonko.com" onClick={triggerVibration} className="hover:text-white transition-colors">
                   contact@nkonilonko.com
                 </a>
@@ -350,7 +350,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-8 md:flex-row lg:px-8">
           
           <div className="flex flex-col md:flex-row items-center gap-4 order-3 md:order-1">
-            <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center justify-center p-1 rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-[#fbbf24]/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] touch-manipulation overflow-hidden" aria-label="Retour à l'accueil">
+            <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center justify-center p-1 rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-or/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] touch-manipulation overflow-hidden" aria-label="Retour à l'accueil">
               <div className="absolute inset-0 bg-[#fbbf24] blur-lg opacity-10 group-hover:opacity-30 transition-opacity"></div>
               <Image src="/application/onglet-192.png" alt={typedT?.metadata?.siteName || "Logo"} width={44} height={44} className="rounded-lg relative z-10 transition-transform group-hover:scale-105" />
             </Link>
@@ -363,7 +363,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           <button 
             onClick={scrollToTop} 
             aria-label="Retour en haut"
-            className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all hover:border-[#fbbf24] hover:bg-[#fbbf24] hover:text-black order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2 touch-manipulation hover:shadow-[0_0_20px_rgba(251,191,36,0.3)]"
+            className="group flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all hover:border-or hover:bg-[#fbbf24] hover:text-black order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2 touch-manipulation hover:shadow-[0_0_20px_rgba(251,191,36,0.3)]"
           >
               <i className="ph-bold ph-arrow-up text-gray-400 transition-colors group-hover:text-black"></i>
           </button>
@@ -389,7 +389,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                  onClick={triggerVibration}
                  className="group touch-manipulation p-1"
                >
-                 <i className={`ph-fill ph-${social.icon} text-4xl text-gray-500 transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:text-[#fbbf24] group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]`}></i>
+                 <i className={`ph-fill ph-${social.icon} text-4xl text-gray-500 transition-all duration-300 group-hover:-translate-y-1 group-hover:scale-110 group-hover:text-or group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]`}></i>
                </a>
              ))}
           </div>

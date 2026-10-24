@@ -78,9 +78,9 @@ export default function VueImpression({ numero }: { numero: NumeroComplet }) {
   const marqueDe = (a: ArticleComplet) => (a._id === numero.editoRef ? TEXTES_NUMEROS.edito : a._id === numero.aLaUneRef ? TEXTES_NUMEROS.aLaUne : null);
 
   return (
-    <main className="impression mx-auto max-w-[180mm] bg-white text-black">
+    <main className="impression mx-auto max-w-[180mm] bg-blanc text-black">
       {/* 1. Couverture (pleine page, fond sombre comme le site) */}
-      <section className="couverture relative flex flex-col items-center justify-end overflow-hidden bg-[#02040a] px-10 pb-16 text-center text-white">
+      <section className="couverture relative flex flex-col items-center justify-end overflow-hidden bg-void px-10 pb-16 text-center text-blanc">
         {numero.couverture?.url ? (
           // eslint-disable-next-line @next/next/no-img-element -- impression : image chargée tout de suite
           <img src={image(numero.couverture.url, 1600)} alt={numero.couverture.alt || ""} className="absolute inset-0 h-full w-full object-cover opacity-80" />
@@ -88,18 +88,18 @@ export default function VueImpression({ numero }: { numero: NumeroComplet }) {
           // Sans couverture : le motif du site (symboles africains et molécules), atténué
           <span className="absolute inset-0 opacity-20" style={{ backgroundImage: "url(/arriere-plan.webp)", backgroundSize: "240px" }} aria-hidden="true" />
         )}
-        <span className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/50 to-transparent" aria-hidden="true" />
+        <span className="absolute inset-0 bg-gradient-to-t from-void via-void/50 to-transparent" aria-hidden="true" />
         <div className="relative">
           <p lang="nqo" dir="rtl" className="font-kigelia text-2xl text-[#fbbf24]">
             {numeroNko(numero.numero)}
             {saison !== null && ` · ${saisonNko(saison)}`} · {dateNko(numero.publishedAt)}
           </p>
-          <p lang="fr" className="mt-1 text-xs uppercase tracking-[0.3em] text-white/70">
+          <p lang="fr" className="mt-1 text-xs uppercase tracking-[0.3em] text-blanc/70">
             {numeroFr(numero.numero)}
             {saison !== null && ` · ${saisonFr(saison)}`} · {dateFr(numero.publishedAt)}
           </p>
           {numero.titleNko && <h1 lang="nqo" dir="rtl" className="mt-6 font-kigelia text-5xl font-bold leading-tight">{numero.titleNko}</h1>}
-          {numero.titleFr && <p lang="fr" dir="ltr" className="mt-2 text-2xl text-white/85">{numero.titleFr}</p>}
+          {numero.titleFr && <p lang="fr" dir="ltr" className="mt-2 text-2xl text-blanc/85">{numero.titleFr}</p>}
           <p className="mt-10 font-kigelia text-3xl font-bold" lang="nqo" dir="rtl">{messagesNko.metadata.siteName}</p>
           <p lang="fr" className="mt-1 text-xs uppercase tracking-[0.4em] text-[#fbbf24]">N&apos;Ko ni Lonko · nkonilonko.com</p>
         </div>

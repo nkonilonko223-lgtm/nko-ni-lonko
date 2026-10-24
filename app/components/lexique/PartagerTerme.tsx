@@ -54,7 +54,7 @@ export default function PartagerTerme({ termeNko, termeFr, definitionNko, defini
         type="button"
         onClick={partager}
         disabled={enCours}
-        className="flex items-center gap-2 rounded-full border border-[#fbbf24]/40 px-5 py-2.5 text-sm text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10 disabled:opacity-50"
+        className="flex items-center gap-2 rounded-full border border-or/40 px-5 py-2.5 text-sm text-or transition-colors hover:bg-or/10 disabled:opacity-50"
       >
         <i className="ph-bold ph-image" aria-hidden="true"></i>
         {libelle}

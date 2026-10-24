@@ -13,26 +13,50 @@
    =========================================== */
 @layer base {
   :root {
-    /* --- PALETTE IMPÉRIALE --- */
-    --color-void: #02040a;
-    --color-gold: #fbbf24;
+    /* --- PALETTE « NUIT DU MANDÉ » (novembre 2026) ---
+       Un bleu nuit chaud au lieu du noir, un texte ivoire au lieu du blanc pur (moins de
+       fatigue en lecture longue), l'or un peu adouci. Chaque couleur est écrite en trois
+       nombres (rouge vert bleu) : Tailwind l'utilise avec son opacité (tailwind.config.ts,
+       « jeton »). Contrastes (WCAG) : texte 14,7:1, secondaire 8,8:1, discret 6,1:1, or 10,1:1. */
+    --rgb-void: 14 19 34;          /* fond #0e1322 */
+    --rgb-surface: 21 28 48;       /* panneaux #151c30 */
+    --rgb-texte: 235 229 216;      /* texte #ebe5d8 (« white » dans les classes) */
+    --rgb-texte-2: 214 207 192;    /* gray-300 */
+    --rgb-second: 185 178 164;     /* gray-400 : texte secondaire */
+    --rgb-discret: 154 148 136;    /* gray-500 : mentions discrètes */
+    --rgb-or: 242 181 68;          /* or des textes et filets #f2b544 (les boutons pleins gardent #fbbf24) */
+    /* Lexique et encadrés : couleurs de Tailwind la nuit, foncées sur le papier */
+    --rgb-bleu-50: 239 246 255;
+    --rgb-bleu-200: 191 219 254;
+    --rgb-bleu-300: 147 197 253;
+    --rgb-bleu-400: 96 165 250;
+    --rgb-vert-400: 74 222 128;
+    --rgb-emeraude-300: 110 231 183;
+    --rgb-violet-300: 216 180 254;
+    --rgb-rouge-400: 248 113 113;
+    --rgb-rose-300: 253 164 175;
+  }
+
+  :root {
+    --color-void: rgb(var(--rgb-void));
+    --color-gold: rgb(var(--rgb-or));
     --color-gold-warm: #d97706;
     --color-gold-light: #fde68a;
-    --color-text: #ffffff;
-    --color-text-muted: #94a3b8;
-    --color-text-subtle: #78889a; /* Remonté vs ancien #64748b pour WCAG AA */
+    --color-text: rgb(var(--rgb-texte));
+    --color-text-muted: rgb(var(--rgb-second));
+    --color-text-subtle: rgb(var(--rgb-discret));
 
     /* DÉGRADÉS */
     --gradient-panel: linear-gradient(
       145deg,
-      rgba(30, 41, 59, 0.7) 0%,
-      rgba(15, 23, 42, 0.8) 100%
+      rgb(var(--rgb-surface) / 0.7) 0%,
+      rgb(var(--rgb-void) / 0.8) 100%
     );
     --gradient-footer: linear-gradient(
       to top,
-      #000000 0%,
-      #050505 40%,
-      #0f172a 100%
+      rgb(var(--rgb-void)) 0%,
+      rgb(var(--rgb-void)) 40%,
+      rgb(var(--rgb-surface)) 100%
     );
     --gradient-text-gold: linear-gradient(
       180deg,
@@ -73,6 +97,27 @@
     /* LAYOUT */
     --content-max-width: 1400px;
     --content-padding: 5%;
+  }
+
+  /* Impression : encre sur papier blanc, quelle que soit l'ambiance de l'écran. Le fond (void,
+     surface) ne change pas : la couverture sombre du PDF d'un numéro le garde (VueImpression). */
+  @media print {
+    :root {
+      --rgb-texte: 0 0 0;
+      --rgb-texte-2: 34 34 34;
+      --rgb-second: 75 75 75;
+      --rgb-discret: 102 102 102;
+      --rgb-or: 120 72 14;
+      --rgb-bleu-50: 0 0 0;
+      --rgb-bleu-200: 30 50 110;
+      --rgb-bleu-300: 30 50 110;
+      --rgb-bleu-400: 30 50 110;
+      --rgb-vert-400: 30 90 45;
+      --rgb-emeraude-300: 30 90 60;
+      --rgb-violet-300: 80 50 130;
+      --rgb-rouge-400: 150 30 30;
+      --rgb-rose-300: 140 40 65;
+    }
   }
 
   /* =========================================
@@ -269,10 +314,10 @@
     inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(2, 4, 10, 0.9) 0%,
-      rgba(2, 4, 10, 0.3) 30%,
-      rgba(2, 4, 10, 0.3) 70%,
-      rgba(2, 4, 10, 0.95) 100%
+      rgb(var(--rgb-void) / 0.9) 0%,
+      rgb(var(--rgb-void) / 0.3) 30%,
+      rgb(var(--rgb-void) / 0.3) 70%,
+      rgb(var(--rgb-void) / 0.95) 100%
     );
     pointer-events: none;
   }
@@ -303,14 +348,14 @@ nav {
     z-index: var(--z-nav);
     transition: all var(--duration-normal) var(--ease-smooth);
     /* RESTAURATION DU DESIGN KIBA : Noir transparent 7% + Flou léger */
-    background: rgba(2, 4, 10, 0.95); 
+    background: rgb(var(--rgb-void) / 0.95); 
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   nav.scrolled {
-    background: rgba(2, 4, 10, 0.98);
+    background: rgb(var(--rgb-void) / 0.98);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom-color: var(--color-border);
@@ -513,8 +558,8 @@ nav {
     align-items: center;
     padding: 15px;
     border-radius: var(--radius-full);
-    /* RESTAURATION : Ton bleu nuit #0b1121 à 80% + Blur XL */
-    background: rgba(11, 17, 33, 0.9); 
+    /* Panneau bleu nuit (surface de la palette) + Blur XL */
+    background: rgb(var(--rgb-surface) / 0.9); 
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(223, 209, 209, 0.3);
@@ -1024,7 +1069,7 @@ nav {
   }
 
   .article-content pre {
-    background: rgba(15, 23, 42, 0.8);
+    background: rgb(var(--rgb-surface) / 0.8);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-md);
     padding: 24px;
@@ -1209,7 +1254,7 @@ nav {
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader); /* Au-dessus de tout */
-  background: rgba(2, 4, 10, 0.98);
+  background: rgb(var(--rgb-void) / 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   display: flex;
@@ -1505,8 +1550,8 @@ nav {
    =========================================== */
 @media (prefers-contrast: high) {
   :root {
-    --color-text-muted: #b8c5d6;
-    --color-text-subtle: #a0b0c4;
+    --color-text-muted: rgb(var(--rgb-texte-2));
+    --color-text-subtle: rgb(var(--rgb-second));
     --color-border: rgba(251, 191, 36, 0.4);
   }
 
@@ -1545,7 +1590,7 @@ nav {
   .outils-lecture .outil::after {
     content: attr(aria-label);
     overflow: hidden;
-    color: rgb(229 231 235);
+    color: rgb(var(--rgb-texte));
     font-size: 1rem;
     line-height: 1.3;
     text-overflow: ellipsis;
@@ -1561,7 +1606,7 @@ nav {
    PRINT — Styles d'impression pour articles
    =========================================== */
 @media print {
-  /* Fond blanc partout : la classe sombre du <body> (bg-[#02040a]) l'emportait sur cette règle,
+  /* Fond blanc partout : la classe sombre du <body> (bg-void) l'emportait sur cette règle,
      et la fin de la dernière page s'imprimait en noir (constat du 23 octobre 2026) */
   html,
   body {
@@ -1634,7 +1679,7 @@ nav {
 /* Bouton Trigger */
 .category-dropdown-trigger {
   /* DNA identique à search-bar */
-  background: rgba(11, 17, 33, 0.95);
+  background: rgb(var(--rgb-surface) / 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -1687,7 +1732,7 @@ nav {
 .category-dropdown-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 4, 10, 0.85);
+  background: rgb(var(--rgb-void) / 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 90;
@@ -1708,7 +1753,7 @@ nav {
   left: 0;
   right: 0;
   /* Fond cosmique comme search-bar mais plus sombre pour contraste */
-  background: rgba(11, 17, 33, 0.98);
+  background: rgb(var(--rgb-surface) / 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(251, 191, 36, 0.3);
@@ -1821,7 +1866,7 @@ nav {
   background: linear-gradient(
     90deg,
     rgba(251, 191, 36, 0.08) 0%,
-    rgba(11, 17, 33, 0) 100%
+    rgb(var(--rgb-surface) / 0) 100%
   );
   border-bottom-color: rgba(251, 191, 36, 0.15);
   position: relative;

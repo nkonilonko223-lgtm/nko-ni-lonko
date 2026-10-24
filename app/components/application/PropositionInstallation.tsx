@@ -93,7 +93,7 @@ export default function PropositionInstallation() {
           role="region"
           data-proposition-installation=""
           aria-label={texteLangue(INSTALLER_APPLICATION, nko)}
-          className="fixed inset-x-3 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[9990] mx-auto max-w-md rounded-2xl border border-[#fbbf24]/30 bg-[#0b1121]/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl print:hidden motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500 md:bottom-6"
+          className="fixed inset-x-3 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-[9990] mx-auto max-w-md rounded-2xl border border-or/30 bg-surface/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl print:hidden motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500 md:bottom-6"
         >
           <div className="flex items-center gap-3">
             <Image src="/application/icone-192.png" alt="" width={48} height={48} className="h-12 w-12 shrink-0 rounded-xl" />
@@ -109,7 +109,7 @@ export default function PropositionInstallation() {
             <button
               type="button"
               onClick={installerMaintenant}
-              className="flex min-h-11 items-center gap-2 rounded-full bg-[#fbbf24] px-5 text-sm font-bold text-black transition-colors hover:bg-white"
+              className="flex min-h-11 items-center gap-2 rounded-full bg-[#fbbf24] px-5 text-sm font-bold text-black transition-colors hover:bg-blanc"
             >
               <i className="ph-bold ph-download-simple" aria-hidden="true"></i>
               <TexteLangue texte={INSTALLER} nko={nko} />

@@ -247,11 +247,11 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
           {/* 23 octobre 2026 : l'étiquette avait l'air d'un bouton (main, or au survol) mais ne
               menait nulle part ; c'est maintenant un vrai lien vers la page de la discipline */}
           {tags.map((tag, i) => tag.href ? (
-            <Link key={i} href={tag.href} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 hover:border-[#fbbf24] hover:text-[#fbbf24] hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#fbbf24] transition-all bg-[#02040a] ${isNko ? 'font-kigelia' : ''}`}>
+            <Link key={i} href={tag.href} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 hover:border-or hover:text-or hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-or transition-all bg-void ${isNko ? 'font-kigelia' : ''}`}>
               # {tag.libelle}
             </Link>
           ) : (
-            <span key={i} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 bg-[#02040a] ${isNko ? 'font-kigelia' : ''}`}>
+            <span key={i} className={`px-3 py-1.5 md:px-4 md:py-2 rounded-full border border-white/10 text-xs md:text-sm text-gray-300 bg-void ${isNko ? 'font-kigelia' : ''}`}>
               # {tag.libelle}
             </span>
           ))}
@@ -263,12 +263,12 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
 
       {/* 🚀 1/1000 : SMART REFERENCES (Grille Adaptative Numérique vs Physique) */}
       {references && references.length > 0 && (
-        <div className="mb-12 md:mb-16 p-6 md:p-8 rounded-[2rem] border border-white/5 bg-[#03050a] shadow-[inset_0_0_40px_rgba(251,191,36,0.02)] relative overflow-hidden group/refs">
+        <div className="mb-12 md:mb-16 p-6 md:p-8 rounded-[2rem] border border-white/5 bg-void shadow-[inset_0_0_40px_rgba(251,191,36,0.02)] relative overflow-hidden group/refs">
           
           {/* Lueur d'arrière-plan */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#fbbf24]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none transition-all duration-1000 group-hover/refs:bg-[#fbbf24]/10"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-or/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none transition-all duration-1000 group-hover/refs:bg-or/10"></div>
 
-        <h4 className={`text-[#fbbf24] font-bold mb-6 md:mb-8 flex items-center justify-start gap-3 text-lg md:text-xl relative z-10 ${isNko ? 'font-kigelia text-2xl md:text-3xl' : ''}`}>
+        <h4 className={`text-or font-bold mb-6 md:mb-8 flex items-center justify-start gap-3 text-lg md:text-xl relative z-10 ${isNko ? 'font-kigelia text-2xl md:text-3xl' : ''}`}>
             <i className="ph-fill ph-books text-2xl drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]"></i>
             {isNko ? "ߦߌߟߡߊ ߟߎ߬ ߣߌ߫ ߓߐߛߎ߲ ߠߎ߬" : "Sources & Références"}
           </h4>
@@ -286,12 +286,12 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                     href={ref.url} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className={`flex items-start gap-3 p-4 h-full rounded-2xl bg-white/5 border border-white/10 hover:border-[#fbbf24]/40 hover:bg-[#fbbf24]/5 transition-all duration-300 group/link shadow-lg hover:shadow-[0_5px_20px_rgba(251,191,36,0.15)] active:scale-[0.98] touch-manipulation ${isRefNko ? 'flex-row-reverse text-right' : 'text-left'}`}
+                    className={`flex items-start gap-3 p-4 h-full rounded-2xl bg-white/5 border border-white/10 hover:border-or/40 hover:bg-or/5 transition-all duration-300 group/link shadow-lg hover:shadow-[0_5px_20px_rgba(251,191,36,0.15)] active:scale-[0.98] touch-manipulation ${isRefNko ? 'flex-row-reverse text-right' : 'text-left'}`}
                     dir={isRefNko ? "rtl" : "ltr"}
                     onClick={triggerVibration}
                   >
-                    <div className="mt-0.5 p-2 rounded-full bg-black/50 border border-white/10 group-hover/link:border-[#fbbf24]/50 group-hover/link:bg-[#fbbf24]/20 transition-colors shrink-0">
-                      <i className="ph-bold ph-link text-[#fbbf24] text-sm md:text-base"></i>
+                    <div className="mt-0.5 p-2 rounded-full bg-black/50 border border-white/10 group-hover/link:border-or/50 group-hover/link:bg-or/20 transition-colors shrink-0">
+                      <i className="ph-bold ph-link text-or text-sm md:text-base"></i>
                     </div>
                     <span className={`text-sm md:text-base text-gray-300 group-hover/link:text-white leading-snug transition-colors ${isRefNko ? 'font-kigelia' : ''}`}>{ref.title}</span>
                   </a>
@@ -315,13 +315,13 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
 
      {/* 2. LA BIO AUTEUR (Deep Glassmorphism 1/1000) */}
       {author && (
-        <div className={`relative flex flex-col ${authorFlex} items-center md:items-start gap-6 md:gap-8 mb-16 md:mb-24 p-8 md:p-10 rounded-[2.5rem] bg-[#02040a] border border-white/5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-700 hover:border-white/10 hover:shadow-[0_20px_50px_-10px_rgba(251,191,36,0.1)] group/author`}>
+        <div className={`relative flex flex-col ${authorFlex} items-center md:items-start gap-6 md:gap-8 mb-16 md:mb-24 p-8 md:p-10 rounded-[2.5rem] bg-void border border-white/5 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] overflow-hidden transition-all duration-700 hover:border-white/10 hover:shadow-[0_20px_50px_-10px_rgba(251,191,36,0.1)] group/author`}>
           
           {/* Lueur interne magique */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#fbbf24]/5 via-transparent to-transparent opacity-0 group-hover/author:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-or/5 via-transparent to-transparent opacity-0 group-hover/author:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
           {/* IMAGE (Aura Magnétique) */}
           <div className="relative w-24 h-24 md:w-32 md:h-32 shrink-0 flex items-center justify-center">
-              <div className="absolute inset-0 bg-[#fbbf24]/10 rounded-full blur-xl scale-75 group-hover/author:scale-110 transition-all duration-700"></div>
+              <div className="absolute inset-0 bg-or/10 rounded-full blur-xl scale-75 group-hover/author:scale-110 transition-all duration-700"></div>
               
               {authorImageUrl && !authorImageError ? (
                 <Image 
@@ -330,7 +330,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                   fill
 quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus léger pour West Africa
                   sizes="(max-width: 768px) 192px, 256px"
-                  className="object-cover rounded-full border border-[#fbbf24]/50 relative z-10 transition-transform duration-500 group-hover/author:scale-105 shadow-xl"
+                  className="object-cover rounded-full border border-or/50 relative z-10 transition-transform duration-500 group-hover/author:scale-105 shadow-xl"
                   onError={() => setAuthorImageError(true)} 
                 />
               ) : (
@@ -348,14 +348,14 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                 
                 {/* 1. L'Étiquette Impériale Fixe (Hiérarchie N'Ko & Séparateur) */}
                 <div className="flex items-center gap-2.5">
-                  <span className="text-[#fbbf24] text-base md:text-[17px] font-bold tracking-wide font-kigelia drop-shadow-sm">
+                  <span className="text-or text-base md:text-[17px] font-bold tracking-wide font-kigelia drop-shadow-sm">
                     ߛߓߍߦߟߊ
                   </span>
                   
                   {/* Le séparateur vertical (World Class) */}
-                  <span className="w-[1.5px] h-3.5 bg-[#fbbf24]/40 rounded-full"></span>
+                  <span className="w-[1.5px] h-3.5 bg-or/40 rounded-full"></span>
                   
-                  <span className="text-[#fbbf24]/60 text-[10px] font-bold tracking-widest uppercase font-sans mt-0.5">
+                  <span className="text-or/60 text-[10px] font-bold tracking-widest uppercase font-sans mt-0.5">
                     Auteur
                   </span>
                 </div>
@@ -399,15 +399,15 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
             {/* Nom + Badge Certifié */}
             <div className="flex flex-col gap-1 mb-3 items-start text-start">
               <div className="flex items-center gap-2">
-                <h3 className={`font-bold leading-none text-white transition-colors duration-300 group-hover/author:text-[#fbbf24] ${isNko ? 'font-kigelia text-2xl md:text-3xl' : 'text-xl md:text-2xl'}`}>
+                <h3 className={`font-bold leading-none text-white transition-colors duration-300 group-hover/author:text-or ${isNko ? 'font-kigelia text-2xl md:text-3xl' : 'text-xl md:text-2xl'}`}>
                   {/* Le nom mène à la page de l'auteur (biographie, tous ses articles) */}
                   {author.slug ? (
-                    <Link href={lien(`/auteurs/${author.slug}`)} className="hover:text-[#fbbf24] hover:underline underline-offset-4">
+                    <Link href={lien(`/auteurs/${author.slug}`)} className="hover:text-or hover:underline underline-offset-4">
                       {isNko ? (author.nameNko || author.name) : author.name}
                     </Link>
                   ) : (isNko ? (author.nameNko || author.name) : author.name)}
                 </h3>
-                <i className="ph-fill ph-seal-check text-[#fbbf24] text-lg"></i>
+                <i className="ph-fill ph-seal-check text-or text-lg"></i>
               </div>
               
               {(author.nameNko || isNko) && (
@@ -455,7 +455,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                           href={social.url} 
                           target="_blank" 
                           rel="noopener noreferrer" 
-                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-[#fbbf24]/10 hover:border-[#fbbf24]/50 hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] transition-all duration-300 group touch-manipulation"
+                          className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-or hover:bg-or/10 hover:border-or/50 hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] transition-all duration-300 group touch-manipulation"
                           aria-label={`Suivre sur ${social.platform}`}
                           onClick={triggerVibration}
                         >
@@ -469,12 +469,12 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
       )}
 
            {/* 3. NEWSLETTER CTA (Formulaire Vivant & Glow Réactif) */}
-      <div className={`mb-16 md:mb-24 p-6 md:p-8 rounded-3xl bg-gradient-to-br from-[#fbbf24]/10 to-transparent border text-center relative overflow-hidden transition-all duration-700 ${
+      <div className={`mb-16 md:mb-24 p-6 md:p-8 rounded-3xl bg-gradient-to-br from-or/10 to-transparent border text-center relative overflow-hidden transition-all duration-700 ${
         isValidEmail 
-        ? 'border-[#fbbf24]/60 shadow-[0_0_40px_rgba(251,191,36,0.15)]' // 🚀 ACTION B : Le Glow Réactif Persistant
-        : 'border-[#fbbf24]/20 shadow-none'
+        ? 'border-or/60 shadow-[0_0_40px_rgba(251,191,36,0.15)]' // 🚀 ACTION B : Le Glow Réactif Persistant
+        : 'border-or/20 shadow-none'
       }`}>
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#fbbf24] to-transparent opacity-50"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-or to-transparent opacity-50"></div>
           
           {!subscribed ? (
             <div className={`relative z-10 transition-all duration-300 ${isExploding ? 'scale-110 opacity-0 blur-sm' : 'scale-100 opacity-100'}`}>
@@ -503,8 +503,8 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                         aria-label={isNko ? 'Email' : 'Votre adresse email'}
                         className={`flex-1 bg-black/60 backdrop-blur-md border rounded-xl px-4 py-3 text-white outline-none transition-all duration-500 placeholder:text-gray-500 shadow-inner group-focus-within/form:shadow-[0_0_30px_rgba(251,191,36,0.1)] ${
                           isValidEmail 
-                          ? 'border-[#fbbf24] shadow-[inset_0_0_15px_rgba(251,191,36,0.2)]' 
-                          : 'border-white/10 focus:border-[#fbbf24]/60'
+                          ? 'border-or shadow-[inset_0_0_15px_rgba(251,191,36,0.2)]' 
+                          : 'border-white/10 focus:border-or/60'
                         } ${isNko ? 'text-right' : ''}`}
                     />
                   <button 
@@ -512,7 +512,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                         disabled={!isValidEmail || isSubmitting || !turnstileToken}
                         className={`font-bold px-6 py-3 rounded-xl transition-all duration-500 whitespace-nowrap touch-manipulation flex items-center justify-center gap-2 relative overflow-hidden ${
                           isValidEmail && !isSubmitting && turnstileToken
-                          ? 'bg-[#fbbf24] text-black hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(251,191,36,0.4)] active:scale-95 cursor-pointer' 
+                          ? 'bg-[#fbbf24] text-black hover:bg-blanc hover:scale-105 shadow-[0_0_20px_rgba(251,191,36,0.4)] active:scale-95 cursor-pointer' 
                           : 'bg-white/5 text-gray-500 cursor-not-allowed border border-white/5'
                         } ${isNko ? 'font-kigelia' : ''}`}
                     >
@@ -531,7 +531,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
             <div className="py-6 flex flex-col items-center justify-center transition-all duration-500 scale-100">
                 <div className="relative">
                   <div className="absolute inset-0 bg-[#fbbf24] rounded-full blur-xl animate-pulse opacity-20"></div>
-                  <i className="ph-fill ph-check-circle text-5xl text-[#fbbf24] mb-3 relative z-10 animate-bounce"></i>
+                  <i className="ph-fill ph-check-circle text-5xl text-or mb-3 relative z-10 animate-bounce"></i>
                 </div>
                 <h3 className={`text-xl md:text-2xl font-bold text-white ${isNko ? 'font-kigelia' : ''}`}>
                     {isNko ? 'ߌ ߣߌ߫ ߗߋ߫߸ ߌ ߓߘߊ߫ ߛߙߍߘߍߦߊ߫.' : 'Merci ! Vous êtes inscrit.'}
@@ -587,7 +587,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                   </div>
                   
                   <div className={isNko ? "text-right" : "text-left"}>
-                      <span className={`text-[#fbbf24] text-xs font-bold uppercase tracking-wider mb-2 block ${isNko ? 'font-kigelia' : ''}`}>
+                      <span className={`text-or text-xs font-bold uppercase tracking-wider mb-2 block ${isNko ? 'font-kigelia' : ''}`}>
                       {item.category}
                       </span>
                       <h4 className={`text-gray-200 font-bold text-lg leading-snug group-hover:text-white transition-colors duration-300 ${isNko ? 'font-kigelia' : ''}`}>
@@ -608,9 +608,9 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
               triggerVibration();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-black/50 backdrop-blur-md border border-[#fbbf24]/30 text-gray-300 shadow-lg hover:bg-[#fbbf24]/10 hover:border-[#fbbf24] hover:text-white hover:shadow-[0_0_30px_rgba(251,191,36,0.2)] active:scale-95 transition-all duration-500 overflow-hidden touch-manipulation"
+            className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-black/50 backdrop-blur-md border border-or/30 text-gray-300 shadow-lg hover:bg-or/10 hover:border-or hover:text-white hover:shadow-[0_0_30px_rgba(251,191,36,0.2)] active:scale-95 transition-all duration-500 overflow-hidden touch-manipulation"
           >
-              <i className="ph-bold ph-arrow-up text-[#fbbf24] text-lg transition-transform duration-500 group-hover:-translate-y-2"></i>
+              <i className="ph-bold ph-arrow-up text-or text-lg transition-transform duration-500 group-hover:-translate-y-2"></i>
               <span className={`text-sm md:text-base font-bold uppercase tracking-widest ${isNko ? 'font-kigelia' : ''}`}>
                   {isNko ? 'ߊ߬ ߞߐߡߊߛߊߦߌ߫ ߛߊ߲ߝߍ߬' : 'Retour en haut'}
               </span>

@@ -17,7 +17,7 @@ export function BandeauNumero({ numero }: { numero: NumeroDeLArticle }) {
     <div className="mb-4 flex justify-center md:mb-6">
       <LienLangue
         href={`/numeros/${numero.slug}`}
-        className="inline-flex min-h-11 flex-wrap items-center justify-center gap-x-2 rounded-full border border-[#fbbf24]/40 px-4 py-1 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10 print:min-h-0 print:border-0 print:text-gray-600"
+        className="inline-flex min-h-11 flex-wrap items-center justify-center gap-x-2 rounded-full border border-or/40 px-4 py-1 text-or transition-colors hover:bg-or/10 print:min-h-0 print:border-0 print:text-gray-600"
       >
         <span lang="nqo" dir="rtl" className="font-kigelia text-base">{paruDansNko(numero.numero)}</span>
         <span aria-hidden="true" className="text-white/30 print:text-gray-400">·</span>
@@ -34,7 +34,7 @@ export function SurtitreRubrique({ rubrique }: { rubrique: RubriqueCourte }) {
   if (rubrique.slug) {
     return (
       <p className="-mt-2 mb-6 flex justify-center md:-mt-3 md:mb-8">
-        <LienLangue href={`/rubriques/${rubrique.slug}`} className="flex flex-wrap items-baseline justify-center gap-x-3 rounded-md transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#fbbf24]">
+        <LienLangue href={`/rubriques/${rubrique.slug}`} className="flex flex-wrap items-baseline justify-center gap-x-3 rounded-md transition-opacity hover:opacity-80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-or">
           <ContenuRubrique rubrique={rubrique} />
         </LienLangue>
       </p>
@@ -62,9 +62,9 @@ function Voisin({ article, sens }: { article: LienDuSommaire; sens: "precedent" 
     <LienLangue
       href={`/article/${article.slug}`}
       rel={sens === "precedent" ? "prev" : "next"}
-      className="group flex flex-col items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-center transition-colors hover:border-[#fbbf24]/50"
+      className="group flex flex-col items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-center transition-colors hover:border-or/50"
     >
-      <span className="flex items-center gap-2 text-[#fbbf24]">
+      <span className="flex items-center gap-2 text-or">
         {/* Flèches retournées quand la page est de droite à gauche (N'Ko) */}
         {sens === "precedent" && <i className="ph-bold ph-arrow-left rtl:-scale-x-100" aria-hidden="true" />}
         <LibelleEnLigne texte={libelle} />

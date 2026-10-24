@@ -101,7 +101,7 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
   };
 
   return (
-    <main className="min-h-screen bg-[#02040a] text-white px-4 py-16 md:py-24">
+    <main className="min-h-screen bg-void text-white px-4 py-16 md:py-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesStructurees) }} />
       <article className="max-w-2xl mx-auto">
         <p className="text-center mb-8">
@@ -151,7 +151,7 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
             <span lang="nqo" className="font-kigelia text-white/60">{TEXTES_LEXIQUE.domaine.nko}</span>
             <span className="text-white/30">/</span>
             <span lang="fr" className="text-white/60">{TEXTES_LEXIQUE.domaine.fr} :</span>
-            <span lang="nqo" dir="rtl" className="font-kigelia text-[#fbbf24]">{terme.domaine}</span>
+            <span lang="nqo" dir="rtl" className="font-kigelia text-or">{terme.domaine}</span>
           </p>
         )}
 

@@ -63,7 +63,7 @@ function Liste({ titre, icone, entrees, nko }: { titre: Libelle; icone: string; 
   if (!entrees.length) return null;
   return (
     <div className="mb-6">
-      <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-[#fbbf24]">
+      <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-or">
         <i className={`ph-bold ${icone}`} aria-hidden="true"></i>
         <TexteLangue texte={titre} nko={nko} />
       </h3>
@@ -75,7 +75,7 @@ function Liste({ titre, icone, entrees, nko }: { titre: Libelle; icone: string; 
               <a
                 href={e.chemin}
                 {...sens}
-                className={`block rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-start text-white/90 transition-colors hover:border-[#fbbf24]/50 ${sens.lang === "nqo" ? "font-kigelia text-lg" : ""}`}
+                className={`block rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-start text-white/90 transition-colors hover:border-or/50 ${sens.lang === "nqo" ? "font-kigelia text-lg" : ""}`}
               >
                 {e.titre}
               </a>

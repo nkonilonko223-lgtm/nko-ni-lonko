@@ -225,7 +225,7 @@ export default function ContactClient() {
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Taille Affinée 1/10000) */}
       <button
         onClick={handleBack}
-        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-[#02040a]/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-[#02040a]/80 hover:border-[#fbbf24]/50 transition-all duration-500 touch-manipulation ${
+        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-void/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-void/80 hover:border-or/50 transition-all duration-500 touch-manipulation ${
           isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
         }`}
         aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}
@@ -238,7 +238,7 @@ export default function ContactClient() {
         
         {/* Le Texte (Taille réduite pour PC) */}
         <div className="hidden md:flex flex-col items-start">
-          <span className={`font-bold text-[#fbbf24] text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+          <span className={`font-bold text-or text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
             {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
           </span>
         </div>
@@ -252,10 +252,10 @@ export default function ContactClient() {
         
         <div className="mb-8 relative group">
             <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-            <i className="ph-duotone ph-envelope-simple-open text-6xl md:text-8xl text-[#fbbf24] relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"></i>
+            <i className="ph-duotone ph-envelope-simple-open text-6xl md:text-8xl text-or relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"></i>
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-extrabold text-[#fbbf24] mb-16 tracking-tight font-sans text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-16 tracking-tight font-sans text-center">
             <span className="block mb-2 md:mb-4 leading-tight drop-shadow-lg font-kigelia">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬</span>
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 Contactez-nous
@@ -267,17 +267,17 @@ export default function ContactClient() {
             {/* ========================================== */}
             {/* 1. CARTE D'INFORMATIONS BILINGUE */}
             {/* ========================================== */}
-            <div className="backdrop-blur-xl bg-[#02040a]/60 p-8 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl flex flex-col justify-between text-left transition-colors hover:border-white/20">
+            <div className="backdrop-blur-xl bg-void/60 p-8 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl flex flex-col justify-between text-left transition-colors hover:border-white/20">
                 <div>
                     <div className="mb-10 flex flex-col items-start" dir="rtl">
-                        <h2 className="font-kigelia text-2xl text-[#fbbf24] mb-1 opacity-90">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
+                        <h2 className="font-kigelia text-2xl text-or mb-1 opacity-90">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
                         <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold" lang="fr" dir="ltr">Informations de contact</span>
                     </div>
 
                     <div className="space-y-8">
                         <div className="flex items-start gap-5 group cursor-default">
-                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-[#fbbf24] group-hover:text-[#fbbf24] transition-colors duration-300">
-                                <i className="ph-fill ph-map-pin text-2xl text-[#fbbf24] group-hover:scale-110 transition-transform duration-300"></i>
+                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-or group-hover:text-or transition-colors duration-300">
+                                <i className="ph-fill ph-map-pin text-2xl text-or group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
                             <div className="flex flex-col items-start">
                                 <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ</h3>
@@ -287,13 +287,13 @@ export default function ContactClient() {
                         </div>
                         
                         <a href="mailto:contact@nkonilonko.com" onClick={triggerVibration} className="flex items-start gap-5 group cursor-pointer touch-manipulation">
-                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24]/10 transition-all duration-300">
-                                <i className="ph-fill ph-envelope-simple text-2xl text-[#fbbf24] group-hover:scale-110 transition-transform duration-300"></i>
+                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-or group-hover:bg-or/10 transition-all duration-300">
+                                <i className="ph-fill ph-envelope-simple text-2xl text-or group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
                             <div className="flex flex-col items-start">
                                 <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</h3>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2" lang="fr">Email Direct</span>
-                                <p className="text-[#fbbf24] font-light text-sm group-hover:underline decoration-[#fbbf24] underline-offset-4">contact@nkonilonko.com</p>
+                                <p className="text-or font-light text-sm group-hover:underline decoration-or underline-offset-4">contact@nkonilonko.com</p>
                             </div>
                         </a>
 
@@ -302,7 +302,7 @@ export default function ContactClient() {
                         {TELEPHONES.map((t) => (
                             <div key={t.e164} className="flex items-start gap-5 group">
                                 <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                                    <i className="ph-fill ph-phone text-2xl text-[#fbbf24]" aria-hidden="true"></i>
+                                    <i className="ph-fill ph-phone text-2xl text-or" aria-hidden="true"></i>
                                 </div>
                                 <div className="flex flex-col items-start">
                                     {t.pays.nko ? (
@@ -319,7 +319,7 @@ export default function ContactClient() {
                                         dir="ltr"
                                         translate="no"
                                         aria-label={`Appeler (${t.pays.fr}) : ${t.affichage}`}
-                                        className="text-[#fbbf24] font-light text-sm hover:underline decoration-[#fbbf24] underline-offset-4 touch-manipulation"
+                                        className="text-or font-light text-sm hover:underline decoration-or underline-offset-4 touch-manipulation"
                                     >
                                         {t.affichage}
                                     </a>
@@ -332,7 +332,7 @@ export default function ContactClient() {
                                                 rel="noopener noreferrer"
                                                 onClick={triggerVibration}
                                                 aria-label={`WhatsApp (${t.pays.fr}) : ${t.affichage}`}
-                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all touch-manipulation"
+                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-or hover:border-or hover:bg-or/10 transition-all touch-manipulation"
                                             >
                                                 <i className="ph-fill ph-whatsapp-logo text-lg" aria-hidden="true"></i>
                                                 <span lang="en" translate="no">WhatsApp</span>
@@ -345,7 +345,7 @@ export default function ContactClient() {
                                                 rel="noopener noreferrer"
                                                 onClick={triggerVibration}
                                                 aria-label={`Telegram (${t.pays.fr}) : ${t.affichage}`}
-                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all touch-manipulation"
+                                                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 px-4 text-sm text-gray-300 hover:text-or hover:border-or hover:bg-or/10 transition-all touch-manipulation"
                                             >
                                                 <i className="ph-fill ph-telegram-logo text-lg" aria-hidden="true"></i>
                                                 <span lang="en" translate="no">Telegram</span>
@@ -359,12 +359,12 @@ export default function ContactClient() {
 
                         {/* Telegram : nom d'utilisateur, sans numéro (app/lib/coordonnees.ts) */}
                         <a href={TELEGRAM.lien} target="_blank" rel="noopener noreferrer" onClick={triggerVibration} className="flex items-start gap-5 group cursor-pointer touch-manipulation">
-                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-[#fbbf24] group-hover:bg-[#fbbf24]/10 transition-all duration-300">
-                                <i className="ph-fill ph-telegram-logo text-2xl text-[#fbbf24] group-hover:scale-110 transition-transform duration-300" aria-hidden="true"></i>
+                            <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:border-or group-hover:bg-or/10 transition-all duration-300">
+                                <i className="ph-fill ph-telegram-logo text-2xl text-or group-hover:scale-110 transition-transform duration-300" aria-hidden="true"></i>
                             </div>
                             <div className="flex flex-col items-start">
                                 <h3 className="text-white font-bold text-lg mb-1" lang="en" translate="no">Telegram</h3>
-                                <p dir="ltr" translate="no" className="text-[#fbbf24] font-light text-sm group-hover:underline decoration-[#fbbf24] underline-offset-4">{TELEGRAM.nom}</p>
+                                <p dir="ltr" translate="no" className="text-or font-light text-sm group-hover:underline decoration-or underline-offset-4">{TELEGRAM.nom}</p>
                             </div>
                         </a>
                     </div>
@@ -384,7 +384,7 @@ export default function ContactClient() {
                               rel="noopener noreferrer"
                               aria-label={link.label}
                               onClick={triggerVibration}
-                              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all shadow-lg hover:shadow-[0_0_15px_rgba(251,191,36,0.2)] touch-manipulation"
+                              className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-or hover:border-or hover:bg-or/10 transition-all shadow-lg hover:shadow-[0_0_15px_rgba(251,191,36,0.2)] touch-manipulation"
                             >
                                 <i className={`ph-fill ph-${link.icon} text-xl`}></i>
                             </a>
@@ -396,7 +396,7 @@ export default function ContactClient() {
             {/* ========================================== */}
             {/* 2. LE FORMULAIRE ACTIF (0.01% Elite) */}
             {/* ========================================== */}
-            <div className="backdrop-blur-xl bg-[#02040a]/80 p-8 md:p-12 rounded-[2rem] border-t-2 border-[#fbbf24] shadow-[0_10px_30px_rgba(251,191,36,0.1)] relative overflow-hidden transition-colors hover:border-white/20 flex flex-col">
+            <div className="backdrop-blur-xl bg-void/80 p-8 md:p-12 rounded-[2rem] border-t-2 border-or shadow-[0_10px_30px_rgba(251,191,36,0.1)] relative overflow-hidden transition-colors hover:border-white/20 flex flex-col">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[#fbbf24] rounded-full blur-[80px] opacity-10 pointer-events-none"></div>
                 
                 {/* 🚀 BADGE HORS-LIGNE */}
@@ -418,7 +418,7 @@ export default function ContactClient() {
                     <form className="relative z-10 flex flex-col gap-6 flex-1" onSubmit={handleSubmit} onKeyDown={handleKeyDown} onFocusCapture={activerProtection} onPointerDownCapture={activerProtection}>
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
-                                <span className="font-kigelia text-xl text-[#fbbf24]">ߕߐ߮</span>
+                                <span className="font-kigelia text-xl text-or">ߕߐ߮</span>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Nom Complet</span>
                             </label>
                             <input 
@@ -430,13 +430,13 @@ export default function ContactClient() {
                                 dir="auto"
                                 disabled={isSubmitting || !isOnline}
                                 placeholder="ߌ ߕߐ߮ ߘߝߊߣߍ߲ • Votre nom complet" 
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#fbbf24] focus:ring-1 focus:ring-[#fbbf24] transition-all font-light disabled:opacity-50"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-or focus:ring-1 focus:ring-or transition-all font-light disabled:opacity-50"
                             />
                         </div>
 
                         <div className="flex flex-col text-left relative">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
-                                <span className="font-kigelia text-xl text-[#fbbf24]">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</span>
+                                <span className="font-kigelia text-xl text-or">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</span>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Adresse Email</span>
                             </label>
                             <div className="relative">
@@ -454,7 +454,7 @@ export default function ContactClient() {
                                   className={`w-full bg-white/5 border rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none transition-all font-light disabled:opacity-50 pr-12 ${
                                     formData.email.length > 0 && isValidEmail 
                                       ? 'border-green-500/50 focus:border-green-500 focus:ring-1 focus:ring-green-500' 
-                                      : 'border-white/10 focus:border-[#fbbf24] focus:ring-1 focus:ring-[#fbbf24]'
+                                      : 'border-white/10 focus:border-or focus:ring-1 focus:ring-or'
                                   }`}
                               />
                               {/* 🚀 VALIDATION EMAIL TEMPS RÉEL */}
@@ -466,7 +466,7 @@ export default function ContactClient() {
 
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
-                                <span className="font-kigelia text-xl text-[#fbbf24]">ߗߋߛߓߍ</span>
+                                <span className="font-kigelia text-xl text-or">ߗߋߛߓߍ</span>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Votre Message</span>
                             </label>
                             {/* 🚀 ÉLASTICITÉ COGNITIVE */}
@@ -480,7 +480,7 @@ export default function ContactClient() {
                                 dir="auto"
                                 disabled={isSubmitting || !isOnline}
                                 placeholder="ߌ ߟߊ߫ ߗߋߛߓߍ ߛߓߍ߫ ߦߊ߲߬... • Écrivez votre message ici..." 
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-[#fbbf24] focus:ring-1 focus:ring-[#fbbf24] transition-all resize-none font-light disabled:opacity-50 min-h-[120px] max-h-[400px]"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-or focus:ring-1 focus:ring-or transition-all resize-none font-light disabled:opacity-50 min-h-[120px] max-h-[400px]"
                             ></textarea>
                         </div>
                         
@@ -517,7 +517,7 @@ export default function ContactClient() {
                                 ? 'bg-white/10 text-gray-400 cursor-wait' 
                                 : !isOnline || !isValidEmail || !formData.name || !formData.message || !turnstileToken
                                   ? 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'
-                                  : 'bg-[#fbbf24] text-black hover:bg-white shadow-[0_0_20px_rgba(251,191,36,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]'
+                                  : 'bg-[#fbbf24] text-black hover:bg-blanc shadow-[0_0_20px_rgba(251,191,36,0.2)] hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]'
                             }`}
                         >
                             {isSubmitting ? (

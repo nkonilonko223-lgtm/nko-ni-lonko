@@ -39,7 +39,7 @@ export default function PiluleRetour() {
     <button
       type="button"
       onClick={retour}
-      className={`group fixed top-6 z-[9999] flex items-center gap-2 rounded-full border border-white/10 bg-[#02040a]/40 p-1 shadow-lg backdrop-blur-md transition-all duration-500 hover:border-[#fbbf24]/50 hover:bg-[#02040a]/80 touch-manipulation print:hidden md:px-3 md:py-1.5 ${
+      className={`group fixed top-6 z-[9999] flex items-center gap-2 rounded-full border border-white/10 bg-void/40 p-1 shadow-lg backdrop-blur-md transition-all duration-500 hover:border-or/50 hover:bg-void/80 touch-manipulation print:hidden md:px-3 md:py-1.5 ${
         isNko ? "right-4 md:right-8" : "left-4 md:left-8"
       }`}
       aria-label={isNko ? RETOUR.nko : RETOUR.fr}
@@ -48,7 +48,7 @@ export default function PiluleRetour() {
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 shadow-inner transition-colors duration-300 group-hover:bg-[#fbbf24]">
         <i className={`ph-bold ${isNko ? "ph-arrow-right" : "ph-arrow-left"} text-base text-gray-300 transition-colors group-hover:text-black`} aria-hidden="true"></i>
       </span>
-      <span lang={isNko ? "nqo" : "fr"} className={`hidden text-xs font-bold leading-none text-[#fbbf24] md:inline md:text-sm ${isNko ? "font-kigelia" : "font-fr"}`}>
+      <span lang={isNko ? "nqo" : "fr"} className={`hidden text-xs font-bold leading-none text-or md:inline md:text-sm ${isNko ? "font-kigelia" : "font-fr"}`}>
         {isNko ? RETOUR.nko : RETOUR.fr}
       </span>
     </button>

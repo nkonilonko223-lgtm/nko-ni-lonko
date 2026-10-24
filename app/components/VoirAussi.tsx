@@ -17,7 +17,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
   return (
     <section aria-labelledby="a-lire-aussi" className="mx-auto max-w-5xl px-4 pb-12 print:hidden">
       <h2 id="a-lire-aussi" className="mb-5 flex flex-col items-center gap-0.5">
-        {A_LIRE_AUSSI.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-[#fbbf24]">{A_LIRE_AUSSI.nko}</span>}
+        {A_LIRE_AUSSI.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-or">{A_LIRE_AUSSI.nko}</span>}
         <span lang="fr" className="text-[11px] uppercase tracking-widest text-white/50">{A_LIRE_AUSSI.fr}</span>
       </h2>
       <ul className="grid gap-4 md:grid-cols-3">
@@ -25,7 +25,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
           <li key={a.slug}>
             <LienLangue
               href={`/article/${a.slug}`}
-              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-or/50"
             >
               {a.image?.url && (
                 <span className="relative aspect-[16/9] w-full overflow-hidden">
