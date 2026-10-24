@@ -80,7 +80,7 @@ export default async function PageRubrique({ params }: { params: Promise<{ lang:
   };
 
   return (
-    <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+    <main className="min-h-screen bg-void px-4 pb-20 pt-28 text-white md:pt-36">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesGoogle) }} />
       <PiluleRetour />
       <VueRubrique rubrique={rubrique} langue={langue} />

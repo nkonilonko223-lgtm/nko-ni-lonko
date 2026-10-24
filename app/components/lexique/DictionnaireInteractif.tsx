@@ -37,7 +37,7 @@ function Carte({ t }: { t: TermeDictionnaire }) {
         <span lang="nqo" dir="rtl" className="block font-kigelia text-lg font-bold text-blue-300">{t.termeNko}</span>
         <span lang="fr" dir="ltr" className="block font-sans text-sm text-white/80">{t.termeFr}</span>
         {t.domaine && (
-          <span lang="nqo" dir="rtl" className="mt-2 block font-kigelia text-xs text-[#fbbf24]/80">{t.domaine}</span>
+          <span lang="nqo" dir="rtl" className="mt-2 block font-kigelia text-xs text-or/80">{t.domaine}</span>
         )}
       </Link>
     </li>
@@ -200,7 +200,7 @@ export default function DictionnaireInteractif({ termes }: { termes: TermeDictio
       ) : (
         sections.map(([lettre, liste]) => (
           <section key={lettre} id={`lettre-${lettre.codePointAt(0)}`} className="mb-10 scroll-mt-24">
-            <h2 lang="nqo" dir="rtl" className="mb-4 border-b border-white/10 pb-2 font-kigelia text-2xl font-bold text-[#fbbf24]">
+            <h2 lang="nqo" dir="rtl" className="mb-4 border-b border-white/10 pb-2 font-kigelia text-2xl font-bold text-or">
               {lettre}
             </h2>
             <ul className="grid gap-3 sm:grid-cols-2">

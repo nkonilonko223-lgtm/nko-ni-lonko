@@ -149,7 +149,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
             href={markValue?.href} 
             target={target} 
             rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-            className="text-[#fbbf24] hover:text-white underline decoration-[#fbbf24]/30 hover:decoration-[#fbbf24] underline-offset-4 transition-colors duration-300"
+            className="text-or hover:text-white underline decoration-or/30 hover:decoration-or underline-offset-4 transition-colors duration-300"
           >
             {children}
           </a>
@@ -158,7 +158,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
       // Lettrine (voir avecLettrine) : en or à l'écran, en noir sur papier ; elle monte au-dessus de sa
       // ligne sans l'agrandir (interligne nul) : la place est réservée par le paragraphe (pt-…)
       lettrine: ({ children }) => (
-        <span className="lettrine text-[4em] md:text-[5em] leading-[0] text-[#fbbf24] print:text-black me-[0.12em]">
+        <span className="lettrine text-[4em] md:text-[5em] leading-[0] text-or print:text-black me-[0.12em]">
           {children}
         </span>
       ),
@@ -211,7 +211,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h2 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-4xl md:text-5xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+              <h2 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-4xl md:text-5xl font-extrabold text-or print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pr-8 md:pr-12 bg-gradient-to-r from-or/15 to-transparent border-r-4 border-or leading-tight text-balance font-kigelia drop-shadow-[0_0_20px_rgba(251,191,36,0.2)]">
                 {children}
               </h2>
             </FadeInBlock>
@@ -219,7 +219,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         } else {
           return (
             <FadeInBlock>
-              <h2 id={ancre(blockValue)} dir="ltr" lang="fr" className="text-2xl md:text-3xl font-extrabold text-[#fbbf24] print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-[#fbbf24]/10 to-transparent border-l-4 border-[#fbbf24] leading-tight text-balance font-sans">
+              <h2 id={ancre(blockValue)} dir="ltr" lang="fr" className="text-2xl md:text-3xl font-extrabold text-or print:text-black mt-14 md:mt-20 mb-6 md:mb-8 py-3 pl-8 md:pl-12 bg-gradient-to-r from-or/10 to-transparent border-l-4 border-or leading-tight text-balance font-sans">
                 {children}
               </h2>
             </FadeInBlock>
@@ -231,7 +231,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h2 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-3xl md:text-4xl font-bold text-[#fbbf24] print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pr-8 md:pr-12 bg-gradient-to-r from-[#fbbf24]/15 to-transparent border-r-4 border-[#fbbf24] leading-tight text-balance font-kigelia">
+              <h2 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-3xl md:text-4xl font-bold text-or print:text-black mt-14 md:mt-18 mb-5 md:mb-7 py-2 pr-8 md:pr-12 bg-gradient-to-r from-or/15 to-transparent border-r-4 border-or leading-tight text-balance font-kigelia">
                 {children}
               </h2>
             </FadeInBlock>
@@ -251,7 +251,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h3 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-2xl md:text-3xl font-semibold text-[#fbbf24] print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pr-6 md:pr-10 border-r-2 border-[#fbbf24]/50 leading-snug text-balance font-kigelia">
+              <h3 id={ancre(blockValue)} dir="rtl" lang="nqo" className="text-2xl md:text-3xl font-semibold text-or print:text-black mt-10 md:mt-14 mb-4 md:mb-5 pr-6 md:pr-10 border-r-2 border-or/50 leading-snug text-balance font-kigelia">
                 {children}
               </h3>
             </FadeInBlock>
@@ -271,7 +271,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <h4 dir="rtl" lang="nqo" className="text-xl md:text-2xl font-medium text-[#fbbf24]/90 print:text-black mt-8 md:mt-10 mb-3 md:mb-4 leading-snug text-balance font-kigelia">
+              <h4 dir="rtl" lang="nqo" className="text-xl md:text-2xl font-medium text-or/90 print:text-black mt-8 md:mt-10 mb-3 md:mb-4 leading-snug text-balance font-kigelia">
                 {children}
               </h4>
             </FadeInBlock>
@@ -292,7 +292,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         return (
           <FadeInBlock>
             {nko ? (
-              <h5 dir="rtl" lang="nqo" className="text-lg md:text-xl font-medium text-[#fbbf24]/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-kigelia">
+              <h5 dir="rtl" lang="nqo" className="text-lg md:text-xl font-medium text-or/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-kigelia">
                 {children}
               </h5>
             ) : (
@@ -308,7 +308,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         return (
           <FadeInBlock>
             {nko ? (
-              <h6 dir="rtl" lang="nqo" className="text-lg md:text-xl font-medium text-[#fbbf24]/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-kigelia">
+              <h6 dir="rtl" lang="nqo" className="text-lg md:text-xl font-medium text-or/80 print:text-black mt-6 md:mt-8 mb-2 md:mb-3 leading-snug text-balance font-kigelia">
                 {children}
               </h6>
             ) : (
@@ -324,8 +324,8 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (nko) {
           return (
             <FadeInBlock>
-              <blockquote dir="rtl" lang="nqo" className="relative border-r-4 border-[#fbbf24] print:border-black pr-6 md:pr-8 py-5 my-10 md:my-14 italic text-[#fbbf24] print:text-black bg-gradient-to-l from-[#fbbf24]/10 to-transparent print:bg-transparent rounded-l-xl font-kigelia" style={{ fontSize: '1.3em', lineHeight: '2.0' }}>
-                <i className="ph-fill ph-quotes absolute top-3 right-3 text-[#fbbf24]/20 text-3xl print:hidden"></i>
+              <blockquote dir="rtl" lang="nqo" className="relative border-r-4 border-or print:border-black pr-6 md:pr-8 py-5 my-10 md:my-14 italic text-or print:text-black bg-gradient-to-l from-or/10 to-transparent print:bg-transparent rounded-l-xl font-kigelia" style={{ fontSize: '1.3em', lineHeight: '2.0' }}>
+                <i className="ph-fill ph-quotes absolute top-3 right-3 text-or/20 text-3xl print:hidden"></i>
                 {children}
               </blockquote>
             </FadeInBlock>
@@ -333,8 +333,8 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         } else {
           return (
             <FadeInBlock>
-              <blockquote dir="ltr" lang="fr" className="relative border-l-4 border-[#fbbf24] print:border-black pl-6 md:pl-8 py-5 my-10 md:my-14 italic text-[#fbbf24]/90 print:text-black bg-gradient-to-r from-[#fbbf24]/10 to-transparent print:bg-transparent rounded-r-xl font-sans" style={{ fontSize: '1.1em', lineHeight: '1.8' }}>
-                <i className="ph-fill ph-quotes absolute top-3 left-3 text-[#fbbf24]/20 text-3xl print:hidden"></i>
+              <blockquote dir="ltr" lang="fr" className="relative border-l-4 border-or print:border-black pl-6 md:pl-8 py-5 my-10 md:my-14 italic text-or/90 print:text-black bg-gradient-to-r from-or/10 to-transparent print:bg-transparent rounded-r-xl font-sans" style={{ fontSize: '1.1em', lineHeight: '1.8' }}>
+                <i className="ph-fill ph-quotes absolute top-3 left-3 text-or/20 text-3xl print:hidden"></i>
                 {children}
               </blockquote>
             </FadeInBlock>
@@ -343,8 +343,8 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
       }
     },
     list: {
-      bullet: ({children}) => <FadeInBlock coupable><ul className="list-disc pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black">{children}</ul></FadeInBlock>,
-      number: ({children}) => <FadeInBlock coupable><ol className="list-decimal pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-[#fbbf24] print:marker:text-black marker:font-bold">{children}</ol></FadeInBlock>,
+      bullet: ({children}) => <FadeInBlock coupable><ul className="list-disc pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-or print:marker:text-black">{children}</ul></FadeInBlock>,
+      number: ({children}) => <FadeInBlock coupable><ol className="list-decimal pl-5 md:pl-6 mb-6 md:mb-8 text-gray-300 print:text-black space-y-2 md:space-y-3 marker:text-or print:marker:text-black marker:font-bold">{children}</ol></FadeInBlock>,
     },
     // Chaque élément de liste porte sa langue et son sens, comme les paragraphes (règle du projet,
     // et nécessaire au choix « langue de lecture »)
@@ -381,14 +381,14 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                   
                   {/* 1. N'Ko en Majesté : 15px/16px (Dominant & Doré) */}
                   {imageValue.captionNko && (
-                    <p dir="rtl" lang="nqo" className="leading-relaxed text-[#fbbf24] print:text-black print:drop-shadow-none font-kigelia text-right text-[15px] md:text-[16px] drop-shadow-sm">
+                    <p dir="rtl" lang="nqo" className="leading-relaxed text-or print:text-black print:drop-shadow-none font-kigelia text-right text-[15px] md:text-[16px] drop-shadow-sm">
                       {imageValue.captionNko}
                     </p>
                   )}
                   
                   {/* 2. Le Séparateur Nette et Fluide */}
                   {imageValue.captionNko && imageValue.caption && (
-                    <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/50 to-transparent mx-auto my-1 rounded-full print:hidden"></div>
+                    <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-or/50 to-transparent mx-auto my-1 rounded-full print:hidden"></div>
                   )}
 
                   {/* 3. Français Subordonné : 13px/14px (Discret, Blanc/Gris & Italique) */}
@@ -487,9 +487,9 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
           },
           amazing: {
             icon: 'ph-sparkle',
-            colorClass: 'text-[#fbbf24]',
-            borderClass: 'border-[#fbbf24]/50',
-            bgClass: 'from-[#fbbf24]/10',
+            colorClass: 'text-or',
+            borderClass: 'border-or/50',
+            bgClass: 'from-or/10',
             labelNko: 'ߌ ߞߊ߬ ߟߐ߲߫ ߓߊ߬؟',
             labelFr: 'Le saviez-vous ?'
           },
@@ -503,9 +503,9 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
           },
           info: {
             icon: 'ph-info',
-            colorClass: 'text-[#fbbf24]',
-            borderClass: 'border-[#fbbf24]/50',
-            bgClass: 'from-[#fbbf24]/10',
+            colorClass: 'text-or',
+            borderClass: 'border-or/50',
+            bgClass: 'from-or/10',
             labelNko: 'ߟߐ߲ߞߏ',
             labelFr: 'Information'
           },
@@ -599,13 +599,13 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
             <div className="titre-rubrique my-14 md:my-20 print:my-8">
               {/* Ligne décorative supérieure */}
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/40 to-transparent" />
+                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-or/40 to-transparent" />
                 {sectionValue.icon && (
-                  <div className="w-10 h-10 rounded-full bg-[#fbbf24]/10 border border-[#fbbf24]/30 flex items-center justify-center shrink-0">
-                    <i className={`ph-bold ${sectionValue.icon} text-[#fbbf24] text-xl`}></i>
+                  <div className="w-10 h-10 rounded-full bg-or/10 border border-or/30 flex items-center justify-center shrink-0">
+                    <i className={`ph-bold ${sectionValue.icon} text-or text-xl`}></i>
                   </div>
                 )}
-                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/40 to-transparent" />
+                <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-or/40 to-transparent" />
               </div>
 
               {/* 👑 Titre N'Ko — Souverain */}
@@ -614,7 +614,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                 <p
                   dir={isNko(sectionValue.titleNko) ? "rtl" : "ltr"}
                   lang={isNko(sectionValue.titleNko) ? "nqo" : "fr"}
-                  className={`${isNko(sectionValue.titleNko) ? "font-kigelia" : "font-sans"} text-3xl md:text-4xl font-bold text-[#fbbf24] text-center leading-normal mb-2 print:text-black drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]`}
+                  className={`${isNko(sectionValue.titleNko) ? "font-kigelia" : "font-sans"} text-3xl md:text-4xl font-bold text-or text-center leading-normal mb-2 print:text-black drop-shadow-[0_0_20px_rgba(251,191,36,0.3)]`}
                 >
                   {sectionValue.titleNko}
                 </p>
@@ -632,7 +632,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
               )}
 
               {/* Ligne décorative inférieure */}
-              <div className="mt-6 h-[1px] bg-gradient-to-r from-transparent via-[#fbbf24]/20 to-transparent" />
+              <div className="mt-6 h-[1px] bg-gradient-to-r from-transparent via-or/20 to-transparent" />
             </div>
           </FadeInBlock>
         );
@@ -645,9 +645,9 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
           <FadeInBlock>
             <div className="my-8 md:my-10 rounded-xl overflow-hidden border border-white/10 shadow-xl print:border-gray-300" dir="ltr">
               {/* Header du bloc */}
-              <div className="flex items-center justify-between px-4 py-2.5 bg-[#0b1121] border-b border-white/10 print:bg-gray-100">
+              <div className="flex items-center justify-between px-4 py-2.5 bg-surface border-b border-white/10 print:bg-gray-100">
                 <div className="flex items-center gap-2">
-                  <i className="ph-bold ph-terminal text-[#fbbf24] text-sm"></i>
+                  <i className="ph-bold ph-terminal text-or text-sm"></i>
                   {codeValue.filename && (
                     <span className="text-xs text-gray-400 font-mono tracking-wide">
                       {codeValue.filename}
@@ -655,13 +655,13 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                   )}
                 </div>
                 {codeValue.language && (
-                  <span className="text-[10px] uppercase tracking-widest text-[#fbbf24]/60 font-mono border border-[#fbbf24]/20 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] uppercase tracking-widest text-or/60 font-mono border border-or/20 px-2 py-0.5 rounded-full">
                     {codeValue.language}
                   </span>
                 )}
               </div>
               {/* Code */}
-              <pre className="overflow-x-auto p-4 md:p-6 bg-[#060910] print:bg-white">
+              <pre className="overflow-x-auto p-4 md:p-6 bg-void print:bg-blanc">
                 <code className="text-sm text-gray-300 print:text-black font-mono leading-relaxed whitespace-pre">
                   {codeValue.code}
                 </code>

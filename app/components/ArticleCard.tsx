@@ -130,7 +130,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
     <Link 
       href={lien(`/article/${slugCurrent}`)} 
       onClick={triggerVibration}
-      className="group/card block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-[#fbbf24] rounded-[20px]"
+      className="group/card block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-or rounded-[20px]"
       style={{ perspective: "1000px" }}
     >
       <article 
@@ -140,7 +140,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
         onMouseLeave={handleMouseLeave}
         className="
           relative flex h-full flex-col overflow-hidden rounded-[20px] 
-          bg-[#0b1121]/40 backdrop-blur-xl border border-white/10
+          bg-surface/40 backdrop-blur-xl border border-white/10
           shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]
         "
         style={{
@@ -192,13 +192,13 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               </div>
             )}
             
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0b1121] via-[#0b1121]/50 to-transparent opacity-90"></div>
+            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-surface via-surface/50 to-transparent opacity-90"></div>
 
             <div className={`absolute top-4 ${isNko ? 'right-4' : 'left-4'} z-10`}>
               <span className={`
                 flex items-center gap-2 rounded-full 
                 bg-black/60 backdrop-blur-md border border-white/10 
-                text-[#fbbf24] shadow-lg
+                text-or shadow-lg
                 ${isNko 
                   ? 'font-kigelia text-sm px-4 py-1.5' 
                   : 'text-[10px] font-bold uppercase tracking-widest px-3 py-1.5'} 
@@ -219,7 +219,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                   : new Date(article.publishedAt).toLocaleDateString("fr-FR", { month: 'short', day: 'numeric', year: 'numeric' })
                 }
                 {isNew && (
-                  <span className={`ml-2 inline-flex items-center gap-1 rounded-full bg-[#fbbf24]/20 border border-[#fbbf24]/50 px-2 py-0.5 text-[#fbbf24] animate-pulse shadow-[0_0_10px_rgba(251,191,36,0.2)] ${isNko ? 'font-kigelia text-xs' : 'text-[9px] font-bold uppercase tracking-wider'}`}>
+                  <span className={`ml-2 inline-flex items-center gap-1 rounded-full bg-or/20 border border-or/50 px-2 py-0.5 text-or animate-pulse shadow-[0_0_10px_rgba(251,191,36,0.2)] ${isNko ? 'font-kigelia text-xs' : 'text-[9px] font-bold uppercase tracking-wider'}`}>
                     <i className="ph-fill ph-sparkle"></i>
                     {isNko ? "ߞߎߘߊ" : "Nouveau"}
                   </span>
@@ -227,7 +227,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               </span>
               
               <span className={`flex items-center gap-1.5 ${isNko ? 'font-kigelia text-sm' : ''}`}>
-                <i className="ph-bold ph-book-open text-[#fbbf24]"></i>
+                <i className="ph-bold ph-book-open text-or"></i>
                 {isNko 
                   ? <span className="text-base">ߡߌ߬ߛߍ߲ {toNkoDigits(readTime)}</span> 
                   : `${readTime} min`
@@ -235,7 +235,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               </span>
             </div>
 
-            <h3 className="mb-3 font-bold text-slate-100 transition-colors duration-300 group-hover/card:text-[#fbbf24]" title={article.title}>
+            <h3 className="mb-3 font-bold text-slate-100 transition-colors duration-300 group-hover/card:text-or" title={article.title}>
               <span
                 {...sensDe(titre.nko)}
                 className={`line-clamp-2 text-start ${titreNko ? 'font-kigelia leading-[1.6] py-1 -my-1' : 'leading-snug'} ${
@@ -275,7 +275,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
             <div className="mt-auto flex items-center justify-between border-t border-white/10 pt-4">
               <div className={`flex items-center gap-3 ${isNko ? 'flex-row-reverse' : ''}`}>
                 
-                <div className="relative h-9 w-9 overflow-hidden rounded-full border border-[#fbbf24]/20 bg-white/5 shadow-inner transition-transform duration-300 group-hover/card:scale-110">
+                <div className="relative h-9 w-9 overflow-hidden rounded-full border border-or/20 bg-white/5 shadow-inner transition-transform duration-300 group-hover/card:scale-110">
                   {article.authorImageUrl ? (
                     <Image src={article.authorImageUrl} alt={article.authorName} fill className="object-cover" />
                   ) : (
@@ -293,13 +293,13 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                   
                   <div className="flex flex-col gap-[8px]">
                     {/* Le Nom Principal (s'adapte à la langue de l'interface) */}
-                    <span className={`font-bold transition-colors duration-300 group-hover/card:text-white leading-none ${isNko ? 'font-kigelia text-sm text-[#fbbf24]' : 'text-xs text-slate-200'}`}>
+                    <span className={`font-bold transition-colors duration-300 group-hover/card:text-white leading-none ${isNko ? 'font-kigelia text-sm text-or' : 'text-xs text-slate-200'}`}>
                       {isNko ? (article.authorNameNko || article.authorName) : article.authorName}
                     </span>
                     
                     {/* Le Nom Secondaire (Sécurité : Ne s'affiche QUE si le nom N'Ko existe dans la base de données) */}
                     {article.authorNameNko && (
-                      <span className={`transition-colors duration-300 leading-none ${isNko ? 'text-[10px] text-slate-400 font-mono tracking-wide' : 'font-kigelia text-[11px] text-[#fbbf24]/80'}`}>
+                      <span className={`transition-colors duration-300 leading-none ${isNko ? 'text-[10px] text-slate-400 font-mono tracking-wide' : 'font-kigelia text-[11px] text-or/80'}`}>
                         {isNko ? article.authorName : article.authorNameNko}
                       </span>
                     )}
@@ -310,7 +310,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
               <span className={`
                 flex h-10 w-10 items-center justify-center rounded-full 
-                border border-[#fbbf24]/30 bg-[#fbbf24]/10 text-[#fbbf24] 
+                border border-or/30 bg-or/10 text-or 
                 transition-all duration-300 
                 group-hover/card:bg-[#fbbf24] group-hover/card:text-black group-hover/card:scale-110 group-hover/card:shadow-[0_0_15px_rgba(251,191,36,0.4)]
                 ${isNko ? 'group-hover/card:-rotate-45' : 'group-hover/card:rotate-45'}

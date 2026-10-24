@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+// Couleur qui suit la palette du site (app/globals.css, « PALETTE NUIT DU MANDÉ ») : trois nombres
+// (rouge vert bleu) dans une variable, pour garder l'opacité de Tailwind (bg-void/80, text-white/60).
+const jeton = (nom: string) => `rgb(var(--rgb-${nom}) / <alpha-value>)`;
+
 const config: Config = {
   darkMode: "class",
   content: [
@@ -33,7 +37,23 @@ const config: Config = {
         background: "var(--color-void)",
         foreground: "var(--color-text)",
         
-        void: "var(--color-void)",
+        // Palette « Nuit du Mandé » (novembre 2026). Les ambiances de lecture des articles
+        // (html[data-ambiance] : papier, jour) ne changent que les variables.
+        // ATTENTION : ici « white » = la couleur du TEXTE (ivoire la nuit, encre sur le papier),
+        // et gray-200 à 500 = ses nuances. Pour un vrai blanc (impression, bouton) : « blanc ».
+        void: jeton("void"),
+        surface: jeton("surface"),
+        or: jeton("or"),
+        white: jeton("texte"),
+        blanc: "#ffffff",
+        gray: { 200: jeton("texte"), 300: jeton("texte-2"), 400: jeton("second"), 500: jeton("discret") },
+        // Couleurs du lexique et des encadrés : celles de Tailwind la nuit, foncées sur le papier
+        blue: { 50: jeton("bleu-50"), 200: jeton("bleu-200"), 300: jeton("bleu-300"), 400: jeton("bleu-400") },
+        green: { 400: jeton("vert-400") },
+        emerald: { 300: jeton("emeraude-300") },
+        purple: { 300: jeton("violet-300") },
+        red: { 400: jeton("rouge-400") },
+        rose: { 300: jeton("rose-300") },
         gold: {
           DEFAULT: "var(--color-gold)",
           warm: "var(--color-gold-warm)",

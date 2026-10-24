@@ -36,11 +36,11 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
         <div role="navigation" aria-label="Fil d'Ariane" className="mb-6">
           <ol className="flex flex-wrap items-center justify-center gap-2 text-sm text-white/60">
             <li>
-              <LienLangue href="/" className="transition-colors hover:text-[#fbbf24]"><Libelle texte={ACCUEIL} fr={fr} /></LienLangue>
+              <LienLangue href="/" className="transition-colors hover:text-or"><Libelle texte={ACCUEIL} fr={fr} /></LienLangue>
             </li>
             <li aria-hidden="true">›</li>
             <li>
-              <LienLangue href="/numeros" className="transition-colors hover:text-[#fbbf24]"><Libelle texte={NUMEROS} fr={fr} /></LienLangue>
+              <LienLangue href="/numeros" className="transition-colors hover:text-or"><Libelle texte={NUMEROS} fr={fr} /></LienLangue>
             </li>
             <li aria-hidden="true">›</li>
             <li aria-current="page" className="text-white/80">
@@ -49,9 +49,9 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
           </ol>
         </div>
         <h1 className="flex flex-col items-center gap-1">
-          {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{rubrique.titleNko}</span>}
+          {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{rubrique.titleNko}</span>}
           {rubrique.titleFr && (
-            <span lang="fr" className={rubrique.titleNko ? "text-xs uppercase tracking-widest text-white/60" : "text-3xl font-bold text-[#fbbf24] md:text-4xl"}>{rubrique.titleFr}</span>
+            <span lang="fr" className={rubrique.titleNko ? "text-xs uppercase tracking-widest text-white/60" : "text-3xl font-bold text-or md:text-4xl"}>{rubrique.titleFr}</span>
           )}
         </h1>
         {rubrique.descriptionFr && <p lang="fr" dir="ltr" className="mx-auto mt-4 max-w-2xl text-sm text-white/70">{rubrique.descriptionFr}</p>}
@@ -70,7 +70,7 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
             <ArticleCard article={article} isPriority={i < 3} />
             {/* Le numéro où l'article est paru (N'Ko d'abord) */}
             {article.numero && (
-              <LienLangue href={`/numeros/${article.numero.slug}`} className="self-center text-xs text-white/60 transition-colors hover:text-[#fbbf24]">
+              <LienLangue href={`/numeros/${article.numero.slug}`} className="self-center text-xs text-white/60 transition-colors hover:text-or">
                 <span lang="nqo" dir="rtl" className="font-kigelia text-sm">{numeroNko(article.numero.numero)}</span>
                 <span aria-hidden="true"> · </span>
                 <span lang="fr" dir="ltr">{numeroFr(article.numero.numero)}</span>

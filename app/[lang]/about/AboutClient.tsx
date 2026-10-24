@@ -109,7 +109,7 @@ export default function AboutClient() {
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Version Épurée 1/10000) */}
       <button
         onClick={handleBack}
-        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-[#02040a]/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-[#02040a]/80 hover:border-[#fbbf24]/50 transition-all duration-500 touch-manipulation print:hidden ${
+        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-void/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-void/80 hover:border-or/50 transition-all duration-500 touch-manipulation print:hidden ${
           isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
         }`}
         aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}
@@ -122,7 +122,7 @@ export default function AboutClient() {
         
         {/* Le Texte */}
         <div className="hidden md:flex flex-col items-start pr-2">
-          <span className={`font-bold text-[#fbbf24] text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+          <span className={`font-bold text-or text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
             {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
           </span>
         </div>
@@ -135,10 +135,10 @@ export default function AboutClient() {
 
         <div className="mb-10 relative group">
             <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-            <i className="ph-duotone ph-scroll text-7xl md:text-8xl text-[#fbbf24] relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"></i>
+            <i className="ph-duotone ph-scroll text-7xl md:text-8xl text-or relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]"></i>
         </div>
 
-        <h1 className="text-4xl md:text-7xl font-extrabold text-[#fbbf24] mb-20 tracking-tight font-sans">
+        <h1 className="text-4xl md:text-7xl font-extrabold text-or mb-20 tracking-tight font-sans">
             <span className="block mb-4 md:mb-6 leading-tight drop-shadow-lg font-kigelia">ߞߊ߲߬ߞߎߡߊ</span>
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 À Propos de nous
@@ -152,7 +152,7 @@ export default function AboutClient() {
           ref={(el) => { sectionRefs.current[0] = el; }}
           data-index={0}
           onMouseMove={handleMouseMove}
-          className={`group/spotlight relative backdrop-blur-xl bg-[#02040a]/80 p-8 md:p-14 rounded-[2rem] border border-white/10 shadow-2xl w-full mb-12 overflow-hidden transition-all duration-1000 transform ${visibleSections.has(0) ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}
+          className={`group/spotlight relative backdrop-blur-xl bg-void/80 p-8 md:p-14 rounded-[2rem] border border-white/10 shadow-2xl w-full mb-12 overflow-hidden transition-all duration-1000 transform ${visibleSections.has(0) ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}
         >
             <div className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover/spotlight:opacity-100" style={{ background: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(251,191,36,0.06), transparent 40%)' }}></div>
 
@@ -163,7 +163,7 @@ export default function AboutClient() {
                   onMouseEnter={() => setFocusedLang('fr')}
                   onMouseLeave={() => setFocusedLang('none')}
                 >
-                    <h2 className="text-sm tracking-[0.2em] text-[#fbbf24] uppercase mb-6 opacity-80 font-bold">La Vision</h2>
+                    <h2 className="text-sm tracking-[0.2em] text-or uppercase mb-6 opacity-80 font-bold">La Vision</h2>
                     {/* 🚀 FR : Agrandissement de taille (text-lg/xl) et d'interligne (leading-2) */}
                     <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] md:leading-[2.2]">
                         <strong>La science n&apos;a pas de frontières. La langue ne devrait plus en être une.</strong><br/><br/>
@@ -177,8 +177,8 @@ export default function AboutClient() {
                   dir="rtl"
                 >
                     {/* 🚀 N'KO : Verrouillé tel que tu l'as validé */}
-                    <h2 className="font-kigelia text-2xl md:text-3xl text-[#fbbf24] mb-6">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</h2>
-                    <p className="font-kigelia text-2xl md:text-3xl text-[#fbbf24] leading-[1.8] md:leading-[2] drop-shadow-md">
+                    <h2 className="font-kigelia text-2xl md:text-3xl text-or mb-6">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</h2>
+                    <p className="font-kigelia text-2xl md:text-3xl text-or leading-[1.8] md:leading-[2] drop-shadow-md">
                         ߞߵߊ߬ ߘߐߛߊߙߌ߫ ߸ ߞߵߊ߬ ߢߊߦߋ߫ ߸ ߞߵߊ߬ ߟߊߓߊ߯ߙߊ߫ ߏ߬ ߟߋ߬ ߦߋ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߞߊ߫ ߘߐ߬ߖߊ ߘߌ߫: ߊ߬ ߟߐ߲߫ ߞߏ߫ ߘߊ߲߬ ߛߌ߫ ߕߍ߫ ߟߐ߲ߞߏ ߟߊ߫߸ ߊ߰ ߏ߬ ߗߏ߯ ߞߋߟߋ߲߫ ߘߐ߫ ߘߊ߲߬ ߡߊ߲߫ ߞߊ߲߫ ߞߊ߬ ߞߍ߫߸ ߒ߬ ߠߊ߫ ߞߊ߲߫ ߘߐߦߙߌߥߊߟߋ߲߫ ߣߌ߲߬ ߝߣߊ߫ ߟߊ߫ ߘߋ߬߹ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߘߊ߲߫ ߘߊ߫ ߣߊ߬ߕߊ ߘߏ߫ ߟߋ߬ ߞߊߡߊ߬،ߛߊ߫߸ ߞߊ߬ ߟߐ߲ߞߏ߫ &quot;ߛߓߍߡߊ&quot; ߟߎ߬ ߟߊߝߘߏ߬ߓߊ߬ߦߊ߬ ߦߏ߫:(ߛߊ߲ߡߊߛߓߍߟߐ߲ߘߐߦߊ߸ ߝߕߌߙߋ߲ ߘߐ߬ߞߏ߬ߦߊ߸ ߣߌߡߊߞߊߙߊ߲ ߣߴߊ߬ ߢߐ߲߰ ߘߐ߫ ߟߎ߬) ߡߊ߲߬ߘߋ߲߫ ߡߌ߬ߙߌ߲߬ߘߌ ߦߋ߫߸ ߞߊ߬ ߕߊ߬ߡߌ߲ ߏ߬ ߟߊ߫ ߝߐ߫ ߞߊ߬ ߕߊ߫ ߛߋ߫ ߘߎߢߊ߫ ߡߌ߬ߙߌ߲߬ߘߌ ߕߐ߭ ߓߍ߯ ߡߊ߬߹ ߒߞߏ ߟߊߓߊ߯ߙߊߟߌ ߕߍ߫ ߕߏ߫ ߣߊߡߎ߲ ߛߌߟߊ߫ ߘߐߙߐ߲߫ ߡߊ߬߸ ߏ߬ ߞߐ߫߸ ߊ߬ ߞߍߕߐ߫ ߓߍ߯ ߟߋ߬ ߦߋ߫ ߛߌߟߊߓߐߛߐ߯ߣߊ ߘߌ߫ ߣߌ߲߬߸ ߞߊ߬ ߥߊ߫ ߛߋߒߞߏߟߦߊ ߣߌ߫ ߞߎ߲߬ߛߊ߲߬ߧߊ ߞߎ߲߬ߕߍ߫ ߡߊ߬ ߘߎߢߊ߫ ߞߣߐ߫߹
                     </p>
                 </div>
@@ -192,7 +192,7 @@ export default function AboutClient() {
           ref={(el) => { sectionRefs.current[1] = el; }}
           data-index={1}
           onMouseMove={handleMouseMove}
-          className={`group/spotlight relative backdrop-blur-xl bg-[#02040a]/80 p-8 md:p-14 rounded-[2rem] border border-white/10 shadow-2xl w-full mb-12 overflow-hidden transition-all duration-1000 delay-150 transform ${visibleSections.has(1) ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}
+          className={`group/spotlight relative backdrop-blur-xl bg-void/80 p-8 md:p-14 rounded-[2rem] border border-white/10 shadow-2xl w-full mb-12 overflow-hidden transition-all duration-1000 delay-150 transform ${visibleSections.has(1) ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}
         >
             <div className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover/spotlight:opacity-100" style={{ background: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(251,191,36,0.06), transparent 40%)' }}></div>
 
@@ -203,7 +203,7 @@ export default function AboutClient() {
                   onMouseEnter={() => setFocusedLang('fr')}
                   onMouseLeave={() => setFocusedLang('none')}
                 >
-                    <h2 className="text-sm tracking-[0.2em] text-[#fbbf24] uppercase mb-6 opacity-80 font-bold">L&apos;Émancipation</h2>
+                    <h2 className="text-sm tracking-[0.2em] text-or uppercase mb-6 opacity-80 font-bold">L&apos;Émancipation</h2>
                     {/* 🚀 FR : Agrandissement de taille et d'interligne */}
                     <p className="font-light text-lg md:text-xl text-gray-300 leading-[2] md:leading-[2.2]">
                         L&apos;émancipation par le Savoir : nous croyons que l&apos;intelligence et l&apos;innovation s&apos;expriment le mieux dans la langue maternelle. Traduire les concepts scientifiques les plus complexes en N&apos;Ko, ce n&apos;est pas seulement traduire des mots, c&apos;est forger les outils intellectuels des futures générations de chercheurs, d&apos;ingénieurs et d&apos;innovateurs africains.
@@ -215,7 +215,7 @@ export default function AboutClient() {
                   onMouseLeave={() => setFocusedLang('none')}
                   dir="rtl"
                 >
-                    <h2 className="font-kigelia text-xl md:text-2xl text-[#fbbf24] mb-6">ߒߞߏ ߦߋ߫ ߡߊ߲߬ߛߊ ߟߋ߬ ߘߌ߫</h2>
+                    <h2 className="font-kigelia text-xl md:text-2xl text-or mb-6">ߒߞߏ ߦߋ߫ ߡߊ߲߬ߛߊ ߟߋ߬ ߘߌ߫</h2>
                     <p className="font-kigelia text-xl md:text-2xl text-white/90 leading-[1.8] md:leading-[2]">
                         ߣߌ߫ ߟߐ߲ߞߏ ߞߍ߫ ߘߊ߫ ߦߙߍ߬ߛߘߐ߫ ߡߌ߲߫ ߘߌ߫ ߒߞߏ ߦߴߏ߬ ߝߊ߲߬ߞߊ ߟߋ߬ ߘߌ߫߸ ߞߏ߬ߣߌ߲߬ ߊ߲ ߧߴߊ߬ ߖߊ߬ߕߋ߬ߟߊ ߟߋ߬ ߞߏ߫ ߦߟߌߟߊ߲ߘߌߦߊ ߣߌ߫ ߟߊ߬ߞߎ߬ߘߊ߬߬ߞߎ߬ߘߊ߬ߦߊߟߌ ߟߎ߬ ߓߍ߯ ߞߍߝߍ߲߫ ߢߌ߲߬ߡߊ߲߫ ߠߋ߬ ߦߋ߫ ߝߊ߬ߛߏ ߞߊ߲ ߘߌ߫߹ ߏ߬ ߘߐ߫ ߛߊ߫߸ ߞߊ߬ ߟߐ߲ߞߏ ߡߌ߬ߣߊ߬ߘߊ ߞߛߌ߬ߞߛߊ߬ߡߊ ߟߎ߬ ߢߊߝߐ߫ ߊ߲ ߠߊ߫ ߞߊ߲߫ ߘߐ߫߸ ߏ߬ ߞߏ߫߸ ߏ߬ ߕߍ߫ ߛߋ߫ ߟߊߝߍ߯ߦߊߟߊ߫ ߞߵߏ߬ ߓߌ߬ߟߊ߬߫ ߞߎߡߊߘߋ߲ ߘߟߊߡߌߣߊߟߌ ߘߐߙߐ߲߫ ߡߌ߬ߣߊ߲ ߞߣߐ߫ ߢߊ߫ ߛߌ߫ ߡߊ߬߹ ߐ߲߫ ߊ߬ ߟߐ߲߫ ߞߴߏ߬ ߓߊ߯ߙߊ ߜߙߋߡߊߕߍ߯ߟߌ ߟߋ߬ ߘߌ߫ ߓߍ߲߬ ߥߙߎߞߟߌ ߛߌߙߊ߫ ߕߋߟߋ߲ߠߋ߲߫ ߡߊ߬ ߕߋߙߎ߲߫߸ ߘߋ߲ߣߍ߲߫ ߦߟߌߟߊ߲ߘߌ ߝߊ߯ߘߐߞߍ ߣߊ߬ߕߐ߫ ߟߎ߬ ߦߋ߫߸ ߏ߬ ߟߎ߬ ߡߌ߲ ߠߎ߬ ߓߍߣߊ߬ ߞߍ߫ ߛߌߣߌ߲߫ ߢߌߣߌߣߌ߲ߠߊ ߞߎ߬ߛߊ߲߸ ߞߋ߬ߞߎ߲߬ߣߌߞߋߞߎ߲ ߊ߬ ߣߌ߫ ߝߊ߬ߘߊ߬ߝߌ߲߬ߠߊ ߟߊ߬ߞߎ߬ߘߊ߬ߞߎ߬ߘߊ߬ߦߊ߬ߟߌ ߟߊ߫ ߟߎ߬ ߘߌ߫ ߞߐߟߊ߫߹
                     </p>
@@ -233,7 +233,7 @@ export default function AboutClient() {
           }}
           data-index={2}
           onMouseMove={handleMouseMove}
-          className={`group/spotlight relative backdrop-blur-md bg-[#02040a]/90 p-8 md:p-14 rounded-[1.5rem] border-t-2 border-[#fbbf24] shadow-[0_10px_30px_rgba(251,191,36,0.15)] w-full text-center overflow-hidden transition-all duration-1000 delay-300 transform ${visibleSections.has(2) ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}
+          className={`group/spotlight relative backdrop-blur-md bg-void/90 p-8 md:p-14 rounded-[1.5rem] border-t-2 border-or shadow-[0_10px_30px_rgba(251,191,36,0.15)] w-full text-center overflow-hidden transition-all duration-1000 delay-300 transform ${visibleSections.has(2) ? 'translate-y-0 opacity-100' : 'translate-y-24 opacity-0'}`}
         >
             <div className="pointer-events-none absolute -inset-px rounded-[1.5rem] opacity-0 transition duration-300 group-hover/spotlight:opacity-100" style={{ background: 'radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(251,191,36,0.08), transparent 40%)' }}></div>
             
@@ -244,12 +244,12 @@ export default function AboutClient() {
                   onMouseEnter={() => setFocusedLang('fr')}
                   onMouseLeave={() => setFocusedLang('none')}
                 >
-                    <i className="ph-fill ph-quotes text-4xl text-[#fbbf24]/30 mb-6"></i>
+                    <i className="ph-fill ph-quotes text-4xl text-or/30 mb-6"></i>
                     {/* 🚀 FR : Agrandissement de taille et d'interligne */}
                     <p className="text-lg md:text-xl text-gray-300 font-light italic leading-[2] md:leading-[2.2] mb-8">
                         &quot;J&apos;ai conçu cette plateforme avec une conviction absolue : le N&apos;Ko est la clé de voûte de notre souveraineté technologique. Ce sanctuaire numérique est une fondation posée pour l&apos;avenir. La science appartient à ceux qui peuvent la lire.&quot;
                     </p>
-                    <p className="text-[#fbbf24] font-bold text-sm uppercase tracking-widest">— Moustapha CAMARA / MckV</p>
+                    <p className="text-or font-bold text-sm uppercase tracking-widest">— Moustapha CAMARA / MckV</p>
                     <p className="text-xs text-white/50 tracking-widest uppercase mt-2">Fondateur & Architecte</p>
                 </div>
                 
@@ -259,12 +259,12 @@ export default function AboutClient() {
                   onMouseLeave={() => setFocusedLang('none')}
                   dir="rtl"
                 >
-                    <h2 className="font-kigelia text-xl md:text-2xl text-[#fbbf24] mb-6 opacity-90">ߊ߬ ߟߊߘߊ߲ߓߊ߮ ߣߴߊ߬ ߓߐ߰ߟߐ߲߬ߠߊ ߟߊ߫ ߦߋߕߊ ߟߎ߬</h2>
+                    <h2 className="font-kigelia text-xl md:text-2xl text-or mb-6 opacity-90">ߊ߬ ߟߊߘߊ߲ߓߊ߮ ߣߴߊ߬ ߓߐ߰ߟߐ߲߬ߠߊ ߟߊ߫ ߦߋߕߊ ߟߎ߬</h2>
                     <p className="font-kigelia text-xl md:text-2xl text-white/90 leading-[1.8] md:leading-[2] mb-8">
                         ߊ߲ ߞߊ߬ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߣߌ߲߬ ߟߊߘߊ߲߫ ߞߎ߲߬ ߞߎ߲߬ߓߊ߬ߓߊ ߞߋߟߋ߲߫ ߘߐߙߐ߲߫ ߠߋ߬ ߟߊ߫: ߣߴߏ߬ ߦߋ߫ ߞߊ߬ ߒߞߏ ߟߊ߫ ߛߊ߲ߠߞߊߦߊ߫ ߡߊߦߌ߬ߘߊ߬ ߞߛߐߓߍ߫߸ ߐ߲߫ ߏ߬ ߘߐ߫߸ ߊ߬ ߟߐ߲߫ ߞߏ߫ ߒߞߏ ߛߓߍߛߎ߲ ߠߋ߬ ߦߋ߫ ߛߋ߫ ߞߴߊ߲ ߠߊ߫ ߖߘߍ߬ߕߌ߰ߦߊ ߘߝߊߟߋ߲߫ ߟߊߛߊ߬ߞߌ߲߬ ߊ߲ ߡߊ߬߸ ߘߎߢߊ߫ ߛߋߞߏߟߦߊ ߘߊߞߎ߲ ߠߎ߬ ߓߍ߯ ߘߐ߫ ߓߌ߬߹ ߏ߬ ߞߏߛߐ߲߬ ߊ߲ ߠߊ߫ ߓߟߐߟߐ ߛߋߞߏߟߊ ߝߙߍߕߍߡߊ߫ ߣߌ߲߬ ߧߋ߫ ߖߎ߬ߓߌߟߊ ߥߟߊ߫ ߖߎ߬ߕߞߍ߫ ߟߋ߬ ߘߌ߫ ߞߊ߬ ߛߌߣߌ߲߫ ߢߍ߫ ߛߞߌ߬߸ ߒߞߏ ߞߊߙߊ߲ߡߐ߮ ߟߎ߬ ߣߌ߫ ߒߞߏ߫ ߞߊߙߊ߲ߘߋ߲߫ ߠߎ߬ ߘߌ߫ ߒߞߏ߫ ߟߊ߫ ߛߐ߬ߘߐ߲߬ߠߊ ߘߎߢߊ߫ ߝߊ߲߬ ߓߍ߯ ߘߐ߫ ߢߊ ߡߌ߲ ߡߊ߬߸ ߞߵߊ߬ ߞߊ߬ߙߊ߲߫߸ ߞߊ߬ ߢߊߦߋ߫߹ ߟߊߓߊ߲߫ ߘߐ߫ ߟߐ߲ߞߏ ߞߏ߬ߣߌ߲߬ ߧߋ߫ ߡߞߐ߬ ߟߋ߬ ߕߊ߫ ߘߌ߫ ߡߌ߲ ߓߍ߫ ߛߋ߫ ߊ߬ ߢߊߦߋ߫ ߟߊ߫߸ ߊ߬ ߝߊ߬ߛߏ ߞߊ߲ ߘߐ߫߹
                     </p>
-                    <p className="text-[#fbbf24] font-kigelia text-lg md:text-xl">— ߡߎ߬ߛߊߝߊ߬ ߞߊ߬ߡߙߊ߬ / ߡ.ߞ</p>
-                    <p className="text-xs font-kigelia text-[#fbbf24]/50 mt-2">ߟߊߘߊ߲ߓߊ߮ ߣߴߊ߬ ߓߐ߰ߟߐ߲߬ߦߊ߬ߟߊ</p>
+                    <p className="text-or font-kigelia text-lg md:text-xl">— ߡߎ߬ߛߊߝߊ߬ ߞߊ߬ߡߙߊ߬ / ߡ.ߞ</p>
+                    <p className="text-xs font-kigelia text-or/50 mt-2">ߟߊߘߊ߲ߓߊ߮ ߣߴߊ߬ ߓߐ߰ߟߐ߲߬ߦߊ߬ߟߊ</p>
                 </div>
             </div>
         </div>
@@ -281,7 +281,7 @@ export default function AboutClient() {
                       rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                       aria-label={link.label}
                       onClick={triggerVibration}
-                      className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:border-[#fbbf24] hover:bg-[#fbbf24]/10 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] touch-manipulation group"
+                      className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center text-gray-400 hover:text-or hover:border-or hover:bg-or/10 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] touch-manipulation group"
                     >
                         <i className={`ph-fill ph-${link.icon} text-2xl group-hover:scale-110 group-hover:-translate-y-1 transition-all duration-300`}></i>
                     </a>

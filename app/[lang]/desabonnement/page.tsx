@@ -73,7 +73,7 @@ export default async function DesabonnementPage({
   }
 
   return (
-    <main className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16 text-center bg-[#02040a] text-white">
+    <main className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16 text-center bg-void text-white">
       <h1 className="text-3xl md:text-4xl font-bold mb-6">
         <Bilingue nko={TEXTES_NKO.titre} fr="Se désabonner" />
       </h1>
@@ -89,14 +89,14 @@ export default async function DesabonnementPage({
           <input type="hidden" name="token" value={token} />
           <button
             type="submit"
-            className="px-8 py-4 rounded-full bg-[#fbbf24] text-black font-bold hover:bg-white transition-colors"
+            className="px-8 py-4 rounded-full bg-[#fbbf24] text-black font-bold hover:bg-blanc transition-colors"
           >
             <Bilingue nko={TEXTES_NKO.bouton} fr="Me désabonner" />
           </button>
         </form>
       )}
 
-      <LienLangue href="/" className="mt-10 text-[#fbbf24] underline underline-offset-4">
+      <LienLangue href="/" className="mt-10 text-or underline underline-offset-4">
         <Bilingue nko={TEXTES_NKO.accueil} fr="Retour à l'accueil" />
       </LienLangue>
     </main>

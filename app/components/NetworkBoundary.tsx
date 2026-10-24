@@ -109,14 +109,14 @@ export default function NetworkBoundary({ children }: { children: React.ReactNod
       {showOverlay && (
         <div 
           // 🚀 ARME 2 : backdrop-grayscale pour la Stase Temporelle
-          className="fixed inset-0 z-[9999] bg-[#02040a]/80 backdrop-blur-xl backdrop-grayscale flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-300" 
+          className="fixed inset-0 z-[9999] bg-void/80 backdrop-blur-xl backdrop-grayscale flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-300" 
           dir="ltr"
           role="alertdialog"
           aria-modal="true"
         >
           {/* Sceau d'Arrière-plan */}
           <div className="absolute inset-0 pointer-events-none z-0 flex items-center justify-center opacity-[0.02]">
-            <i className="ph-fill ph-wifi-slash text-[400px] text-[#fbbf24]"></i>
+            <i className="ph-fill ph-wifi-slash text-[400px] text-or"></i>
           </div>
 
           <div className="relative z-10 w-full max-w-lg flex flex-col items-center">
@@ -124,18 +124,18 @@ export default function NetworkBoundary({ children }: { children: React.ReactNod
             {/* 🚀 ARME 3 : Le Radar Actif (Ondes concentriques) */}
             <div className="mb-8 relative flex items-center justify-center w-32 h-32 animate-in zoom-in duration-500 delay-100">
               {/* Onde Radar 1 (Grande et lente) */}
-              <div className="absolute inset-0 border-2 border-[#fbbf24] rounded-full opacity-20 animate-[ping_2.5s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+              <div className="absolute inset-0 border-2 border-or rounded-full opacity-20 animate-[ping_2.5s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
               {/* Onde Radar 2 (Petite et rapide) */}
-              <div className="absolute inset-4 border border-[#fbbf24] rounded-full opacity-40 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite_0.5s]"></div>
+              <div className="absolute inset-4 border border-or rounded-full opacity-40 animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite_0.5s]"></div>
               {/* Cœur énergétique */}
-              <div className="absolute inset-8 bg-[#fbbf24]/20 blur-md rounded-full"></div>
+              <div className="absolute inset-8 bg-or/20 blur-md rounded-full"></div>
               
-              <i className="ph-bold ph-wifi-slash text-6xl text-[#fbbf24] relative z-10"></i>
+              <i className="ph-bold ph-wifi-slash text-6xl text-or relative z-10"></i>
             </div>
 
             {/* Titres Bilingues (N'Ko is King) */}
             <h1 className="flex flex-col items-center gap-2 mb-6 animate-in slide-in-from-bottom-4 duration-500 delay-150">
-              <span className="text-4xl md:text-5xl font-bold font-kigelia text-[#fbbf24] drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]">
+              <span className="text-4xl md:text-5xl font-bold font-kigelia text-or drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]">
                 ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ ߕߍ߫ ߦߋ߲߬
               </span>
               <span className="text-2xl font-bold text-white opacity-90 tracking-wide">
@@ -159,7 +159,7 @@ export default function NetworkBoundary({ children }: { children: React.ReactNod
             {/* Bouton de Fermeture */}
             <button
               onClick={closeOverlay}
-              className="group flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#fbbf24] text-black transition-all hover:bg-white hover:scale-105 shadow-[0_0_20px_rgba(251,191,36,0.3)] active:scale-95 touch-manipulation animate-in fade-in duration-500 delay-300"
+              className="group flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#fbbf24] text-black transition-all hover:bg-blanc hover:scale-105 shadow-[0_0_20px_rgba(251,191,36,0.3)] active:scale-95 touch-manipulation animate-in fade-in duration-500 delay-300"
             >
               <i className="ph-bold ph-x text-xl transition-transform group-hover:rotate-90"></i>
               <span className="font-kigelia text-lg font-bold">ߊ߬ ߘߊߕߎ߲߯</span>

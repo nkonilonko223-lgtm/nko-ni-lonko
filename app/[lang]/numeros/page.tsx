@@ -62,12 +62,12 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
   };
 
   return (
-    <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+    <main className="min-h-screen bg-void px-4 pb-20 pt-28 text-white md:pt-36">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(collection) }} />
       <PiluleRetour />
       <header className="mx-auto mb-12 max-w-5xl text-center">
         <h1 className="flex flex-col items-center gap-1">
-          <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{TEXTES_NUMEROS.lesNumeros.nko}</span>
+          <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{TEXTES_NUMEROS.lesNumeros.nko}</span>
           <span lang="fr" className="text-xs uppercase tracking-widest text-white/60">{TEXTES_NUMEROS.lesNumeros.fr}</span>
         </h1>
       </header>
@@ -83,7 +83,7 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
             <li key={numero.slug}>
               <LienLangue
                 href={`/numeros/${numero.slug}`}
-                className="group block overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50"
+                className="group block overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-or/50"
               >
                 <span className="relative block aspect-[3/4] w-full bg-white/5">
                   {numero.couverture?.url && (
@@ -99,7 +99,7 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
                   )}
                 </span>
                 <span className="block p-4 text-center">
-                  <span lang="nqo" dir="rtl" className="block font-kigelia text-xl text-[#fbbf24]">
+                  <span lang="nqo" dir="rtl" className="block font-kigelia text-xl text-or">
                     {numeroNko(numero.numero)}
                     {typeof numero.saison === "number" && ` · ${saisonNko(numero.saison)}`}
                   </span>

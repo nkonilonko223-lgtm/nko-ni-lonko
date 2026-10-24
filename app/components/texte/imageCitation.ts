@@ -78,7 +78,7 @@ export async function fabriquerImageCitation(p: ParametresImage): Promise<Blob> 
   if (!ctx) throw new Error("Dessin impossible sur cet appareil");
 
   // Fond : nuit du site, motif africain atténué, cadre doré
-  ctx.fillStyle = "#02040a";
+  ctx.fillStyle = "#0e1322"; // bleu nuit du site (palette « Nuit du Mandé », app/globals.css)
   ctx.fillRect(0, 0, L, H);
   try {
     const motif = ctx.createPattern(await chargerImage("/arriere-plan.webp"), "repeat");

@@ -138,12 +138,12 @@ export default function PrivacyClient() {
   ];
 
   return (
-    <main className="relative text-white flex flex-col items-center justify-start px-6 pt-32 pb-24 selection:bg-[#fbbf24] selection:text-black overflow-hidden print:bg-white print:text-black print:p-0">
+    <main className="relative text-white flex flex-col items-center justify-start px-6 pt-32 pb-24 selection:bg-[#fbbf24] selection:text-black overflow-hidden print:bg-blanc print:text-black print:p-0">
       
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Taille Affinée 1/10000) */}
       <button
         onClick={handleBack}
-        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-[#02040a]/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-[#02040a]/80 hover:border-[#fbbf24]/50 transition-all duration-500 touch-manipulation print:hidden ${
+        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-void/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-void/80 hover:border-or/50 transition-all duration-500 touch-manipulation print:hidden ${
           isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
         }`}
         aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}
@@ -156,7 +156,7 @@ export default function PrivacyClient() {
         
         {/* Le Texte (Taille réduite pour PC) */}
         <div className="hidden md:flex flex-col items-start">
-          <span className={`font-bold text-[#fbbf24] text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+          <span className={`font-bold text-or text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
             {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
           </span>
         </div>
@@ -175,10 +175,10 @@ export default function PrivacyClient() {
         {/* EN-TÊTE JURIDIQUE INSTITUTIONNEL */}
         <div className="text-center mb-16 flex flex-col items-center print:mb-8">
             <div className="mb-6 relative group flex items-center justify-center p-4 backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl shadow-[inset_0_0_20px_rgba(251,191,36,0.05)] print:hidden">
-                <i className="ph-duotone ph-shield-check text-6xl text-[#fbbf24] drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]"></i>
+                <i className="ph-duotone ph-shield-check text-6xl text-or drop-shadow-[0_0_15px_rgba(251,191,36,0.4)]"></i>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-extrabold text-[#fbbf24] mb-8 tracking-tight flex flex-col items-center print:text-black print:mb-4">
+            <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-8 tracking-tight flex flex-col items-center print:text-black print:mb-4">
                 <span className="block mb-4 leading-tight drop-shadow-lg font-kigelia print:drop-shadow-none">ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ</span>
                 <span lang="fr" className="text-white/60 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block print:text-black print:border-black print:font-bold">
                     Politique de confidentialité
@@ -186,13 +186,13 @@ export default function PrivacyClient() {
             </h1>
             
             <div className="flex flex-col items-center gap-2">
-                <p className="font-kigelia text-[#fbbf24] text-xl print:text-gray-800">ߟߊ߬ߞߎ߬ߘߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߞߏߜߍ ߂߀߂߆</p>
+                <p className="font-kigelia text-or text-xl print:text-gray-800">ߟߊ߬ߞߎ߬ߘߊ߬ߟߌ ߟߊߓߊ߲ : ߞߏ߲ߞߏߜߍ ߂߀߂߆</p>
                 <p lang="fr" dir="ltr" className="text-gray-400 font-light text-xs md:text-sm tracking-widest uppercase print:text-gray-600">Dernière mise à jour : Février 2026</p>
             </div>
         </div>
 
         {/* 🚀 NAVIGATION MOBILE (Swipeable Pills Bilingues 1/10000) */}
-        <div className="lg:hidden sticky top-[80px] z-40 bg-[#02040a]/90 backdrop-blur-xl border-y border-white/10 -mx-6 px-6 py-4 mb-12 flex overflow-x-auto hide-scrollbar touch-pan-x shadow-[0_10px_30px_rgba(0,0,0,0.5)] print:hidden">
+        <div className="lg:hidden sticky top-[80px] z-40 bg-void/90 backdrop-blur-xl border-y border-white/10 -mx-6 px-6 py-4 mb-12 flex overflow-x-auto hide-scrollbar touch-pan-x shadow-[0_10px_30px_rgba(0,0,0,0.5)] print:hidden">
             <div className="flex gap-3">
                 {clauses.map((clause, idx) => {
                     // 🚀 Convertisseur instantané de chiffres Latins en N'Ko
@@ -207,13 +207,13 @@ export default function PrivacyClient() {
                                 isNko ? 'items-end' : 'items-start'
                             } ${
                                 activeSection === clause.id 
-                                ? "bg-[#fbbf24] border-[#fbbf24] shadow-[0_0_15px_rgba(251,191,36,0.3)]" 
+                                ? "bg-[#fbbf24] border-or shadow-[0_0_15px_rgba(251,191,36,0.3)]" 
                                 : "bg-white/5 border-white/10 hover:bg-white/10"
                             }`}
                             dir={isNko ? "rtl" : "ltr"}
                         >
                             {/* 🚀 BDI (Bi-Directional Isolation) garantit l'ordre parfait des numéros N'Ko */}
-                            <span className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-[#fbbf24] font-bold"}`} dir="rtl">
+                            <span className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-or font-bold"}`} dir="rtl">
                                 <bdi>{nkoNumber} - {clause.titleNko}</bdi>
                             </span>
                             <span className={`text-[9px] uppercase tracking-widest whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black/70 font-bold" : "text-white/60 font-light"}`} dir="ltr">
@@ -232,7 +232,7 @@ export default function PrivacyClient() {
             <div className="hidden lg:block w-1/4 shrink-0 print:hidden">
                 <div className="sticky top-32 flex flex-col gap-6 border-l border-white/10 pl-6">
                     <div className="flex flex-col items-start mb-4" dir="rtl">
-                        <span className="font-kigelia text-[#fbbf24] text-2xl mb-1">ߞߎ߬ߙߎ߲߬ߘߎ ߢߍߛߓߍ</span>
+                        <span className="font-kigelia text-or text-2xl mb-1">ߞߎ߬ߙߎ߲߬ߘߎ ߢߍߛߓߍ</span>
                         <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold" lang="fr" dir="ltr">Sommaire Juridique</span>
                     </div>
 
@@ -242,7 +242,7 @@ export default function PrivacyClient() {
                             onClick={() => scrollToSection(clause.id)}
                             className={`flex flex-col items-start text-left transition-all duration-300 group ${activeSection === clause.id ? "opacity-100 translate-x-2" : "opacity-40 hover:opacity-80"}`}
                         >
-                            <span className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-[#fbbf24] drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-[#fbbf24]"}`} dir="rtl">{clause.titleNko}</span>
+                            <span className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-or drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-or"}`} dir="rtl">{clause.titleNko}</span>
                             <span lang="fr" className="text-[10px] text-white font-light tracking-wider uppercase">{clause.titleFr}</span>
                         </button>
                     ))}
@@ -256,18 +256,18 @@ export default function PrivacyClient() {
                         
                         {/* Titre de Section */}
                         <div className="mb-6 flex flex-col items-start border-b border-white/10 pb-6 print:border-black print:pb-2" dir="rtl">
-                            <h2 className="font-kigelia text-3xl md:text-4xl text-[#fbbf24] mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
+                            <h2 className="font-kigelia text-3xl md:text-4xl text-or mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
                             <span className="text-xs md:text-sm tracking-[0.2em] text-gray-300 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
                         </div>
                         
                         {/* Corps de Section */}
-                        <div className="flex flex-col gap-8 backdrop-blur-md bg-[#02040a]/60 p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-xl hover:border-white/10 transition-colors print:bg-white print:border-none print:shadow-none print:p-0">
+                        <div className="flex flex-col gap-8 backdrop-blur-md bg-void/60 p-8 md:p-12 rounded-[2rem] border border-white/5 shadow-xl hover:border-white/10 transition-colors print:bg-blanc print:border-none print:shadow-none print:p-0">
                             
                             {/* 🚀 LE TL;DR (Le résumé ultra-différencié) */}
-                            <div className="flex flex-col gap-4 bg-white/5 border-l-2 border-[#fbbf24] p-5 rounded-r-xl print:bg-gray-100 print:border-l-gray-500">
+                            <div className="flex flex-col gap-4 bg-white/5 border-l-2 border-or p-5 rounded-r-xl print:bg-gray-100 print:border-l-gray-500">
                                 <div className="flex flex-col items-start" dir="rtl">
                                     <div className="flex items-center gap-3 mb-2">
-                                      <i className="ph-fill ph-info text-[#fbbf24] print:hidden text-xl"></i>
+                                      <i className="ph-fill ph-info text-or print:hidden text-xl"></i>
                                       {/* 🚀 N'Ko en blanc/gris clair pour trancher avec l'Or du texte principal */}
                                       <p className="font-kigelia text-xl text-white/90 print:text-black">{clause.tldrNko}</p>
                                     </div>
@@ -284,13 +284,13 @@ export default function PrivacyClient() {
                               onMouseEnter={() => setFocusedLang('nko')}
                               onMouseLeave={() => setFocusedLang('none')}
                             >
-                                <p className="font-kigelia text-2xl md:text-3xl text-[#fbbf24] leading-[1.8] md:leading-[2] text-right drop-shadow-sm print:text-black print:drop-shadow-none" dir="rtl">
+                                <p className="font-kigelia text-2xl md:text-3xl text-or leading-[1.8] md:leading-[2] text-right drop-shadow-sm print:text-black print:drop-shadow-none" dir="rtl">
                                     {clause.textNko}
                                 </p>
                             </div>
                             
                             <div className="flex items-center justify-center opacity-20 print:hidden">
-                                <div className="h-[1px] w-1/3 bg-gradient-to-r from-transparent via-[#fbbf24] to-transparent"></div>
+                                <div className="h-[1px] w-1/3 bg-gradient-to-r from-transparent via-or to-transparent"></div>
                             </div>
                             
                             {/* BLOC FRANÇAIS */}
@@ -308,27 +308,27 @@ export default function PrivacyClient() {
                 ))}
 
                 {/* INTELLIGENCE ARTIFICIELLE (constante IA, en haut du fichier) : N'Ko d'abord, de droite à gauche */}
-                <section id="intelligence-artificielle" className="scroll-mt-40 flex flex-col gap-4 rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/[0.04] p-6 print:border-black">
+                <section id="intelligence-artificielle" className="scroll-mt-40 flex flex-col gap-4 rounded-2xl border border-or/30 bg-or/[0.04] p-6 print:border-black">
                     <h2 className="flex flex-col gap-1">
-                        <span lang="nqo" dir="rtl" className="text-right font-kigelia text-2xl md:text-3xl font-bold text-[#fbbf24] print:text-black">{IA.titre.nko}</span>
-                        <span lang="fr" dir="ltr" className="text-left text-base md:text-lg font-bold uppercase tracking-[0.15em] text-[#fbbf24] print:text-black">{IA.titre.fr}</span>
+                        <span lang="nqo" dir="rtl" className="text-right font-kigelia text-2xl md:text-3xl font-bold text-or print:text-black">{IA.titre.nko}</span>
+                        <span lang="fr" dir="ltr" className="text-left text-base md:text-lg font-bold uppercase tracking-[0.15em] text-or print:text-black">{IA.titre.fr}</span>
                     </h2>
                     <p lang="nqo" dir="rtl" className="text-right font-kigelia text-xl md:text-2xl text-gray-200 leading-[1.9] print:text-black">
                         {IA.phrase.nko}{" "}
-                        <Link href={lien("/terms#intelligence-artificielle")} className="text-[#fbbf24] underline underline-offset-4">{IA.lien.nko}</Link>
+                        <Link href={lien("/terms#intelligence-artificielle")} className="text-or underline underline-offset-4">{IA.lien.nko}</Link>
                     </p>
                     <p lang="fr" dir="ltr" className="text-left font-light text-lg text-gray-300 leading-relaxed print:text-black">
                         {IA.phrase.fr}{" "}
-                        <Link href={lien("/terms#intelligence-artificielle")} className="text-[#fbbf24] underline underline-offset-4">{IA.lien.fr}</Link>
+                        <Link href={lien("/terms#intelligence-artificielle")} className="text-or underline underline-offset-4">{IA.lien.fr}</Link>
                     </p>
                 </section>
 
                 {/* 🚀 SIGNATURE INSTITUTIONNELLE */}
                 <div className="mt-8 flex flex-col items-end border-t border-white/10 pt-12 print:border-black print:pt-6" dir="rtl">
                     <div className="flex items-center gap-3 mb-2 print:hidden">
-                       <i className="ph-fill ph-seal-check text-[#fbbf24] text-2xl"></i>
+                       <i className="ph-fill ph-seal-check text-or text-2xl"></i>
                     </div>
-                    <p className="font-kigelia text-xl text-[#fbbf24] mb-2 print:text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — ߖߏ߯ߦߊߟߌ ߣߌ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߊߞߊ߲ߘߊ ߕߏ߲߰ߘߊ</p>
+                    <p className="font-kigelia text-xl text-or mb-2 print:text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — ߖߏ߯ߦߊߟߌ ߣߌ߫ ߞߎ߲߬ߣߊ߬ߝߏߣߌ߲ ߠߊߞߊ߲ߘߊ ߕߏ߲߰ߘߊ</p>
                     <p className="text-xs tracking-[0.2em] text-white/50 uppercase font-bold print:text-gray-600" lang="fr" dir="ltr">N&apos;Ko ni Lonko — Département d&apos;Éthique et de Protection des Données</p>
                 </div>
             </div>

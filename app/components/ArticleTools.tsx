@@ -434,14 +434,14 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       {/* A1 — « Sauvegardé · Ma bibliothèque » après un signet (disparaît seul) */}
       <div role="status" className="fixed bottom-36 md:bottom-20 left-1/2 -translate-x-1/2 z-[9999] print:hidden">
         {signetAjoute && (
-          <div className="flex items-center gap-1 rounded-full border border-[#fbbf24]/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex items-center gap-1 rounded-full border border-or/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
             <span className="flex items-center gap-2 whitespace-nowrap px-3 text-sm text-white/80">
-              <i className="ph-fill ph-bookmark-simple text-[#fbbf24]" aria-hidden="true"></i>
+              <i className="ph-fill ph-bookmark-simple text-or" aria-hidden="true"></i>
               {isNko && SAUVEGARDE.nko
                 ? <span lang="nqo" dir="rtl" className="font-kigelia">{SAUVEGARDE.nko}</span>
                 : <span lang="fr" dir="ltr" className="font-fr">{SAUVEGARDE.fr}</span>}
             </span>
-            <Link href={lien("/bibliotheque")} className="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+            <Link href={lien("/bibliotheque")} className="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-bold text-or transition-colors hover:bg-or/10">
               {isNko && MA_BIBLIOTHEQUE.nko
                 ? <span lang="nqo" dir="rtl" className="font-kigelia">{MA_BIBLIOTHEQUE.nko}</span>
                 : <span lang="fr" dir="ltr" className="font-fr">{MA_BIBLIOTHEQUE.fr}</span>}
@@ -472,7 +472,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               {/* 🚀 TRADUCTIONS ET ACCESSIBILITÉ IMPLÉMENTÉES */}
               <button 
                 onClick={shareSelectionOnX} 
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#fbbf24] transition-colors" 
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors" 
                 title={isNko ? "ߞߎߡߦߊ ߣߌ߲߬ ߟߊߦߟߍ߬ ߕߎ߳ߌߕߍߙ ߞߊ߲߬" : "Tweeter cette phrase"}
                 aria-label={isNko ? "ߞߎߡߦߊ ߣߌ߲߬ ߟߊߦߟߍ߬ ߕߎ߳ߌߕߍߙ ߞߊ߲߬" : "Tweeter cette phrase"}
               >
@@ -490,7 +490,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               <button
                 onClick={partagerEnImage}
                 disabled={imageEnCours}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#fbbf24] transition-colors disabled:opacity-50"
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors disabled:opacity-50"
                 title={isNko && PARTAGER_IMAGE.nko ? PARTAGER_IMAGE.nko : PARTAGER_IMAGE.fr}
                 aria-label={isNko && PARTAGER_IMAGE.nko ? PARTAGER_IMAGE.nko : PARTAGER_IMAGE.fr}
               >
@@ -499,7 +499,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               <div className="w-[1px] h-4 bg-white/20 mx-1"></div>
               <button 
                 onClick={copySelection} 
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#fbbf24] transition-colors" 
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors" 
                 title={isNko ? "ߞߊ߲ߕߏ߲ ߡߌ߬ߣߊ߬" : "Copier la citation"}
                 aria-label={isNko ? "ߞߊ߲ߕߏ߲ ߡߌ߬ߣߊ߬" : "Copier la citation"}
               >
@@ -525,7 +525,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
         <button 
           onClick={() => { triggerVibration(); setIsExpanded(!isExpanded); setShowToc(false); }}
           className={`md:hidden flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] border transition-all duration-300 z-50 ${
-            isExpanded ? 'bg-[#fbbf24] text-black border-[#fbbf24] rotate-90 scale-95' : 'bg-black/85 text-[#fbbf24] border-white/20 rotate-0 scale-100'
+            isExpanded ? 'bg-[#fbbf24] text-black border-or rotate-90 scale-95' : 'bg-black/85 text-or border-white/20 rotate-0 scale-100'
           }`}
           aria-label={isNko ? "ߢߍߥߟߊ ߟߊߞߊ߬" : "Ouvrir le menu"}
           aria-expanded={isExpanded}
@@ -536,11 +536,11 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
         <div className={`flex flex-col gap-3 ${isNko ? 'items-start md:items-center' : 'items-end md:items-center'}`}>
           
           {/* LE PANNEAU DE SOMMAIRE (Radar) */}
-         <div className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-black/85 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
+         <div className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-black/85 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
             showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
           }`}>
             <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-              <h4 className={`text-[#fbbf24] font-bold ${isNko ? 'font-kigelia tracking-widest' : 'tracking-wider uppercase text-sm'}`}>
+              <h4 className={`text-or font-bold ${isNko ? 'font-kigelia tracking-widest' : 'tracking-wider uppercase text-sm'}`}>
                 {isNko ? 'ߞߎߡߘߊ ߢߍߛߓߍ' : 'Sommaire'}
               </h4>
               <button onClick={() => setShowToc(false)} className="text-gray-400 hover:text-white transition-colors" aria-label="Fermer le sommaire">
@@ -558,13 +558,13 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                       type="button"
                       onClick={() => scrollToHeading(h.id)}
                       aria-current={activeHeadingId === h.id ? "location" : undefined}
-                      className="group block w-full pl-6 text-start rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#fbbf24]"
+                      className="group block w-full pl-6 text-start rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-or"
                     >
                       <span aria-hidden="true" className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 transition-all duration-300 ${
-                        activeHeadingId === h.id ? 'bg-[#fbbf24] border-[#fbbf24] shadow-[0_0_10px_#fbbf24]' : 'bg-black border-white/30 group-hover:border-[#fbbf24]'
+                        activeHeadingId === h.id ? 'bg-[#fbbf24] border-or shadow-[0_0_10px_#fbbf24]' : 'bg-black border-white/30 group-hover:border-or'
                       }`}></span>
                       <span className={`block transition-all duration-300 line-clamp-2 leading-tight ${
-                        activeHeadingId === h.id ? 'text-[#fbbf24] font-bold' : 'text-gray-400 group-hover:text-white'
+                        activeHeadingId === h.id ? 'text-or font-bold' : 'text-gray-400 group-hover:text-white'
                       } ${isNko ? 'font-kigelia text-sm' : 'text-xs'} ${h.level === 'h3' ? 'opacity-80 text-[0.85em]' : ''}`}>
                         {h.text}
                       </span>
@@ -577,9 +577,9 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
           {/* LE PANNEAU « CITER » : formats internationaux, titre N'Ko d'abord (app/lib/citations.ts) */}
           {showCite && (
-            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4' : 'md:right-full md:mr-4'} w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-black/90 border border-[#fbbf24]/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200`}>
+            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4' : 'md:right-full md:mr-4'} w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-black/90 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200`}>
               <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-                <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-[#fbbf24] font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
+                <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-or font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
                   {isNko ? CITER.nko : CITER.fr}
                 </h4>
                 <button type="button" onClick={() => setShowCite(false)} className="text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}>
@@ -637,7 +637,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                   );
                 })}
               </ul>
-              <button type="button" onClick={telechargerRis} dir="ltr" className="mt-4 flex font-fr w-full items-center justify-center gap-2 rounded-xl border border-[#fbbf24]/40 px-4 py-2.5 text-sm text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+              <button type="button" onClick={telechargerRis} dir="ltr" className="mt-4 flex font-fr w-full items-center justify-center gap-2 rounded-xl border border-or/40 px-4 py-2.5 text-sm text-or transition-colors hover:bg-or/10">
                 <i className="ph-bold ph-download-simple" aria-hidden="true"></i>
                 Zotero · Mendeley · EndNote (.ris)
               </button>
@@ -664,7 +664,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {headings.length > 0 && (
               <button 
                   onClick={() => { triggerVibration(); setShowCite(false); setShowToc(!showToc); fermerOutilsSurTelephone(); }}
-                  className={`outil group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showToc ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
+                  className={`outil group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showToc ? 'bg-or/20 text-or' : 'text-gray-400 hover:text-or hover:bg-white/5'}`}
                   title={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
                   aria-label={isNko ? "ߢߍߛߓߍ ߦߌ߬ߘߊ߬" : "Afficher le sommaire"}
               >
@@ -675,21 +675,21 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* BOUTON SIGNET */}
             <button 
                 onClick={toggleBookmark} 
-                className="outil group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                className="outil group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-or hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko ? "ߊ߬ ߟߊߡߙߊ߬" : "Sauvegarder l'article"}
                 aria-label={isNko ? "ߊ߬ ߟߊߡߙߊ߬" : "Sauvegarder l'article"}
             >
-              <i className={`${isBookmarked ? 'ph-fill text-[#fbbf24] drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'ph-bold text-gray-400'} ph-bookmark-simple text-xl transition-all duration-300`}></i>
+              <i className={`${isBookmarked ? 'ph-fill text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]' : 'ph-bold text-gray-400'} ph-bookmark-simple text-xl transition-all duration-300`}></i>
             </button>
 
             {/* BOUTON MODE ZEN */}
             <button 
                 onClick={toggleZenMode} 
-                className="outil hidden md:flex group relative w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
+                className="outil hidden md:flex group relative w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-or hover:bg-white/5 transition-all"
                 title={isNko ? "ߘߊ߬ߣߊ߲߬ߥߟߊ ߟߝߊ" : "Mode Zen (Plein Écran)"}
                 aria-label={isNko ? "ߘߊ߬ߣߊ߲߬ߥߟߊ ߟߝߊ" : "Mode Zen (Plein Écran)"}
             >
-              <i className={`ph-bold ${isFullscreen ? 'ph-corners-in text-[#fbbf24]' : 'ph-corners-out'} text-xl transition-all duration-300`}></i>
+              <i className={`ph-bold ${isFullscreen ? 'ph-corners-in text-or' : 'ph-corners-out'} text-xl transition-all duration-300`}></i>
             </button>
 
             {/* SÉPARATEUR ADAPTATIF */}
@@ -698,7 +698,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* BOUTON PARTAGER */}
             <button 
                 onClick={handleShare} 
-                className="outil group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                className="outil group relative w-10 h-10 rounded-full flex items-center justify-center text-gray-400 hover:text-or hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
                 aria-label={isNko ? "ߞߵߊ߬ ߟߊߖߍ߲ߛߍ߲߫" : "Partager"}
             >
@@ -708,7 +708,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* BOUTON CITER : ouvre le panneau des formats */}
             <button 
                 onClick={handleCite} 
-                className={`outil group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showCite ? 'bg-[#fbbf24]/20 text-[#fbbf24]' : 'text-gray-400 hover:text-[#fbbf24] hover:bg-white/5'}`}
+                className={`outil group relative w-10 h-10 rounded-full flex items-center justify-center transition-all touch-manipulation ${showCite ? 'bg-or/20 text-or' : 'text-gray-400 hover:text-or hover:bg-white/5'}`}
                 title={isNko ? CITER.nko : CITER.fr}
                 aria-label={isNko ? CITER.nko : CITER.fr}
                 aria-expanded={showCite}
@@ -720,11 +720,11 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             <button 
                 onClick={handlePrint}
                 aria-busy={preparationImpression}
-                className="outil hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all"
+                className="outil hidden md:flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-or hover:bg-white/5 transition-all"
                 title={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
                 aria-label={isNko ? "ߞߵߊ߬ ߜߌ߬ߙߌ߲߬ߘߌ߬" : "Imprimer"}
             >
-              <i className={`ph-bold ph-printer text-xl ${preparationImpression ? 'animate-pulse text-[#fbbf24]' : ''}`} aria-hidden="true"></i>
+              <i className={`ph-bold ph-printer text-xl ${preparationImpression ? 'animate-pulse text-or' : ''}`} aria-hidden="true"></i>
             </button>
 
             {/* A7 — SIGNALER UNE ERREUR : formulaire de contact prérempli avec l'adresse de l'article */}
@@ -733,7 +733,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                 href={lien(`/contact?article=${encodeURIComponent(slug)}`)}
                 onClick={triggerVibration}
                 lang={isNko && !SIGNALER.nko ? "fr" : undefined}
-                className="outil flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-[#fbbf24] hover:bg-white/5 transition-all touch-manipulation"
+                className="outil flex w-10 h-10 rounded-full items-center justify-center text-gray-400 hover:text-or hover:bg-white/5 transition-all touch-manipulation"
                 title={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}
                 aria-label={isNko && SIGNALER.nko ? SIGNALER.nko : SIGNALER.fr}
               >
@@ -747,18 +747,18 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             {/* ZOOM + */}
             <button 
                 onClick={wrapZoomIn} 
-                className="outil w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                className="outil w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-or hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
                 title={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
                 aria-label={isNko ? " + ߜߋ߲߭ ߡߊߜߙߍ߬" : "Agrandir le texte"}
             >
               <span className="text-sm font-bold leading-none mb-[1px]">A</span>
-              <i className="ph-bold ph-caret-up text-[10px] text-[#fbbf24]"></i>
+              <i className="ph-bold ph-caret-up text-[10px] text-or"></i>
             </button>
 
             {/* ZOOM - */}
             <button 
                 onClick={wrapZoomOut} 
-                className="outil w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-[#fbbf24] hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                className="outil w-10 h-10 rounded-full flex flex-col items-center justify-center text-gray-300 hover:text-or hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
                 title={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
                 aria-label={isNko ? " - ߜߋ߲߭ ߡߊ߬ߓߐ߫" : "Réduire le texte"}
             >

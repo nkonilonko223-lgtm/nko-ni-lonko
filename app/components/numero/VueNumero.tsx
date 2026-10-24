@@ -29,7 +29,7 @@ export const dateFr = (iso: string) =>
 function LibelleBloc({ texte }: { texte: Libelle }) {
   return (
     <span className="flex flex-col items-center gap-0.5">
-      {texte.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-[#fbbf24]">{texte.nko}</span>}
+      {texte.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-or">{texte.nko}</span>}
       <span lang="fr" className="font-sans text-[11px] uppercase tracking-widest text-white/50">{texte.fr}</span>
     </span>
   );
@@ -50,7 +50,7 @@ function Surtitre({ rubrique }: { rubrique?: RubriqueCourte | null }) {
   if (!rubrique?.titleNko && !rubrique?.titleFr) return null;
   return (
     <span className="mb-1 flex flex-wrap items-baseline gap-x-2">
-      {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-sm text-[#fbbf24]">{rubrique.titleNko}</span>}
+      {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-sm text-or">{rubrique.titleNko}</span>}
       {rubrique.titleFr && <span lang="fr" className="text-[10px] uppercase tracking-widest text-white/50">{rubrique.titleFr}</span>}
     </span>
   );
@@ -64,7 +64,7 @@ export function TitreArticle({ titre, grand }: { titre: string; grand?: boolean 
     <>
       <span
         {...sens}
-        className={`block font-bold text-white transition-colors group-hover:text-[#fbbf24] ${sens.lang === "nqo" ? "font-kigelia" : ""} ${grand ? "text-2xl md:text-3xl" : "text-lg md:text-xl"}`}
+        className={`block font-bold text-white transition-colors group-hover:text-or ${sens.lang === "nqo" ? "font-kigelia" : ""} ${grand ? "text-2xl md:text-3xl" : "text-lg md:text-xl"}`}
       >
         {nko}
       </span>
@@ -78,7 +78,7 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
   return (
     <LienLangue
       href={`/article/${article.slug}`}
-      className={`group flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-colors hover:border-[#fbbf24]/50 ${une ? "flex-col md:p-6" : "items-start"}`}
+      className={`group flex gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-colors hover:border-or/50 ${une ? "flex-col md:p-6" : "items-start"}`}
     >
       {article.image?.url && (
         <span className={`relative shrink-0 overflow-hidden rounded-xl ${une ? "aspect-[16/9] w-full" : "h-20 w-20 md:h-28 md:w-28"}`}>
@@ -110,7 +110,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
   const saison = typeof numero.saison === "number" ? numero.saison : null;
 
   return (
-    <main className="min-h-screen bg-[#02040a] pb-20 text-white">
+    <main className="min-h-screen bg-void pb-20 text-white">
       <header className="relative">
         {couverture?.url && (
           <figure className="relative h-[55vh] min-h-80 w-full overflow-hidden md:h-[70vh]">
@@ -125,13 +125,13 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
               placeholder={couverture.lqip ? "blur" : "empty"}
               blurDataURL={couverture.lqip}
             />
-            <span className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/40 to-transparent" aria-hidden="true" />
+            <span className="absolute inset-0 bg-gradient-to-t from-void via-void/40 to-transparent" aria-hidden="true" />
           </figure>
         )}
         {/* Le texte remonte sur la couverture ; sa hauteur minimale égale ce chevauchement,
             pour que la suite de la page ne passe jamais sous l'image */}
         <div className={`relative mx-auto max-w-4xl px-4 text-center ${couverture ? "-mt-40 min-h-40 md:-mt-56 md:min-h-56" : "pt-28 md:pt-36"}`}>
-          <p lang="nqo" dir="rtl" className="font-kigelia text-lg text-[#fbbf24] md:text-xl">
+          <p lang="nqo" dir="rtl" className="font-kigelia text-lg text-or md:text-xl">
             {numeroNko(numero.numero)}
             {saison !== null && ` · ${saisonNko(saison)}`} · {dateNko(numero.publishedAt)}
           </p>
@@ -171,7 +171,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
 
       <div className="mx-auto mt-12 max-w-3xl space-y-14 px-4">
         {edito && (
-          <section aria-labelledby="titre-edito" className="rounded-2xl border border-[#fbbf24]/30 bg-[#fbbf24]/[0.04] p-6 text-center">
+          <section aria-labelledby="titre-edito" className="rounded-2xl border border-or/30 bg-or/[0.04] p-6 text-center">
             <h2 id="titre-edito" className="mb-4">
               <LibelleBloc texte={TEXTES_NUMEROS.edito} />
             </h2>
@@ -180,7 +180,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
                 {edito.excerpt}
               </p>
             )}
-            <LienLangue href={`/article/${edito.slug}`} className="mt-5 inline-flex min-h-11 items-center rounded-full border border-[#fbbf24]/50 px-5 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10">
+            <LienLangue href={`/article/${edito.slug}`} className="mt-5 inline-flex min-h-11 items-center rounded-full border border-or/50 px-5 text-or transition-colors hover:bg-or/10">
               <LibelleEnLigne texte={TEXTES_NUMEROS.lireArticle} />
             </LienLangue>
           </section>
@@ -216,7 +216,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
             <a
               href={`/pdf/${pdf.fichier}`}
               download
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#fbbf24]/50 px-5 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-or/50 px-5 text-or transition-colors hover:bg-or/10"
             >
               <i className="ph-bold ph-download-simple" aria-hidden="true"></i>
               <LibelleEnLigne texte={{ nko: TELECHARGER_PDF.nko, fr: `${TELECHARGER_PDF.fr} (${tailleFr(pdf.octets)})` }} />
@@ -225,7 +225,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
         )}
 
         <p className="text-center">
-          <LienLangue href="/numeros" className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-5 text-white/80 transition-colors hover:border-[#fbbf24] hover:text-[#fbbf24]">
+          <LienLangue href="/numeros" className="inline-flex min-h-11 items-center rounded-full border border-white/20 px-5 text-white/80 transition-colors hover:border-or hover:text-or">
             <LibelleEnLigne texte={TEXTES_NUMEROS.tousLesNumeros} />
           </LienLangue>
         </p>

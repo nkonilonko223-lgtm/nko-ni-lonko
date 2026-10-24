@@ -98,7 +98,7 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
   };
 
   return (
-    <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+    <main className="min-h-screen bg-void px-4 pb-20 pt-28 text-white md:pt-36">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesGoogle) }} />
       <PiluleRetour />
       <header className="mx-auto mb-12 max-w-5xl text-center">
@@ -106,7 +106,7 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
         <div role="navigation" aria-label="Fil d'Ariane" className="mb-6">
           <ol className="flex items-center justify-center gap-2 text-sm text-white/60">
             <li>
-              <LienLangue href="/" className="transition-colors hover:text-[#fbbf24]">
+              <LienLangue href="/" className="transition-colors hover:text-or">
                 {fr ? <span lang="fr">{ACCUEIL.fr}</span> : <span lang="nqo" dir="rtl" className="font-kigelia">{ACCUEIL.nko}</span>}
               </LienLangue>
             </li>
@@ -116,9 +116,9 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
             </li>
           </ol>
         </div>
-        <i className={`ph-bold ${d.discipline.icone} text-4xl text-[#fbbf24]`} aria-hidden="true"></i>
+        <i className={`ph-bold ${d.discipline.icone} text-4xl text-or`} aria-hidden="true"></i>
         <h1 className="mt-3 flex flex-col items-center gap-1">
-          <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{d.nko}</span>
+          <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{d.nko}</span>
           <span lang="fr" className="text-xs uppercase tracking-widest text-white/60">{d.fr}</span>
         </h1>
         <p className="mt-4 flex items-center justify-center gap-2 text-sm text-white/60">

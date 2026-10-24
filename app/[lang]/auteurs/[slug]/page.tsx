@@ -91,7 +91,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
   const image = photo(auteur, 320);
 
   return (
-    <main className="min-h-screen bg-[#02040a] px-4 pb-20 pt-28 text-white md:pt-36">
+    <main className="min-h-screen bg-void px-4 pb-20 pt-28 text-white md:pt-36">
       <PiluleRetour />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(profil) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(filAriane) }} />
@@ -99,11 +99,11 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
       <article className="mx-auto max-w-3xl">
         <header className="flex flex-col items-center gap-4 text-center">
           {image && (
-            <Image src={image} alt={auteur.image?.alt?.trim() || auteur.name} width={160} height={160} priority className="h-32 w-32 rounded-full border-2 border-[#fbbf24]/40 object-cover md:h-40 md:w-40" />
+            <Image src={image} alt={auteur.image?.alt?.trim() || auteur.name} width={160} height={160} priority className="h-32 w-32 rounded-full border-2 border-or/40 object-cover md:h-40 md:w-40" />
           )}
           <h1 className="flex flex-col items-center gap-1">
-            {auteur.nameNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-[#fbbf24] md:text-5xl">{auteur.nameNko}</span>}
-            <span lang="fr" dir="ltr" className={`font-fr ${auteur.nameNko ? "text-lg text-white/70" : "text-4xl font-bold text-[#fbbf24]"}`}>{auteur.name}</span>
+            {auteur.nameNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{auteur.nameNko}</span>}
+            <span lang="fr" dir="ltr" className={`font-fr ${auteur.nameNko ? "text-lg text-white/70" : "text-4xl font-bold text-or"}`}>{auteur.name}</span>
           </h1>
 
           {(auteur.roleNko || auteur.role || auteur.institution) && (
@@ -133,7 +133,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={s.platform}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-colors hover:border-[#fbbf24]/50 hover:text-[#fbbf24]"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-400 transition-colors hover:border-or/50 hover:text-or"
                 >
                   <i className={`ph-fill ph-${s.platform === "twitter" ? "x" : s.platform.toLowerCase()}-logo text-xl`} aria-hidden="true"></i>
                 </a>
@@ -163,13 +163,13 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
         {auteur.articles.length > 0 && (
           <section aria-labelledby="articles-de-l-auteur" className="mt-14">
             <h2 id="articles-de-l-auteur" className="mb-6 flex flex-col items-center gap-0.5">
-              <span lang="nqo" dir="rtl" className="font-kigelia text-2xl text-[#fbbf24]">{ARTICLES.nko}</span>
+              <span lang="nqo" dir="rtl" className="font-kigelia text-2xl text-or">{ARTICLES.nko}</span>
               <span lang="fr" className="font-fr text-[11px] uppercase tracking-widest text-white/50">{ARTICLES.fr}</span>
             </h2>
             <ul className="grid gap-4 sm:grid-cols-2">
               {auteur.articles.map((a, i) => (
                 <li key={a.slug}>
-                  <LienLangue href={`/article/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-[#fbbf24]/50">
+                  <LienLangue href={`/article/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-or/50">
                     {a.image?.url && (
                       <span className="relative aspect-[16/9] w-full overflow-hidden">
                         <Image src={a.image.url} alt={a.image.alt?.trim() || ""} fill priority={i < 2} sizes="(min-width: 640px) 360px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />

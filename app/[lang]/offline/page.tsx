@@ -36,11 +36,11 @@ export default function OfflinePage() {
     >
       {/* Icône dynamique avec lueur */}
       <div className="mb-8 relative">
-        <div className="absolute inset-0 bg-[#fbbf24]/20 blur-xl rounded-full"></div>
+        <div className="absolute inset-0 bg-or/20 blur-xl rounded-full"></div>
         {isOnline ? (
           <i className="ph-bold ph-wifi-high text-6xl text-green-400 relative z-10 animate-pulse"></i>
         ) : (
-          <i className="ph-bold ph-wifi-slash text-6xl text-[#fbbf24] relative z-10 animate-pulse"></i>
+          <i className="ph-bold ph-wifi-slash text-6xl text-or relative z-10 animate-pulse"></i>
         )}
       </div>
 
@@ -70,7 +70,7 @@ export default function OfflinePage() {
           <button
             onClick={handleRetry}
             disabled={isRetrying}
-            className={`flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-[#fbbf24] text-black font-bold hover:bg-white transition-colors shadow-lg shadow-[#fbbf24]/20 active:scale-95 touch-manipulation disabled:opacity-70 disabled:cursor-wait ${isNko ? 'font-kigelia' : ''}`}
+            className={`flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-[#fbbf24] text-black font-bold hover:bg-blanc transition-colors shadow-lg shadow-or/20 active:scale-95 touch-manipulation disabled:opacity-70 disabled:cursor-wait ${isNko ? 'font-kigelia' : ''}`}
           >
             <i className={`ph-bold ph-arrows-clockwise text-xl ${isRetrying ? 'animate-spin' : ''}`}></i>
             {isRetrying
@@ -82,7 +82,7 @@ export default function OfflinePage() {
           {/* Lien vers l'accueil */}
           <Link
             href={lien("/")}
-            className={`flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-bold hover:border-[#fbbf24] hover:bg-white/10 transition-colors active:scale-95 touch-manipulation ${isNko ? 'font-kigelia' : ''}`}
+            className={`flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-bold hover:border-or hover:bg-white/10 transition-colors active:scale-95 touch-manipulation ${isNko ? 'font-kigelia' : ''}`}
           >
             <i className={`ph-bold ${isNko ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl`}></i>
             {isNko ? 'ߞߐߛߊߦߌ߫ ߝߙߍ ߞߣߐ߫' : "Retour à l'accueil"}

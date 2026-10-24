@@ -106,8 +106,8 @@ export default function TermeLexique({
       lang={nko ? "nqo" : "fr"}
       className={
         mobile
-          ? "fixed inset-x-0 bottom-0 z-[100000] max-h-[70vh] overflow-y-auto rounded-t-2xl border-t border-blue-400/30 bg-[#0b1121] p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] outline-none animate-in slide-in-from-bottom duration-300"
-          : "fixed z-[100000] rounded-xl border border-blue-400/30 bg-[#0b1121]/95 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl outline-none animate-in fade-in duration-200"
+          ? "fixed inset-x-0 bottom-0 z-[100000] max-h-[70vh] overflow-y-auto rounded-t-2xl border-t border-blue-400/30 bg-surface p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0_-20px_50px_rgba(0,0,0,0.6)] outline-none animate-in slide-in-from-bottom duration-300"
+          : "fixed z-[100000] rounded-xl border border-blue-400/30 bg-surface/95 p-4 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl outline-none animate-in fade-in duration-200"
       }
       style={
         !mobile && position

@@ -55,7 +55,7 @@ function demander(sw: ServiceWorker, message: object): Promise<boolean> {
   });
 }
 
-const BOUTON = "inline-flex min-h-11 items-center gap-2 rounded-full border border-[#fbbf24]/50 px-5 text-[#fbbf24] transition-colors hover:bg-[#fbbf24]/10";
+const BOUTON = "inline-flex min-h-11 items-center gap-2 rounded-full border border-or/50 px-5 text-or transition-colors hover:bg-or/10";
 
 export default function TelechargerNumero({ numero, chemins }: { numero: string; chemins: string[] }) {
   const { lang, lien } = useLanguage();
