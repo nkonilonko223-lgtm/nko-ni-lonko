@@ -2,12 +2,13 @@
 // ============================================================================
 // N'KO NI LONKO — Fichiers de l'application du site (23 octobre 2026)
 // ============================================================================
-// Fabrique, depuis le logo (public/icon-512x512.png, jamais modifié) et les textes du site :
+// Fabrique, depuis le logo HD (scripts/logo/, sources tirées du Canva du propriétaire) et les
+// textes du site :
 //   public/manifest.json, public/manifest-fr.json
 //        « carte d'identité » de l'application, en N'Ko (adresses sans préfixe) et en français (/fr)
 //   public/application/icone-192.png, -512.png, public/apple-touch-icon.png (180)
 //        icône de l'application (choix du propriétaire, 24 octobre 2026 : le logo original agrandi
-//        sur fond bleu nuit, scripts/application/icone.mjs) : iPhone, ordinateur, Android
+//        sur fond bleu nuit, scripts/logo/logo.mjs) : iPhone, ordinateur, Android
 //   public/application/icone-masquable-192.png, -512.png
 //        même icône, version Android « masquable » : le téléphone la découpe (rond, goutte…), le
 //        logo (pointe de l'orbite comprise) reste entier dans la zone sûre (cercle de 80 %)
@@ -30,8 +31,7 @@ import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { SOURCE_LOGO, reperageDuLogo } from "../icones/logo.mjs";
-import { iconeApplication } from "./icone.mjs";
+import { iconeApplication, logoRecadre } from "../logo/logo.mjs";
 
 const PROJET = resolve(import.meta.dirname, "../..");
 const sharp = createRequire(join(PROJET, "package.json"))("sharp");
@@ -39,7 +39,6 @@ const T = await import(pathToFileURL(join(PROJET, "app/components/application/te
 const FOND = "#02040a";
 const OR = "#fbbf24";
 const DOSSIER = join(PROJET, "public/application");
-const LOGO = join(PROJET, SOURCE_LOGO);
 const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const args = process.argv.slice(2);
@@ -108,7 +107,7 @@ async function ouvrirChrome() {
 
 // --- 1. Icône de l'application ---------------------------------------------------------------
 // Grande (iPhone, ordinateur) : la pointe de l'orbite à 47 % du côté. Masquable (Android, qui
-// découpe l'icône en rond, goutte…) : à 40 %, dans le cercle sûr. Voir scripts/application/icone.mjs.
+// découpe l'icône en rond, goutte…) : à 40 %, dans le cercle sûr. Voir scripts/logo/logo.mjs.
 for (const taille of [192, 512]) {
   writeFileSync(join(DOSSIER, `icone-${taille}.png`), await iconeApplication({ taille, part: 0.47 }));
   writeFileSync(join(DOSSIER, `icone-masquable-${taille}.png`), await iconeApplication({ taille, part: 0.4 }));
@@ -116,20 +115,6 @@ for (const taille of [192, 512]) {
 writeFileSync(join(PROJET, "public/apple-touch-icon.png"), await iconeApplication({ taille: 180, part: 0.47 }));
 console.log("Icône de l'application : 192 et 512 px (grande et masquable), iPhone 180 px.");
 
-// --- Repérage du logo (écrans de démarrage) ------------------------------------------------
-const { x0, y0, x1, y1, rayon } = await reperageDuLogo(sharp, LOGO);
-// Carré centré sur le logo, de côté « cote » (pixels de l'image d'origine), complété de noir
-// (le fond du logo) s'il dépasse les bords
-async function carreDuLogo(cote) {
-  const P = Math.ceil(cote);
-  const etendu = await sharp(LOGO).flatten({ background: "#000000" }).extend({ top: P, bottom: P, left: P, right: P, background: "#000000" }).toBuffer();
-  return sharp(etendu).extract({
-    left: Math.round((x0 + x1) / 2 + P - cote / 2),
-    top: Math.round((y0 + y1) / 2 + P - cote / 2),
-    width: Math.round(cote),
-    height: Math.round(cote),
-  });
-}
 // --- 2. Écrans de démarrage de l'iPhone et de l'iPad ----------------------------------------
 // Sans eux, une application ajoutée à l'écran d'accueil s'ouvre sur un écran BLANC (le site est
 // sombre). Une image par taille d'écran : fond du site et logo au centre.
@@ -157,7 +142,8 @@ const ECRANS = [
   [768, 1024, 2, "iPad mini (jusqu'à la 5ᵉ génération), iPad 9,7 pouces"],
   [744, 1133, 2, "iPad mini (6ᵉ génération et suivantes)"],
 ];
-const logoSeul = await (await carreDuLogo(2 * rayon)).png().toBuffer();
+// Le logo HD retouché, recadré en carré autour de lui, sur son fond noir (assez grand pour l'iPad)
+const logoSeul = await logoRecadre(1200);
 const ecrans = [];
 for (const [l, h, d, appareils] of ECRANS) {
   const orientations = l >= 700 ? ["portrait", "landscape"] : ["portrait"]; // iPad : les deux sens
