@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { NOM_FR, NOM_NKO, versionLangue } from "../lib/carte-partage";
-import { LANGUES, langueDe, langueInterface } from "../lib/langue";
+import { LANGUES, estLangue, langueDe, langueInterface } from "../lib/langue";
 import { separerLangues } from "../components/numero/titre";
 import localFont from "next/font/local";
 import { Montserrat } from "next/font/google";
@@ -20,6 +20,7 @@ import BandeauApercu from "../components/BandeauApercuDiffere"; // chargé seule
 import LectureHorsLigne from "../components/LectureHorsLigne"; // service worker public/sw.js (production)
 import Application from "../components/application/Application"; // installation (proposition, guide iPhone)
 import { draftMode } from "next/headers";
+import { notFound } from "next/navigation";
 import { VisualEditing } from "next-sanity/visual-editing";
 import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../lib/partage";
 import { jsonLd } from "../lib/jsonld";
@@ -206,7 +207,11 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: Promise<{ lang: string }>;
 }>) {
-  const langue = langueDe((await params).lang);
+  const { lang } = await params;
+  // Une adresse dont le début n'est pas une langue du site (ex. /.env, /humans.txt : le filtre
+  // proxy.ts laisse passer les noms de fichiers) : vraie page « introuvable » (404), pas l'accueil
+  if (!estLangue(lang)) notFound();
+  const langue = langueDe(lang);
   const nko = langue === "nqo";
   // Mode aperçu (activé depuis le Studio) : affiche le bandeau « brouillons visibles »
   const { isEnabled: apercu } = await draftMode();
