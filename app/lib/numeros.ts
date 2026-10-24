@@ -13,6 +13,7 @@ import { getSanityClient } from "../../sanity/fetch";
 
 export type ImageNumero = {
   alt?: string;
+  altNko?: string; // description en N'Ko (version N'Ko du site)
   captionNko?: string;
   caption?: string;
   source?: string; // crédit (ex. NASA/SDO)
@@ -63,7 +64,7 @@ export const PROJECTION_NUMERO_DE_L_ARTICLE = `*[_type == "numero" && references
   numero, "slug": slug.current, "sommaire": sommaire[]->{ title, "slug": slug.current }
 }`;
 
-const IMAGE = `{ alt, captionNko, caption, source, sourceNko, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip, "hotspot": hotspot{ x, y } }`;
+const IMAGE = `{ alt, altNko, captionNko, caption, source, sourceNko, "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip, "hotspot": hotspot{ x, y } }`;
 
 const REQUETE_NUMERO = `*[_type == "numero" && slug.current == $slug][0] {
   numero, saison, titleNko, titleFr, publishedAt, seoTitle, excerpt, excerptFr, "slug": slug.current,

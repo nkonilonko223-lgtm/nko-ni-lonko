@@ -12,7 +12,7 @@ export type ArticleDeLAuteur = {
   title: string;
   slug: string;
   publishedAt?: string;
-  image?: { alt?: string; url?: string } | null;
+  image?: { alt?: string; altNko?: string; url?: string } | null;
 };
 
 export type Auteur = {
@@ -37,7 +37,7 @@ const REQUETE_AUTEUR = `*[_type == "author" && slug.current == $slug][0]{
   "image": image{ alt, "url": asset->url },
   "socials": coalesce(socials[platform != "whatsapp" && defined(url)]{ platform, url }, []),
   "articles": *[_type == "article" && references(^._id) && defined(slug.current)] | order(publishedAt desc){
-    title, "slug": slug.current, publishedAt, "image": mainImage{ alt, "url": asset->url }
+    title, "slug": slug.current, publishedAt, "image": mainImage{ alt, altNko, "url": asset->url }
   }
 }`;
 

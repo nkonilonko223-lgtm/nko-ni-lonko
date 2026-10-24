@@ -24,7 +24,7 @@ async function getArticles(): Promise<ArticleSauvegardable[]> {
   try {
     return await client.fetch<ArticleSauvegardable[]>(
       `*[_type == "article" && defined(slug.current)] | order(publishedAt desc) {
-        title, "slug": slug.current, publishedAt, category, "image": mainImage{ alt, "url": asset->url }
+        title, "slug": slug.current, publishedAt, category, "image": mainImage{ alt, altNko, "url": asset->url }
       }`,
       {},
       { next: { tags: ["article"], revalidate: 3600 } }

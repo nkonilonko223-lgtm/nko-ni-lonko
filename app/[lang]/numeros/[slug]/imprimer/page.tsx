@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import VueImpression from "../../../../components/numero/VueImpression";
 import { numeroFr } from "../../../../components/numero/textes";
 import { getLiensNumeros, getNumeroComplet } from "../../../../lib/numeros";
+import { langueDe } from "../../../../lib/langue";
 
 // ============================================================================
 // N'KO NI LONKO — Version imprimable d'un numéro (source du PDF), ex. /numeros/003/imprimer
@@ -40,14 +41,14 @@ const PAGE = `
   .impression .couverture { min-height: 90vh; }
 }`;
 
-export default async function PageImpression({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function PageImpression({ params }: { params: Promise<{ slug: string; lang: string }> }) {
+  const { slug, lang } = await params;
   const numero = await getNumeroComplet(slug);
   if (!numero) notFound();
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: PAGE }} />
-      <VueImpression numero={numero} />
+      <VueImpression numero={numero} langue={langueDe(lang)} />
     </>
   );
 }

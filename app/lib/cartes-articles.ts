@@ -18,6 +18,7 @@ interface SanityImageRaw {
     _ref: string;
   };
   alt?: string; // texte alternatif de la couverture (Studio)
+  altNko?: string; // le même en N'Ko (version N'Ko du site)
   hotspot?: { x?: number; y?: number }; // point d'intérêt du Studio (cadrage)
 }
 
@@ -42,6 +43,7 @@ export interface SafeHomeArticle {
   slug: string;
   mainImageUrl: string | null;
   mainImageAlt: string | null; // texte alternatif de la couverture (sinon le titre)
+  mainImageAltNko: string | null; // le même en N'Ko (version N'Ko du site)
   mainImagePosition: string | null; // cadrage sur le point d'intérêt du Studio
   publishedAt: string;
   excerpt: string;
@@ -71,6 +73,7 @@ export function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArt
     slug: raw.slug.current,
     mainImageUrl: raw.mainImage ? urlFor(raw.mainImage)?.url() || null : null,
     mainImageAlt: raw.mainImage?.alt?.trim() || null,
+    mainImageAltNko: raw.mainImage?.altNko?.trim() || null,
     mainImagePosition: positionDuCadrage(raw.mainImage?.hotspot) || null,
     publishedAt: raw.publishedAt || new Date().toISOString(),
     excerpt: raw.excerpt || "", 

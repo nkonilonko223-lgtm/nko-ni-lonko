@@ -13,7 +13,7 @@ export type Voisin = {
   rubrique?: string | null; // référence de la rubrique
   termes?: string[] | null; // références des termes du lexique reliés dans le texte
   publishedAt?: string;
-  image?: { url?: string; alt?: string } | null;
+  image?: { url?: string; alt?: string; altNko?: string } | null;
 };
 
 type Courant = { category?: string; rubrique?: string | null; termes?: string[] | null };

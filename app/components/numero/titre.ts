@@ -22,6 +22,11 @@ export const sensDe = (texte = "") => (contientNko(texte) ? ({ dir: "rtl", lang:
 // Langue de la description d'une image (attribut lang de <img>) : sinon, sur la version N'Ko, une
 // description française serait lue avec une voix N'Ko par les lecteurs d'écran
 export const langueTexte = (texte?: string | null) => sensDe(texte ?? "").lang;
+// Description d'une image pour la version de la page (champ « Texte alternatif (N'Ko) », 24 octobre
+// 2026) : sur la version N'Ko, le N'Ko s'il existe, sinon le français ; la version française garde le français
+export type ImageDecrite = { alt?: string | null; altNko?: string | null } | null | undefined;
+export const texteAlternatif = (image: ImageDecrite, langue: "nqo" | "fr") =>
+  (langue === "nqo" ? image?.altNko?.trim() : "") || image?.alt?.trim() || "";
 
 const contientLatin = (texte: string) => /[A-Za-zÀ-ÿ]/.test(texte);
 

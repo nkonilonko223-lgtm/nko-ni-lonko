@@ -65,8 +65,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   }, langueDe(lang), { chemin: `/numeros/${numero.slug}`, titre, resume: description, resumeFr: resumeFrDe(numero) });
 }
 
-export default async function PageNumero({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function PageNumero({ params }: { params: Promise<{ slug: string; lang: string }> }) {
+  const { slug, lang } = await params;
   const numero = await getNumero(slug);
   if (!numero) notFound();
 
@@ -104,7 +104,7 @@ export default async function PageNumero({ params }: { params: Promise<{ slug: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(parution) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(filAriane) }} />
       <PiluleRetour />
-      <VueNumero numero={numero} pdf={(PDF_NUMEROS as Record<string, { fichier: string; octets: number }>)[numero.slug]} />
+      <VueNumero numero={numero} langue={langueDe(lang)} pdf={(PDF_NUMEROS as Record<string, { fichier: string; octets: number }>)[numero.slug]} />
     </>
   );
 }

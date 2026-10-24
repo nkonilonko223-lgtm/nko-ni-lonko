@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { useState, useMemo, useRef, useCallback } from "react";
-import { contientNko, sensDe, separerTitre, langueTexte } from "./numero/titre";
+import { contientNko, sensDe, separerTitre, langueTexte, texteAlternatif } from "./numero/titre";
 
 // --- INTERFACE STRICTE ET ROBUSTE ---
 export interface ArticleCardProps {
@@ -20,6 +20,7 @@ export interface ArticleCardProps {
     authorImageUrl: string | null;
     mainImageUrl: string | null;
     mainImageAlt?: string | null; // texte alternatif de la couverture (Studio)
+    mainImageAltNko?: string | null; // le même en N'Ko (version N'Ko du site)
     mainImagePosition?: string | null; // cadrage sur le point d'intérêt du Studio
     readingTime?: number;
   };
@@ -91,6 +92,8 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
   const { divRef, position, opacity, tilt, handleMouseMove, handleMouseEnter, handleMouseLeave } = useCardPhysics();
   
   const isNko = lang === 'nko';
+  // Couverture décrite dans la langue de la version (N'Ko s'il existe, sinon le français, sinon le titre)
+  const descriptionCouverture = texteAlternatif({ alt: article.mainImageAlt, altNko: article.mainImageAltNko }, isNko ? "nqo" : "fr") || article.title;
   const [isImageLoading, setIsImageLoading] = useState(!isPriority);
 
   const slugCurrent = typeof article.slug === 'string' ? article.slug : article.slug.current;
@@ -175,7 +178,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
             {article.mainImageUrl ? (
               <Image
                 src={article.mainImageUrl}
-                alt={article.mainImageAlt || article.title} lang={langueTexte(article.mainImageAlt || article.title)}
+                alt={descriptionCouverture} lang={langueTexte(descriptionCouverture)}
                 fill
                 priority={isPriority}
                 style={article.mainImagePosition ? { objectPosition: article.mainImagePosition } : undefined}

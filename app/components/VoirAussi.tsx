@@ -2,7 +2,7 @@ import Image from "next/image";
 import LienLangue from "./LienLangue";
 import type { Voisin } from "../lib/voir-aussi";
 import { TitreArticle } from "./numero/VueNumero";
-import { langueTexte } from "./numero/titre";
+import { langueTexte, texteAlternatif } from "./numero/titre";
 
 // ============================================================================
 // N'KO NI LONKO — « À lire aussi » (composant serveur, fin de la page article)
@@ -13,7 +13,8 @@ import { langueTexte } from "./numero/titre";
 
 const A_LIRE_AUSSI = { nko: "ߊߟߎ߫ ߦߋ߫ ߣߌ߲߬ ߠߎ߬ ߝߣߊ߫ ߞߊ߬ߙߊ߲߬", fr: "À lire aussi" };
 
-export default function VoirAussi({ articles }: { articles: Voisin[] }) {
+// langue : version de la page (description des couvertures : N'Ko s'il existe sur la version N'Ko)
+export default function VoirAussi({ articles, langue = "nqo" }: { articles: Voisin[]; langue?: "nqo" | "fr" }) {
   if (!articles.length) return null;
   return (
     <section aria-labelledby="a-lire-aussi" className="mx-auto max-w-5xl px-4 pb-12 print:hidden">
@@ -30,7 +31,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
             >
               {a.image?.url && (
                 <span className="relative aspect-[16/9] w-full overflow-hidden">
-                  <Image src={a.image.url} alt={a.image.alt?.trim() || ""} lang={langueTexte(a.image.alt?.trim() || "")} fill sizes="(min-width: 768px) 320px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src={a.image.url} alt={texteAlternatif(a.image, langue)} lang={langueTexte(texteAlternatif(a.image, langue))} fill sizes="(min-width: 768px) 320px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                 </span>
               )}
               <span className="flex-1 p-4 text-start">

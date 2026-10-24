@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { useLanguage } from "../LanguageProvider";
 import { abonnerSignets, analyserSignets, ecrireSignets, lisibleHorsLigne, prevenirLectureHorsLigne, signetsBruts } from "../../lib/bibliotheque";
-import { sensDe, separerTitre, langueTexte } from "../numero/titre";
+import { sensDe, separerTitre, langueTexte, texteAlternatif } from "../numero/titre";
 import messagesNko from "../../messages/nko.json";
 
 // ============================================================================
@@ -22,7 +22,7 @@ export type ArticleSauvegardable = {
   slug: string;
   publishedAt?: string;
   category?: string;
-  image?: { alt?: string; url?: string } | null;
+  image?: { alt?: string; altNko?: string; url?: string } | null;
 };
 
 type Libelle = { nko: string; fr: string };
@@ -113,7 +113,7 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
                 >
                   <span className="relative block aspect-[16/9] w-full bg-white/5">
                     {article.image?.url && (
-                      <Image src={article.image.url} alt={article.image.alt?.trim() || ""} lang={langueTexte(article.image.alt?.trim() || "")} fill sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                      <Image src={article.image.url} alt={texteAlternatif(article.image, enNko ? "nqo" : "fr")} lang={langueTexte(texteAlternatif(article.image, enNko ? "nqo" : "fr"))} fill sizes="(min-width: 1024px) 320px, (min-width: 640px) 50vw, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                     )}
                   </span>
                   <span className="flex-1 p-4 text-start">

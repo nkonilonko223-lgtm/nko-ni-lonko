@@ -26,7 +26,7 @@ import { getBlockText, isNko } from "./texte/outils";
 
 // 🚀 IMPORTATION DU STANDARD MATHÉMATIQUE MONDIAL
 import { BlockMath } from 'react-katex';
-import { langueTexte } from "./numero/titre";
+import { langueTexte, texteAlternatif } from "./numero/titre";
 import 'katex/dist/katex.min.css';
 
 // ==============================================================================
@@ -37,6 +37,7 @@ export interface SanityImage {
     _ref: string;
   };
   alt?: string;
+  altNko?: string;     // description en N'Ko, lue sur la version N'Ko du site (texteAlternatif)
   captionNko?: string; // 🚀 DOGME 1 : Légende N'Ko
   caption?: string;    // 🚀 Légende Française
   source?: string;     // Crédit et licence (ex. « ESO/M. Kornmesser — CC BY 4.0 »), affiché sous l'image
@@ -132,9 +133,10 @@ function avecLettrine(blocs: PortableTextBlock[] | undefined, cle?: string): Por
 
 interface CustomPortableTextProps {
   value: PortableTextBlock[];
+  langue?: "nqo" | "fr"; // version de la page : choisit la description des images (N'Ko par défaut)
 }
 
-export default function CustomPortableText({ value }: CustomPortableTextProps) {
+export default function CustomPortableText({ value, langue = "nqo" }: CustomPortableTextProps) {
   const firstTextBlockKey = value?.find(b =>
     b._type === 'block' &&
     (!b.style || b.style === 'normal') &&
@@ -358,14 +360,15 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
         if (!imageValue?.asset?._ref) return null;
         const imageUrl = urlFor(imageValue)?.url();
         if (!imageUrl) return null;
+        const description = texteAlternatif(imageValue, langue);
 
         return (
           <FadeInBlock>
             <figure className="my-10 md:my-14 print:block print:opacity-100">
-              <ZoneAgrandissable image={{ url: imageUrl, alt: imageValue.alt?.trim() || '', captionNko: imageValue.captionNko, caption: imageValue.caption }}>
+              <ZoneAgrandissable image={{ url: imageUrl, alt: description, captionNko: imageValue.captionNko, caption: imageValue.caption }}>
                  <Image
                    src={imageUrl} 
-                   alt={imageValue.alt?.trim() || 'Illustration scientifique'} lang={langueTexte(imageValue.alt?.trim() || 'Illustration scientifique')} 
+                   alt={description || 'Illustration scientifique'} lang={langueTexte(description || 'Illustration scientifique')} 
                    width={1200} 
                    height={800} 
                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.02] print:scale-100" 

@@ -22,7 +22,7 @@ import { CLE_LANGUE_LECTURE, formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { cheminDeCle, cleDeCategorie } from "../lib/categories";
-import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage, langueTexte } from "./numero/titre";
+import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage, langueTexte, texteAlternatif } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
 import { adresse, langueAdresse } from "../lib/langue";
@@ -44,6 +44,7 @@ interface SanityImage {
     _ref: string;
   };
   alt?: string;
+  altNko?: string; // description en N'Ko (version N'Ko du site)
   captionNko?: string; // légende N'Ko de la couverture (rédaction)
   caption?: string;
   source?: string; // crédit de la couverture (ex. NASA/SDO)
@@ -294,6 +295,8 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   const categoryKey = article.category ? cleDeCategorie(article.category) : "";
   // Où mène la catégorie (page de la discipline, ou les numéros pour « Revue Mensuelle »)
   const cheminCategorie = cheminDeCle(categoryKey);
+  // Description de la couverture dans la langue de la version (N'Ko s'il existe, sinon le français)
+  const descriptionCouverture = texteAlternatif(article.mainImageRaw, langueAdresse(lang)) || article.title;
   const categoryLabel = article.category ? (categoriesMap[categoryKey] || article.category) : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
 
   return (
@@ -489,7 +492,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           >
             <Image
               src={article.mainImageUrl}
-              alt={article.mainImageRaw?.alt?.trim() || article.title} lang={langueTexte(article.mainImageRaw?.alt?.trim() || article.title)}
+              alt={descriptionCouverture} lang={langueTexte(descriptionCouverture)}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105 print:scale-100"
               style={{ objectPosition: positionDuCadrage(article.mainImageRaw?.hotspot) }}
@@ -674,7 +677,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
           <div className="relative w-full max-w-7xl h-full max-h-[85vh] rounded-lg overflow-hidden flex items-center justify-center">
             <Image 
               src={article.mainImageUrl} 
-              alt={article.mainImageRaw?.alt?.trim() || article.title} lang={langueTexte(article.mainImageRaw?.alt?.trim() || article.title)} 
+              alt={descriptionCouverture} lang={langueTexte(descriptionCouverture)} 
               fill
               className="object-contain drop-shadow-[0_0_50px_rgba(251,191,36,0.15)]"
               sizes="100vw"

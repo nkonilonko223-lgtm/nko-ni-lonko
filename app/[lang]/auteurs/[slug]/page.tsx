@@ -3,7 +3,7 @@ import Image from "next/image";
 import LienLangue from "../../../components/LienLangue";
 import { notFound } from "next/navigation";
 import { TitreArticle } from "../../../components/numero/VueNumero";
-import { sensDe, langueTexte } from "../../../components/numero/titre";
+import { sensDe, langueTexte, texteAlternatif } from "../../../components/numero/titre";
 import { getAuteur, getLiensAuteurs, type Auteur } from "../../../lib/auteurs";
 import { estLaRevue } from "../../../lib/citations";
 import { jsonLd } from "../../../lib/jsonld";
@@ -54,8 +54,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   }, langueDe(lang), { chemin: `/auteurs/${slug}`, resumeNko: auteur.bioNko, resumeFr: description });
 }
 
-export default async function PageAuteur({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function PageAuteur({ params }: { params: Promise<{ lang: string; slug: string }> }) {
+  const { slug, lang } = await params;
+  const langue = langueDe(lang);
   const auteur = await getAuteur(slug);
   if (!auteur) notFound();
 
@@ -172,7 +173,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
                   <LienLangue href={`/article/${a.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition-colors hover:border-or/50">
                     {a.image?.url && (
                       <span className="relative aspect-[16/9] w-full overflow-hidden">
-                        <Image src={a.image.url} alt={a.image.alt?.trim() || ""} lang={langueTexte(a.image.alt?.trim() || "")} fill priority={i < 2} sizes="(min-width: 640px) 360px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                        <Image src={a.image.url} alt={texteAlternatif(a.image, langue)} lang={langueTexte(texteAlternatif(a.image, langue))} fill priority={i < 2} sizes="(min-width: 640px) 360px, 100vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                       </span>
                     )}
                     <span className="flex-1 p-4 text-start">

@@ -2,7 +2,7 @@ import Image from "next/image";
 import LienLangue from "../LienLangue";
 import type { ArticleDuSommaire, Numero, RubriqueCourte } from "../../lib/numeros";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
-import { contientNko, sensDe, separerTitre, langueTexte } from "./titre";
+import { contientNko, sensDe, separerTitre, langueTexte, texteAlternatif } from "./titre";
 import { positionDuCadrage } from "../../lib/point-interet";
 import TelechargerNumero from "../application/TelechargerNumero";
 
@@ -73,7 +73,8 @@ export function TitreArticle({ titre, grand }: { titre: string; grand?: boolean 
   );
 }
 
-function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean }) {
+function Entree({ article, une, langue }: { article: ArticleDuSommaire; une?: boolean; langue: "nqo" | "fr" }) {
+  const description = texteAlternatif(article.image, langue);
   const resume = article.excerpt ? sensDe(article.excerpt) : null;
   return (
     <LienLangue
@@ -82,7 +83,7 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
     >
       {article.image?.url && (
         <span className={`relative shrink-0 overflow-hidden rounded-xl ${une ? "aspect-[16/9] w-full" : "h-20 w-20 md:h-28 md:w-28"}`}>
-          <Image src={article.image.url} alt={article.image.alt?.trim() || ""} lang={langueTexte(article.image.alt?.trim() || "")} fill sizes={une ? "(min-width: 768px) 720px, 100vw" : "112px"} className="object-cover" style={{ objectPosition: positionDuCadrage(article.image.hotspot) }} />
+          <Image src={article.image.url} alt={description} lang={langueTexte(description)} fill sizes={une ? "(min-width: 768px) 720px, 100vw" : "112px"} className="object-cover" style={{ objectPosition: positionDuCadrage(article.image.hotspot) }} />
         </span>
       )}
       <span className="min-w-0 flex-1 text-start">
@@ -102,7 +103,8 @@ function Entree({ article, une }: { article: ArticleDuSommaire; une?: boolean })
 const TELECHARGER_PDF: Libelle = { nko: "ߘߐ߬ߛߙߋ «ߔߋ.ߘߋ.ߍߝ» ߟߊߖߌ߰", fr: "Télécharger le PDF" };
 const tailleFr = (octets: number) => `${(octets / 1024 / 1024).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} Mo`;
 
-export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fichier: string; octets: number } | null }) {
+// langue : version de la page (description des images : N'Ko s'il existe sur la version N'Ko)
+export default function VueNumero({ numero, pdf, langue = "nqo" }: { numero: Numero; pdf?: { fichier: string; octets: number } | null; langue?: "nqo" | "fr" }) {
   const { sommaire } = numero;
   const edito = sommaire.find((a) => a._id === numero.editoRef);
   const une = sommaire.find((a) => a._id === numero.aLaUneRef);
@@ -116,7 +118,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
           <figure className="relative h-[55vh] min-h-80 w-full overflow-hidden md:h-[70vh]">
             <Image
               src={couverture.url}
-              alt={couverture.alt?.trim() || ""} lang={langueTexte(couverture.alt?.trim() || "")}
+              alt={texteAlternatif(couverture, langue)} lang={langueTexte(texteAlternatif(couverture, langue))}
               fill
               priority
               sizes="100vw"
@@ -191,7 +193,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
             <h2 id="titre-une" className="mb-4">
               <LibelleBloc texte={TEXTES_NUMEROS.aLaUne} />
             </h2>
-            <Entree article={une} une />
+            <Entree article={une} une langue={langue} />
           </section>
         )}
 
@@ -202,7 +204,7 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
           <ol className="space-y-3">
             {sommaire.map((article) => (
               <li key={article._id}>
-                <Entree article={article} />
+                <Entree article={article} langue={langue} />
               </li>
             ))}
           </ol>

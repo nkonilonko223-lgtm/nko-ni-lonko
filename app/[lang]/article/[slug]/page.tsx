@@ -15,7 +15,7 @@ import { COMPTE_X, IMAGE_PARTAGE_ACCUEIL, URL_X } from "../../../lib/partage";
 import IMAGES_PARTAGE_ARTICLES from "../../../lib/images-partage-articles.json";
 import { PROJECTION_NUMERO_DE_L_ARTICLE, type NumeroDeLArticle, type RubriqueCourte } from "../../../lib/numeros";
 import { BandeauNumero, NavigationNumero, SurtitreRubrique } from "../../../components/numero/ArticleNumero";
-import { separerLangues } from "../../../components/numero/titre";
+import { separerLangues, texteAlternatif } from "../../../components/numero/titre";
 import { jsonLd } from "../../../lib/jsonld";
 import { cheminDeCle, cleDeCategorie } from "../../../lib/categories";
 import messagesNko from "../../../messages/nko.json";
@@ -36,6 +36,7 @@ interface SanityImage {
   _type: 'image';
   asset: { _ref: string; _type: 'reference'; };
   alt?: string;
+  altNko?: string; // description en N'Ko (version N'Ko du site)
   captionNko?: string; // légendes de la couverture (affichées sous l'image)
   caption?: string;
   source?: string; // crédit de la couverture (ex. NASA/SDO)
@@ -224,7 +225,7 @@ async function getArticle(slug: string): Promise<SafeArticleData | null> {
     "voisins": *[_type == "article" && _id != ^._id && defined(slug.current)]{
       title, "slug": slug.current, category, "rubrique": rubrique._ref, publishedAt,
       "termes": array::compact(body[].markDefs[].terme._ref),
-      "image": mainImage{ alt, "url": asset->url }
+      "image": mainImage{ alt, altNko, "url": asset->url }
     },
     "numero": ${PROJECTION_NUMERO_DE_L_ARTICLE},
     tags,
@@ -272,7 +273,7 @@ export async function generateMetadata(
   // 🚀 CORRECTION CRITIQUE : "let" au lieu de "const"
   let ogImage = imagePartage ? `${SITE_URL}/og/articles/${imagePartage}` : article.mainImageUrl || IMAGE_PARTAGE_ACCUEIL.url;
   // L'image fabriquée montre le titre : son texte alternatif est le titre
-  const ogAlt = imagePartage ? article.title : article.mainImageRaw?.alt?.trim() || article.title;
+  const ogAlt = imagePartage ? article.title : texteAlternatif(article.mainImageRaw, langue) || article.title;
 
   // 🛡️ LE BOUCLIER ANTI-TIMEOUT (Ingénierie 1/10000)
   if (ogImage.includes('cdn.sanity.io')) {
@@ -588,10 +589,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
         navigation={
           <>
             {numero && <NavigationNumero numero={numero} slug={article.slug} />}
-            <VoirAussi articles={voirAussi} />
+            <VoirAussi articles={voirAussi} langue={langue} />
           </>
         }
-        texte={<CustomPortableText value={body} />}
+        texte={<CustomPortableText value={body} langue={langue} />}
       />
     </>
   );
