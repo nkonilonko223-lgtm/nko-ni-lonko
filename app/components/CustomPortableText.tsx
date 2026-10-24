@@ -525,7 +525,10 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
           const aUnTerme = pos > 0 && pos <= 80 && pos < texte.length - 1;
           return (
             <FadeInBlock>
-              <aside
+              {/* Une note (role="note"), pas une zone de la page (<aside>) : plusieurs définitions
+                  portaient le même nom de zone pour les lecteurs d'écran (axe-core, 24 octobre 2026) */}
+              <div
+                role="note"
                 dir={nkoText ? "rtl" : "ltr"}
                 lang={nkoText ? "nqo" : "fr"}
                 aria-label={nkoText ? titleNko : titleFr}
@@ -546,9 +549,9 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                   ) : texte}
                 </p>
                 {calloutValue.source && (
-                  <p className="mt-1 font-mono text-[10px] text-white/30 uppercase tracking-widest">— {calloutValue.source}</p>
+                  <p className="mt-1 font-mono text-[10px] text-gray-500 uppercase tracking-widest">— {calloutValue.source}</p>
                 )}
-              </aside>
+              </div>
             </FadeInBlock>
           );
         }
@@ -582,7 +585,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
               {/* 👑 SOURCE (si présente) */}
               {calloutValue.source && (
                 <div className={`px-6 py-2 border-t ${config.borderClass} border-opacity-20 flex ${nkoText ? 'justify-start' : 'justify-end'}`}>
-                  <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest">
+                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">
                     — {calloutValue.source}
                   </span>
                 </div>
@@ -655,7 +658,7 @@ export default function CustomPortableText({ value }: CustomPortableTextProps) {
                   )}
                 </div>
                 {codeValue.language && (
-                  <span className="text-[10px] uppercase tracking-widest text-or/60 font-mono border border-or/20 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] uppercase tracking-widest text-or/70 font-mono border border-or/20 px-2 py-0.5 rounded-full">
                     {codeValue.language}
                   </span>
                 )}

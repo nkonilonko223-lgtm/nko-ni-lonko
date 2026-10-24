@@ -403,7 +403,7 @@ useEffect(() => {
                        <i className="ph-fill ph-scales text-or text-2xl"></i>
                     </div>
                     <p className="font-kigelia text-xl text-or mb-2 print:text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — ߖߏ߯ߦߊߟߌ ߣߌ߫ ߞߎ߬ߙߎ߲߬ߘߎ ߕߏ߲߰ߘߊ</p>
-                    <p className="text-xs tracking-[0.2em] text-white/50 uppercase font-bold print:text-gray-600" lang="fr" dir="ltr">N&apos;Ko ni Lonko — Département Juridique & Éditorial</p>
+                    <p className="text-xs tracking-[0.2em] text-gray-500 uppercase font-bold print:text-gray-600" lang="fr" dir="ltr">N&apos;Ko ni Lonko — Département Juridique & Éditorial</p>
                 </div>
             </div>
         </div>

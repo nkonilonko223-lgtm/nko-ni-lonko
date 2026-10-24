@@ -109,7 +109,7 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
                   </span>
                   {numero.titleNko && <span lang="nqo" dir="rtl" className="mt-3 block font-kigelia text-lg font-bold text-white">{numero.titleNko}</span>}
                   {numero.titleFr && <span lang="fr" dir="ltr" className="mt-1 block text-sm text-white/80">{numero.titleFr}</span>}
-                  <span className="mt-3 block text-xs text-white/50">
+                  <span className="mt-3 block text-xs text-gray-500">
                     <span lang="nqo" dir="rtl" className="font-kigelia">{dateNko(numero.publishedAt)}</span>
                     <span aria-hidden="true"> · </span>
                     <span lang="fr" dir="ltr">{dateFr(numero.publishedAt)}</span>

@@ -107,7 +107,7 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
         <p className="text-center mb-8">
           <LienLangue href="/lexique" className="inline-flex flex-col items-center text-blue-300 hover:text-white">
             <span lang="nqo" dir="rtl" className="font-kigelia text-base">{TEXTES_LEXIQUE.dictionnaire.nko}</span>
-            <span lang="fr" className="font-sans text-[11px] uppercase tracking-widest text-white/50">{TEXTES_LEXIQUE.dictionnaire.fr}</span>
+            <span lang="fr" className="font-sans text-[11px] uppercase tracking-widest text-gray-500">{TEXTES_LEXIQUE.dictionnaire.fr}</span>
           </LienLangue>
         </p>
 
@@ -130,7 +130,7 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
             type="submit"
             lang="fr"
             aria-label={TEXTES_LEXIQUE.rechercher.fr}
-            className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full px-3 py-2 text-white/50 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
+            className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full px-3 py-2 text-gray-500 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/50"
           >
             <i className="ph-bold ph-magnifying-glass" aria-hidden="true"></i>
           </button>
@@ -149,7 +149,7 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
         {terme.domaine && (
           <p className="mb-8 flex flex-wrap items-center gap-2 text-sm">
             <span lang="nqo" dir="rtl" className="font-kigelia text-white/60">{TEXTES_LEXIQUE.domaine.nko}</span>
-            <span className="text-white/30">/</span>
+            <span aria-hidden="true" className="text-white/30">/</span>
             <span lang="fr" dir="ltr" className="text-white/60">{TEXTES_LEXIQUE.domaine.fr} :</span>
             <span lang="nqo" dir="rtl" className="font-kigelia text-or">{terme.domaine}</span>
           </p>
@@ -171,7 +171,7 @@ export default async function PageTerme({ params }: { params: Promise<{ lang: st
               {TEXTES_LEXIQUE.memeDomaine.nko && (
                 <span lang="nqo" dir="rtl" className="font-kigelia text-lg font-bold text-white">{TEXTES_LEXIQUE.memeDomaine.nko}</span>
               )}
-              <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-white/50">{TEXTES_LEXIQUE.memeDomaine.fr}</span>
+              <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-gray-500">{TEXTES_LEXIQUE.memeDomaine.fr}</span>
             </h2>
             <ul className="flex flex-wrap gap-2">
               {[...terme.memeDomaine].sort((a, b) => comparerNko(a.termeNko, b.termeNko)).map((t) => (

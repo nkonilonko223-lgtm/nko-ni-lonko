@@ -51,7 +51,7 @@ function ContenuRubrique({ rubrique }: { rubrique: RubriqueCourte }) {
   return (
     <>
       {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-lg text-white/80 print:text-gray-700">{rubrique.titleNko}</span>}
-      {rubrique.titleFr && <span lang="fr" className="text-[11px] uppercase tracking-widest text-white/50 print:text-gray-600">{rubrique.titleFr}</span>}
+      {rubrique.titleFr && <span lang="fr" className="text-[11px] uppercase tracking-widest text-gray-500 print:text-gray-600">{rubrique.titleFr}</span>}
     </>
   );
 }

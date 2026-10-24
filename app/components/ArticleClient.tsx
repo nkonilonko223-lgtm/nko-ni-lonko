@@ -368,7 +368,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
               type="button"
               onClick={() => setReprise(null)}
               aria-label={lang === 'nko' ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-white/50 transition-colors hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-gray-500 transition-colors hover:text-white"
             >
               <i className="ph-bold ph-x" aria-hidden="true"></i>
             </button>
@@ -445,7 +445,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         <div role="navigation" aria-label="Fil d'Ariane" className="mb-4 md:mb-6">
           <ol className={`flex items-center justify-center gap-2 uppercase tracking-[0.3em] font-bold ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
             <li className="print:hidden">
-              <Link href={lien("/")} className="text-white/50 transition-colors hover:text-white">
+              <Link href={lien("/")} className="text-gray-500 transition-colors hover:text-white">
                 {lang === 'nko' ? messagesNko.nav.home : 'Accueil'}
               </Link>
             </li>

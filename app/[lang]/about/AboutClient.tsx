@@ -250,7 +250,7 @@ export default function AboutClient() {
                         &quot;J&apos;ai conçu cette plateforme avec une conviction absolue : le N&apos;Ko est la clé de voûte de notre souveraineté technologique. Ce sanctuaire numérique est une fondation posée pour l&apos;avenir. La science appartient à ceux qui peuvent la lire.&quot;
                     </p>
                     <p className="text-or font-bold text-sm uppercase tracking-widest">— Moustapha CAMARA / MckV</p>
-                    <p className="text-xs text-white/50 tracking-widest uppercase mt-2">Fondateur & Architecte</p>
+                    <p className="text-xs text-gray-500 tracking-widest uppercase mt-2">Fondateur & Architecte</p>
                 </div>
                 
                 <div 
@@ -264,7 +264,7 @@ export default function AboutClient() {
                         ߊ߲ ߞߊ߬ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߓߟߐߟߐ ߝߏߟߏ߲ߝߊߟߊ߲ ߣߌ߲߬ ߟߊߘߊ߲߫ ߞߎ߲߬ ߞߎ߲߬ߓߊ߬ߓߊ ߞߋߟߋ߲߫ ߘߐߙߐ߲߫ ߠߋ߬ ߟߊ߫: ߣߴߏ߬ ߦߋ߫ ߞߊ߬ ߒߞߏ ߟߊ߫ ߛߊ߲ߠߞߊߦߊ߫ ߡߊߦߌ߬ߘߊ߬ ߞߛߐߓߍ߫߸ ߐ߲߫ ߏ߬ ߘߐ߫߸ ߊ߬ ߟߐ߲߫ ߞߏ߫ ߒߞߏ ߛߓߍߛߎ߲ ߠߋ߬ ߦߋ߫ ߛߋ߫ ߞߴߊ߲ ߠߊ߫ ߖߘߍ߬ߕߌ߰ߦߊ ߘߝߊߟߋ߲߫ ߟߊߛߊ߬ߞߌ߲߬ ߊ߲ ߡߊ߬߸ ߘߎߢߊ߫ ߛߋߞߏߟߦߊ ߘߊߞߎ߲ ߠߎ߬ ߓߍ߯ ߘߐ߫ ߓߌ߬߹ ߏ߬ ߞߏߛߐ߲߬ ߊ߲ ߠߊ߫ ߓߟߐߟߐ ߛߋߞߏߟߊ ߝߙߍߕߍߡߊ߫ ߣߌ߲߬ ߧߋ߫ ߖߎ߬ߓߌߟߊ ߥߟߊ߫ ߖߎ߬ߕߞߍ߫ ߟߋ߬ ߘߌ߫ ߞߊ߬ ߛߌߣߌ߲߫ ߢߍ߫ ߛߞߌ߬߸ ߒߞߏ ߞߊߙߊ߲ߡߐ߮ ߟߎ߬ ߣߌ߫ ߒߞߏ߫ ߞߊߙߊ߲ߘߋ߲߫ ߠߎ߬ ߘߌ߫ ߒߞߏ߫ ߟߊ߫ ߛߐ߬ߘߐ߲߬ߠߊ ߘߎߢߊ߫ ߝߊ߲߬ ߓߍ߯ ߘߐ߫ ߢߊ ߡߌ߲ ߡߊ߬߸ ߞߵߊ߬ ߞߊ߬ߙߊ߲߫߸ ߞߊ߬ ߢߊߦߋ߫߹ ߟߊߓߊ߲߫ ߘߐ߫ ߟߐ߲ߞߏ ߞߏ߬ߣߌ߲߬ ߧߋ߫ ߡߞߐ߬ ߟߋ߬ ߕߊ߫ ߘߌ߫ ߡߌ߲ ߓߍ߫ ߛߋ߫ ߊ߬ ߢߊߦߋ߫ ߟߊ߫߸ ߊ߬ ߝߊ߬ߛߏ ߞߊ߲ ߘߐ߫߹
                     </p>
                     <p className="text-or font-kigelia text-lg md:text-xl">— ߡߎ߬ߛߊߝߊ߬ ߞߊ߬ߡߙߊ߬ / ߡ.ߞ</p>
-                    <p className="text-xs font-kigelia text-or/50 mt-2">ߟߊߘߊ߲ߓߊ߮ ߣߴߊ߬ ߓߐ߰ߟߐ߲߬ߦߊ߬ߟߊ</p>
+                    <p className="text-xs font-kigelia text-or/70 mt-2">ߟߊߘߊ߲ߓߊ߮ ߣߴߊ߬ ߓߐ߰ߟߐ߲߬ߦߊ߬ߟߊ</p>
                 </div>
             </div>
         </div>

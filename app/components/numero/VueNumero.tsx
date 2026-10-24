@@ -30,7 +30,7 @@ function LibelleBloc({ texte }: { texte: Libelle }) {
   return (
     <span className="flex flex-col items-center gap-0.5">
       {texte.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-or">{texte.nko}</span>}
-      <span lang="fr" className="font-sans text-[11px] uppercase tracking-widest text-white/50">{texte.fr}</span>
+      <span lang="fr" className="font-sans text-[11px] uppercase tracking-widest text-gray-500">{texte.fr}</span>
     </span>
   );
 }
@@ -51,7 +51,7 @@ function Surtitre({ rubrique }: { rubrique?: RubriqueCourte | null }) {
   return (
     <span className="mb-1 flex flex-wrap items-baseline gap-x-2">
       {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-sm text-or">{rubrique.titleNko}</span>}
-      {rubrique.titleFr && <span lang="fr" className="text-[10px] uppercase tracking-widest text-white/50">{rubrique.titleFr}</span>}
+      {rubrique.titleFr && <span lang="fr" className="text-[10px] uppercase tracking-widest text-gray-500">{rubrique.titleFr}</span>}
     </span>
   );
 }
@@ -154,14 +154,14 @@ export default function VueNumero({ numero, pdf }: { numero: Numero; pdf?: { fic
             )}
           </h1>
           {(couverture?.captionNko || couverture?.caption) && (
-            <p className="mt-4 flex flex-col gap-1 text-xs text-white/50">
+            <p className="mt-4 flex flex-col gap-1 text-xs text-gray-500">
               {couverture.captionNko && <span lang="nqo" dir="rtl" className="font-kigelia text-sm">{couverture.captionNko}</span>}
               {couverture.caption && <span lang="fr" dir="ltr">{couverture.caption}</span>}
             </p>
           )}
           {/* Crédit de la couverture, en petit : N'Ko d'abord (si la rédaction l'a fourni), puis français */}
           {(couverture?.sourceNko || couverture?.source) && (
-            <p dir="rtl" className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2 text-[10px] text-white/40 md:text-xs">
+            <p dir="rtl" className="mt-2 flex flex-wrap items-baseline justify-center gap-x-2 text-[10px] text-gray-500 md:text-xs">
               {couverture.sourceNko && <span lang="nqo" className="font-kigelia text-xs md:text-sm">{couverture.sourceNko}</span>}
               {couverture.source && <span lang="fr" dir="ltr" translate="no">{couverture.source}</span>}
             </p>

@@ -121,7 +121,7 @@ export default function TelechargerNumero({ numero, chemins }: { numero: string;
             <i className={`ph-bold ${etat.type === "absent" ? "ph-download-simple" : "ph-arrows-clockwise"}`} aria-hidden="true"></i>
             <TexteBilingue texte={etat.type === "absent" ? TELECHARGER_NUMERO : REPRENDRE} />
           </button>
-          <p className="mt-2 text-white/50">
+          <p className="mt-2 text-gray-500">
             <TexteBilingue texte={TELECHARGER_POURQUOI} />
           </p>
         </>

@@ -18,7 +18,7 @@ export default function VoirAussi({ articles }: { articles: Voisin[] }) {
     <section aria-labelledby="a-lire-aussi" className="mx-auto max-w-5xl px-4 pb-12 print:hidden">
       <h2 id="a-lire-aussi" className="mb-5 flex flex-col items-center gap-0.5">
         {A_LIRE_AUSSI.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-or">{A_LIRE_AUSSI.nko}</span>}
-        <span lang="fr" className="text-[11px] uppercase tracking-widest text-white/50">{A_LIRE_AUSSI.fr}</span>
+        <span lang="fr" className="text-[11px] uppercase tracking-widest text-gray-500">{A_LIRE_AUSSI.fr}</span>
       </h2>
       <ul className="grid gap-4 md:grid-cols-3">
         {articles.map((a) => (

@@ -121,7 +121,7 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
 
             <h1 className="text-center flex flex-col gap-4 mb-16">
                 <span className="font-kigelia text-4xl md:text-5xl text-or drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">ߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌ߫</span>
-                <span className="text-white/50 text-xs md:text-sm uppercase tracking-[0.4em] border-t border-white/10 pt-4">
+                <span className="text-gray-500 text-xs md:text-sm uppercase tracking-[0.4em] border-t border-white/10 pt-4">
                   Choisissez votre langue
                 </span>
             </h1>

@@ -190,7 +190,7 @@ export default function DictionnaireInteractif({ termes }: { termes: TermeDictio
             ))}
           </ul>
         ) : (
-          <p className="py-10 text-center text-white/50">
+          <p className="py-10 text-center text-gray-500">
             {TEXTES_LEXIQUE.aucunResultat.nko && (
               <span lang="nqo" dir="rtl" className="mb-1 block font-kigelia">{TEXTES_LEXIQUE.aucunResultat.nko}</span>
             )}

@@ -268,10 +268,11 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
           {/* Lueur d'arrière-plan */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-or/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4 pointer-events-none transition-all duration-1000 group-hover/refs:bg-or/10"></div>
 
-        <h4 className={`text-or font-bold mb-6 md:mb-8 flex items-center justify-start gap-3 text-lg md:text-xl relative z-10 ${isNko ? 'font-kigelia text-2xl md:text-3xl' : ''}`}>
+        {/* h2 : section de la page, après « À lire aussi » (h2) ; un h4 sautait deux niveaux */}
+        <h2 className={`text-or font-bold mb-6 md:mb-8 flex items-center justify-start gap-3 text-lg md:text-xl relative z-10 ${isNko ? 'font-kigelia text-2xl md:text-3xl' : ''}`}>
             <i className="ph-fill ph-books text-2xl drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]"></i>
             {isNko ? "ߦߌߟߡߊ ߟߎ߬ ߣߌ߫ ߓߐߛߎ߲ ߠߎ߬" : "Sources & Références"}
-          </h4>
+          </h2>
           
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
             {references.map((ref: ReferenceProps, idx: number) => {
@@ -355,7 +356,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                   {/* Le séparateur vertical (World Class) */}
                   <span className="w-[1.5px] h-3.5 bg-or/40 rounded-full"></span>
                   
-                  <span className="text-or/60 text-[10px] font-bold tracking-widest uppercase font-sans mt-0.5">
+                  <span className="text-or/70 text-[10px] font-bold tracking-widest uppercase font-sans mt-0.5">
                     Auteur
                   </span>
                 </div>

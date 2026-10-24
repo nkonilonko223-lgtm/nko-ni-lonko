@@ -36,7 +36,7 @@ export default function CiterTerme({ termeNko, termeFr, url }: { termeNko?: stri
         {TEXTES_LEXIQUE.citer.nko && (
           <span lang="nqo" dir="rtl" className="font-kigelia text-lg font-bold text-white">{TEXTES_LEXIQUE.citer.nko}</span>
         )}
-        <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-white/50">{TEXTES_LEXIQUE.citer.fr}</span>
+        <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-gray-500">{TEXTES_LEXIQUE.citer.fr}</span>
       </h2>
       <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
         <p dir="ltr" lang="fr" className="flex-1 font-mono text-xs leading-relaxed text-gray-300 select-all break-words">

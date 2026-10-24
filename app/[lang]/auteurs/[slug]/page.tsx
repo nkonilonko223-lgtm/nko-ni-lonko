@@ -164,7 +164,7 @@ export default async function PageAuteur({ params }: { params: Promise<{ slug: s
           <section aria-labelledby="articles-de-l-auteur" className="mt-14">
             <h2 id="articles-de-l-auteur" className="mb-6 flex flex-col items-center gap-0.5">
               <span lang="nqo" dir="rtl" className="font-kigelia text-2xl text-or">{ARTICLES.nko}</span>
-              <span lang="fr" className="font-fr text-[11px] uppercase tracking-widest text-white/50">{ARTICLES.fr}</span>
+              <span lang="fr" className="font-fr text-[11px] uppercase tracking-widest text-gray-500">{ARTICLES.fr}</span>
             </h2>
             <ul className="grid gap-4 sm:grid-cols-2">
               {auteur.articles.map((a, i) => (

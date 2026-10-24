@@ -22,7 +22,7 @@ export default function LexiqueArticle({ termes }: { termes: TermeLexiqueData[] 
           <span lang="nqo" dir="rtl" className="font-kigelia text-2xl font-bold text-blue-300 print:text-black">
             {TEXTES_LEXIQUE.lexique.nko}
           </span>
-          <span lang="fr" dir="ltr" className="font-sans text-xs uppercase tracking-[0.3em] text-white/50 print:text-gray-600">
+          <span lang="fr" dir="ltr" className="font-sans text-xs uppercase tracking-[0.3em] text-gray-500 print:text-gray-600">
             {TEXTES_LEXIQUE.lexique.fr}
           </span>
         </h2>
