@@ -1,7 +1,7 @@
 # L'application du site (étapes 1 et 2) — 23 octobre 2026
 
 > Pour le propriétaire et toute autre IA. Branche `lot2/application` (posée sur `correctif/hors-ligne`).
-> **Mise en ligne prévue le 31 octobre** (après la publication du N°003), après « fusionner » écrit.
+> **Mise en ligne le 24 octobre 2026** avec le design « Nuit du Mandé » (décision du propriétaire : « fusionne tout »).
 > Aucun changement de schéma Sanity, rien n'est écrit dans Sanity.
 
 ## Ce que voit le lecteur
@@ -25,7 +25,7 @@ Rien n'est envoyé : tout reste dans le navigateur du lecteur (articles lus, « 
 | `public/application/` | Icône de l'application (`icone-192/512`, `icone-masquable-192/512`), icône d'onglet (`onglet-192`), raccourcis, écrans de démarrage (iPhone, iPad), captures (fabriqués) |
 | `scripts/logo/logo.mjs` | **Dessin de l'icône** (choix du propriétaire, 24 octobre 2026) : le logo original en haute définition agrandi sur fond bleu nuit, léger halo, retouches très fines ; onglet = la lettre seule. Sources HD et toutes les versions du logo : `docs/LOGO.md` |
 | `app/lib/ecrans-demarrage.json` | Liste des écrans de démarrage, lue par le gabarit (fabriquée) |
-| `app/components/application/textes.ts` | **Tous les textes** de l'application (N'Ko de la rédaction, L21 à L34 à fournir) |
+| `app/components/application/textes.ts` | **Tous les textes** de l'application (N'Ko de la rédaction, L21 à L34 fournis le 24 octobre 2026) |
 | `app/lib/installation.ts` | État de l'installation (fenêtre du navigateur, guide iPhone, « déjà installée ») |
 | `app/components/application/` | `Application.tsx` (chargée à la demande), `PropositionInstallation.tsx`, `GuideIphone.tsx`, `TelechargerNumero.tsx`, `DisponibleHorsLigne.tsx`, `Libelle.tsx` |
 | `public/sw.js` | Lecture hors ligne (voir `docs/HORS-LIGNE.md`) |
@@ -42,11 +42,12 @@ captures déjà faites sont gardées). L'icône d'onglet se refait avec `node sc
 ligne (Chrome sans fenêtre, lecture seule). Les noms N'Ko viennent du manifeste existant et de
 `textes.ts` : aucun N'Ko n'est tapé.
 
-## Textes N'Ko à fournir
+## Textes N'Ko
 
-L21 à L34 dans `docs/TEXTES-NKO-A-DEMANDER.md`. Tant qu'un texte manque, le français s'affiche
-(avec `lang="fr"`). Quand la rédaction les fournit : les copier par programme dans `textes.ts`,
-puis relancer `node scripts/application/generer.mjs` (pour les raccourcis du manifeste).
+L21 à L34 (`docs/TEXTES-NKO-A-DEMANDER.md`) : fournis par la rédaction le 24 octobre 2026, copiés
+par programme dans `textes.ts`. Un texte vide : le français s'affiche (avec `lang="fr"`). Après un
+changement de « Numéros », « Lexique » ou « Ma bibliothèque » : relancer
+`node scripts/application/generer.mjs` (raccourcis du manifeste).
 
 ## Vérifier
 
@@ -71,13 +72,13 @@ Sur un vrai téléphone (aperçu Vercel) :
 3. **Numéro** (après le 30) : page du N°003 → « Télécharger le numéro » → mode avion → ouvrir
    chaque article : texte et images s'affichent.
 
-## Juste après la fusion (31 octobre)
+## Images de partage
 
-Les images de partage des **articles** (dont celles du N°003, faites le 30 avec l'ancien logo) sont
-à refaire avec le logo harmonisé : `node scripts/images-partage/articles.mjs`, puis envoyer ces
+Refaites le 24 octobre 2026 avec le logo harmonisé et le bleu nuit (`docs/DESIGN.md`). Après la
+publication du N°003 : `node scripts/images-partage/articles.mjs` et `numeros.mjs`, puis envoyer ces
 images (branche, aperçu, « fusionner »). Rien n'est écrit dans Sanity.
 
-## Étapes suivantes (après le 31 octobre)
+## Étapes suivantes (après le 30 octobre)
 
 - **Étape 3** : l'application sur Google Play (même site, emballé). Il faut d'abord le compte
   développeur Google Play du propriétaire (personnel : 12 testeurs pendant 14 jours ;

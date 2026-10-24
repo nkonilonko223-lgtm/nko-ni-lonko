@@ -2,8 +2,8 @@
 
 > Branche `lot2/design-nuit-du-mande` (24 octobre 2026), feu vert du propriétaire pour les 4 points :
 > palette du site, ambiances de lecture, police de lecture, correction du lexique (branche à part).
-> Mise en ligne prévue **début novembre**, après l'application (31 octobre). À lire avant de toucher
-> une couleur.
+> **Mis en ligne le 24 octobre 2026** avec l'application (décision du propriétaire : « fusionne tout »).
+> À lire avant de toucher une couleur.
 
 ## 1. La palette « Nuit du Mandé »
 
@@ -57,7 +57,7 @@ Bouton **« Ambiance »** dans la barre d'outils de l'article : **Nuit → Papie
   `surface`, et les couleurs du lexique et des encadrés (`blue-…`, `emerald-300`…) suit tout seul.
 - **Îlot toujours sombre** (visionneuses d'images) : classe **`ambiance-nuit`** sur le conteneur.
 - **Impression** : encre noire sur blanc, quelle que soit l'ambiance (bloc `@media print` des variables).
-- Libellés N'Ko du bouton : **L35 à L37**, à demander (`docs/TEXTES-NKO-A-DEMANDER.md`).
+- Libellés N'Ko du bouton : **L35 à L37**, fournis par la rédaction le 24 octobre 2026 (`AMBIANCE` dans `ArticleTools.tsx`).
 
 ## 4. Police de lecture : Literata
 

@@ -11,8 +11,11 @@
 > - **L1 à L8 et L10 à L16 : fournis et intégrés** (39 textes, branche `textes/nko-l1-l16`), copiés par programme, contrôlés identiques au fichier caractère par caractère et en NFC. L14 b, L15 a et L16 sont le même texte (« Ma bibliothèque »), utilisé à trois endroits.
 > - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
 > - **L9 : à fournir** (son texte français n'est pas encore validé).
-> - **L21 à L34 : à fournir** (demandés le 23 octobre 2026) : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion). Tous dans **un seul fichier** du code : `app/components/application/textes.ts` (champ `nko`, vide en attendant). Mise en ligne prévue **après le 30 octobre** : pas d'urgence avant la publication du N°003.
-> - **L35 à L37 : à fournir** (24 octobre 2026) : bouton **« Ambiance »** des articles (nouveau design « Nuit du Mandé », branche `lot2/design-nuit-du-mande`, mise en ligne prévue début novembre). Champ `nko` vide en attendant : le bouton s'affiche en français.
+> - **État au 24 octobre 2026** — fichier reçu : `NKO/Revue/Site/textes-nko-L21-L37.txt` (19 textes validés par MckV) :
+>   - **L21 à L34 : fournis et intégrés** (16 textes, dont L24 a, b, c) dans `app/components/application/textes.ts` : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion).
+>   - **L35 à L37 : fournis et intégrés** dans `app/components/ArticleTools.tsx` (`AMBIANCE`) : bouton **« Ambiance »** des articles (design « Nuit du Mandé »).
+>   - `textes-nko-L1-L20.txt` **mis à jour** (décision de MckV : « sauvegarder » prend sa forme courte) : **L6 p, L14 a, L15 b, L15 c** recopiés entiers (5 occurrences du mot, 4 lignes).
+>   - Tous copiés par programme ; contrôle : les 62 textes des deux fichiers sont dans le code à l'identique, en NFC. Mis en ligne le 24 octobre 2026 (accord du propriétaire).
 
 | # | Français | Où il s'affiche | Fichier et emplacement |
 |---|---|---|---|
