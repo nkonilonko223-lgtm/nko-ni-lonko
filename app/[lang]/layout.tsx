@@ -144,12 +144,13 @@ const METADONNEES: Metadata = {
   },
 
   icons: {
+    // Onglet, favoris, résultats de Google : version simplifiée du logo (les lettres sur fond bleu
+    // nuit, scripts/icones/favicon.mjs) ; un logo détaillé ne se lit pas à 16 px. app/favicon.ico est
+    // ajouté par Next.js lui-même, avec une version dans l'adresse (pas de copie ancienne gardée)
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/icon-192x192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512x512.png", sizes: "512x512", type: "image/png" },
+      { url: "/application/onglet-192.png", sizes: "192x192", type: "image/png" },
     ],
-    // Icône de l'iPhone : 180 px, cadrée sur le logo (scripts/icones/favicon.mjs)
+    // Icône de l'iPhone : celle de l'application, 180 px (scripts/application/generer.mjs)
     apple: [
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }
     ]
