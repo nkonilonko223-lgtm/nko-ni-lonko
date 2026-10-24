@@ -22,7 +22,8 @@ Rien n'est envoyé : tout reste dans le navigateur du lecteur (articles lus, « 
 | Fichier | Rôle |
 |---|---|
 | `public/manifest.json` · `public/manifest-fr.json` | « Carte d'identité » de l'application, N'Ko (s'ouvre sur `/`) et français (s'ouvre sur `/fr`). **Fabriqués** par le générateur : ne pas modifier à la main |
-| `public/application/` | Icônes masquables, raccourcis, écrans de démarrage (iPhone, iPad), captures (fabriqués) |
+| `public/application/` | Icône de l'application (`icone-192/512`, `icone-masquable-192/512`), icône d'onglet (`onglet-192`), raccourcis, écrans de démarrage (iPhone, iPad), captures (fabriqués) |
+| `scripts/application/icone.mjs` | **Dessin de l'icône** (choix du propriétaire, 24 octobre 2026) : le logo original agrandi sur fond bleu nuit, léger halo, retouches très fines ; onglet = les lettres seules. Utilisé par `generer.mjs` (icônes de l'application, `public/apple-touch-icon.png`) et `scripts/icones/favicon.mjs` (`app/favicon.ico`, `onglet-192`). Le logo du site (`public/icon-512x512.png`) n'est jamais modifié : c'est la source |
 | `app/lib/ecrans-demarrage.json` | Liste des écrans de démarrage, lue par le gabarit (fabriquée) |
 | `app/components/application/textes.ts` | **Tous les textes** de l'application (N'Ko de la rédaction, L21 à L34 à fournir) |
 | `app/lib/installation.ts` | État de l'installation (fenêtre du navigateur, guide iPhone, « déjà installée ») |
@@ -37,7 +38,7 @@ node scripts/application/generer.mjs --captures
 ```
 
 La première commande refait les manifestes, icônes, raccourcis et écrans de démarrage (les
-captures déjà faites sont gardées). La seconde refait aussi les **captures** à partir du site en
+captures déjà faites sont gardées). L'icône d'onglet se refait avec `node scripts/icones/favicon.mjs`. La seconde refait aussi les **captures** à partir du site en
 ligne (Chrome sans fenêtre, lecture seule). Les noms N'Ko viennent du manifeste existant et de
 `textes.ts` : aucun N'Ko n'est tapé.
 
