@@ -11,7 +11,7 @@
  * ==============================================================================
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import Link from "next/link";
 import { useLanguage } from "./LanguageProvider";
 import { separerLangues, separerTitre, texteDePartage } from "./numero/titre";
@@ -24,6 +24,7 @@ import messagesNko from "../messages/nko.json";
 import { lireSignets, ecrireSignets, prevenirLectureHorsLigne } from "../lib/bibliotheque";
 import { cheminSansLangue } from "../lib/langue";
 import { chargerImagesPourImpression, demanderImagesArticle } from "./texte/impression";
+import { AMBIANCES, ambianceDuLecteur, appliquerAmbiance, garderAmbiance, type Ambiance } from "../lib/ambiance";
 
 // Libellé N'Ko « Citer cet article » (repris tel quel du bouton, texte existant)
 const CITER = { nko: "ߞߎߡߘߊ ߣߌ߲߬ ߞߏߝߐ߫", fr: "Citer cet article" };
@@ -36,6 +37,14 @@ const NOM_NKO = "ߒߞߏ";
 // Libellés N'Ko « Sauvegardé » et « Ma bibliothèque » : L14 a et b (rédaction, 23 octobre 2026 ; copié tel quel par programme)
 const SAUVEGARDE = { nko: "ߊ߬ ߓߘߊ߫ ߟߊߡߊ߬ߙߊ߬", fr: "Sauvegardé" };
 const MA_BIBLIOTHEQUE = { nko: "ߒ ߠߊ߫ ߟߍߙߘߊ", fr: "Ma bibliothèque" };
+// Ambiance de lecture (app/lib/ambiance.ts) : le bouton montre l'ambiance du moment, un appui
+// passe à la suivante. Libellés N'Ko L35 à L37 à demander à la rédaction (docs/TEXTES-NKO-A-DEMANDER.md) :
+// en attendant, le français (lang="fr")
+const AMBIANCE: Record<Ambiance, { nko: string; fr: string; icone: string }> = {
+  nuit: { nko: "", fr: "Ambiance : Nuit", icone: "ph-moon" },
+  papier: { nko: "", fr: "Ambiance : Papier", icone: "ph-book-open" },
+  jour: { nko: "", fr: "Ambiance : Jour", icone: "ph-sun" },
+};
 
 interface ArticleToolsProps {
   onZoomIn: () => void;
@@ -108,6 +117,25 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       navigator.vibrate(50);
     }
   }, []);
+
+  // Ambiance de lecture : posée avant l'affichage par le petit script de la page ; posée ici
+  // pour une arrivée par un lien interne (le script ne s'exécute qu'au premier chargement),
+  // avant que la page ne s'affiche, et retirée en quittant l'article
+  const [ambiance, setAmbiance] = useState<Ambiance>("nuit");
+  useLayoutEffect(() => {
+    const a = ambianceDuLecteur();
+    appliquerAmbiance(a);
+    const minuteur = setTimeout(() => setAmbiance(a), 0);
+    return () => { clearTimeout(minuteur); appliquerAmbiance(null); };
+  }, []);
+  const changerAmbiance = () => {
+    triggerVibration();
+    const suivante = AMBIANCES[(AMBIANCES.indexOf(ambiance) + 1) % AMBIANCES.length];
+    setAmbiance(suivante);
+    appliquerAmbiance(suivante);
+    garderAmbiance(suivante);
+  };
+  const libelleAmbiance = isNko && AMBIANCE[ambiance].nko ? AMBIANCE[ambiance].nko : AMBIANCE[ambiance].fr;
 
   // 🚀 UTILITAIRE 1/1000 : URL Canonique absolue
   const getCanonicalUrl = useCallback(() => {
@@ -434,7 +462,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       {/* A1 — « Sauvegardé · Ma bibliothèque » après un signet (disparaît seul) */}
       <div role="status" className="fixed bottom-36 md:bottom-20 left-1/2 -translate-x-1/2 z-[9999] print:hidden">
         {signetAjoute && (
-          <div className="flex items-center gap-1 rounded-full border border-or/50 bg-black/85 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <div className="flex items-center gap-1 rounded-full border border-or/50 bg-surface/95 p-1 shadow-[0_10px_40px_rgba(251,191,36,0.2)] backdrop-blur-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
             <span className="flex items-center gap-2 whitespace-nowrap px-3 text-sm text-white/80">
               <i className="ph-fill ph-bookmark-simple text-or" aria-hidden="true"></i>
               {isNko && SAUVEGARDE.nko
@@ -454,7 +482,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       {/* 🚀 ARME 2 (UI) : LA PILULE MAGNÉTIQUE DE SÉLECTION */}
       {selection.show && (
         <div 
-          className="fixed z-[9990] flex items-center gap-1 p-1 bg-black/90 backdrop-blur-xl border border-white/20 shadow-[0_10px_40px_rgba(251,191,36,0.3)] rounded-full animate-in fade-in zoom-in duration-200"
+          className="fixed z-[9990] flex items-center gap-1 p-1 bg-surface/95 backdrop-blur-xl border border-white/20 shadow-[0_10px_40px_rgba(251,191,36,0.3)] rounded-full animate-in fade-in zoom-in duration-200"
           style={{ 
             // 👑 Blindage mobile : clamp empêche la pilule de sortir de l'écran
             left: `clamp(60px, ${selection.x}px, calc(100vw - 60px))`,
@@ -525,7 +553,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
         <button 
           onClick={() => { triggerVibration(); setIsExpanded(!isExpanded); setShowToc(false); }}
           className={`md:hidden flex items-center justify-center w-12 h-12 rounded-full backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.8)] border transition-all duration-300 z-50 ${
-            isExpanded ? 'bg-[#fbbf24] text-black border-or rotate-90 scale-95' : 'bg-black/85 text-or border-white/20 rotate-0 scale-100'
+            isExpanded ? 'bg-[#fbbf24] text-black border-or rotate-90 scale-95' : 'bg-surface/95 text-or border-white/20 rotate-0 scale-100'
           }`}
           aria-label={isNko ? "ߢߍߥߟߊ ߟߊߞߊ߬" : "Ouvrir le menu"}
           aria-expanded={isExpanded}
@@ -536,7 +564,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
         <div className={`flex flex-col gap-3 ${isNko ? 'items-start md:items-center' : 'items-end md:items-center'}`}>
           
           {/* LE PANNEAU DE SOMMAIRE (Radar) */}
-         <div className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-black/85 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
+         <div className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-surface/95 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
             showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
           }`}>
             <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
@@ -561,7 +589,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                       className="group block w-full pl-6 text-start rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-or"
                     >
                       <span aria-hidden="true" className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 transition-all duration-300 ${
-                        activeHeadingId === h.id ? 'bg-[#fbbf24] border-or shadow-[0_0_10px_#fbbf24]' : 'bg-black border-white/30 group-hover:border-or'
+                        activeHeadingId === h.id ? 'bg-[#fbbf24] border-or shadow-[0_0_10px_#fbbf24]' : 'bg-void border-white/30 group-hover:border-or'
                       }`}></span>
                       <span className={`block transition-all duration-300 line-clamp-2 leading-tight ${
                         activeHeadingId === h.id ? 'text-or font-bold' : 'text-gray-400 group-hover:text-white'
@@ -577,7 +605,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
           {/* LE PANNEAU « CITER » : formats internationaux, titre N'Ko d'abord (app/lib/citations.ts) */}
           {showCite && (
-            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4' : 'md:right-full md:mr-4'} w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-black/90 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200`}>
+            <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4' : 'md:right-full md:mr-4'} w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-surface/95 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200`}>
               <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
                 <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-or font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
                   {isNko ? CITER.nko : CITER.fr}
@@ -654,7 +682,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               (360–390 px) : 3 ou 4 outils étaient hors d'atteinte. C'est maintenant une colonne au-dessus
               du bouton, chaque outil AVEC son nom (classe « outil », app/globals.css), qui défile si
               l'écran est petit. Ordinateur : colonne d'icônes plus serrée, défilante si la fenêtre est basse. */}
-          <div className={`outils-lecture flex-col items-stretch md:items-center gap-1 md:gap-2 p-2 md:p-3 w-64 md:w-auto max-h-[calc(100dvh-7rem)] md:max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain rounded-3xl md:rounded-[2rem] bg-black/90 backdrop-blur-2xl border border-white/15 shadow-[0_0_40px_rgba(0,0,0,0.8)] ${
+          <div className={`outils-lecture flex-col items-stretch md:items-center gap-1 md:gap-2 p-2 md:p-3 w-64 md:w-auto max-h-[calc(100dvh-7rem)] md:max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain rounded-3xl md:rounded-[2rem] bg-surface/95 backdrop-blur-2xl border border-white/15 shadow-[0_0_40px_rgba(0,0,0,0.8)] ${
             isNko ? 'origin-bottom-left' : 'origin-bottom-right'
           } ${
             isExpanded ? 'flex animate-in fade-in zoom-in-95 duration-200 md:animate-none' : 'hidden md:flex'
@@ -743,6 +771,18 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
 
             {/* SÉPARATEUR ADAPTATIF */}
             <div className="h-px w-full my-1 md:my-0 md:w-6 md:mx-auto bg-white/15"></div>
+
+            {/* AMBIANCE DE LECTURE : Nuit → Papier → Jour */}
+            <button
+                type="button"
+                onClick={changerAmbiance}
+                lang={isNko && !AMBIANCE[ambiance].nko ? "fr" : undefined}
+                className="outil w-10 h-10 rounded-full flex items-center justify-center text-gray-300 hover:text-or hover:bg-white/5 transition-all active:scale-90 touch-manipulation"
+                title={libelleAmbiance}
+                aria-label={libelleAmbiance}
+            >
+              <i className={`ph-bold ${AMBIANCE[ambiance].icone} text-xl`} aria-hidden="true"></i>
+            </button>
 
             {/* ZOOM + */}
             <button 

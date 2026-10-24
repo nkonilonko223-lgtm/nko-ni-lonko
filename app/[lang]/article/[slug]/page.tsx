@@ -5,6 +5,7 @@ import { urlFor } from "../../../../sanity/image";
 import ArticleClient from "../../../components/ArticleClient";
 import CustomPortableText from "../../../components/CustomPortableText";
 import { CLE_LANGUE_LECTURE, contientDeuxLangues } from "../../../components/texte/outils";
+import { SCRIPT_AMBIANCE } from "../../../lib/ambiance";
 import { Metadata } from "next";
 import { versionLangue } from "../../../lib/carte-partage";
 import { adresse, langueDe } from "../../../lib/langue";
@@ -555,6 +556,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ lang: 
         dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbJsonLd) }}
       />
       
+      {/* Ambiance de lecture (Nuit, Papier, Jour) : appliquée AVANT l'affichage (app/lib/ambiance.ts) */}
+      <script dangerouslySetInnerHTML={{ __html: SCRIPT_AMBIANCE }} />
+
       {/* A4 — Langue de lecture gardée par le lecteur : appliquée AVANT l'affichage du texte
           (la page ne saute pas). Seulement pour un article qui contient les deux langues. */}
       {deuxLangues && (

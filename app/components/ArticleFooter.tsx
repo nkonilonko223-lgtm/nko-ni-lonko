@@ -290,7 +290,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                     dir={isRefNko ? "rtl" : "ltr"}
                     onClick={triggerVibration}
                   >
-                    <div className="mt-0.5 p-2 rounded-full bg-black/50 border border-white/10 group-hover/link:border-or/50 group-hover/link:bg-or/20 transition-colors shrink-0">
+                    <div className="mt-0.5 p-2 rounded-full bg-surface/60 border border-white/10 group-hover/link:border-or/50 group-hover/link:bg-or/20 transition-colors shrink-0">
                       <i className="ph-bold ph-link text-or text-sm md:text-base"></i>
                     </div>
                     <span className={`text-sm md:text-base text-gray-300 group-hover/link:text-white leading-snug transition-colors ${isRefNko ? 'font-kigelia' : ''}`}>{ref.title}</span>
@@ -298,7 +298,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                 ) : (
                   /* 📚 CARTE PHYSIQUE (Manuscrit/Livre - Plaque de Musée) */
                   <div 
-                    className={`flex items-start gap-3 p-4 h-full rounded-2xl bg-black/40 border border-white/5 shadow-inner ${isRefNko ? 'flex-row-reverse text-right' : 'text-left'}`}
+                    className={`flex items-start gap-3 p-4 h-full rounded-2xl bg-surface/60 border border-white/5 shadow-inner ${isRefNko ? 'flex-row-reverse text-right' : 'text-left'}`}
                     dir={isRefNko ? "rtl" : "ltr"}
                   >
                     <div className="mt-0.5 p-2 rounded-full bg-white/5 border border-white/10 shrink-0">
@@ -501,7 +501,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                         onChange={handleEmailChange}
                         placeholder={isNko ? '@ߌ ߟߊ߫ ߞߘߎߡߊ...' : 'Votre email...'} 
                         aria-label={isNko ? 'Email' : 'Votre adresse email'}
-                        className={`flex-1 bg-black/60 backdrop-blur-md border rounded-xl px-4 py-3 text-white outline-none transition-all duration-500 placeholder:text-gray-500 shadow-inner group-focus-within/form:shadow-[0_0_30px_rgba(251,191,36,0.1)] ${
+                        className={`flex-1 bg-surface/60 backdrop-blur-md border rounded-xl px-4 py-3 text-white outline-none transition-all duration-500 placeholder:text-gray-500 shadow-inner group-focus-within/form:shadow-[0_0_30px_rgba(251,191,36,0.1)] ${
                           isValidEmail 
                           ? 'border-or shadow-[inset_0_0_15px_rgba(251,191,36,0.2)]' 
                           : 'border-white/10 focus:border-or/60'
@@ -608,7 +608,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
               triggerVibration();
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-black/50 backdrop-blur-md border border-or/30 text-gray-300 shadow-lg hover:bg-or/10 hover:border-or hover:text-white hover:shadow-[0_0_30px_rgba(251,191,36,0.2)] active:scale-95 transition-all duration-500 overflow-hidden touch-manipulation"
+            className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-surface/60 backdrop-blur-md border border-or/30 text-gray-300 shadow-lg hover:bg-or/10 hover:border-or hover:text-white hover:shadow-[0_0_30px_rgba(251,191,36,0.2)] active:scale-95 transition-all duration-500 overflow-hidden touch-manipulation"
           >
               <i className="ph-bold ph-arrow-up text-or text-lg transition-transform duration-500 group-hover:-translate-y-2"></i>
               <span className={`text-sm md:text-base font-bold uppercase tracking-widest ${isNko ? 'font-kigelia' : ''}`}>

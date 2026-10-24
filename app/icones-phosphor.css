@@ -2,12 +2,12 @@
    Icônes Phosphor 2.1.2 (licence MIT, public/icones/LICENSE-phosphor.txt), AUTO-HÉBERGÉES.
    FICHIER GÉNÉRÉ par scripts/icones/generer-icones.mjs — ne pas modifier à la main :
    relancer le générateur après l'ajout d'une nouvelle icône dans le code.
-   83 icônes trouvées dans le code.
+   85 icônes trouvées dans le code.
    ============================================================================ */
-/* ---- regular : 83 glyphes ---- */
+/* ---- regular : 85 glyphes ---- */
 @font-face {
   font-family: "Phosphor";
-  src: url("/icones/Phosphor.woff2?v=dfca4c1db8") format("woff2");
+  src: url("/icones/Phosphor.woff2?v=3399228b96") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -174,6 +174,9 @@
 .ph.ph-map-pin:before {
   content: "\e316";
 }
+.ph.ph-moon:before {
+  content: "\e330";
+}
 .ph.ph-mountains:before {
   content: "\e7ae";
 }
@@ -240,6 +243,9 @@
 .ph.ph-stethoscope:before {
   content: "\e7ea";
 }
+.ph.ph-sun:before {
+  content: "\e472";
+}
 .ph.ph-telegram-logo:before {
   content: "\e5bc";
 }
@@ -286,10 +292,10 @@
   content: "\e4fc";
 }
 
-/* ---- bold : 83 glyphes ---- */
+/* ---- bold : 85 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Bold";
-  src: url("/icones/Phosphor-Bold.woff2?v=e95f50411c") format("woff2");
+  src: url("/icones/Phosphor-Bold.woff2?v=909ccd1863") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -456,6 +462,9 @@
 .ph-bold.ph-map-pin:before {
   content: "\e316";
 }
+.ph-bold.ph-moon:before {
+  content: "\e330";
+}
 .ph-bold.ph-mountains:before {
   content: "\e7ae";
 }
@@ -522,6 +531,9 @@
 .ph-bold.ph-stethoscope:before {
   content: "\e7ea";
 }
+.ph-bold.ph-sun:before {
+  content: "\e472";
+}
 .ph-bold.ph-telegram-logo:before {
   content: "\e5bc";
 }
@@ -568,10 +580,10 @@
   content: "\e4fc";
 }
 
-/* ---- fill : 83 glyphes ---- */
+/* ---- fill : 85 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Fill";
-  src: url("/icones/Phosphor-Fill.woff2?v=b5e5d150f1") format("woff2");
+  src: url("/icones/Phosphor-Fill.woff2?v=1a66728c87") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -738,6 +750,9 @@
 .ph-fill.ph-map-pin:before {
   content: "\e316";
 }
+.ph-fill.ph-moon:before {
+  content: "\e330";
+}
 .ph-fill.ph-mountains:before {
   content: "\e7ae";
 }
@@ -804,6 +819,9 @@
 .ph-fill.ph-stethoscope:before {
   content: "\e7ea";
 }
+.ph-fill.ph-sun:before {
+  content: "\e472";
+}
 .ph-fill.ph-telegram-logo:before {
   content: "\e5bc";
 }
@@ -850,10 +868,10 @@
   content: "\e4fc";
 }
 
-/* ---- duotone : 166 glyphes ---- */
+/* ---- duotone : 170 glyphes ---- */
 @font-face {
   font-family: "Phosphor-Duotone";
-  src: url("/icones/Phosphor-Duotone.woff2?v=ac66a34986") format("woff2");
+  src: url("/icones/Phosphor-Duotone.woff2?v=c969389684") format("woff2");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -1240,6 +1258,14 @@
   content: "\e317";
   margin-left: -1em;
 }
+.ph-duotone.ph-moon:before {
+  content: "\e330";
+  opacity: 0.2;
+}
+.ph-duotone.ph-moon:after {
+  content: "\e331";
+  margin-left: -1em;
+}
 .ph-duotone.ph-mountains:before {
   content: "\e7ae";
   opacity: 0.2;
@@ -1414,6 +1440,14 @@
 }
 .ph-duotone.ph-stethoscope:after {
   content: "\e7eb";
+  margin-left: -1em;
+}
+.ph-duotone.ph-sun:before {
+  content: "\e472";
+  opacity: 0.2;
+}
+.ph-duotone.ph-sun:after {
+  content: "\e473";
   margin-left: -1em;
 }
 .ph-duotone.ph-telegram-logo:before {
