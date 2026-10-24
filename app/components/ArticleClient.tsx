@@ -326,8 +326,10 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       {/* 🖨️ ARME 2 : LE SCEAU SCIENTIFIQUE (Visible UNIQUEMENT à l'impression) */}
       <div className="hidden print:flex items-center justify-between border-b-2 border-black pb-4 mb-8 pt-4 px-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 relative grayscale contrast-200">
-            <Image src="/icon-512x512.png" alt="Logo" fill className="object-contain" />
+          {/* Version du logo pensée pour le papier (lettre noire, ombre et lumières grises) : un filtre
+              « gris + contraste » sur le logo en couleurs effaçait l'or (scripts/icones/favicon.mjs) */}
+          <div className="w-12 h-12 relative">
+            <Image src="/logo/logo-impression.png" alt="Logo" fill sizes="48px" className="object-contain" />
           </div>
           <div className="flex flex-col">
             <span className="font-kigelia text-2xl font-bold text-black tracking-widest">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
@@ -629,11 +631,13 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             {/* Reflet dynamique au survol */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#fbbf24]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
             
-            <Image 
-                src="/icon-512x512.png" 
-                alt="Sceau N'Ko ni Lonko" 
-                width={512}
-                height={512}
+            {/* Sceau : logo sans fond recadré (scripts/icones/favicon.mjs) ; taille réelle d'affichage
+                (112 px), sinon le téléphone télécharge une image jusqu'à 9 fois trop grande */}
+            <Image
+                src="/logo/logo-sceau.png"
+                alt="Sceau N'Ko ni Lonko"
+                width={112}
+                height={112}
                 quality={90} // 🚀 OPTIMISATION : Qualité visuelle parfaite mais fichier allégé pour les forfaits mobiles
                 className="w-full h-full object-contain relative z-10 drop-shadow-2xl transition-transform duration-700 group-hover:scale-110"
             />

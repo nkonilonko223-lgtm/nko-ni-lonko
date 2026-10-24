@@ -109,9 +109,9 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
             
             <div className="w-32 h-32 mb-10 relative group flex items-center justify-center p-4 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[2rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
                 <div className="absolute inset-0 bg-[#fbbf24] blur-2xl opacity-20 rounded-full animate-pulse duration-[3000ms]"></div>
-                <Image 
-                    src="/icon-192x192.png" 
-                    alt="Sceau N'Ko ni Lonko" 
+                <Image
+                    src="/logo/logo-sceau.png"
+                    alt="Sceau N'Ko ni Lonko"
                     width={128} 
                     height={128} 
                     className="relative z-10 drop-shadow-[0_0_15px_rgba(251,191,36,0.5)] pointer-events-none"
