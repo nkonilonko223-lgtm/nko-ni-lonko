@@ -38,12 +38,12 @@ const NOM_NKO = "ߒߞߏ";
 const SAUVEGARDE = { nko: "ߊ߬ ߓߘߊ߫ ߟߊߡߊ߬ߙߊ߬", fr: "Sauvegardé" };
 const MA_BIBLIOTHEQUE = { nko: "ߒ ߠߊ߫ ߟߍߙߘߊ", fr: "Ma bibliothèque" };
 // Ambiance de lecture (app/lib/ambiance.ts) : le bouton montre l'ambiance du moment, un appui
-// passe à la suivante. Libellés N'Ko L35 à L37 à demander à la rédaction (docs/TEXTES-NKO-A-DEMANDER.md) :
-// en attendant, le français (lang="fr")
+// passe à la suivante. Libellés N'Ko L35 à L37 : rédaction (textes-nko-L21-L37.txt, validé par MckV
+// le 24 octobre 2026), copiés par programme
 const AMBIANCE: Record<Ambiance, { nko: string; fr: string; icone: string }> = {
-  nuit: { nko: "", fr: "Ambiance : Nuit", icone: "ph-moon" },
-  papier: { nko: "", fr: "Ambiance : Papier", icone: "ph-book-open" },
-  jour: { nko: "", fr: "Ambiance : Jour", icone: "ph-sun" },
+  nuit: { nko: "ߢߟߊߦߋ : ߛߎ", fr: "Ambiance : Nuit", icone: "ph-moon" },
+  papier: { nko: "ߢߟߊߦߋ : ߛߓߍ", fr: "Ambiance : Papier", icone: "ph-book-open" },
+  jour: { nko: "ߢߟߊߦߋ : ߕߋ߬ߟߋ", fr: "Ambiance : Jour", icone: "ph-sun" },
 };
 
 interface ArticleToolsProps {
