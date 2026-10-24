@@ -104,7 +104,7 @@
 
   /* AMBIANCES DE LECTURE des articles (novembre 2026) : choisies avec le bouton « Ambiance »
      (ArticleTools.tsx), posées sur <html data-ambiance> AVANT l'affichage (petit script de la
-     page article), retirées en quittant l'article. Sans choix : celle du téléphone (clair → Jour).
+     page article), retirées en quittant l'article. Sans choix : Nuit (app/lib/ambiance.ts).
      Écran seulement : l'impression garde ses propres couleurs (plus bas). */
   @media screen {
     /* Papier : crème chaud, encre brune (lecture longue, le soir comme le jour) */
