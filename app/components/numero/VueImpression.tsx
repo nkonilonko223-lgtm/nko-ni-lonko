@@ -4,6 +4,7 @@ import CustomPortableText from "../CustomPortableText";
 import { TEXTES_NUMEROS, chiffresNko, numeroFr, numeroNko, saisonFr, saisonNko } from "./textes";
 import { sensDe, separerTitre } from "./titre";
 import { dateFr, dateNko } from "./VueNumero";
+import { literata } from "../../fonts/lecture"; // texte français en Literata, comme sur le site
 
 // ============================================================================
 // N'KO NI LONKO — Version imprimable d'un numéro (composant serveur, → PDF)
@@ -78,7 +79,7 @@ export default function VueImpression({ numero }: { numero: NumeroComplet }) {
   const marqueDe = (a: ArticleComplet) => (a._id === numero.editoRef ? TEXTES_NUMEROS.edito : a._id === numero.aLaUneRef ? TEXTES_NUMEROS.aLaUne : null);
 
   return (
-    <main className="impression mx-auto max-w-[180mm] bg-blanc text-black">
+    <main className={`${literata.variable} impression mx-auto max-w-[180mm] bg-blanc text-black`}>
       {/* 1. Couverture (pleine page, fond sombre comme le site) */}
       <section className="couverture relative flex flex-col items-center justify-end overflow-hidden bg-void px-10 pb-16 text-center text-blanc">
         {numero.couverture?.url ? (

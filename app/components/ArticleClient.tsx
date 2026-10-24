@@ -27,6 +27,7 @@ import type { TermeLexiqueData } from "./lexique/TermeLexique";
 import { positionDuCadrage } from "../lib/point-interet";
 import { adresse, langueAdresse } from "../lib/langue";
 import messagesNko from "../messages/nko.json"; // « Accueil » en N'Ko (nom du lien flèche, lecteurs d'écran)
+import { literata } from "../fonts/lecture"; // police de lecture du texte français (app/globals.css, « LECTURE »)
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Zéro Any - Dogme 2)
@@ -296,7 +297,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   const categoryLabel = article.category ? (categoriesMap[categoryKey] || article.category) : (lang === 'nko' ? 'ߟߐ߲ߞߏ' : 'Science');
 
   return (
-    <main className="min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-blanc print:text-black">
+    <main className={`${literata.variable} min-h-screen relative text-white selection:bg-[#fbbf24] selection:text-black print:bg-blanc print:text-black`}>
       
       {/* 🖨️ LE SECRET 1/1000 : Contrôle absolu des marges de l'imprimante et encres forcées */}
      <style dangerouslySetInnerHTML={{ __html: `
