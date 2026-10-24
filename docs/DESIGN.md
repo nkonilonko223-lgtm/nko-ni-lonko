@@ -44,8 +44,11 @@ Bouton **« Ambiance »** dans la barre d'outils de l'article : **Nuit → Papie
 | Papier | `#f4ecda` (crème) | `#2a2119` (encre brune), 13,4:1 | `#8a5210`, 5,4:1 | lecture longue |
 | Jour | `#fbfaf7` (blanc cassé) | `#23242a`, 14,8:1 | `#94590c`, 5,5:1 | plein soleil |
 
-- Choix gardé dans le navigateur du lecteur (`nko_ambiance`), rien n'est envoyé. Sans choix : celle de
-  son téléphone (téléphone en mode clair → Jour).
+- Choix gardé dans le navigateur du lecteur (`nko_ambiance`), rien n'est envoyé. Sans choix : **Nuit**,
+  l'identité du site (pas de passage brutal du sombre au clair en ouvrant un article depuis l'accueil).
+  Le lecteur qui préfère le clair le choisit une fois : c'est gardé pour tous les articles suivants.
+  (Pour suivre plutôt le réglage clair / sombre du téléphone : `ambianceDuLecteur` et `SCRIPT_AMBIANCE`
+  dans `app/lib/ambiance.ts`.)
 - Code : `app/lib/ambiance.ts` (choix, petit script posé **avant l'affichage** par la page article :
   pas de changement de couleur sous les yeux), `app/components/ArticleTools.tsx` (bouton ; pose
   l'ambiance en arrivant par un lien interne, la **retire en quittant l'article** : les autres pages

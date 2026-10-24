@@ -3,9 +3,10 @@
 // ============================================================================
 // Nuit (les couleurs du site), Papier (crème, encre brune), Jour (blanc cassé, encre grise).
 // Les couleurs sont dans app/globals.css (html[data-ambiance]) ; ici, seulement le choix du
-// lecteur, gardé dans SON navigateur (rien n'est envoyé). Sans choix : l'ambiance de son
-// téléphone (clair → Jour, sombre → Nuit). Seulement sur les articles : ArticleTools la pose
-// en arrivant et la retire en partant (les autres pages restent en Nuit).
+// lecteur, gardé dans SON navigateur (rien n'est envoyé). Sans choix : Nuit, l'identité du site
+// (pas de passage du sombre au clair en ouvrant un article ; Papier ou Jour : un appui, gardé
+// pour tous les articles suivants). Seulement sur les articles : ArticleTools la pose en
+// arrivant et la retire en partant (les autres pages restent en Nuit).
 // ============================================================================
 
 export const AMBIANCES = ["nuit", "papier", "jour"] as const;
@@ -17,13 +18,13 @@ const BARRE: Record<Ambiance, string> = { nuit: "#0e1322", papier: "#f4ecda", jo
 
 const estAmbiance = (a: unknown): a is Ambiance => AMBIANCES.includes(a as Ambiance);
 
-/** Le choix gardé par le lecteur, sinon celui de son téléphone */
+/** Le choix gardé par le lecteur, sinon Nuit */
 export function ambianceDuLecteur(): Ambiance {
   try {
     const a = localStorage.getItem(CLE);
     if (estAmbiance(a)) return a;
   } catch { /* stockage bloqué */ }
-  return window.matchMedia("(prefers-color-scheme: light)").matches ? "jour" : "nuit";
+  return "nuit";
 }
 
 /** Pose l'ambiance sur la page (null : retour aux couleurs du site) */
@@ -42,6 +43,5 @@ export function garderAmbiance(a: Ambiance) {
 // couleur sous les yeux du lecteur au premier chargement
 export const SCRIPT_AMBIANCE =
   `try{var a=localStorage.getItem(${JSON.stringify(CLE)});` +
-  `if(${JSON.stringify(AMBIANCES)}.indexOf(a)<0)a=matchMedia("(prefers-color-scheme: light)").matches?"jour":"nuit";` +
-  `if(a!=="nuit"){document.documentElement.setAttribute("data-ambiance",a);` +
+  `if(a==="papier"||a==="jour"){document.documentElement.setAttribute("data-ambiance",a);` +
   `var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",${JSON.stringify(BARRE)}[a])}}catch(e){}`;

@@ -218,9 +218,7 @@ try {
       for (const p of PAGES) {
         for (const format of p.formats) {
           const o = await chrome.onglet(FORMATS[format]);
-          // Téléphone en mode sombre : les articles s'affichent dans l'ambiance Nuit, celle du site
-          // (sinon, l'ambiance Jour d'un téléphone en mode clair, app/lib/ambiance.ts)
-          await chrome.envoyer("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }, { name: "prefers-color-scheme", value: "dark" }] }, o.sessionId);
+          await chrome.envoyer("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "reduce" }] }, o.sessionId);
           // Choix de langue déjà fait ; pas de bouton « Installer » sur la capture (Chrome le propose ici)
           await chrome.envoyer("Page.addScriptToEvaluateOnNewDocument", {
             source: `try { localStorage.setItem("preferred-lang", ${JSON.stringify(langue === "fr" ? "fr" : "nko")}); } catch (e) {}
