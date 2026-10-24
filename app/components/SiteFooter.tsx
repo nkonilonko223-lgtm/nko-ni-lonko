@@ -184,7 +184,8 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center gap-3 touch-manipulation w-fit">
               <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
                 <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
-                <Image src="/icon-192x192.png" alt="Logo" width={30} height={30} className="rounded-md relative z-10 transition-transform group-hover:scale-105" />
+                {/* Version simplifiée du logo : le logo détaillé ne se lit pas à 30 px */}
+                <Image src="/application/onglet-192.png" alt="Logo" width={30} height={30} className="rounded-md relative z-10 transition-transform group-hover:scale-105" />
               </div>
               <span className={`text-2xl font-bold text-white transition-colors group-hover:text-[#fbbf24] ${isNko ? 'font-kigelia' : ''}`}>
                 {typedT?.metadata?.siteName || "N'Ko ni Lonko"}
@@ -351,7 +352,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           <div className="flex flex-col md:flex-row items-center gap-4 order-3 md:order-1">
             <Link href={lien("/")} onClick={triggerVibration} className="group relative flex items-center justify-center p-1 rounded-xl border border-white/10 bg-white/5 transition-all duration-300 hover:border-[#fbbf24]/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] touch-manipulation overflow-hidden" aria-label="Retour à l'accueil">
               <div className="absolute inset-0 bg-[#fbbf24] blur-lg opacity-10 group-hover:opacity-30 transition-opacity"></div>
-              <Image src="/icon-192x192.png" alt={typedT?.metadata?.siteName || "Logo"} width={44} height={44} className="rounded-lg relative z-10 transition-transform group-hover:scale-105" />
+              <Image src="/application/onglet-192.png" alt={typedT?.metadata?.siteName || "Logo"} width={44} height={44} className="rounded-lg relative z-10 transition-transform group-hover:scale-105" />
             </Link>
             <span className="hidden md:inline text-white/10 text-ml font-light">|</span>
             <p className={`text-sm text-gray-400 ${isNko ? 'font-kigelia' : ''}`}>

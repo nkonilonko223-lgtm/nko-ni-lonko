@@ -169,10 +169,10 @@ function MagneticLogo({ siteName, isNko }: MagneticLogoProps) {
     >
       <div className="relative flex items-center justify-center p-0.5 rounded-lg border border-white/10 bg-white/5 transition-all duration-300 group-hover:border-[#fbbf24]/50 group-hover:shadow-[0_0_10px_rgba(251,191,36,0.2)] overflow-hidden">
         <div className="absolute inset-0 bg-[#fbbf24] blur-md opacity-10 group-hover:opacity-30 transition-opacity"></div>
-        <Image 
-          src="/icon-192x192.png" 
+        <Image
+          src="/application/onglet-192.png" // version simplifiée : le logo détaillé ne se lit pas à 34 px
           alt="" // décorative : le nom de la revue suit juste après, en texte
-          width={34} 
+          width={34}
           height={34} 
           className="rounded-md relative z-10 transition-transform group-active:scale-90"
           priority
@@ -235,7 +235,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
       <div className="flex flex-col items-center justify-center h-full w-full px-8 pb-12">
         <div className="w-24 h-24 mb-10 relative flex items-center justify-center p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
             <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 rounded-full animate-pulse"></div>
-            <Image src="/icon-192x192.png" alt="Sceau N'Ko ni Lonko" width={96} height={96} className="relative z-10 drop-shadow-lg" />
+            <Image src="/logo/logo-sceau.png" alt="Sceau N'Ko ni Lonko" width={96} height={96} className="relative z-10 drop-shadow-lg" />
         </div>
 
         <nav aria-label="Menu principal mobile" className="w-full max-w-sm">
