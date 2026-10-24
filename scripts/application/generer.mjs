@@ -2,12 +2,15 @@
 // ============================================================================
 // N'KO NI LONKO — Fichiers de l'application du site (23 octobre 2026)
 // ============================================================================
-// Fabrique, depuis le logo (public/icon-512x512.png) et les textes du site :
+// Fabrique, depuis le logo (public/icon-512x512.png, jamais modifié) et les textes du site :
 //   public/manifest.json, public/manifest-fr.json
 //        « carte d'identité » de l'application, en N'Ko (adresses sans préfixe) et en français (/fr)
+//   public/application/icone-192.png, -512.png, public/apple-touch-icon.png (180)
+//        icône de l'application (choix du propriétaire, 24 octobre 2026 : le logo original agrandi
+//        sur fond bleu nuit, scripts/application/icone.mjs) : iPhone, ordinateur, Android
 //   public/application/icone-masquable-192.png, -512.png
-//        icône Android « masquable » : le téléphone la découpe (rond, goutte…), le logo reste
-//        entier dans la zone sûre (cercle de 80 %)
+//        même icône, version Android « masquable » : le téléphone la découpe (rond, goutte…), le
+//        logo (pointe de l'orbite comprise) reste entier dans la zone sûre (cercle de 80 %)
 //   public/application/raccourci-*.png
 //        raccourcis (appui long sur l'icône) : Numéros, Lexique, Ma bibliothèque
 //   public/application/demarrage/*.png + app/lib/ecrans-demarrage.json
@@ -28,6 +31,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { SOURCE_LOGO, reperageDuLogo } from "../icones/logo.mjs";
+import { iconeApplication } from "./icone.mjs";
 
 const PROJET = resolve(import.meta.dirname, "../..");
 const sharp = createRequire(join(PROJET, "package.json"))("sharp");
@@ -102,13 +106,20 @@ async function ouvrirChrome() {
   return { envoyer, onglet, quitter };
 }
 
-// --- 1. Icône Android « masquable » -------------------------------------------------------
-// Le téléphone découpe l'icône (rond, carré arrondi, goutte) : tout le logo doit tenir dans le
-// cercle central de 80 % (« zone sûre »). Le logo est réduit si besoin et centré ; le fond noir
-// étoilé de l'icône d'origine remplit le reste.
-const { W, x0, y0, x1, y1, rayon } = await reperageDuLogo(sharp, LOGO);
+// --- 1. Icône de l'application ---------------------------------------------------------------
+// Grande (iPhone, ordinateur) : la pointe de l'orbite à 47 % du côté. Masquable (Android, qui
+// découpe l'icône en rond, goutte…) : à 40 %, dans le cercle sûr. Voir scripts/application/icone.mjs.
+for (const taille of [192, 512]) {
+  writeFileSync(join(DOSSIER, `icone-${taille}.png`), await iconeApplication({ taille, part: 0.47 }));
+  writeFileSync(join(DOSSIER, `icone-masquable-${taille}.png`), await iconeApplication({ taille, part: 0.4 }));
+}
+writeFileSync(join(PROJET, "public/apple-touch-icon.png"), await iconeApplication({ taille: 180, part: 0.47 }));
+console.log("Icône de l'application : 192 et 512 px (grande et masquable), iPhone 180 px.");
+
+// --- Repérage du logo (écrans de démarrage) ------------------------------------------------
+const { x0, y0, x1, y1, rayon } = await reperageDuLogo(sharp, LOGO);
 // Carré centré sur le logo, de côté « cote » (pixels de l'image d'origine), complété de noir
-// (le fond de l'icône) s'il dépasse les bords
+// (le fond du logo) s'il dépasse les bords
 async function carreDuLogo(cote) {
   const P = Math.ceil(cote);
   const etendu = await sharp(LOGO).flatten({ background: "#000000" }).extend({ top: P, bottom: P, left: P, right: P, background: "#000000" }).toBuffer();
@@ -119,12 +130,6 @@ async function carreDuLogo(cote) {
     height: Math.round(cote),
   });
 }
-// Le point le plus éloigné du logo à 38 % du côté : dans le cercle sûr de 40 %, avec une marge
-for (const taille of [192, 512]) {
-  writeFileSync(join(DOSSIER, `icone-masquable-${taille}.png`), await (await carreDuLogo(rayon / 0.38)).resize(taille, taille).png({ compressionLevel: 9 }).toBuffer());
-}
-console.log(`Icônes masquables : 192 et 512 px (logo de rayon ${Math.round(rayon)} px sur ${W} : dans la zone sûre).`);
-
 // --- 2. Écrans de démarrage de l'iPhone et de l'iPad ----------------------------------------
 // Sans eux, une application ajoutée à l'écran d'accueil s'ouvre sur un écran BLANC (le site est
 // sombre). Une image par taille d'écran : fond du site et logo au centre.
@@ -178,7 +183,7 @@ writeFileSync(join(PROJET, "app/lib/ecrans-demarrage.json"), JSON.stringify(ecra
 console.log(`Écrans de démarrage : ${ecrans.length} images (iPhone, iPad portrait et paysage) + app/lib/ecrans-demarrage.json.`);
 
 // --- 3. Raccourcis (appui long sur l'icône) -------------------------------------------------
-// Icône Phosphor du site (police auto-hébergée), dorée sur le fond du site, dans la zone sûre.
+// Icône Phosphor du site (police auto-hébergée), dorée sur le fond bleu nuit de l'icône, dans la zone sûre.
 const css = readFileSync(join(PROJET, "app/icones-phosphor.css"), "utf8");
 const glyphe = (icone) => {
   const m = css.match(new RegExp(`[.]ph-bold[.]${icone}:before \\{\\s*content: "\\\\([0-9a-f]+)"`));
@@ -196,7 +201,7 @@ try {
   for (const r of RACCOURCIS) {
     const html = `<!doctype html><html><head><meta charset="utf-8"><style>
       @font-face { font-family: "PhosphorBold"; src: url(data:font/woff2;base64,${police}) format("woff2"); }
-      html, body { margin: 0; width: 192px; height: 192px; background: ${FOND}; }
+      html, body { margin: 0; width: 192px; height: 192px; background: radial-gradient(circle at 50% 36%, #16264a, #050a18 78%); }
       body { display: flex; align-items: center; justify-content: center; }
       i { font-family: "PhosphorBold"; font-style: normal; font-size: 92px; line-height: 1; color: ${OR}; }
     </style></head><body><i>&#x${glyphe(r.icone)};</i></body></html>`;
@@ -278,8 +283,8 @@ const captures = async (langue) => {
   return liste;
 };
 const ICONES = [
-  { src: "/icon-192x192.png", sizes: "192x192", type: "image/png", purpose: "any" },
-  { src: "/icon-512x512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+  { src: "/application/icone-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+  { src: "/application/icone-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
   { src: "/application/icone-masquable-192.png", sizes: "192x192", type: "image/png", purpose: "maskable" },
   { src: "/application/icone-masquable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
 ];
