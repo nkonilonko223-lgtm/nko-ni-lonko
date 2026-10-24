@@ -177,7 +177,7 @@ try {
       const erreurs = (m.errors || []).map((e) => e.message);
       verifier(m.url.endsWith(attendu.fichier) && erreurs.length === 0, `${chemin} : manifeste ${attendu.fichier} sans erreur`, erreurs.join(' ; '));
       verifier(['id', 'lang', 'dir', 'start_url'].every((k) => donnees[k] === attendu[k]), `${chemin} : identité, langue, sens, ouverture`, `id=${donnees.id} lang=${donnees.lang} start_url=${donnees.start_url}`);
-      verifier(!('orientation' in donnees) && donnees.theme_color === '#02040a', `${chemin} : pas d'orientation imposée, couleur du site`);
+      verifier(!('orientation' in donnees) && donnees.theme_color === '#0e1322', `${chemin} : pas d'orientation imposée, couleur du site`);
       const masquables = (donnees.icons || []).filter((i) => i.purpose === 'maskable').length;
       verifier(masquables === 2 && donnees.shortcuts?.length === 3 && donnees.screenshots?.filter((c) => c.form_factor === 'wide').length >= 1 && donnees.screenshots?.filter((c) => c.form_factor === 'narrow').length >= 1,
         `${chemin} : icônes masquables, raccourcis, captures téléphone et ordinateur`, `${masquables} masquables, ${donnees.shortcuts?.length} raccourcis, ${donnees.screenshots?.length} captures`);

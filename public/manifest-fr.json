@@ -8,8 +8,8 @@
   "start_url": "/fr",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#02040a",
-  "theme_color": "#02040a",
+  "background_color": "#0e1322",
+  "theme_color": "#0e1322",
   "categories": [
     "education",
     "magazines",
