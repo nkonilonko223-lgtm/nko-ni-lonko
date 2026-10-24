@@ -23,7 +23,7 @@ Rien n'est envoyé : tout reste dans le navigateur du lecteur (articles lus, « 
 |---|---|
 | `public/manifest.json` · `public/manifest-fr.json` | « Carte d'identité » de l'application, N'Ko (s'ouvre sur `/`) et français (s'ouvre sur `/fr`). **Fabriqués** par le générateur : ne pas modifier à la main |
 | `public/application/` | Icône de l'application (`icone-192/512`, `icone-masquable-192/512`), icône d'onglet (`onglet-192`), raccourcis, écrans de démarrage (iPhone, iPad), captures (fabriqués) |
-| `scripts/application/icone.mjs` | **Dessin de l'icône** (choix du propriétaire, 24 octobre 2026) : le logo original agrandi sur fond bleu nuit, léger halo, retouches très fines ; onglet = les lettres seules. Utilisé par `generer.mjs` (icônes de l'application, `public/apple-touch-icon.png`) et `scripts/icones/favicon.mjs` (`app/favicon.ico`, `onglet-192`). Le logo du site (`public/icon-512x512.png`) n'est jamais modifié : c'est la source |
+| `scripts/logo/logo.mjs` | **Dessin de l'icône** (choix du propriétaire, 24 octobre 2026) : le logo original en haute définition agrandi sur fond bleu nuit, léger halo, retouches très fines ; onglet = la lettre seule. Sources HD et toutes les versions du logo : `docs/LOGO.md` |
 | `app/lib/ecrans-demarrage.json` | Liste des écrans de démarrage, lue par le gabarit (fabriquée) |
 | `app/components/application/textes.ts` | **Tous les textes** de l'application (N'Ko de la rédaction, L21 à L34 à fournir) |
 | `app/lib/installation.ts` | État de l'installation (fenêtre du navigateur, guide iPhone, « déjà installée ») |
@@ -70,6 +70,12 @@ Sur un vrai téléphone (aperçu Vercel) :
    ouvrir l'icône : pas d'écran blanc, rien sous l'heure.
 3. **Numéro** (après le 30) : page du N°003 → « Télécharger le numéro » → mode avion → ouvrir
    chaque article : texte et images s'affichent.
+
+## Juste après la fusion (31 octobre)
+
+Les images de partage des **articles** (dont celles du N°003, faites le 30 avec l'ancien logo) sont
+à refaire avec le logo harmonisé : `node scripts/images-partage/articles.mjs`, puis envoyer ces
+images (branche, aperçu, « fusionner »). Rien n'est écrit dans Sanity.
 
 ## Étapes suivantes (après le 31 octobre)
 

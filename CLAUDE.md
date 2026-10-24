@@ -68,6 +68,10 @@ node scripts/tester-application.mjs [adresse] [--telechargement <page d'un numé
 
 # Fichiers de l'application (manifestes, icônes, écrans de démarrage ; --captures : captures du site en ligne)
 node scripts/application/generer.mjs [--captures]
+
+# Logos du site (sans fond, simplifié, impression) depuis le logo HD ; sources HD : docs/LOGO.md
+node scripts/icones/favicon.mjs
+node scripts/logo/construire-sources.mjs "<export PNG 2000 px de la page 1 du Canva du logo>"   # seulement si le logo change dans Canva
 # Les mêmes contrôles tournent sur GitHub à chaque envoi (.github/workflows/verifications.yml, onglet « Actions »)
 
 # Sanity (connexion faite avec le compte GitHub du propriétaire : npx sanity login --provider github)
@@ -152,6 +156,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/lib/citations.ts` | « Citer » : citation N'Ko d'abord, puis APA, MLA, BibTeX, RIS (la revue auteur = organisation) |
 | `app/components/BandeauApercuDiffere.tsx` | Bandeau du mode aperçu chargé **à la demande**. Ne jamais importer directement dans `layout.tsx` un composant qui utilise `next-sanity/hooks` : ses outils (≈ 240 Ko) partiraient chez tous les visiteurs |
 | `SiteFooter` · `ArticleFooter` · `ContactClient` | Formulaires : Turnstile (Cloudflare) n'est créé qu'au premier contact avec le formulaire (focus, clic, toucher) |
+| `scripts/logo/` · `public/icon-512x512.png` · `public/logo/` | **Logo** (harmonisé le 24 octobre 2026) : sources HD tirées du Canva du propriétaire (la lettre U+07D2 en police Ebrima, effets Canva refaits à l'identique), un compositeur unique pour toutes les versions : sans fond (site), simplifiée (onglet, petites cases), impression, icône de l'application. `public/icon-*.png` ne sont plus des sources : ils sont FABRIQUÉS. Voir `docs/LOGO.md` |
 | `app/lib/partage.ts` · `public/og/` | Images de partage (accueil et pages générales ; dictionnaire et termes). **Ne pas utiliser `next/og` pour du N'Ko** (lettres non liées) : fabriquer l'image avec `scripts/images-partage/generer.mjs`. Articles : `public/og/articles/` + liste `app/lib/images-partage-articles.json`, fabriquées par `scripts/images-partage/articles.mjs` (sinon, la couverture sert de secours) |
 
 ## 5. Données Sanity (à connaître avant toute écriture)
