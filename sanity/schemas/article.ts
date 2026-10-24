@@ -312,7 +312,24 @@ export default defineType({
               name: 'alt',
               type: 'string',
               title: 'Texte Alternatif / ߖߌ߬ߦߊ߬ߓߍ ߡߊ߲߬ߞߕߎ',
+              description: "En français.",
               validation: (rule) => rule.required().warning("L'alt text est fortement recommandé."),
+            },
+            // Description en N'Ko (24 octobre 2026) : lue sur la version N'Ko du site ; sans elle, le
+            // français ci-dessus. Facultative : un simple avertissement (les anciens articles restent valides)
+            {
+              name: 'altNko',
+              type: 'string',
+              title: "Texte alternatif (N'Ko)",
+              description: "Description de l'image en N'Ko, pour les personnes aveugles et Google, sur la version N'Ko du site. Sans elle, le texte français est repris.",
+              components: {
+                input: (props: import('sanity').StringInputProps) =>
+                  React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+              },
+              validation: (rule) => rule.custom<string>((v, ctx) =>
+                !v?.trim() && (ctx.parent as { asset?: unknown } | undefined)?.asset
+                  ? "Conseillé : la description de l'image en N'Ko (sinon, la version N'Ko reprend le français)."
+                  : true).warning(),
             },
             {
               name: 'source',
@@ -466,8 +483,24 @@ export default defineType({
           name: 'alt',
           type: 'string',
           title: 'Texte alternatif (SEO) / ߖߌ߬ߦߊ߬ߓߍ ߡߊ߲߬ߞߕߎ',
-          description: 'Description de l\'image pour les aveugles et Google.',
+          description: 'Description de l\'image pour les aveugles et Google (en français).',
           validation: (rule) => rule.required().error("ߖߌ߬ߦߊ߬ߓߍ ߡߊ߲߬ߞߕߎ ߦߋ߫ ߘߌߦߊߜߏߦߊ ߟߋ߬ ߘߌ߫ / L'alt text est absolument obligatoire pour l'accessibilité."),
+        },
+        // Description en N'Ko (24 octobre 2026) : lue sur la version N'Ko du site ; sans elle, le
+        // français ci-dessus. Facultative : un simple avertissement (les anciens articles restent valides)
+        {
+          name: 'altNko',
+          type: 'string',
+          title: "Texte alternatif (N'Ko)",
+          description: "Description de la couverture en N'Ko, pour les personnes aveugles et Google, sur la version N'Ko du site. Sans elle, le texte français est repris.",
+          components: {
+            input: (props: import('sanity').StringInputProps) =>
+              React.createElement('div', { dir: 'rtl', style: { textAlign: 'right' } }, props.renderDefault(props))
+          },
+          validation: (rule) => rule.custom<string>((v, ctx) =>
+            !v?.trim() && (ctx.parent as { asset?: unknown } | undefined)?.asset
+              ? "Conseillé : la description de la couverture en N'Ko (sinon, la version N'Ko reprend le français)."
+              : true).warning(),
         },
         // 🚀 AJOUT MAJEUR : Légendes N'Ko et Françaises pour la couverture
         {

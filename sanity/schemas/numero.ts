@@ -180,8 +180,21 @@ export default defineType({
           name: 'alt',
           type: 'string',
           title: 'Texte alternatif',
-          description: "Description de l'image pour les personnes aveugles et Google.",
+          description: "Description de l'image pour les personnes aveugles et Google (en français).",
           validation: (rule) => rule.required().error("Le texte alternatif de la couverture est obligatoire."),
+        },
+        // Description en N'Ko (24 octobre 2026) : lue sur la version N'Ko du site ; sans elle, le
+        // français ci-dessus. Facultative : un simple avertissement
+        {
+          name: 'altNko',
+          type: 'string',
+          title: "Texte alternatif (N'Ko)",
+          description: "Description de la couverture en N'Ko, pour les personnes aveugles et Google, sur la version N'Ko du site. Sans elle, le texte français est repris.",
+          components: { input: ChampRtl },
+          validation: (rule) => rule.custom<string>((v, ctx) =>
+            !v?.trim() && (ctx.parent as { asset?: unknown } | undefined)?.asset
+              ? "Conseillé : la description de la couverture en N'Ko (sinon, la version N'Ko reprend le français)."
+              : true).warning(),
         },
         {
           name: 'captionNko',
