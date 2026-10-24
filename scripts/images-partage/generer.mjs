@@ -20,7 +20,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const VERSION = 2; // 2 : logo HD harmonisé (24 octobre 2026)
+const VERSION = 3; // 2 : logo HD harmonisé ; 3 : palette « Nuit du Mandé » (24 octobre 2026)
 const PROJET = resolve(import.meta.dirname, '../..');
 const sharp = createRequire(join(PROJET, 'package.json'))('sharp');
 const CHROME = [
@@ -61,26 +61,26 @@ const base = `
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:400}
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia1.otf')});font-weight:700}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:1200px;height:630px;overflow:hidden;background:#02040a}
+html,body{width:1200px;height:630px;overflow:hidden;background:#0e1322}
 .abs{position:absolute;inset:0}
 .contenu{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .nko{font-family:Kigelia;direction:rtl}
 .fr{font-family:Montserrat}
-.cadre{position:absolute;inset:22px;border:1px solid rgba(251,191,36,.22);border-radius:6px}
+.cadre{position:absolute;inset:22px;border:1px solid rgba(242,181,68,.22);border-radius:6px}
 </style>`;
 
 const modeles = {
   // 1. Accueil et pages générales : le ciel du télescope James Webb (fond de l'accueil du site)
   accueil: `<!doctype html><html lang="nqo"><head><meta charset="utf-8">${base}<style>
 .fond{background:url(${f('jams-webb.png')}) center 40%/cover}
-.voile{background:radial-gradient(ellipse 58% 72% at 50% 50%,rgba(2,4,10,.90) 0%,rgba(2,4,10,.78) 50%,rgba(2,4,10,.40) 100%)}
+.voile{background:radial-gradient(ellipse 58% 72% at 50% 50%,rgba(14,19,34,.90) 0%,rgba(14,19,34,.78) 50%,rgba(14,19,34,.40) 100%)}
 .logo{width:184px;height:184px;margin:-40px 0 -22px;mix-blend-mode:screen}
-.nom{font-weight:700;font-size:116px;line-height:1.12;color:#fff;text-shadow:0 2px 30px rgba(0,0,0,.6)}
-.nomfr{font-weight:700;font-size:24px;letter-spacing:.45em;text-transform:uppercase;color:#fbbf24;margin-top:4px;padding-left:.45em}
-.filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#fbbf24,transparent);margin:30px 0 22px}
-.acc{font-size:40px;line-height:1.45;color:#f1f5f9}
-.accfr{font-weight:500;font-size:24px;color:#cbd5e1;margin-top:6px;letter-spacing:.02em}
-.url{position:absolute;bottom:44px;left:0;right:0;text-align:center;font-weight:600;font-size:19px;letter-spacing:.22em;color:rgba(251,191,36,.9)}
+.nom{font-weight:700;font-size:116px;line-height:1.12;color:#ebe5d8;text-shadow:0 2px 30px rgba(0,0,0,.6)}
+.nomfr{font-weight:700;font-size:24px;letter-spacing:.45em;text-transform:uppercase;color:#f2b544;margin-top:4px;padding-left:.45em}
+.filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#f2b544,transparent);margin:30px 0 22px}
+.acc{font-size:40px;line-height:1.45;color:#ebe5d8}
+.accfr{font-weight:500;font-size:24px;color:#d6cfc0;margin-top:6px;letter-spacing:.02em}
+.url{position:absolute;bottom:44px;left:0;right:0;text-align:center;font-weight:600;font-size:19px;letter-spacing:.22em;color:rgba(242,181,68,.9)}
 </style></head><body>
 <div class="abs fond"></div><div class="abs voile"></div><div class="cadre"></div>
 <div class="contenu">
@@ -96,23 +96,23 @@ const modeles = {
 
   // 2. Dictionnaire : bleu du lexique, motif « symboles africains et molécules » du site, très atténué
   lexique: `<!doctype html><html lang="nqo"><head><meta charset="utf-8">${base}<style>
-body{background:#030916}
+body{background:#0e1322}
 .motif{background:url(${f('arriere-plan.webp')}) center/240px repeat;filter:grayscale(1) contrast(1.1);opacity:.10}
-.voile{background:radial-gradient(ellipse 60% 70% at 50% 48%,rgba(3,9,22,.96) 0%,rgba(3,9,22,.80) 55%,rgba(3,9,22,.35) 100%)}
+.voile{background:radial-gradient(ellipse 60% 70% at 50% 48%,rgba(14,19,34,.96) 0%,rgba(14,19,34,.80) 55%,rgba(14,19,34,.35) 100%)}
 .halo{background:radial-gradient(circle at 50% 46%,rgba(96,165,250,.16) 0%,transparent 45%)}
 .cadre{border-color:rgba(147,197,253,.22)}
-.etiquette{display:flex;align-items:center;gap:16px;padding:9px 26px;border:1px solid rgba(251,191,36,.45);border-radius:999px;margin-bottom:34px}
-.etiquette .nko{font-size:28px;color:#fbbf24;line-height:1.3}
-.etiquette .fr{font-weight:700;font-size:15px;letter-spacing:.32em;color:#fbbf24;padding-left:.32em}
-.etiquette .sep{width:1px;height:22px;background:rgba(251,191,36,.45)}
+.etiquette{display:flex;align-items:center;gap:16px;padding:9px 26px;border:1px solid rgba(242,181,68,.45);border-radius:999px;margin-bottom:34px}
+.etiquette .nko{font-size:28px;color:#f2b544;line-height:1.3}
+.etiquette .fr{font-weight:700;font-size:15px;letter-spacing:.32em;color:#f2b544;padding-left:.32em}
+.etiquette .sep{width:1px;height:22px;background:rgba(242,181,68,.45)}
 .titre{font-weight:700;font-size:68px;line-height:1.3;color:#e0ecff;white-space:nowrap;text-shadow:0 2px 30px rgba(0,0,0,.6)}
 .titrefr{font-weight:600;font-size:30px;color:#93c5fd;margin-top:14px;letter-spacing:.01em}
 .filet{width:110px;height:2px;background:linear-gradient(90deg,transparent,#93c5fd,transparent);margin:34px 0 0}
 .marque{position:absolute;bottom:42px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:14px}
 .marque img{width:88px;height:88px;margin:-22px -12px -22px -18px;mix-blend-mode:screen}
-.marque .nko{font-weight:700;font-size:28px;color:#fff;line-height:1.2}
+.marque .nko{font-weight:700;font-size:28px;color:#ebe5d8;line-height:1.2}
 .marque .point{color:rgba(147,197,253,.6);font-size:22px}
-.marque .fr{font-weight:600;font-size:18px;letter-spacing:.16em;color:rgba(251,191,36,.9)}
+.marque .fr{font-weight:600;font-size:18px;letter-spacing:.16em;color:rgba(242,181,68,.9)}
 </style></head><body>
 <div class="abs motif"></div><div class="abs voile"></div><div class="abs halo"></div><div class="cadre"></div>
 <div class="contenu" style="padding-bottom:40px">
@@ -127,16 +127,16 @@ body{background:#030916}
   // 3. À propos : la peinture du baobab (savoir traditionnel et science moderne), texte en bas
   'a-propos': `<!doctype html><html lang="nqo"><head><meta charset="utf-8">${base}<style>
 .fond{background:url(${f('le-baobaob.png')}) center 30%/cover}
-.voile{background:linear-gradient(180deg,rgba(2,4,10,0) 0%,rgba(2,4,10,0) 36%,rgba(2,4,10,.70) 60%,rgba(2,4,10,.95) 100%)}
+.voile{background:linear-gradient(180deg,rgba(14,19,34,0) 0%,rgba(14,19,34,0) 36%,rgba(14,19,34,.70) 60%,rgba(14,19,34,.95) 100%)}
 .bas{position:absolute;left:0;right:0;bottom:44px;display:flex;flex-direction:column;align-items:center;text-align:center}
-.etiquette{display:flex;align-items:center;gap:16px;padding:8px 24px;border:1px solid rgba(251,191,36,.55);border-radius:999px;background:rgba(2,4,10,.55);margin-bottom:14px}
-.etiquette .nko{font-size:28px;color:#fbbf24;line-height:1.3}
-.etiquette .fr{font-weight:700;font-size:15px;letter-spacing:.32em;color:#fbbf24;padding-left:.32em}
-.etiquette .sep{width:1px;height:22px;background:rgba(251,191,36,.5)}
+.etiquette{display:flex;align-items:center;gap:16px;padding:8px 24px;border:1px solid rgba(242,181,68,.55);border-radius:999px;background:rgba(14,19,34,.55);margin-bottom:14px}
+.etiquette .nko{font-size:28px;color:#f2b544;line-height:1.3}
+.etiquette .fr{font-weight:700;font-size:15px;letter-spacing:.32em;color:#f2b544;padding-left:.32em}
+.etiquette .sep{width:1px;height:22px;background:rgba(242,181,68,.5)}
 .ligne{display:flex;align-items:center;gap:4px}
 .ligne img{width:120px;height:120px;margin:-28px -20px;mix-blend-mode:screen}
-.nom{font-weight:700;font-size:84px;line-height:1.15;color:#fff;text-shadow:0 2px 24px rgba(0,0,0,.8)}
-.nomfr{font-weight:700;font-size:19px;letter-spacing:.38em;color:#fbbf24;margin-top:4px;padding-left:.38em}
+.nom{font-weight:700;font-size:84px;line-height:1.15;color:#ebe5d8;text-shadow:0 2px 24px rgba(0,0,0,.8)}
+.nomfr{font-weight:700;font-size:19px;letter-spacing:.38em;color:#f2b544;margin-top:4px;padding-left:.38em}
 </style></head><body>
 <div class="abs fond"></div><div class="abs voile"></div><div class="cadre"></div>
 <div class="bas">
