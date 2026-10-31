@@ -437,9 +437,10 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             <button onClick={handleShare} className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
                 <i className="ph-bold ph-share-network text-xl md:text-lg"></i>
             </button>
-            <button onClick={handleToggleLanguage} className="border border-gray-600 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold uppercase hover:bg-[#fbbf24] hover:text-black transition-all flex items-center gap-2 backdrop-blur-md active:scale-95 touch-manipulation">
-                <i className="ph-bold ph-translate text-lg"></i>
-                <span>{lang === 'nko' ? 'FR' : 'ߒߞߏ'}</span>
+            <button onClick={handleToggleLanguage} aria-label={lang === 'nko' ? "Changer la langue en Français" : "ߞߊ߲ ߦߟߍ߬ߡߊ ߒߞߏ ߘߐ߫"} className="border border-gray-600 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold uppercase hover:bg-[#fbbf24] hover:text-black transition-all flex items-center gap-2 backdrop-blur-md active:scale-95 touch-manipulation">
+                <i className="ph-bold ph-translate text-lg text-or" aria-hidden="true"></i>
+                {/* Même libellé que sur l'accueil : la langue de la page (31 octobre 2026) */}
+                <span className={lang === 'nko' ? 'font-kigelia text-or' : 'text-or'}>{lang === 'nko' ? 'ߒߞߏ' : 'FR'}</span>
             </button>
             <Link href={lien("/")} aria-label={lang === 'nko' ? messagesNko.nav.home : 'Accueil'} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
                 <div className="w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-or group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
