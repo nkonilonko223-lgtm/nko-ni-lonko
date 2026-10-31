@@ -2080,3 +2080,9 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
 :is([lang="nqo"], .font-kigelia):where(:not(.leading-loose, .leading-\[1\.8\], .leading-\[1\.85\], .lettrine)) {
   line-height: var(--interligne-nko);
 }
+
+/* Texte d'exemple des champs : Chrome lui impose sa hauteur de ligne et le coupait en haut.
+   Le champ lui-même coupe à son bord, loin des marques. Le texte tapé n'a jamais été coupé. */
+html[lang="nqo"] :is(input, textarea)::placeholder {
+  overflow: visible;
+}
