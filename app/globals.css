@@ -1737,8 +1737,14 @@ nav {
     white-space: nowrap;
   }
 
+  /* N'Ko : la boîte du nom coupe ce qui dépasse (« … »), elle doit donc contenir toute l'encre :
+     hauteur de ligne pour les marques de ton (mesure : fin de ce fichier), marge de chaque côté
+     pour celles du premier et du dernier mot, sans déplacer le nom. */
   html[lang="nqo"] .outils-lecture .outil:not([lang="fr"])::after {
+    margin-inline: -0.2em;
+    padding-inline: 0.2em;
     font-size: 1.15rem;
+    line-height: var(--interligne-nko);
   }
 }
 
@@ -2053,4 +2059,14 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
 .category-dropdown-wrapper {
   position: relative;
   width: 100%;
+}
+
+/* ===========================================
+   N'KO : LES MARQUES DE TON ENTIÈRES (31 octobre 2026)
+   Kigelia annonce une hauteur de 1 em, mais ses marques montent jusqu'à 1,07 em au-dessus de la
+   ligne de base (mesuré sur tout le N'Ko du site). Plus petite hauteur de ligne qui garde cette
+   encre dans sa boîte, de 9 à 96 px : 1,65 em + 2 px (le navigateur arrondit la police au pixel).
+   =========================================== */
+:root {
+  --interligne-nko: calc(1.65em + 2px);
 }
