@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { NOM_FR, NOM_NKO, versionLangue } from "../lib/carte-partage";
 import { LANGUES, estLangue, langueDe, langueInterface } from "../lib/langue";
+import { scriptFichierPerdu } from "../lib/fichier-perdu";
 import { separerLangues } from "../components/numero/titre";
 import localFont from "next/font/local";
 import { Montserrat } from "next/font/google";
@@ -281,6 +282,7 @@ return (
     // N'Ko → lang="nqo", droite à gauche, pas de proposition de traduction ; français → l'inverse
     <html lang={nko ? "nqo" : "fr"} dir={nko ? "rtl" : "ltr"} translate={nko ? "no" : undefined} suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
+        <script dangerouslySetInnerHTML={{ __html: scriptFichierPerdu(nko) }} />
         {nko && <script dangerouslySetInnerHTML={{ __html: accueilFrancais }} />}
         {/* 👑 Google Search Console — Vérification propriété */}
         <meta name="google-site-verification" content="843ZK_DeoFe9h5mvxGW3kSNz-dHT0_RMxbb4cS7_Kao" />

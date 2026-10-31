@@ -46,6 +46,7 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
   // seulement. Un lien partagé (article, numéro…) s'ouvre directement dans sa langue.
   useEffect(() => {
     if (existingContext) return;
+    document.documentElement.setAttribute("data-site-vivant", ""); // le code est arrivé : app/lib/fichier-perdu.ts
     const timer = setTimeout(() => {
       setIsMounted(true);
       let choix: string | null = null;
