@@ -100,7 +100,7 @@ export default function VueImpression({ numero, langue = "nqo" }: { numero: Nume
             {numeroFr(numero.numero)}
             {saison !== null && ` · ${saisonFr(saison)}`} · {dateFr(numero.publishedAt)}
           </p>
-          {numero.titleNko && <h1 lang="nqo" dir="rtl" className="mt-6 font-kigelia text-5xl font-bold leading-tight">{numero.titleNko}</h1>}
+          {numero.titleNko && <h1 lang="nqo" dir="rtl" className="mt-6 font-kigelia text-5xl font-bold">{numero.titleNko}</h1>}
           {numero.titleFr && <p lang="fr" dir="ltr" className="mt-2 text-2xl text-blanc/85">{numero.titleFr}</p>}
           <p className="mt-10 font-kigelia text-3xl font-bold" lang="nqo" dir="rtl">{messagesNko.metadata.siteName}</p>
           <p lang="fr" dir="ltr" className="mt-1 text-xs uppercase tracking-[0.4em] text-[#fbbf24]">N&apos;Ko ni Lonko · nkonilonko.com</p>

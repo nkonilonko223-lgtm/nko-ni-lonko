@@ -468,7 +468,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         </div>
         {surtitre}
         <h1 className="text-3xl md:text-5xl font-extrabold mb-8 md:mb-12 text-gray-200 print:text-black">
-            <span {...sensDe(nkoTitle)} className={`block !leading-[1.6] text-or print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : ''}`}>
+            <span {...sensDe(nkoTitle)} className={`block text-or print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : '!leading-[1.6]'}`}>
                 {nkoTitle}
             </span>
             {frTitle && (

@@ -592,9 +592,9 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                       <span aria-hidden="true" className={`absolute left-0 top-1.5 w-3 h-3 rounded-full border-2 transition-all duration-300 ${
                         activeHeadingId === h.id ? 'bg-[#fbbf24] border-or shadow-[0_0_10px_#fbbf24]' : 'bg-void border-white/30 group-hover:border-or'
                       }`}></span>
-                      <span className={`block transition-all duration-300 line-clamp-2 leading-tight ${
+                      <span className={`block transition-all duration-300 line-clamp-2 ${
                         activeHeadingId === h.id ? 'text-or font-bold' : 'text-gray-400 group-hover:text-white'
-                      } ${isNko ? 'font-kigelia text-sm' : 'text-xs'} ${h.level === 'h3' ? 'opacity-80 text-[0.85em]' : ''}`}>
+                      } ${isNko ? 'font-kigelia text-sm' : 'leading-tight text-xs'} ${h.level === 'h3' ? 'opacity-80 text-[0.85em]' : ''}`}>
                         {h.text}
                       </span>
                     </button>

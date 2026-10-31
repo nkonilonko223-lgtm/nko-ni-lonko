@@ -142,7 +142,7 @@ export default function VueNumero({ numero, pdf, langue = "nqo" }: { numero: Num
             {saison !== null && ` · ${saisonFr(saison)}`} · {dateFr(numero.publishedAt)}
           </p>
           <h1 className="mt-5">
-            {numero.titleNko && <span lang="nqo" dir="rtl" className="block font-kigelia text-4xl font-bold leading-tight md:text-6xl">{numero.titleNko}</span>}
+            {numero.titleNko && <span lang="nqo" dir="rtl" className="block font-kigelia text-4xl font-bold md:text-6xl">{numero.titleNko}</span>}
             {numero.titleFr && (
               <span lang="fr" dir="ltr" className={`block ${numero.titleNko ? "mt-2 text-xl text-white/80 md:text-2xl" : "text-4xl font-bold md:text-6xl"}`}>
                 {numero.titleFr}

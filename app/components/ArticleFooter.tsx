@@ -411,7 +411,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
             {/* Nom + Badge Certifié */}
             <div className="flex flex-col gap-1 mb-3 items-start text-start">
               <div className="flex items-center gap-2">
-                <h3 className={`font-bold leading-none text-white transition-colors duration-300 group-hover/author:text-or ${isNko ? 'font-kigelia text-2xl md:text-3xl' : 'text-xl md:text-2xl'}`}>
+                <h3 className={`font-bold text-white transition-colors duration-300 group-hover/author:text-or ${isNko ? 'font-kigelia text-2xl md:text-3xl' : 'leading-none text-xl md:text-2xl'}`}>
                   {/* Le nom mène à la page de l'auteur (biographie, tous ses articles) */}
                   {author.slug ? (
                     <Link href={lien(`/auteurs/${author.slug}`)} className="hover:text-or hover:underline underline-offset-4">
@@ -423,7 +423,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
               </div>
               
               {(author.nameNko || isNko) && (
-                <span lang={isNko ? "fr" : "nqo"} dir={isNko ? "ltr" : "rtl"} className={`text-gray-400 leading-none ${isNko ? 'text-sm font-mono tracking-wide mt-1' : 'font-kigelia text-base mt-1'}`}>
+                <span lang={isNko ? "fr" : "nqo"} dir={isNko ? "ltr" : "rtl"} className={`text-gray-400 ${isNko ? 'leading-none text-sm font-mono tracking-wide mt-1' : 'font-kigelia text-base mt-1'}`}>
                   {isNko ? author.name : author.nameNko}
                 </span>
               )}

@@ -48,7 +48,7 @@ export default function PiluleRetour() {
       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 shadow-inner transition-colors duration-300 group-hover:bg-[#fbbf24]">
         <i className={`ph-bold ${isNko ? "ph-arrow-right" : "ph-arrow-left"} text-base text-gray-300 transition-colors group-hover:text-black`} aria-hidden="true"></i>
       </span>
-      <span lang={isNko ? "nqo" : "fr"} className={`hidden text-xs font-bold leading-none text-or md:inline md:text-sm ${isNko ? "font-kigelia" : "font-fr"}`}>
+      <span lang={isNko ? "nqo" : "fr"} className={`hidden text-xs font-bold text-or md:inline md:text-sm ${isNko ? "font-kigelia" : "leading-none font-fr"}`}>
         {isNko ? RETOUR.nko : RETOUR.fr}
       </span>
     </button>

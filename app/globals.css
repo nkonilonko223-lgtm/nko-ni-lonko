@@ -250,7 +250,7 @@
   /* Titres — N'Ko */
   body[dir="rtl"] :is(h1, h2, h3) {
     font-weight: 700;
-    line-height: 1.4;
+    line-height: var(--interligne-nko);
   }
 /* Skip-to-content link (accessibilité clavier) */
   .skip-to-content {
@@ -1097,7 +1097,7 @@ nav {
   .article-content :is(h1, h2, h3)[dir="rtl"] {
     color: var(--color-gold);
     text-shadow: 0 0 15px rgba(251, 191, 36, 0.3);
-    line-height: 1.4;
+    line-height: var(--interligne-nko);
     font-weight: 700;
     display: block;
     width: 100%;
@@ -2074,4 +2074,9 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
 :is([lang="nqo"], .font-kigelia) {
   font-synthesis-weight: none;
   letter-spacing: normal;
+}
+
+/* Jamais de hauteur de ligne serrée. Gardent la leur : le texte plus aéré, et la lettrine */
+:is([lang="nqo"], .font-kigelia):where(:not(.leading-loose, .leading-\[1\.8\], .leading-\[1\.85\], .lettrine)) {
+  line-height: var(--interligne-nko);
 }

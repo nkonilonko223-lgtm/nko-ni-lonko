@@ -296,13 +296,13 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                   
                   <div className="flex flex-col gap-[8px]">
                     {/* Le Nom Principal (s'adapte à la langue de l'interface) */}
-                    <span className={`font-bold transition-colors duration-300 group-hover/card:text-white leading-none ${isNko ? 'font-kigelia text-sm text-or' : 'text-xs text-slate-200'}`}>
+                    <span className={`font-bold transition-colors duration-300 group-hover/card:text-white ${isNko ? 'font-kigelia text-sm text-or' : 'leading-none text-xs text-slate-200'}`}>
                       {isNko ? (article.authorNameNko || article.authorName) : article.authorName}
                     </span>
                     
                     {/* Le Nom Secondaire (Sécurité : Ne s'affiche QUE si le nom N'Ko existe dans la base de données) */}
                     {article.authorNameNko && (
-                      <span lang={isNko ? "fr" : "nqo"} dir={isNko ? "ltr" : "rtl"} className={`transition-colors duration-300 leading-none ${isNko ? 'text-[10px] text-slate-400 font-mono tracking-wide' : 'font-kigelia text-[11px] text-or/80'}`}>
+                      <span lang={isNko ? "fr" : "nqo"} dir={isNko ? "ltr" : "rtl"} className={`transition-colors duration-300 ${isNko ? 'leading-none text-[10px] text-slate-400 font-mono tracking-wide' : 'font-kigelia text-[11px] text-or/80'}`}>
                         {isNko ? article.authorName : article.authorNameNko}
                       </span>
                     )}

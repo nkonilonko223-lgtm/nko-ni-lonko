@@ -156,7 +156,7 @@ export default function PrivacyClient() {
         
         {/* Le Texte (Taille réduite pour PC) */}
         <div className="hidden md:flex flex-col items-start">
-          <span className={`font-bold text-or text-xs md:text-sm leading-none ${isNko ? 'font-kigelia' : ''}`}>
+          <span className={`font-bold text-or text-xs md:text-sm ${isNko ? 'font-kigelia' : 'leading-none'}`}>
             {isNko ? 'ߛߊ߬ߦߌ߲߬' : 'Retour'}
           </span>
         </div>
@@ -179,7 +179,7 @@ export default function PrivacyClient() {
             </div>
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-8 tracking-tight flex flex-col items-center print:text-black print:mb-4">
-                <span lang="nqo" dir="rtl" className="block mb-4 leading-tight drop-shadow-lg font-kigelia print:drop-shadow-none">ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ</span>
+                <span lang="nqo" dir="rtl" className="block mb-4 drop-shadow-lg font-kigelia print:drop-shadow-none">ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ</span>
                 <span lang="fr" className="text-white/60 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block print:text-black print:border-black print:font-bold">
                     Politique de confidentialité
                 </span>
@@ -213,7 +213,7 @@ export default function PrivacyClient() {
                             dir={isNko ? "rtl" : "ltr"}
                         >
                             {/* 🚀 BDI (Bi-Directional Isolation) garantit l'ordre parfait des numéros N'Ko */}
-                            <span lang="nqo" className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-or font-bold"}`} dir="rtl">
+                            <span lang="nqo" className={`font-kigelia text-sm whitespace-nowrap ${activeSection === clause.id ? "text-black font-bold" : "text-or font-bold"}`} dir="rtl">
                                 <bdi>{nkoNumber} - {clause.titleNko}</bdi>
                             </span>
                             <span className={`text-[9px] uppercase tracking-widest whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black/70 font-bold" : "text-white/60 font-light"}`} dir="ltr">
