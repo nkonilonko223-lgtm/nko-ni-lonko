@@ -22,6 +22,7 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { langueTexte } from "./numero/titre";
 import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
 import { TexteLangue } from "./application/Libelle";
+import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 // ==============================================================================
 // 1. TYPAGE STRICT & UTILITAIRES
@@ -112,6 +113,8 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   // 🚀 ACTION C : État anti-crash pour l'image de l'auteur
   const [authorImageError, setAuthorImageError] = useState(false);
   const turnstileRef = useRef<TurnstileInstance>(null);
+  const verification = useVerification(protectionActive, turnstileToken);
+  const [erreurEnvoi, setErreurEnvoi] = useState(""); // réponse d'erreur du serveur (bilingue), sous le formulaire
 
   // 🚀 ACTION A : Le radar d'apparition en cascade (Intersection Observer)
   const [cardsVisible, setCardsVisible] = useState(false);
@@ -146,6 +149,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
+    setErreurEnvoi("");
     setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
   };
 
@@ -181,7 +185,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
 
     } catch (error) {
       console.error("❌ Erreur Newsletter:", error);
-      alert(error instanceof Error ? error.message : "Impossible de se connecter au serveur.");
+      setErreurEnvoi(error instanceof Error ? error.message : "Impossible de se connecter au serveur.");
     } finally {
       setIsSubmitting(false);
       // 🛡️ Réarmement Turnstile pour le prochain essai
@@ -491,9 +495,13 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                     {protectionActive && (
                     <div className="hidden">
                       <Turnstile
+                        key={verification.cle}
                         ref={turnstileRef}
                         siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
                         onSuccess={(token) => setTurnstileToken(token)}
+                        onError={verification.signalerEchec}
+                        onTimeout={verification.signalerEchec}
+                        onExpire={() => setTurnstileToken(null)}
                       />
                     </div>
                     )}
@@ -530,6 +538,10 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                         )}
                     </button>
                 </form>
+                <div className="text-start">
+                  <EtatFormulaire email={email} emailValide={isValidEmail} jeton={turnstileToken} echec={verification.echec} onReessayer={verification.reessayer} nko={isNko} />
+                  {erreurEnvoi && <p role="alert" className="mt-2 text-sm text-red-400">{erreurEnvoi}</p>}
+                </div>
             </div>
           ) : (
             <div role="status" className="py-6 flex flex-col items-center justify-center transition-all duration-500 scale-100">

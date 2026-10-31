@@ -57,6 +57,8 @@
 | L36 | Ambiance : Papier | Même bouton (l'ambiance « papier » : fond crème, encre brune) | `ArticleTools.tsx` → `AMBIANCE.papier.nko` |
 | L37 | Ambiance : Jour | Même bouton (l'ambiance « jour » : fond blanc cassé, pour le plein soleil) | `ArticleTools.tsx` → `AMBIANCE.jour.nko` |
 | L38 | Presque fini ! Ouvrez l'e-mail que vous allez recevoir et confirmez votre abonnement. | Sous le champ de la lettre : pied de page de l'accueil et fin d'article (120 caractères au plus). À la place des anciennes phrases N'Ko qui annonçaient l'abonnement comme fait, retirées avec l'accord du propriétaire (31 octobre 2026) | `app/lib/messages-lecteur.ts` → `ABONNEMENT_A_CONFIRMER.nko` |
+| L39 | Cette adresse e-mail ne semble pas correcte. | Sous le champ e-mail : lettre et page de contact (60 caractères au plus) | `app/lib/messages-lecteur.ts` → `ADRESSE_A_REVOIR.nko` |
+| L40 | La vérification n'a pas abouti. Vérifiez votre connexion, puis réessayez. | Sous le bouton d'envoi : lettre et page de contact (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `VERIFICATION_ECHEC.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 

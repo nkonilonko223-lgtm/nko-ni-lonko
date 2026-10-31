@@ -11,6 +11,7 @@ import { URL_X } from "../lib/partage";
 import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
 import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
 import { TexteLangue } from "./application/Libelle";
+import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 interface SiteFooterProps {
   activeCategory: string;
@@ -42,6 +43,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const [protectionActive, setProtectionActive] = useState(false);
   const activerProtection = useCallback(() => setProtectionActive(true), []);
   const turnstileRef = useRef<TurnstileInstance>(null); // 🛡️ TÉLÉCOMMANDE DE RÉARMEMENT
+  const verification = useVerification(protectionActive, turnstileToken);
   const formRef = useRef<HTMLFormElement>(null);
   const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
 
@@ -226,9 +228,13 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                  {protectionActive && (
                  <div className="hidden">
                     <Turnstile
+                      key={verification.cle}
                       ref={turnstileRef}
                       siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
                       onSuccess={(token) => setTurnstileToken(token)}
+                      onError={verification.signalerEchec}
+                      onTimeout={verification.signalerEchec}
+                      onExpire={() => setTurnstileToken(null)}
                     />
                  </div>
                  )}
@@ -273,6 +279,8 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   </button>
                </form>
                
+               <EtatFormulaire email={email} emailValide={isValidEmail} jeton={turnstileToken} echec={verification.echec} onReessayer={verification.reessayer} nko={isNko} />
+
                {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026). Le message
                    reste affiché tant que le lecteur ne retape pas d'adresse */}
                <div role="status">

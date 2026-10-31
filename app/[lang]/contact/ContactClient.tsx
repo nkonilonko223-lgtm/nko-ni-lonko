@@ -7,6 +7,8 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile'; // 🚀 REST
 import { useLanguage } from "../../components/LanguageProvider"; // 🚀 IMPORT DU CERVEAU BILINGUE
 import { SIEGE, TELEGRAM, TELEPHONES, lienAppel, lienTelegram, lienWhatsApp } from "../../lib/coordonnees";
 
+import EtatFormulaire, { useVerification } from "../../components/formulaires/EtatFormulaire";
+
 export default function ContactClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE (Pour le bouton de retour)
   const { lang, lien } = useLanguage();
@@ -29,6 +31,7 @@ export default function ContactClient() {
   const [protectionActive, setProtectionActive] = useState(false);
   const activerProtection = useCallback(() => setProtectionActive(true), []);
   const turnstileRef = useRef<TurnstileInstance>(null);
+  const verification = useVerification(protectionActive, turnstileToken);
   const [errorMessage, setErrorMessage] = useState("");
 
   // ⏱️ DÉMARRAGE DU CHRONOMÈTRE BIOMÉTRIQUE
@@ -148,13 +151,8 @@ export default function ContactClient() {
     if (e) e.preventDefault();
     
     // 🚀 VERROUILLAGE ABSOLU : On exige le Jeton Cloudflare avant d'autoriser le clic
-    if (!isOnline || !formData.name || !isValidEmail || !formData.message || !turnstileToken) {
-      if (!turnstileToken) {
-        setErrorMessage("ߡߊ߬ߞߐ߬ߣߐ߲߬ߠߌ߲ ߞߍ߫ ߣߍ߲ߞߍ߫ / Analyse de sécurité en cours...");
-        setTimeout(() => setErrorMessage(""), 3000);
-      }
-      return;
-    }
+    // (ce qui manque est expliqué sous le bouton : EtatFormulaire)
+    if (!isOnline || !formData.name || !isValidEmail || !formData.message || !turnstileToken) return;
 
     triggerVibration();
     setIsSubmitting(true);
@@ -500,10 +498,12 @@ export default function ContactClient() {
                         {protectionActive && (
                         <div className="hidden">
                            <Turnstile
+                             key={verification.cle}
                              siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
                              ref={turnstileRef}
                              onSuccess={(token) => setTurnstileToken(token)}
-                             onError={() => setTurnstileToken(null)}
+                             onError={() => { setTurnstileToken(null); verification.signalerEchec(); }}
+                             onTimeout={verification.signalerEchec}
                              onExpire={() => setTurnstileToken(null)}
                            />
                         </div>
@@ -540,6 +540,8 @@ export default function ContactClient() {
                                 </>
                             )}
                         </button>
+
+                        <EtatFormulaire email={formData.email} emailValide={isValidEmail} jeton={turnstileToken} echec={verification.echec} onReessayer={verification.reessayer} nko={isNko} />
 
                         {/* Message d'erreur inline */}
                         <div className={`overflow-hidden transition-all duration-300 ${errorMessage ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}>
