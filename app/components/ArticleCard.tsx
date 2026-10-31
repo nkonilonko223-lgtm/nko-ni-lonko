@@ -290,7 +290,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
 
                {/* 🚀 L'ARME ABSOLUE : Le Dual-Stack Byline (Logique 1/1000) */}
                 <div className={`flex flex-col justify-center ${isNko ? 'items-end' : 'items-start'}`}>
-                  <span className={`text-[9px] uppercase tracking-widest text-slate-400 mb-1 ${isNko ? 'font-kigelia' : ''}`}>
+                  <span className={`text-[9px] uppercase text-slate-400 mb-1 ${isNko ? 'font-kigelia' : 'tracking-widest'}`}>
                     {isNko ? 'ߛߓߍߦߟߊ' : 'Auteur'}
                   </span>
                   

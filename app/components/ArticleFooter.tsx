@@ -360,7 +360,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                 
                 {/* 1. L'Étiquette Impériale Fixe (Hiérarchie N'Ko & Séparateur) */}
                 <div className="flex items-center gap-2.5">
-                  <span lang="nqo" dir="rtl" className="text-or text-base md:text-[17px] font-bold tracking-wide font-kigelia drop-shadow-sm">
+                  <span lang="nqo" dir="rtl" className="text-or text-base md:text-[17px] font-bold font-kigelia drop-shadow-sm">
                     ߛߓߍߦߟߊ
                   </span>
                   
@@ -451,7 +451,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
             {author.expertise && author.expertise.length > 0 && (
               <div className={`flex flex-wrap gap-2 mt-2 ${isNko ? 'justify-end' : 'justify-start'}`}>
                 {author.expertise.map((exp: string, idx: number) => (
-                  <span key={idx} className={`px-2 py-1 rounded bg-white/5 border border-white/10 text-gray-400 text-[10px] tracking-wider uppercase ${isNko ? 'font-kigelia' : ''}`}>
+                  <span key={idx} className={`px-2 py-1 rounded bg-white/5 border border-white/10 text-gray-400 text-[10px] uppercase ${isNko ? 'font-kigelia' : 'tracking-wider'}`}>
                     {exp}
                   </span>
                 ))}
@@ -599,7 +599,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                   </div>
                   
                   <div className={isNko ? "text-right" : "text-left"}>
-                      <span className={`text-or text-xs font-bold uppercase tracking-wider mb-2 block ${isNko ? 'font-kigelia' : ''}`}>
+                      <span className={`text-or text-xs font-bold uppercase mb-2 block ${isNko ? 'font-kigelia' : 'tracking-wider'}`}>
                       {item.category}
                       </span>
                       <h4 className={`text-gray-200 font-bold text-lg leading-snug group-hover:text-white transition-colors duration-300 ${isNko ? 'font-kigelia' : ''}`}>
@@ -623,7 +623,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
             className="group relative flex items-center justify-center gap-3 px-8 py-4 rounded-full bg-surface/60 backdrop-blur-md border border-or/30 text-gray-300 shadow-lg hover:bg-or/10 hover:border-or hover:text-white hover:shadow-[0_0_30px_rgba(251,191,36,0.2)] active:scale-95 transition-all duration-500 overflow-hidden touch-manipulation"
           >
               <i className="ph-bold ph-arrow-up text-or text-lg transition-transform duration-500 group-hover:-translate-y-2"></i>
-              <span className={`text-sm md:text-base font-bold uppercase tracking-widest ${isNko ? 'font-kigelia' : ''}`}>
+              <span className={`text-sm md:text-base font-bold uppercase ${isNko ? 'font-kigelia' : 'tracking-widest'}`}>
                   {isNko ? 'ߊ߬ ߞߐߡߊߛߊߦߌ߫ ߛߊ߲ߝߍ߬' : 'Retour en haut'}
               </span>
           </button>

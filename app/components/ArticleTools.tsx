@@ -569,7 +569,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
             showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
           }`}>
             <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-              <h4 className={`text-or font-bold ${isNko ? 'font-kigelia tracking-widest' : 'tracking-wider uppercase text-sm'}`}>
+              <h4 className={`text-or font-bold ${isNko ? 'font-kigelia' : 'tracking-wider uppercase text-sm'}`}>
                 {isNko ? 'ߞߎߡߘߊ ߢߍߛߓߍ' : 'Sommaire'}
               </h4>
               <button onClick={() => setShowToc(false)} className="zone-44 flex h-8 w-8 items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : "Fermer le sommaire"}>
@@ -608,7 +608,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
           {showCite && (
             <div role="dialog" aria-label={isNko ? CITER.nko : CITER.fr} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4' : 'md:right-full md:mr-4'} w-[85vw] max-w-md max-h-[65vh] overflow-y-auto p-5 backdrop-blur-2xl bg-surface/95 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl animate-in fade-in zoom-in-95 duration-200`}>
               <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
-                <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-or font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
+                <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-or font-bold ${isNko ? "font-kigelia" : "tracking-wider uppercase text-sm"}`}>
                   {isNko ? CITER.nko : CITER.fr}
                 </h4>
                 <button type="button" onClick={() => setShowCite(false)} className="zone-44 flex h-8 w-8 items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}>

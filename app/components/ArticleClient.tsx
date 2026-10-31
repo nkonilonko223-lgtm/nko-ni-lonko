@@ -344,7 +344,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             <Image src="/logo/logo-impression.png" alt="Logo" lang="fr" fill sizes="48px" className="object-contain" />
           </div>
           <div className="flex flex-col">
-            <span lang="nqo" dir="rtl" className="font-kigelia text-2xl font-bold text-black tracking-widest">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
+            <span lang="nqo" dir="rtl" className="font-kigelia text-2xl font-bold text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
             <span className="font-sans text-xs text-gray-500 uppercase tracking-widest">N&apos;Ko ni Lonko - Revue Scientifique</span>
           </div>
         </div>
@@ -450,7 +450,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         {/* Pas de balise <nav> : la règle générale « nav » de globals.css (menu du site) la rendrait
             collante en haut de l'écran, avec fond et trait ; role="navigation" garde le même sens */}
         <div role="navigation" aria-label="Fil d'Ariane" className="mb-4 md:mb-6">
-          <ol className={`flex items-center justify-center gap-2 uppercase tracking-[0.3em] font-bold ${lang === 'nko' ? 'text-xl font-kigelia' : 'text-xs md:text-sm'}`}>
+          <ol className={`flex items-center justify-center gap-2 uppercase font-bold ${lang === 'nko' ? 'text-xl font-kigelia' : 'tracking-[0.3em] text-xs md:text-sm'}`}>
             <li className="print:hidden">
               <Link href={lien("/")} className="text-gray-500 transition-colors hover:text-white">
                 {lang === 'nko' ? messagesNko.nav.home : 'Accueil'}
@@ -658,7 +658,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
         <p 
           className={`text-or/70 hover:text-or transition-colors duration-300 relative z-10 drop-shadow-sm px-4 ${
             lang === 'nko' 
-            ? 'font-kigelia text-sm md:text-base tracking-wide' 
+            ? 'font-kigelia text-sm md:text-base' 
             : 'font-mono text-xs md:text-sm tracking-widest uppercase'
           }`}
           dir={lang === 'nko' ? 'rtl' : 'ltr'}

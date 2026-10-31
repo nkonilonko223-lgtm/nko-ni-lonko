@@ -272,11 +272,11 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
             ].map((link, i) => (
               <li key={i} className="w-full">
                 {link.href.startsWith('#') ? (
-                  <a href={link.href} onClick={onClose} className={`flex min-h-11 items-center justify-center text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                  <a href={link.href} onClick={onClose} className={`flex min-h-11 items-center justify-center text-2xl md:text-3xl font-light transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : "tracking-wide"}`}>
                     {link.label}
                   </a>
                 ) : (
-                  <Link href={link.href} onClick={onClose} className={`flex min-h-11 items-center justify-center text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                  <Link href={link.href} onClick={onClose} className={`flex min-h-11 items-center justify-center text-2xl md:text-3xl font-light transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : "tracking-wide"}`}>
                     {link.label}
                   </Link>
                 )}
@@ -581,7 +581,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       <div role="status" className={`fixed top-24 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
         <div className="bg-black/95 backdrop-blur-xl border border-green-500/50 text-green-400 px-6 py-4 rounded-full shadow-[0_10px_40px_rgba(34,197,94,0.2)] flex items-center gap-3">
           <i className="ph-fill ph-check-circle text-2xl animate-pulse"></i>
-          <span className={`text-sm md:text-base font-bold tracking-wide ${isNko ? 'font-kigelia text-lg' : ''}`}>
+          <span className={`text-sm md:text-base font-bold ${isNko ? 'font-kigelia text-lg' : 'tracking-wide'}`}>
             {isNko ? 'ߌ ߣߌ߫ ߗߋ߫ ߸ ߌ ߓߘߊ߫ ߟߊߜߊ߲ߞߎ߲߫ ߞߏߢߊ߬ !' : 'Félicitations, votre abonnement est confirmé !'}
           </span>
         </div>
@@ -765,7 +765,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <a 
           href="#articles-grid" 
           onClick={triggerVibration}
-          className={`reveal text-or/90 hover:text-or transition-colors font-normal ml-4 ${isNko ? "font-kigelia text-base tracking-wider" : "text-sm tracking-wide"}`}
+          className={`reveal text-or/90 hover:text-or transition-colors font-normal ml-4 ${isNko ? "font-kigelia text-base" : "text-sm tracking-wide"}`}
         >
           {typedT.home?.featured?.viewAll}
         </a>

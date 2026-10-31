@@ -250,7 +250,6 @@
   /* Titres — N'Ko */
   body[dir="rtl"] :is(h1, h2, h3) {
     font-weight: 700;
-    letter-spacing: 0.02em;
     line-height: 1.4;
   }
 /* Skip-to-content link (accessibilité clavier) */
@@ -2069,4 +2068,10 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
    =========================================== */
 :root {
   --interligne-nko: calc(1.65em + 2px);
+}
+
+/* Écriture liée : jamais d'espace entre les lettres, et jamais de gras imité par le navigateur */
+:is([lang="nqo"], .font-kigelia) {
+  font-synthesis-weight: none;
+  letter-spacing: normal;
 }

@@ -215,7 +215,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             </p>
             
             <div className="flex flex-col gap-3 mt-3">
-               <label className={`font-bold uppercase tracking-widest text-or ${isNko ? 'font-kigelia text-lg' : 'text-sm'}`}>
+               <label className={`font-bold uppercase text-or ${isNko ? 'font-kigelia text-lg' : 'text-sm tracking-widest'}`}>
                   {isNko ? 'ߡߊ߬ߘߏ߬ߛߓߍ' : 'Newsletter'}
                </label>
                
@@ -299,7 +299,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           </div>
 
           <div className="flex flex-col items-start">
-            <h3 className={`mb-5 font-bold uppercase tracking-widest text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
+            <h3 className={`mb-5 font-bold uppercase text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base tracking-widest'}`}>
                 {typedT?.nav?.articles || "Articles"}
             </h3>
             <ul className="space-y-4">
@@ -318,7 +318,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           </div>
 
           <div className="flex flex-col items-start">
-            <h3 className={`mb-5 font-bold uppercase tracking-widest text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
+            <h3 className={`mb-5 font-bold uppercase text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base tracking-widest'}`}>
               {isNko ? 'ߝߙߍ' : 'Menu'}
             </h3>
             <ul className="space-y-4">
@@ -342,7 +342,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
           </div>
 
           <div className="flex flex-col items-start">
-            <h3 className={`mb-5 font-bold uppercase tracking-widest text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base'}`}>
+            <h3 className={`mb-5 font-bold uppercase text-or drop-shadow-[0_0_8px_rgba(251,191,36,0.3)] ${isNko ? 'font-kigelia text-xl' : 'text-base tracking-widest'}`}>
                 {isNko ? 'ߟߊߛߘߐ߬ߢߊ' : 'Contact'}
             </h3>
             
