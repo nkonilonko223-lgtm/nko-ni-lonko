@@ -69,7 +69,7 @@ export default function FenetreLangue() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
             <span className="font-kigelia text-4xl text-or group-hover:text-black mb-1 transition-colors relative z-10 pointer-events-none">ߒߞߏ</span>
-            <span className="text-[14px] text-or/70 group-hover:text-black/70 tracking-widest uppercase transition-colors relative z-10 pointer-events-none"> ߒߞߏ ߕߊ߬</span>
+            <span className="text-[14px] text-or/70 group-hover:text-black/70 uppercase transition-colors relative z-10 pointer-events-none"> ߒߞߏ ߕߊ߬</span>
           </a>
 
           {/* BOUTON FRANÇAIS */}
@@ -85,7 +85,7 @@ export default function FenetreLangue() {
 
         </div>
 
-        <p lang="nqo" className="mt-16 text-[11px] text-white/20 uppercase tracking-widest font-kigelia opacity-70 cursor-default pointer-events-none">
+        <p lang="nqo" className="mt-16 text-[11px] text-white/20 uppercase font-kigelia opacity-70 cursor-default pointer-events-none">
            ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߞߊ߲ߞߋߦߊ ߓߐߘߊ ߂.߀
         </p>
 
