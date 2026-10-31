@@ -30,7 +30,7 @@ function LibelleBloc({ texte }: { texte: Libelle }) {
   return (
     <span className="flex flex-col items-center gap-0.5">
       {texte.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl text-or">{texte.nko}</span>}
-      <span lang="fr" className="font-sans text-[11px] leading-[1.4] uppercase tracking-widest text-gray-500">{texte.fr}</span>
+      <span lang="fr" className="font-sans text-[11px] uppercase tracking-widest text-gray-500">{texte.fr}</span>
     </span>
   );
 }

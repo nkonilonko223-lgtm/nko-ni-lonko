@@ -253,6 +253,10 @@
     letter-spacing: 0.02em;
     line-height: 1.4;
   }
+  /* Le français placé dans un titre N'Ko garde cette hauteur (le N'Ko a la sienne : fin de ce fichier) */
+  :where(body[dir="rtl"] :is(h1, h2, h3)) :is([lang|="fr"], [lang|="en"]) {
+    line-height: 1.4;
+  }
 /* Skip-to-content link (accessibilité clavier) */
   .skip-to-content {
     /* ✅ CORRECTION : 'fixed' pour qu'il soit hors du contenu, collé à la fenêtre */
