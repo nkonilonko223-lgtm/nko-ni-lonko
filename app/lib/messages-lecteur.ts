@@ -18,6 +18,11 @@ export const ABONNEMENT_A_CONFIRMER: Libelle = {
 // Texte d'exemple des champs e-mail (lettre, contact). Forme N'Ko choisie par MckV, le 31 octobre 2026
 export const CHAMP_EMAIL: Libelle = { nko: "ߗߋߞߘߎ ߛߘߐ߬ߓߛߍ", fr: "Adresse e-mail" };
 
+// Textes d'exemple des autres champs de la page de contact : le N'Ko et le français étaient sur la même
+// ligne, coupés au « • » par programme (accord de MckV, 31 octobre 2026), la partie N'Ko sans changement
+export const CHAMP_NOM: Libelle = { nko: "ߌ ߕߐ߮ ߘߝߊߣߍ߲", fr: "Votre nom complet" };
+export const CHAMP_MESSAGE: Libelle = { nko: "ߌ ߟߊ߫ ߗߋߛߓߍ ߛߓߍ߫ ߦߊ߲߬...", fr: "Écrivez votre message ici..." };
+
 // Pourquoi le bouton d'envoi reste gris (lettre, contact)
 export const ADRESSE_A_REVOIR: Libelle = {
   nko: "ߗߋߞߘߎ ߛߘߐ߬ߓߛߍ ߣߌ߲߬ ߦߏ߫ ߊ߬ ߡߊ߫ ߘߝߊ߫߹", // L39 : rédaction, validé par MckV le 31 octobre 2026
