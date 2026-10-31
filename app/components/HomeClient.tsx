@@ -223,6 +223,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
       role="dialog"
       aria-modal="true"
       aria-label="Menu de navigation"
+      inert={!isOpen} // fermé : ni le clavier ni les lecteurs d'écran n'y entrent (il reste en place pour son animation)
       className={`fixed inset-0 z-[9999] flex flex-col overscroll-contain bg-void/95 backdrop-blur-3xl transition-all duration-700 ease-cinematic ${
         isOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
       }`}

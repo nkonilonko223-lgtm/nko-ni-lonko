@@ -564,7 +564,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
         <div className={`flex flex-col gap-3 ${isNko ? 'items-start md:items-center' : 'items-end md:items-center'}`}>
           
           {/* LE PANNEAU DE SOMMAIRE (Radar) */}
-         <div className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-surface/95 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
+         <div inert={!showToc} className={`md:absolute md:top-0 ${isNko ? 'md:left-full md:ml-4 md:origin-top-left' : 'md:right-full md:mr-4 md:origin-top-right'} overflow-hidden origin-bottom-right backdrop-blur-2xl bg-surface/95 border border-or/30 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-3xl transition-[opacity,transform] duration-300 ease-in-out ${
             showToc ? 'w-[85vw] max-w-sm max-h-[60vh] opacity-100 scale-100 p-5 overflow-y-auto' : 'w-0 max-h-0 opacity-0 scale-75 p-0 pointer-events-none'
           }`}>
             <div className="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
