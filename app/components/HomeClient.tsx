@@ -593,7 +593,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           {typedT.home?.hero?.title}
         </h1>
         
-        <p className="reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10">
+        <p className={`reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10 ${isNko ? "font-kigelia" : ""}`}>
           {typedT.home?.hero?.subtitle}
         </p>
         
