@@ -10,8 +10,11 @@ import { ACCUEIL, PAGE_ERREUR_TEXTE, PAGE_ERREUR_TITRE, REESSAYER } from "../lib
 // « Réessayer » recharge vraiment la page, seul moyen de redemander le fichier manquant.
 // ============================================================================
 
+// N'Ko : d'abord la Kigelia du site (variable --font-kigelia, même fichier woff2 que partout, déjà
+// sur l'appareil et gardé par public/sw.js). Le fichier .otf n'est qu'un secours : le site ne le
+// charge jamais ailleurs, il manque donc quand le réseau manque.
 const POLICE = `@font-face { font-family: "kigelia-erreur"; src: url("/fonts/Kigelia.otf") format("opentype"); font-display: swap; }`;
-const POLICES_NKO = `"kigelia-erreur", system-ui, sans-serif`;
+const POLICES_NKO = `var(--font-kigelia, "kigelia-erreur"), "kigelia-erreur", system-ui, sans-serif`;
 const POLICES_FR = "system-ui, sans-serif";
 
 function Texte({ texte, nko }: { texte: Libelle; nko: boolean }) {
