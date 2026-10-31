@@ -12,5 +12,5 @@ import type { Libelle } from "../components/application/textes";
 // si une adresse est déjà abonnée
 export const ABONNEMENT_A_CONFIRMER: Libelle = {
   nko: "", // L38 : demandé à la rédaction
-  fr: "Presque fini ! Ouvrez le courriel que vous allez recevoir et confirmez votre abonnement.",
+  fr: "Presque fini ! Ouvrez l'e-mail que vous allez recevoir et confirmez votre abonnement.",
 };

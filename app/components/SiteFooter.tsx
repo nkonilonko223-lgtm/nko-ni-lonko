@@ -273,7 +273,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   </button>
                </form>
                
-               {/* Pas encore abonné : le courriel de confirmation reste à ouvrir (31 octobre 2026). Le message
+               {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026). Le message
                    reste affiché tant que le lecteur ne retape pas d'adresse */}
                <div role="status">
                  {emailSubscribed && (

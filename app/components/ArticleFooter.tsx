@@ -537,7 +537,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                   <div className="absolute inset-0 bg-[#fbbf24] rounded-full blur-xl animate-pulse opacity-20"></div>
                   <i className="ph-fill ph-envelope-simple text-5xl text-or mb-3 relative z-10" aria-hidden="true"></i>
                 </div>
-                {/* Pas encore abonné : le courriel de confirmation reste à ouvrir (31 octobre 2026) */}
+                {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026) */}
                 <h3 className="text-lg md:text-xl font-bold leading-snug text-white">
                     <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={isNko} />
                 </h3>
