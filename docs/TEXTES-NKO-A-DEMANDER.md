@@ -59,6 +59,8 @@
 | L38 | Presque fini ! Ouvrez l'e-mail que vous allez recevoir et confirmez votre abonnement. | Sous le champ de la lettre : pied de page de l'accueil et fin d'article (120 caractères au plus). À la place des anciennes phrases N'Ko qui annonçaient l'abonnement comme fait, retirées avec l'accord du propriétaire (31 octobre 2026) | `app/lib/messages-lecteur.ts` → `ABONNEMENT_A_CONFIRMER.nko` |
 | L39 | Cette adresse e-mail ne semble pas correcte. | Sous le champ e-mail : lettre et page de contact (60 caractères au plus) | `app/lib/messages-lecteur.ts` → `ADRESSE_A_REVOIR.nko` |
 | L40 | La vérification n'a pas abouti. Vérifiez votre connexion, puis réessayez. | Sous le bouton d'envoi : lettre et page de contact (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `VERIFICATION_ECHEC.nko` |
+| L41 | Cette page n'a pas pu se charger. | Titre de la page d'erreur (50 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TITRE.nko` |
+| L42 | Votre connexion est peut-être faible. Réessayez, ou revenez à l'accueil. | Texte de la page d'erreur (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TEXTE.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 

@@ -28,3 +28,15 @@ export const VERIFICATION_ECHEC: Libelle = {
 };
 // Repris tel quel de la page « Aucune connexion » (texte existant)
 export const REESSAYER: Libelle = { nko: "ߊ߬ ߡߊߝߍߣߍ߲߫ ߕߎ߲߯", fr: "Réessayer" };
+
+// Page d'erreur du site (app/components/PageErreur.tsx)
+export const PAGE_ERREUR_TITRE: Libelle = {
+  nko: "", // L41 : demandé à la rédaction
+  fr: "Cette page n'a pas pu se charger.",
+};
+export const PAGE_ERREUR_TEXTE: Libelle = {
+  nko: "", // L42 : demandé à la rédaction
+  fr: "Votre connexion est peut-être faible. Réessayez, ou revenez à l'accueil.",
+};
+// Repris tel quel du menu du site (messages/nko.json, nav.home) : pas de fichier de messages entier ici
+export const ACCUEIL: Libelle = { nko: "ߟߊ߬ߓߍ߲߬ߠߌ", fr: "Accueil" };
