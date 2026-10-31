@@ -11,6 +11,7 @@
 > - **L1 à L8 et L10 à L16 : fournis et intégrés** (39 textes, branche `textes/nko-l1-l16`), copiés par programme, contrôlés identiques au fichier caractère par caractère et en NFC. L14 b, L15 a et L16 sont le même texte (« Ma bibliothèque »), utilisé à trois endroits.
 > - **L17 à L20 : fournis et intégrés** (branche `feat/disciplines-13`, 23 octobre 2026, accord du propriétaire) : liste du Studio, dictionnaire du site, table des disciplines ; copiés par programme, contrôlés identiques et en NFC.
 > - **L9 : à fournir** (son texte français n'est pas encore validé).
+> - **L38 à L42 : fournis et intégrés** (31 octobre 2026) : fichier `NKO/Revue/Site/textes-nko-L38-L42.txt`, validé par MckV, copié par programme dans `app/lib/messages-lecteur.ts`. Le même fichier donne la forme N'Ko d'« adresse e-mail » (`CHAMP_EMAIL`).
 > - **État au 24 octobre 2026** — fichier reçu : `NKO/Revue/Site/textes-nko-L21-L37.txt` (19 textes validés par MckV) :
 >   - **L21 à L34 : fournis et intégrés** (16 textes, dont L24 a, b, c) dans `app/components/application/textes.ts` : **application du site** (installation sur le téléphone, guide iPhone, « Télécharger le numéro », lecture sans connexion).
 >   - **L35 à L37 : fournis et intégrés** dans `app/components/ArticleTools.tsx` (`AMBIANCE`) : bouton **« Ambiance »** des articles (design « Nuit du Mandé »).

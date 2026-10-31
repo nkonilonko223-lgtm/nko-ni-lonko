@@ -11,19 +11,19 @@ import type { Libelle } from "../components/application/textes";
 // La même phrase pour un nouvel abonné et pour une adresse déjà connue : le site ne révèle pas
 // si une adresse est déjà abonnée
 export const ABONNEMENT_A_CONFIRMER: Libelle = {
-  nko: "", // L38 : demandé à la rédaction
+  nko: "ߘߐ߯ߣߍ߲߫ ߊ߬ ߘߌ߫ ߓߊ߲߫߹ ߊߟߎ߫ ߘߌߣߊ߬ ߗߋߛߓߍ ߡߍ߲ ߟߊߛߐ߬ߘߐ߲߬߸ ߊߟߎ߫ ߦߴߏ߬ ߟߊߞߊ߬߸ ߞߵߊߟߎ߫ ߟߊ߫ ߡߊߝߘߎ߬ߟߌ ߟߊߛߙߋߦߊ߫߹", // L38 : rédaction, validé par MckV le 31 octobre 2026
   fr: "Presque fini ! Ouvrez l'e-mail que vous allez recevoir et confirmez votre abonnement.",
 };
 
 // Pourquoi le bouton d'envoi reste gris (lettre, contact)
 export const ADRESSE_A_REVOIR: Libelle = {
-  nko: "", // L39 : demandé à la rédaction
+  nko: "ߗߋߞߘߎ ߛߘߐ߬ߓߛߍ ߣߌ߲߬ ߦߏ߫ ߊ߬ ߡߊ߫ ߘߝߊ߫߹", // L39 : rédaction, validé par MckV le 31 octobre 2026
   fr: "Cette adresse e-mail ne semble pas correcte.",
 };
 // Repris tel quel de la page de contact (texte existant)
 export const VERIFICATION_EN_COURS: Libelle = { nko: "ߡߊ߬ߞߐ߬ߣߐ߲߬ߠߌ߲ ߞߍ߫ ߣߍ߲ߞߍ߫", fr: "Analyse de sécurité en cours..." };
 export const VERIFICATION_ECHEC: Libelle = {
-  nko: "", // L40 : demandé à la rédaction
+  nko: "ߕߎ߬ߢߊ߬ߦߊ߬ߟߌ ߡߊ߫ ߢߊ߬߹ ߊߟߎ߫ ߦߴߊߟߎ߫ ߟߊ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ߬ߟߌ ߝߛߍ߬ߝߛߍ߬߸ ߞߵߊߟߎ߫ ߡߊߛߊ߬ߦߌ߲߬ ߞߵߊ߬ ߘߐߜߍ߫߹", // L40 : rédaction, validé par MckV le 31 octobre 2026
   fr: "La vérification n'a pas abouti. Vérifiez votre connexion, puis réessayez.",
 };
 // Repris tel quel de la page « Aucune connexion » (texte existant)
@@ -31,11 +31,11 @@ export const REESSAYER: Libelle = { nko: "ߊ߬ ߡߊߝߍߣߍ߲߫ ߕߎ߲߯", fr: "
 
 // Page d'erreur du site (app/components/PageErreur.tsx)
 export const PAGE_ERREUR_TITRE: Libelle = {
-  nko: "", // L41 : demandé à la rédaction
+  nko: "ߞߐߜߍ ߣߌ߲߬ ߡߊ߫ ߛߋ߫ ߟߊߢߎ߲߫ ߠߊ߫߹", // L41 : rédaction, validé par MckV le 31 octobre 2026
   fr: "Cette page n'a pas pu se charger.",
 };
 export const PAGE_ERREUR_TEXTE: Libelle = {
-  nko: "", // L42 : demandé à la rédaction
+  nko: "ߊߟߎ߫ ߟߊ߫ ߓߌ߬ߟߊ߬ߢߐ߲߰ߡߊ߬ߟߌ ߘߌ߫ ߛߋ߫ ߘߐ߯ߦߊ߫ ߟߊ߫߹ ߊߟߎ߫ ߦߋ߫ ߛߊ߬ߦߌ߲߬ ߞߵߊ߬ ߘߐߜߍ߫߸ ߥߟߊ߫ ߞߊ߬ ߞߐߛߊ߬ߦߌ߲߬ ߟߊ߬ߓߍ߲߬ߠߌ ߡߊ߬߹", // L42 : rédaction, validé par MckV le 31 octobre 2026
   fr: "Votre connexion est peut-être faible. Réessayez, ou revenez à l'accueil.",
 };
 // Repris tel quel du menu du site (messages/nko.json, nav.home) : pas de fichier de messages entier ici
