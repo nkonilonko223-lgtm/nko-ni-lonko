@@ -9,6 +9,7 @@ import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIE
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { URL_X } from "../lib/partage";
 import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
+import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
 import { TexteLangue } from "./application/Libelle";
 import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
@@ -327,6 +328,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
             <ul className="space-y-4">
               {[
                 { path: lien("/numeros"), label: typedT?.nav?.numeros || "Numéros" },
+                { path: lien("/lexique"), label: isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr },
                 { path: lien("/bibliotheque"), label: isNko ? "ߒ ߠߊ߫ ߟߍߙߘߊ" : "Ma bibliothèque" }, // libellé N'Ko : L16 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
                 { path: lien("/about"), label: typedT?.nav?.about || "À propos" },
                 { path: lien("/contact"), label: typedT?.footer?.contact || "Contact" },

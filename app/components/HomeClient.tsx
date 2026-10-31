@@ -11,6 +11,7 @@ import { normaliser } from "./lexique/normaliser";
 import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { abonnerInstallation, installer, modeInstallation, modeInstallationServeur } from "../lib/installation";
 import { toNkoDigits } from "./texte/outils";
+import { TEXTES_LEXIQUE } from "./lexique/textes";
 
 
 // ==============================================================================
@@ -233,19 +234,20 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
         <i className="ph-bold ph-x text-2xl" aria-hidden="true"></i>
       </button>
 
-      <div className="flex flex-col items-center justify-center h-full w-full px-8 pb-12">
-        <div className="w-24 h-24 mb-10 relative flex items-center justify-center p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
+      {/* Défile si l'écran est trop petit (le menu compte plus d'entrées depuis le 31 octobre 2026) */}
+      <div className="flex flex-col items-center justify-center min-h-full w-full overflow-y-auto px-8 py-16 sm:py-12">
+        <div className="w-16 h-16 mb-5 sm:w-24 sm:h-24 sm:mb-10 shrink-0 relative flex items-center justify-center p-2 sm:p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
             <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 rounded-full animate-pulse"></div>
             <Image src="/logo/logo-sceau.png" alt="Sceau N'Ko ni Lonko" lang="fr" width={96} height={96} className="relative z-10 drop-shadow-lg" />
         </div>
 
         <nav aria-label="Menu principal mobile" className="w-full max-w-sm">
-          <ul className="flex flex-col gap-6 text-center w-full">
+          <ul className="flex flex-col gap-2 sm:gap-5 text-center w-full">
             {showInstallBtn && onInstallClick && (
-              <li className="mb-4 pb-6 border-b border-white/10">
+              <li className="mb-2 pb-4 border-b border-white/10">
                 <button 
                   onClick={() => { onInstallClick(); onClose(); }}
-                  className="w-full group relative px-6 py-4 rounded-2xl bg-or/10 border border-or/30 hover:bg-[#fbbf24] transition-all duration-500 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)] overflow-hidden"
+                  className="w-full group relative px-6 py-3 rounded-2xl bg-or/10 border border-or/30 hover:bg-[#fbbf24] transition-all duration-500 flex flex-col items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.15)] overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-or/20 blur-xl animate-pulse group-hover:opacity-0 transition-opacity"></div>
                   <i className="ph-bold ph-download-simple text-3xl text-or group-hover:text-black mb-2 relative z-10" aria-hidden="true"></i>
@@ -259,16 +261,17 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
               { href: lien("/"), label: nav.home, active: true },
               { href: "#articles", label: nav.articles },
               { href: lien("/numeros"), label: nav.numeros },
+              { href: lien("/lexique"), label: isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr },
               { href: lien("/about"), label: nav.about },
               { href: lien("/contact"), label: nav.contact }
             ].map((link, i) => (
               <li key={i} className="w-full">
                 {link.href.startsWith('#') ? (
-                  <a href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                  <a href={link.href} onClick={onClose} className={`flex min-h-11 items-center justify-center text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
                     {link.label}
                   </a>
                 ) : (
-                  <Link href={link.href} onClick={onClose} className={`block text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
+                  <Link href={link.href} onClick={onClose} className={`flex min-h-11 items-center justify-center text-2xl md:text-3xl font-light tracking-wide transition-colors ${link.active ? "text-or font-bold" : "text-gray-300 hover:text-white"} ${isNko ? "font-kigelia text-3xl" : ""}`}>
                     {link.label}
                   </Link>
                 )}
@@ -516,6 +519,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           </li>
           <li className="nav-item">
             <Link href={lien("/numeros")}>{typedT.nav.numeros}</Link>
+          </li>
+          <li className="nav-item">
+            <Link href={lien("/lexique")}>{isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr}</Link>
           </li>
           <li className="nav-item">
             <Link href={lien("/about")}>{typedT.nav.about}</Link>
