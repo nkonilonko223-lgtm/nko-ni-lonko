@@ -19,6 +19,7 @@ import PredictiveProvider from "../components/PredictiveProvider";
 import BandeauApercu from "../components/BandeauApercuDiffere"; // chargé seulement en mode aperçu
 import LectureHorsLigne from "../components/LectureHorsLigne"; // service worker public/sw.js (production)
 import Application from "../components/application/Application"; // installation (proposition, guide iPhone)
+import BoutonLangue from "../components/BoutonLangue"; // pages sans menu
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 import { VisualEditing } from "next-sanity/visual-editing";
@@ -305,6 +306,7 @@ return (
           <NetworkBoundary>
             {children}
           </NetworkBoundary>
+          <BoutonLangue />
           {/* Installation (proposition, guide iPhone) : DANS LanguageProvider (elle utilise la langue) */}
           <Application />
         </LanguageProvider>
