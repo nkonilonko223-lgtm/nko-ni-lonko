@@ -228,21 +228,23 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
       }`}
     >
       <button
-        className="absolute top-6 right-6 flex h-12 w-12 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all duration-300"
+        className="absolute top-6 right-6 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all duration-300"
         onClick={onClose}
         aria-label="Fermer le menu"
       >
         <i className="ph-bold ph-x text-2xl" aria-hidden="true"></i>
       </button>
 
-      {/* Défile si l'écran est trop petit (le menu compte plus d'entrées depuis le 31 octobre 2026) */}
-      <div className="flex flex-col items-center justify-center min-h-full w-full overflow-y-auto px-8 py-16 sm:py-12">
-        <div className="w-16 h-16 mb-5 sm:w-24 sm:h-24 sm:mb-10 shrink-0 relative flex items-center justify-center p-2 sm:p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
+      {/* Défile si l'écran est trop petit (le menu compte plus d'entrées depuis le 31 octobre 2026).
+          Centré par des marges automatiques : avec « justify-center », le haut du menu serait hors d'atteinte */}
+      <div className="flex flex-col items-center min-h-full w-full overflow-y-auto px-8 py-16 sm:py-12">
+        <div className="mt-auto w-16 h-16 mb-5 sm:w-24 sm:h-24 sm:mb-10 shrink-0 relative flex items-center justify-center p-2 sm:p-3 backdrop-blur-xl bg-white/5 border border-white/10 rounded-[1.5rem] shadow-[inset_0_0_20px_rgba(251,191,36,0.05)]">
             <div className="absolute inset-0 bg-[#fbbf24] blur-xl opacity-20 rounded-full animate-pulse"></div>
             <Image src="/logo/logo-sceau.png" alt="Sceau N'Ko ni Lonko" lang="fr" width={96} height={96} className="relative z-10 drop-shadow-lg" />
         </div>
 
-        <nav aria-label="Menu principal mobile" className="w-full max-w-sm">
+        {/* Pas de balise <nav> : la règle générale de globals.css la rendrait collante et lui mettrait un fond */}
+        <div role="navigation" aria-label="Menu principal mobile" className="mb-auto w-full max-w-sm">
           <ul className="flex flex-col gap-2 sm:gap-5 text-center w-full">
             {showInstallBtn && onInstallClick && (
               <li className="mb-2 pb-4 border-b border-white/10">
@@ -280,7 +282,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
               </li>
             ))}
           </ul>
-        </nav>
+        </div>
       </div>
     </div>
   );
