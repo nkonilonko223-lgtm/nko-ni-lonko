@@ -12,6 +12,7 @@ import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { abonnerInstallation, installer, modeInstallation, modeInstallationServeur } from "../lib/installation";
 import { toNkoDigits } from "./texte/outils";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
+import { MA_BIBLIOTHEQUE } from "./application/textes";
 
 
 // ==============================================================================
@@ -262,6 +263,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
               { href: "#articles", label: nav.articles },
               { href: lien("/numeros"), label: nav.numeros },
               { href: lien("/lexique"), label: isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr },
+              { href: lien("/bibliotheque"), label: isNko ? MA_BIBLIOTHEQUE.nko : MA_BIBLIOTHEQUE.fr },
               { href: lien("/about"), label: nav.about },
               { href: lien("/contact"), label: nav.contact }
             ].map((link, i) => (
@@ -522,6 +524,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           </li>
           <li className="nav-item">
             <Link href={lien("/lexique")}>{isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr}</Link>
+          </li>
+          <li className="nav-item">
+            <Link href={lien("/bibliotheque")}>{isNko ? MA_BIBLIOTHEQUE.nko : MA_BIBLIOTHEQUE.fr}</Link>
           </li>
           <li className="nav-item">
             <Link href={lien("/about")}>{typedT.nav.about}</Link>
