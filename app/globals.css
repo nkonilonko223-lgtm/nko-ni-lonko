@@ -573,6 +573,16 @@ nav {
     box-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
   }
 
+  /* Bouton de langue (BoutonLangue.tsx) : une pilule qui se voit dans les 3 ambiances. Bord et texte
+     dans l'or de l'ambiance, fond plein et légèrement teinté : le contraste ne dépend pas de ce qui
+     passe dessous (mesures : 3:1 au moins pour le bord, 4,5:1 pour le texte). */
+  a.btn-lang.fixed,
+  a.btn-lang.fixed:hover {
+    background: linear-gradient(rgb(var(--rgb-or) / 0.1), rgb(var(--rgb-or) / 0.1)), rgb(var(--rgb-void));
+    border: 2px solid rgb(var(--rgb-or));
+    color: rgb(var(--rgb-or));
+  }
+
   .mobile-toggle {
     display: none;
     background: none;
