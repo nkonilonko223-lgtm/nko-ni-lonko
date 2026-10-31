@@ -20,6 +20,8 @@ import { PortableTextBlock } from "@portabletext/types";
 import { Turnstile } from '@marsidev/react-turnstile';
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { langueTexte } from "./numero/titre";
+import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
+import { TexteLangue } from "./application/Libelle";
 
 // ==============================================================================
 // 1. TYPAGE STRICT & UTILITAIRES
@@ -530,13 +532,14 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                 </form>
             </div>
           ) : (
-            <div className="py-6 flex flex-col items-center justify-center transition-all duration-500 scale-100">
+            <div role="status" className="py-6 flex flex-col items-center justify-center transition-all duration-500 scale-100">
                 <div className="relative">
                   <div className="absolute inset-0 bg-[#fbbf24] rounded-full blur-xl animate-pulse opacity-20"></div>
-                  <i className="ph-fill ph-check-circle text-5xl text-or mb-3 relative z-10 animate-bounce"></i>
+                  <i className="ph-fill ph-envelope-simple text-5xl text-or mb-3 relative z-10" aria-hidden="true"></i>
                 </div>
-                <h3 className={`text-xl md:text-2xl font-bold text-white ${isNko ? 'font-kigelia' : ''}`}>
-                    {isNko ? 'ߌ ߣߌ߫ ߗߋ߫߸ ߌ ߓߘߊ߫ ߛߙߍߘߍߦߊ߫.' : 'Merci ! Vous êtes inscrit.'}
+                {/* Pas encore abonné : le courriel de confirmation reste à ouvrir (31 octobre 2026) */}
+                <h3 className="text-lg md:text-xl font-bold leading-snug text-white">
+                    <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={isNko} />
                 </h3>
             </div>
           )}

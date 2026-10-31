@@ -9,6 +9,8 @@ import { Turnstile } from '@marsidev/react-turnstile'; // 🚀 IMPORT DU BOUCLIE
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { URL_X } from "../lib/partage";
 import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
+import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
+import { TexteLangue } from "./application/Libelle";
 
 interface SiteFooterProps {
   activeCategory: string;
@@ -106,6 +108,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
+    setEmailSubscribed(false);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(value));
   };
@@ -158,8 +161,6 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
       setEmailSubscribed(true);
       setEmail(""); 
       setIsValidEmail(false);
-      
-      setTimeout(() => setEmailSubscribed(false), 5000);
 
     } catch (error) {
       console.error("Erreur Newsletter:", error);
@@ -272,11 +273,15 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   </button>
                </form>
                
-               <div className={`overflow-hidden transition-all duration-300 ${emailSubscribed ? 'h-6 opacity-100 mt-1' : 'h-0 opacity-0 mt-0'}`}>
-                 <p className="text-sm text-green-400 flex items-center gap-1 font-medium">
-                   <i className="ph-fill ph-check-circle"></i>
-                   {isNko ? 'ߌ ߣߌ߫ ߗߋ߫ ߸ ߌ ߓߘߊ߫ ߟߊߜߊ߲ߞߎ߲߫  !' : 'Abonnement confirmé !'}
-                 </p>
+               {/* Pas encore abonné : le courriel de confirmation reste à ouvrir (31 octobre 2026). Le message
+                   reste affiché tant que le lecteur ne retape pas d'adresse */}
+               <div role="status">
+                 {emailSubscribed && (
+                   <p className="mt-1 flex items-start gap-2 text-sm font-medium text-green-400">
+                     <i className="ph-bold ph-envelope-simple mt-0.5 shrink-0 text-base" aria-hidden="true"></i>
+                     <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={isNko} className="leading-snug" />
+                   </p>
+                 )}
                </div>
 
                <div className={`overflow-hidden transition-all duration-300 ${errorMessage ? 'h-auto opacity-100 mt-1' : 'h-0 opacity-0 mt-0'}`}>

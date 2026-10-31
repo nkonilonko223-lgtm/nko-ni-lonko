@@ -56,6 +56,7 @@
 | L35 | Ambiance : Nuit | Article : bouton « ambiance de lecture » de la barre d'outils (couleurs de la page : nuit, papier crème, jour) — nouveau design, novembre 2026 | `app/components/ArticleTools.tsx` → `AMBIANCE.nuit.nko` |
 | L36 | Ambiance : Papier | Même bouton (l'ambiance « papier » : fond crème, encre brune) | `ArticleTools.tsx` → `AMBIANCE.papier.nko` |
 | L37 | Ambiance : Jour | Même bouton (l'ambiance « jour » : fond blanc cassé, pour le plein soleil) | `ArticleTools.tsx` → `AMBIANCE.jour.nko` |
+| L38 | Presque fini ! Ouvrez le courriel que vous allez recevoir et confirmez votre abonnement. | Sous le champ de la lettre : pied de page de l'accueil et fin d'article (120 caractères au plus). À la place des anciennes phrases N'Ko qui annonçaient l'abonnement comme fait, retirées avec l'accord du propriétaire (31 octobre 2026) | `app/lib/messages-lecteur.ts` → `ABONNEMENT_A_CONFIRMER.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 
