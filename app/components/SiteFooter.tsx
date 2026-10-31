@@ -10,8 +10,8 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { URL_X } from "../lib/partage";
 import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
-import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
-import { TexteLangue } from "./application/Libelle";
+import { ABONNEMENT_A_CONFIRMER, CHAMP_EMAIL } from "../lib/messages-lecteur";
+import { TexteLangue, texteLangue } from "./application/Libelle";
 import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 interface SiteFooterProps {
@@ -251,7 +251,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
     autoComplete="email"
     value={email}
     onChange={handleEmailChange}
-    placeholder={isNko ? 'ߌ ߟߊ߫ ߞߘߎߡߊ...' : 'Votre email...'} 
+    placeholder={texteLangue(CHAMP_EMAIL, isNko)} 
     className={`relative z-10 flex-1 min-w-0 bg-transparent border-none outline-none text-white px-3 py-2 placeholder-gray-600 ${isNko ? 'text-end text-base font-kigelia' : 'text-sm'}`} 
   />
                   

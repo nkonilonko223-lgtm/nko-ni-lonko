@@ -20,8 +20,8 @@ import { PortableTextBlock } from "@portabletext/types";
 import { Turnstile } from '@marsidev/react-turnstile';
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { langueTexte } from "./numero/titre";
-import { ABONNEMENT_A_CONFIRMER } from "../lib/messages-lecteur";
-import { TexteLangue } from "./application/Libelle";
+import { ABONNEMENT_A_CONFIRMER, CHAMP_EMAIL } from "../lib/messages-lecteur";
+import { TexteLangue, texteLangue } from "./application/Libelle";
 import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 // ==============================================================================
@@ -511,13 +511,13 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                         required 
                         value={email}
                         onChange={handleEmailChange}
-                        placeholder={isNko ? '@ߌ ߟߊ߫ ߞߘߎߡߊ...' : 'Votre email...'} 
-                        aria-label={isNko ? 'Email' : 'Votre adresse email'}
+                        placeholder={texteLangue(CHAMP_EMAIL, isNko)} 
+                        aria-label={texteLangue(CHAMP_EMAIL, isNko)}
                         className={`flex-1 bg-surface/60 backdrop-blur-md border rounded-xl px-4 py-3 text-white outline-none transition-all duration-500 placeholder:text-gray-500 shadow-inner group-focus-within/form:shadow-[0_0_30px_rgba(251,191,36,0.1)] ${
                           isValidEmail 
                           ? 'border-or shadow-[inset_0_0_15px_rgba(251,191,36,0.2)]' 
                           : 'border-white/10 focus:border-or/60'
-                        } ${isNko ? 'text-right' : ''}`}
+                        } ${isNko ? 'text-right placeholder:font-kigelia' : ''}`}
                     />
                   <button 
                         type="submit" 

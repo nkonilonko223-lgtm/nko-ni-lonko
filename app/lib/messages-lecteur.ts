@@ -15,6 +15,9 @@ export const ABONNEMENT_A_CONFIRMER: Libelle = {
   fr: "Presque fini ! Ouvrez l'e-mail que vous allez recevoir et confirmez votre abonnement.",
 };
 
+// Texte d'exemple des champs e-mail (lettre, contact). Forme N'Ko choisie par MckV, le 31 octobre 2026
+export const CHAMP_EMAIL: Libelle = { nko: "ߗߋߞߘߎ ߛߘߐ߬ߓߛߍ", fr: "Adresse e-mail" };
+
 // Pourquoi le bouton d'envoi reste gris (lettre, contact)
 export const ADRESSE_A_REVOIR: Libelle = {
   nko: "ߗߋߞߘߎ ߛߘߐ߬ߓߛߍ ߣߌ߲߬ ߦߏ߫ ߊ߬ ߡߊ߫ ߘߝߊ߫߹", // L39 : rédaction, validé par MckV le 31 octobre 2026

@@ -8,6 +8,8 @@ import { useLanguage } from "../../components/LanguageProvider"; // 🚀 IMPORT 
 import { SIEGE, TELEGRAM, TELEPHONES, lienAppel, lienTelegram, lienWhatsApp } from "../../lib/coordonnees";
 
 import EtatFormulaire, { useVerification } from "../../components/formulaires/EtatFormulaire";
+import { texteLangue } from "../../components/application/Libelle";
+import { CHAMP_EMAIL } from "../../lib/messages-lecteur";
 
 export default function ContactClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE (Pour le bouton de retour)
@@ -448,8 +450,8 @@ export default function ContactClient() {
                                   required
                                   dir="auto"
                                   disabled={isSubmitting || !isOnline}
-                                  placeholder="ߌ ߟߊ߫ ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ • votre@email.com" 
-                                  className={`w-full bg-white/5 border rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none transition-all font-light disabled:opacity-50 pr-12 ${
+                                  placeholder={texteLangue(CHAMP_EMAIL, isNko)} 
+                                  className={`w-full bg-white/5 border rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none transition-all font-light disabled:opacity-50 pr-12 ${isNko ? 'placeholder:font-kigelia placeholder-shown:text-right' : ''} ${
                                     formData.email.length > 0 && isValidEmail 
                                       ? 'border-green-500/50 focus:border-green-500 focus:ring-1 focus:ring-green-500' 
                                       : 'border-white/10 focus:border-or focus:ring-1 focus:ring-or'
