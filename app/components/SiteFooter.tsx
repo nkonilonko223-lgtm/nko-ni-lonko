@@ -10,8 +10,9 @@ import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { URL_X } from "../lib/partage";
 import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
-import { ABONNEMENT_A_CONFIRMER, CHAMP_EMAIL } from "../lib/messages-lecteur";
-import { TexteLangue, texteLangue } from "./application/Libelle";
+import { CHAMP_EMAIL } from "../lib/messages-lecteur";
+import MessageAbonnement from "./formulaires/MessageAbonnement";
+import { texteLangue } from "./application/Libelle";
 import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 interface SiteFooterProps {
@@ -38,6 +39,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [emailSubscribed, setEmailSubscribed] = useState(false);
+  const fermerMessage = useCallback(() => setEmailSubscribed(false), []);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // 🛡️ ÉTAT DU SÉSAME
   // Turnstile (Cloudflare) créé seulement au premier contact avec le formulaire : les lecteurs
   // qui n'écrivent pas ne téléchargent plus le script de Cloudflare (18 octobre 2026)
@@ -282,15 +284,9 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                
                <EtatFormulaire email={email} emailValide={isValidEmail} jeton={turnstileToken} echec={verification.echec} onReessayer={verification.reessayer} nko={isNko} />
 
-               {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026). Le message
-                   reste affiché tant que le lecteur ne retape pas d'adresse */}
+               {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026) */}
                <div role="status">
-                 {emailSubscribed && (
-                   <p className="mt-1 flex items-start gap-2 text-sm font-medium text-green-400">
-                     <i className="ph-bold ph-envelope-simple mt-0.5 shrink-0 text-base" aria-hidden="true"></i>
-                     <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={isNko} className="leading-snug" />
-                   </p>
-                 )}
+                 {emailSubscribed && <MessageAbonnement nko={isNko} onFermer={fermerMessage} />}
                </div>
 
                <div className={`overflow-hidden transition-all duration-300 ${errorMessage ? 'h-auto opacity-100 mt-1' : 'h-0 opacity-0 mt-0'}`}>

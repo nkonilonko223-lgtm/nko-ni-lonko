@@ -20,8 +20,9 @@ import { PortableTextBlock } from "@portabletext/types";
 import { Turnstile } from '@marsidev/react-turnstile';
 import type { TurnstileInstance } from '@marsidev/react-turnstile';
 import { langueTexte } from "./numero/titre";
-import { ABONNEMENT_A_CONFIRMER, CHAMP_EMAIL } from "../lib/messages-lecteur";
-import { TexteLangue, texteLangue } from "./application/Libelle";
+import { CHAMP_EMAIL } from "../lib/messages-lecteur";
+import MessageAbonnement from "./formulaires/MessageAbonnement";
+import { texteLangue } from "./application/Libelle";
 import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 // ==============================================================================
@@ -103,6 +104,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
+  const fermerMessage = useCallback(() => setSubscribed(false), []);
   const [isExploding, setIsExploding] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // 🚀 AJOUT : État de chargement réseau
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null); // 🛡️ ÉTAT DU SÉSAME CLOUDFLARE
@@ -149,6 +151,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setEmail(value);
+    setSubscribed(false);
     setErreurEnvoi("");
     setIsValidEmail(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value));
   };
@@ -180,6 +183,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
       setTimeout(() => {
         setSubscribed(true);
         setEmail("");
+        setIsValidEmail(false);
         setIsExploding(false);
       }, 400);
 
@@ -484,7 +488,6 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
       }`}>
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-or to-transparent opacity-50"></div>
           
-          {!subscribed ? (
             <div className={`relative z-10 transition-all duration-300 ${isExploding ? 'scale-110 opacity-0 blur-sm' : 'scale-100 opacity-100'}`}>
                 <h3 className={`text-lg md:text-xl font-bold text-white mb-4 ${isNko ? 'font-kigelia' : ''}`}>
                     {isNko ? 'ߕߏ߫ ߞߊ߬ ߟߐ߲ߞߏ ߞߣߐ ߞߎ߲߬ߣߊ߬ߞߊ߬ߟߋ߲߬ ߞߎߘߊ߫ ߟߎ߬ ߟߊߛߐ߬ߘߐ߲߬ ߞߍ߬' : 'Restez informé de nos prochaines découvertes'}
@@ -541,20 +544,12 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                 <div className="text-start">
                   <EtatFormulaire email={email} emailValide={isValidEmail} jeton={turnstileToken} echec={verification.echec} onReessayer={verification.reessayer} nko={isNko} />
                   {erreurEnvoi && <p role="alert" className="mt-2 text-sm text-red-400">{erreurEnvoi}</p>}
+                  {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026) */}
+                  <div role="status">
+                    {subscribed && <MessageAbonnement nko={isNko} onFermer={fermerMessage} />}
+                  </div>
                 </div>
             </div>
-          ) : (
-            <div role="status" className="py-6 flex flex-col items-center justify-center transition-all duration-500 scale-100">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-[#fbbf24] rounded-full blur-xl animate-pulse opacity-20"></div>
-                  <i className="ph-fill ph-envelope-simple text-5xl text-or mb-3 relative z-10" aria-hidden="true"></i>
-                </div>
-                {/* Pas encore abonné : l'e-mail de confirmation reste à ouvrir (31 octobre 2026) */}
-                <h3 className="text-lg md:text-xl font-bold leading-snug text-white">
-                    <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={isNko} />
-                </h3>
-            </div>
-          )}
       </div>
 
       {/* 4. LIRE ENSUITE (Reflet Magnétique, Isolation Z-Index & Apparition en Cascade) */}
