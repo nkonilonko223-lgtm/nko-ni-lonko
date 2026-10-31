@@ -112,6 +112,22 @@ interface Emplacements {
   texte?: ReactNode;
 }
 
+// Changement de langue au milieu d'un article (constat A-03, 31 octobre 2026) : le paragraphe en haut de
+// l'écran est noté avant, et retrouvé après. Refait deux fois : la page peut encore bouger (polices,
+// images) ; on s'arrête dès que le lecteur touche l'écran.
+const CLE_PLACE_LANGUE = "nko_place_langue";
+function retrouverPlace(i: number) {
+  const aller = () => {
+    const bloc = document.querySelectorAll<HTMLElement>("article.article-content .apparition")[i];
+    if (bloc) window.scrollTo({ top: bloc.getBoundingClientRect().top + window.scrollY - 110, behavior: "instant" });
+  };
+  aller();
+  const reprises = [setTimeout(aller, 300), setTimeout(aller, 900)];
+  const arreter = () => reprises.forEach(clearTimeout);
+  window.addEventListener("touchstart", arreter, { once: true, passive: true });
+  window.addEventListener("wheel", arreter, { once: true, passive: true });
+}
+
 export default function ArticleClient({ article, bandeau, surtitre, navigation, texte }: { article: ClientArticleData } & Emplacements) {
   const { lang, toggleLanguage, t, lien } = useLanguage(); 
   // 🚀 RADAR 2 : Vérifie si la page Client a bien reçu la donnée
@@ -183,6 +199,13 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
     const blocs = () => Array.from(document.querySelectorAll<HTMLElement>("article.article-content .apparition"));
     const minuteur = setTimeout(() => {
       try {
+        // Arrivée par le bouton de langue : le lecteur retrouve son paragraphe, sans rien toucher
+        const place = sessionStorage.getItem(CLE_PLACE_LANGUE);
+        sessionStorage.removeItem(CLE_PLACE_LANGUE);
+        if (place?.startsWith(`${article.slug}:`)) {
+          retrouverPlace(Number(place.slice(article.slug.length + 1)));
+          return;
+        }
         const i = Number(localStorage.getItem(cleLecture));
         if (Number.isInteger(i) && i >= 2 && i < blocs().length - 2) setReprise(i);
       } catch { /* stockage indisponible */ }
@@ -213,7 +236,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       document.removeEventListener('visibilitychange', siCachee);
       window.removeEventListener('scroll', surDefilement);
     };
-  }, [cleLecture]);
+  }, [cleLecture, article.slug]);
   useEffect(() => {
     if (reprise === null) return;
     const minuteur = setTimeout(() => setReprise(null), 12000); // le bouton disparaît seul
@@ -274,6 +297,13 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
   const handleToggleLanguage = () => {
     triggerVibration();
+    // Le même paragraphe à l'écran dans l'autre langue (les deux versions ont les mêmes blocs)
+    if (window.scrollY > 200) {
+      const i = Array.from(document.querySelectorAll<HTMLElement>("article.article-content .apparition")).findIndex((b) => b.getBoundingClientRect().bottom > 120);
+      try {
+        if (i >= 0) sessionStorage.setItem(CLE_PLACE_LANGUE, `${article.slug}:${i}`);
+      } catch { /* stockage indisponible */ }
+    }
     toggleLanguage();
   };
 
