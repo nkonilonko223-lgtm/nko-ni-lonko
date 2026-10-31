@@ -293,7 +293,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
 // 5. COMPOSANT PRINCIPAL
 // ==============================================================================
 export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
-  const { t, lang, toggleLanguage, lien } = useLanguage();
+  const { t, lang, lien } = useLanguage();
   const isNko = lang === "nko";
   
   const typedT = t as unknown as TranslationData;
@@ -505,7 +505,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       </div>
 
       <nav
-        className={scrolled ? "scrolled" : ""}
+        className={`nav-accueil ${scrolled ? "scrolled" : ""}`}
         role="navigation"
         aria-label={isNko ? "ߛߏ߯ߓߊߟߌߟߊ ߢߣߊߡߊ" : "Navigation principale"}
       >
@@ -554,29 +554,6 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
               </span>
             </button>
           )}
-
-         <button
-            className="btn-lang group relative flex items-center gap-2 overflow-hidden transition-all duration-500 hover:border-or/50 hover:bg-white/5 hover:shadow-[0_0_15px_rgba(251,191,36,0.2)] active:text-or"
-            onClick={() => { triggerVibration(); toggleLanguage(); }}
-            aria-label={isNko ? "Changer la langue en Français" : "ߞߊ߲ ߦߟߍ߬ߡߊ ߒߞߏ ߘߐ߫"}
-          >
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 group-hover:translate-x-full"></div>
-            
-            {/* 🚀 MODIF 1/1000 : L'icône a maintenant "text-or" EN PERMANENCE */}
-            <i 
-              className={`ph ph-translate transition-all duration-700 ease-bounce-soft text-or ${isNko ? 'rotate-[360deg] scale-110' : 'rotate-0 scale-100'}`} 
-              aria-hidden="true"
-            ></i>
-
-            <div className="relative flex h-[20px] w-[35px] items-center justify-center">
-               <span className={`absolute transition-all duration-500 font-bold ${isNko ? 'opacity-0 scale-50 -translate-y-4' : 'opacity-100 scale-100 translate-y-0 text-or'}`}>
-                 FR
-               </span>
-               <span className={`absolute font-kigelia font-bold text-or transition-all duration-500 ${isNko ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-50 translate-y-4'}`}>
-                 ߒߞߏ
-               </span>
-            </div>
-          </button>
 
           <button
             className="mobile-toggle"

@@ -21,6 +21,7 @@ import { PortableTextBlock } from "@portabletext/types";
 import { CLE_LANGUE_LECTURE, formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
+import { retrouverPlaceLangue } from "../lib/place-langue";
 import { cheminDeCle, cleDeCategorie } from "../lib/categories";
 import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage, langueTexte, texteAlternatif } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
@@ -112,24 +113,8 @@ interface Emplacements {
   texte?: ReactNode;
 }
 
-// Changement de langue au milieu d'un article (constat A-03, 31 octobre 2026) : le paragraphe en haut de
-// l'écran est noté avant, et retrouvé après. Refait deux fois : la page peut encore bouger (polices,
-// images) ; on s'arrête dès que le lecteur touche l'écran.
-const CLE_PLACE_LANGUE = "nko_place_langue";
-function retrouverPlace(i: number) {
-  const aller = () => {
-    const bloc = document.querySelectorAll<HTMLElement>("article.article-content .apparition")[i];
-    if (bloc) window.scrollTo({ top: bloc.getBoundingClientRect().top + window.scrollY - 110, behavior: "instant" });
-  };
-  aller();
-  const reprises = [setTimeout(aller, 300), setTimeout(aller, 900)];
-  const arreter = () => reprises.forEach(clearTimeout);
-  window.addEventListener("touchstart", arreter, { once: true, passive: true });
-  window.addEventListener("wheel", arreter, { once: true, passive: true });
-}
-
 export default function ArticleClient({ article, bandeau, surtitre, navigation, texte }: { article: ClientArticleData } & Emplacements) {
-  const { lang, toggleLanguage, t, lien } = useLanguage(); 
+  const { lang, t, lien } = useLanguage(); 
   // 🚀 RADAR 2 : Vérifie si la page Client a bien reçu la donnée
   const [fontScale, setFontScale] = useState(1.125); 
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -200,12 +185,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
     const minuteur = setTimeout(() => {
       try {
         // Arrivée par le bouton de langue : le lecteur retrouve son paragraphe, sans rien toucher
-        const place = sessionStorage.getItem(CLE_PLACE_LANGUE);
-        sessionStorage.removeItem(CLE_PLACE_LANGUE);
-        if (place?.startsWith(`${article.slug}:`)) {
-          retrouverPlace(Number(place.slice(article.slug.length + 1)));
-          return;
-        }
+        if (retrouverPlaceLangue(article.slug)) return;
         const i = Number(localStorage.getItem(cleLecture));
         if (Number.isInteger(i) && i >= 2 && i < blocs().length - 2) setReprise(i);
       } catch { /* stockage indisponible */ }
@@ -293,18 +273,6 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
-  };
-
-  const handleToggleLanguage = () => {
-    triggerVibration();
-    // Le même paragraphe à l'écran dans l'autre langue (les deux versions ont les mêmes blocs)
-    if (window.scrollY > 200) {
-      const i = Array.from(document.querySelectorAll<HTMLElement>("article.article-content .apparition")).findIndex((b) => b.getBoundingClientRect().bottom > 120);
-      try {
-        if (i >= 0) sessionStorage.setItem(CLE_PLACE_LANGUE, `${article.slug}:${i}`);
-      } catch { /* stockage indisponible */ }
-    }
-    toggleLanguage();
   };
 
   const dateDisplay = lang === 'nko' 
@@ -440,40 +408,35 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
       <nav className={`fixed top-0 left-0 w-full z-50 px-4 md:px-6 transition-all duration-300 flex justify-between items-center print:hidden ${
           isScrolled 
-          ? "bg-void/95 backdrop-blur-md border-b border-white/10 py-3 md:py-4 shadow-xl" 
-          : "bg-gradient-to-b from-void/90 to-transparent py-4 md:py-6"
+          ? "bg-void/95 backdrop-blur-md border-b border-white/10 py-3 shadow-xl" 
+          : "bg-gradient-to-b from-void/90 to-transparent py-3"
       }`}>
         <div className="flex flex-col md:flex-row items-start md:items-center gap-1 md:gap-4 text-or font-bold font-mono tracking-widest text-sm">
             <div className="flex items-center gap-2">
-              <i className="ph-fill ph-calendar-blank text-lg"></i>
+              <i className="ph-fill ph-calendar-blank text-lg hidden min-[360px]:inline" aria-hidden="true"></i>
               {/* 🚀 BOUCLIER HYDRATATION */}
               <span suppressHydrationWarning className={lang === 'nko' ? 'font-kigelia' : ''}>{dateDisplay}</span>
             </div>
             
-            <div className="hidden md:flex items-center gap-2 text-gray-400 text-xs">
+            <div className="hidden lg:flex items-center gap-2 text-gray-400 text-xs">
               <span className="w-1 h-1 bg-gray-500 rounded-full"></span>
               <i className="ph-bold ph-clock"></i>
               <span className={lang === 'nko' ? 'font-kigelia' : ''}>{readingTimeText}</span>
             </div>
 
             {categoryLabel && (
-              <div className="hidden md:flex items-center gap-2 text-or/80 text-xs border border-or/30 px-2 py-0.5 rounded-full uppercase">
+              <div className="hidden lg:flex items-center gap-2 text-or/80 text-xs border border-or/30 px-2 py-0.5 rounded-full uppercase">
                  <span className={lang === 'nko' ? 'font-kigelia' : ''}>{categoryLabel}</span>
               </div>
             )}
         </div>
 
         <div className="flex items-center gap-1.5 min-[360px]:gap-3 md:gap-4">
-            <button onClick={handleShare} className="zone-44 w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
+            <button onClick={handleShare} className="w-11 h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
                 <i className="ph-bold ph-share-network text-xl md:text-lg"></i>
             </button>
-            <button onClick={handleToggleLanguage} aria-label={lang === 'nko' ? "Changer la langue en Français" : "ߞߊ߲ ߦߟߍ߬ߡߊ ߒߞߏ ߘߐ߫"} className="zone-44 border border-gray-600 px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-bold uppercase hover:bg-[#fbbf24] hover:text-black transition-all flex items-center gap-2 backdrop-blur-md active:scale-95 touch-manipulation">
-                <i className="ph-bold ph-translate text-lg text-or" aria-hidden="true"></i>
-                {/* Même libellé que sur l'accueil : la langue de la page (31 octobre 2026) */}
-                <span className={lang === 'nko' ? 'font-kigelia text-or' : 'text-or'}>{lang === 'nko' ? 'ߒߞߏ' : 'FR'}</span>
-            </button>
             <Link href={lien("/")} aria-label={lang === 'nko' ? messagesNko.nav.home : 'Accueil'} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all min-[360px]:ml-2 md:ml-4">
-                <div className="zone-44 w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-or group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
+                <div className="w-11 h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-or group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
                     <i className={`ph-bold ${lang === 'nko' ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl md:text-lg`}></i>
                 </div>
             </Link>

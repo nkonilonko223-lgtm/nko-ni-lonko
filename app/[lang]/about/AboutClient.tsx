@@ -109,7 +109,7 @@ export default function AboutClient() {
       {/* 🚀 LA PILULE DE VERRE DYNAMIQUE (Version Épurée 1/10000) */}
       <button
         onClick={handleBack}
-        className={`group fixed top-6 z-[9999] flex items-center gap-2 p-1 md:px-3 md:py-1.5 rounded-full bg-void/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-void/80 hover:border-or/50 transition-all duration-500 touch-manipulation print:hidden ${
+        className={`group fixed top-3 z-[9999] flex items-center gap-2 p-[5px] md:px-3 md:py-1.5 rounded-full bg-void/40 backdrop-blur-md border border-white/10 shadow-lg hover:bg-void/80 hover:border-or/50 transition-all duration-500 touch-manipulation print:hidden ${
           isNko ? 'right-4 md:right-8' : 'left-4 md:left-8'
         }`}
         aria-label={isNko ? "ߛߊ߬ߦߌ߲߬" : "Retour en arrière"}

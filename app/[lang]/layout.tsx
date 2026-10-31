@@ -193,7 +193,10 @@ const accueilFrancais = `
   (function() {
     try {
       if (location.pathname === '/' && localStorage.getItem('preferred-lang') === 'fr') {
-        location.replace('/fr' + location.search + location.hash);
+        var venu = document.referrer ? new URL(document.referrer) : null;
+        // Venu de la version française par le bouton de langue, avant la fin du chargement : il veut le N'Ko
+        if (venu && venu.origin === location.origin && /^[/]fr([/]|$)/.test(venu.pathname)) localStorage.setItem('preferred-lang', 'nko');
+        else location.replace('/fr' + location.search + location.hash);
       }
     } catch (e) {}
   })();
