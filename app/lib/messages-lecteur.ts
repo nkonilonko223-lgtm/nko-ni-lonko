@@ -40,3 +40,5 @@ export const PAGE_ERREUR_TEXTE: Libelle = {
 };
 // Repris tel quel du menu du site (messages/nko.json, nav.home) : pas de fichier de messages entier ici
 export const ACCUEIL: Libelle = { nko: "ߟߊ߬ߓߍ߲߬ߠߌ", fr: "Accueil" };
+// Repris tel quel du nom du site (messages/nko.json, metadata.siteName)
+export const NOM_REVUE: Libelle = { nko: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ", fr: "N'Ko ni Lonko" };
