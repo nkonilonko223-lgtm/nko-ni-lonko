@@ -15,6 +15,8 @@
  * - FICHIERS du site aux noms uniques (/_next/static) ou versionnés (polices d'icônes « ?v= ») :
  *   gardés une fois pour toutes (une seule version par fichier). Fichiers à adresse fixe (polices
  *   /fonts, motif de fond) : montrés tout de suite depuis la copie, puis mis à jour en arrière-plan.
+ * - LOGO de la page d'erreur (app/components/PageErreur.tsx) : gardé dès l'installation, car cette
+ *   page paraît justement quand le réseau manque. Mis à jour en arrière-plan.
  * - IMAGES (/_next/image, 200 au plus) : celles de Sanity ont une adresse unique (empreinte du
  *   fichier) : la copie suffit, sans rien retélécharger (données mobiles épargnées) ; les autres
  *   sont mises à jour en arrière-plan. Sans connexion, à défaut de la taille demandée : la même
@@ -44,6 +46,7 @@ const CACHES = [CACHE_PAGES, CACHE_BIBLIOTHEQUE, CACHE_FICHIERS, CACHE_IMAGES, C
 const PREFIXE_NUMERO = "nko-numero-"; // un cache par numéro téléchargé et par langue
 const estGarde = (nom) => nom === CACHE_BIBLIOTHEQUE || nom.startsWith(PREFIXE_NUMERO); // gardés par le lecteur
 const PAGE_HORS_LIGNE = "/offline";
+const LOGO_ERREUR = "/application/onglet-192.png";
 const MAX_PAGES = 60;
 const MAX_IMAGES = 200;
 
@@ -183,6 +186,7 @@ async function oublierArticle(chemin) {
 self.addEventListener("install", (event) => {
   event.waitUntil((async () => {
     try { await garderPage(PAGE_HORS_LIGNE, CACHE_SECOURS); } catch { /* réessayé à la prochaine visite */ }
+    try { await (await caches.open(CACHE_FICHIERS)).add(LOGO_ERREUR); } catch { /* gardé à sa prochaine demande */ }
     await self.skipWaiting();
   })());
 });
@@ -313,7 +317,7 @@ self.addEventListener("fetch", (event) => {
   if (url.pathname.startsWith("/studio") || url.pathname.startsWith("/api/") || url.searchParams.has("_rsc")) return;
 
   if (request.mode === "navigate") return event.respondWith(page(event));
-  if (/^\/(_next\/static|icones|fonts)\//.test(url.pathname) || url.pathname.startsWith("/arriere-plan.")) {
+  if (/^\/(_next\/static|icones|fonts)\//.test(url.pathname) || url.pathname.startsWith("/arriere-plan.") || url.pathname === LOGO_ERREUR) {
     return event.respondWith(fichier(event));
   }
   if (url.pathname === "/_next/image") return event.respondWith(image(event));
