@@ -242,7 +242,7 @@ useEffect(() => {
             </div>
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-8 tracking-tight flex flex-col items-center print:text-black print:mb-4">
-                <span className="block mb-4 leading-tight drop-shadow-lg font-kigelia print:drop-shadow-none">ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬</span>
+                <span lang="nqo" className="block mb-4 leading-tight drop-shadow-lg font-kigelia print:drop-shadow-none">ߟߊߓߊ߯ߙߊߟߌ ߛߙߊߕߌ ߟߎ߬</span>
                 <span lang="fr" className="text-white/60 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block print:text-black print:border-black print:font-bold">
     Conditions d&apos;utilisation
 </span>
@@ -271,7 +271,7 @@ useEffect(() => {
                     >
                         {/* 🚀 BDI (Bi-Directional Isolation) empêche la ponctuation de briser le RTL */}
                         {clause.titleNko && (
-                        <span className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-or font-bold"}`} dir="rtl">
+                        <span lang="nqo" className={`font-kigelia text-sm whitespace-nowrap leading-none ${activeSection === clause.id ? "text-black font-bold" : "text-or font-bold"}`} dir="rtl">
                             <bdi>{clause.titleNko}</bdi>
                         </span>
                         )}
@@ -290,7 +290,7 @@ useEffect(() => {
             <div className="hidden lg:block w-1/4 shrink-0 print:hidden">
                 <div className="sticky top-32 flex flex-col gap-6 border-l border-white/10 pl-6">
                     <div className="flex flex-col items-start mb-4" dir="rtl">
-                        <span className="font-kigelia text-or text-2xl mb-1">ߞߎ߬ߙߎ߲߬ߘߎ ߢߍߛߓߍ</span>
+                        <span lang="nqo" className="font-kigelia text-or text-2xl mb-1">ߞߎ߬ߙߎ߲߬ߘߎ ߢߍߛߓߍ</span>
                         <span className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold" lang="fr" dir="ltr">Sommaire Juridique</span>
                     </div>
 
@@ -300,7 +300,7 @@ useEffect(() => {
                             onClick={() => scrollToSection(clause.id)}
                             className={`flex flex-col items-start text-left transition-all duration-300 group ${activeSection === clause.id ? "opacity-100 translate-x-2" : "opacity-40 hover:opacity-80"}`}
                         >
-                            {clause.titleNko && <span className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-or drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-or"}`} dir="rtl">{clause.titleNko}</span>}
+                            {clause.titleNko && <span lang="nqo" className={`font-kigelia text-xl mb-1 transition-colors ${activeSection === clause.id ? "text-or drop-shadow-[0_0_5px_rgba(251,191,36,0.5)]" : "text-white group-hover:text-or"}`} dir="rtl">{clause.titleNko}</span>}
                             <span lang="fr" dir="ltr" className="text-[10px] text-white font-light tracking-wider uppercase">{clause.titleFr}</span>
                         </button>
                     ))}
@@ -315,7 +315,7 @@ useEffect(() => {
                         <div className="mb-6 flex flex-col items-start border-b border-white/10 pb-6 print:border-black print:pb-2" dir="rtl">
                             {clause.titleNko ? (
                               <>
-                                <h2 className="font-kigelia text-3xl md:text-4xl text-or mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
+                                <h2 lang="nqo" className="font-kigelia text-3xl md:text-4xl text-or mb-2 drop-shadow-md print:text-black print:drop-shadow-none">{clause.titleNko}</h2>
                                 <span className="text-xs md:text-sm tracking-[0.2em] text-gray-400 uppercase font-bold print:text-gray-800" lang="fr" dir="ltr">{clause.titleFr}</span>
                               </>
                             ) : (
@@ -332,7 +332,7 @@ useEffect(() => {
                                 <div className="flex flex-col items-start" dir="rtl">
                                     <div className="flex items-center gap-3 mb-2">
                                       <i className="ph-fill ph-info text-or print:hidden text-xl"></i>
-                                      <p className="font-kigelia text-xl text-white/90 print:text-black">{clause.tldrNko}</p>
+                                      <p lang="nqo" className="font-kigelia text-xl text-white/90 print:text-black">{clause.tldrNko}</p>
                                     </div>
                                 </div>
                                 )}
@@ -354,13 +354,13 @@ useEffect(() => {
                                   <div lang="nqo" dir="rtl" className="flex flex-col gap-6 text-right">
                                     {clause.paragraphesNko.map((p) => (
                                       <div key={p.titre}>
-                                        <h3 className="mb-2 font-kigelia text-xl md:text-2xl font-bold text-or print:text-black">{p.titre}</h3>
-                                        <p className="font-kigelia text-2xl md:text-3xl text-or/90 leading-[1.8] md:leading-[2] drop-shadow-sm print:text-black print:drop-shadow-none">{p.texte}</p>
+                                        <h3 lang="nqo" className="mb-2 font-kigelia text-xl md:text-2xl font-bold text-or print:text-black">{p.titre}</h3>
+                                        <p lang="nqo" className="font-kigelia text-2xl md:text-3xl text-or/90 leading-[1.8] md:leading-[2] drop-shadow-sm print:text-black print:drop-shadow-none">{p.texte}</p>
                                       </div>
                                     ))}
                                   </div>
                                 ) : (
-                                <p className="font-kigelia text-2xl md:text-3xl text-or leading-[1.8] md:leading-[2] text-right drop-shadow-sm print:text-black print:drop-shadow-none" dir="rtl">
+                                <p lang="nqo" className="font-kigelia text-2xl md:text-3xl text-or leading-[1.8] md:leading-[2] text-right drop-shadow-sm print:text-black print:drop-shadow-none" dir="rtl">
                                     {clause.textNko}
                                 </p>
                                 )}
@@ -402,7 +402,7 @@ useEffect(() => {
                     <div className="flex items-center gap-3 mb-2 print:hidden">
                        <i className="ph-fill ph-scales text-or text-2xl"></i>
                     </div>
-                    <p className="font-kigelia text-xl text-or mb-2 print:text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — ߖߏ߯ߦߊߟߌ ߣߌ߫ ߞߎ߬ߙߎ߲߬ߘߎ ߕߏ߲߰ߘߊ</p>
+                    <p lang="nqo" className="font-kigelia text-xl text-or mb-2 print:text-black">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ — ߖߏ߯ߦߊߟߌ ߣߌ߫ ߞߎ߬ߙߎ߲߬ߘߎ ߕߏ߲߰ߘߊ</p>
                     <p className="text-xs tracking-[0.2em] text-gray-500 uppercase font-bold print:text-gray-600" lang="fr" dir="ltr">N&apos;Ko ni Lonko — Département Juridique & Éditorial</p>
                 </div>
             </div>

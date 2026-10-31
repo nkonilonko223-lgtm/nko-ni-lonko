@@ -302,7 +302,7 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
                     
                     {/* Le Nom Secondaire (Sécurité : Ne s'affiche QUE si le nom N'Ko existe dans la base de données) */}
                     {article.authorNameNko && (
-                      <span className={`transition-colors duration-300 leading-none ${isNko ? 'text-[10px] text-slate-400 font-mono tracking-wide' : 'font-kigelia text-[11px] text-or/80'}`}>
+                      <span lang={isNko ? "fr" : "nqo"} dir={isNko ? "ltr" : "rtl"} className={`transition-colors duration-300 leading-none ${isNko ? 'text-[10px] text-slate-400 font-mono tracking-wide' : 'font-kigelia text-[11px] text-or/80'}`}>
                         {isNko ? article.authorName : article.authorNameNko}
                       </span>
                     )}

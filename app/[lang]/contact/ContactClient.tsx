@@ -256,7 +256,7 @@ export default function ContactClient() {
         </div>
 
         <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-16 tracking-tight font-sans text-center">
-            <span className="block mb-2 md:mb-4 leading-tight drop-shadow-lg font-kigelia">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬</span>
+            <span lang="nqo" className="block mb-2 md:mb-4 leading-tight drop-shadow-lg font-kigelia">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬</span>
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 Contactez-nous
             </span>
@@ -270,7 +270,7 @@ export default function ContactClient() {
             <div className="backdrop-blur-xl bg-void/60 p-8 md:p-12 rounded-[2rem] border border-white/10 shadow-2xl flex flex-col justify-between text-left transition-colors hover:border-white/20">
                 <div>
                     <div className="mb-10 flex flex-col items-start" dir="rtl">
-                        <h2 className="font-kigelia text-2xl text-or mb-1 opacity-90">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
+                        <h2 lang="nqo" className="font-kigelia text-2xl text-or mb-1 opacity-90">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬ ߢߊ ߟߎ߬</h2>
                         <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold" lang="fr" dir="ltr">Informations de contact</span>
                     </div>
 
@@ -280,7 +280,7 @@ export default function ContactClient() {
                                 <i className="ph-fill ph-map-pin text-2xl text-or group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
                             <div className="flex flex-col items-start">
-                                <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ</h3>
+                                <h3 lang="nqo" className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߊ߲ ߠߊ߫ ߡߊ߬ߞߍ߬ߦߙߐ</h3>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2" lang="fr">Notre Siège</span>
                                 <p lang="fr" dir="ltr" className="text-gray-400 font-light leading-relaxed text-sm group-hover:text-gray-200 transition-colors">{SIEGE.quartier.fr}<br/>{SIEGE.ville.fr}</p>
                             </div>
@@ -291,7 +291,7 @@ export default function ContactClient() {
                                 <i className="ph-fill ph-envelope-simple text-2xl text-or group-hover:scale-110 transition-transform duration-300"></i>
                             </div>
                             <div className="flex flex-col items-start">
-                                <h3 className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</h3>
+                                <h3 lang="nqo" className="font-kigelia text-white font-bold text-xl mb-0" dir="rtl">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</h3>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2" lang="fr">Email Direct</span>
                                 <p className="text-or font-light text-sm group-hover:underline decoration-or underline-offset-4">contact@nkonilonko.com</p>
                             </div>
@@ -372,7 +372,7 @@ export default function ContactClient() {
                 
                 <div className="mt-12 pt-8 border-t border-white/10">
                     <div className="mb-6 flex flex-col items-start" dir="rtl">
-                        <h3 className="font-kigelia text-xl text-white mb-1">ߓߟߐߟߐ ߞߙߏߝߏ ߟߎ߬</h3>
+                        <h3 lang="nqo" className="font-kigelia text-xl text-white mb-1">ߓߟߐߟߐ ߞߙߏߝߏ ߟߎ߬</h3>
                         <span className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold" lang="fr" dir="ltr">Réseaux Officiels</span>
                     </div>
                     <div className="flex flex-wrap gap-4">
@@ -411,14 +411,14 @@ export default function ContactClient() {
                         <div className="w-20 h-20 rounded-full bg-green-500/20 flex items-center justify-center mb-6">
                             <i className="ph-bold ph-check text-5xl text-green-400"></i>
                         </div>
-                        <h3 className="font-kigelia text-3xl text-white mb-2">ߌ ߣߌ߫ ߗߋ߫</h3>
+                        <h3 lang="nqo" className="font-kigelia text-3xl text-white mb-2">ߌ ߣߌ߫ ߗߋ߫</h3>
                         <p className="text-gray-400 text-lg">Votre message a été envoyé avec succès.</p>
                     </div>
                 ) : (
                     <form className="relative z-10 flex flex-col gap-6 flex-1" onSubmit={handleSubmit} onKeyDown={handleKeyDown} onFocusCapture={activerProtection} onPointerDownCapture={activerProtection}>
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
-                                <span className="font-kigelia text-xl text-or">ߕߐ߮</span>
+                                <span lang="nqo" className="font-kigelia text-xl text-or">ߕߐ߮</span>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Nom Complet</span>
                             </label>
                             <input 
@@ -436,7 +436,7 @@ export default function ContactClient() {
 
                         <div className="flex flex-col text-left relative">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
-                                <span className="font-kigelia text-xl text-or">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</span>
+                                <span lang="nqo" className="font-kigelia text-xl text-or">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</span>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Adresse e-mail</span>
                             </label>
                             <div className="relative">
@@ -466,7 +466,7 @@ export default function ContactClient() {
 
                         <div className="flex flex-col text-left">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
-                                <span className="font-kigelia text-xl text-or">ߗߋߛߓߍ</span>
+                                <span lang="nqo" className="font-kigelia text-xl text-or">ߗߋߛߓߍ</span>
                                 <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Votre Message</span>
                             </label>
                             {/* 🚀 ÉLASTICITÉ COGNITIVE */}
@@ -528,7 +528,7 @@ export default function ContactClient() {
                                 <>
                                   <div className="flex items-center gap-3 transform group-hover:-translate-y-1 transition-transform duration-300" dir="rtl">
                                       <i className="ph-bold ph-paper-plane-tilt text-xl group-hover:-translate-x-1 group-hover:-translate-y-1 transition-transform duration-300 rotate-y-180"></i>
-                                      <span className="font-kigelia text-2xl font-bold">ߊ߬ ߗߋ߫</span>
+                                      <span lang="nqo" className="font-kigelia text-2xl font-bold">ߊ߬ ߗߋ߫</span>
                                   </div>
                                   <div className="flex items-center gap-2 mt-1 transform group-hover:translate-y-0 transition-all duration-300 opacity-70">
                                     <span lang="fr" className="text-[10px] uppercase tracking-widest font-bold">
@@ -547,7 +547,7 @@ export default function ContactClient() {
 
                         {/* Message d'erreur inline */}
                         <div className={`overflow-hidden transition-all duration-300 ${errorMessage ? 'h-auto opacity-100' : 'h-0 opacity-0'}`}>
-                          <p className="text-xs text-red-400 flex items-center justify-center gap-1 mt-2 font-kigelia">
+                          <p lang="nqo" className="text-xs text-red-400 flex items-center justify-center gap-1 mt-2 font-kigelia">
                             <i className="ph-fill ph-warning-circle"></i>
                             {errorMessage}
                           </p>
