@@ -1235,6 +1235,21 @@ nav {
    LAYER 3 — UTILITIES (Custom)
    =========================================== */
 @layer utilities {
+  /* Zone à toucher de 44 px au moins autour d'un petit bouton, sans changer son dessin (31 octobre 2026).
+     Jamais sur un élément « fixed » (position relative ici). */
+  .zone-44 {
+    position: relative;
+  }
+  .zone-44::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+
   /* =========================================
      3.1 — ANIMATIONS
      ========================================= */

@@ -260,7 +260,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   <button 
                     type="submit"
                     disabled={!isValidEmail || emailSubscribed || isLoading || !turnstileToken}
-                    className={`relative z-10 rounded-lg w-12 h-[36px] shrink-0 flex items-center justify-center transition-all duration-500 touch-manipulation
+                    className={`zone-44 z-10 rounded-lg w-12 h-[36px] shrink-0 flex items-center justify-center transition-all duration-500 touch-manipulation
                       ${emailSubscribed 
                         ? 'bg-green-500 text-black shadow-[0_0_15px_rgba(34,197,94,0.4)]' 
                         : isLoading
@@ -307,7 +307,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                   <li key={key}>
                       <button 
                         onClick={() => handleCategoryClick(key)} 
-                        className={`group relative block transition-colors hover:text-white text-start touch-manipulation ${activeCategory === key ? 'text-or font-bold' : 'text-gray-400'} ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}
+                        className={`zone-44 group block transition-colors hover:text-white text-start touch-manipulation ${activeCategory === key ? 'text-or font-bold' : 'text-gray-400'} ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}
                       >
                         <i className={`ph-bold ph-caret-right text-or absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
                         {label as string}
@@ -332,7 +332,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
                 { path: lien("/privacy"), label: typedT?.footer?.privacy || "Confidentialité" }
               ].map((link, i) => (
                 <li key={i}>
-                  <Link href={link.path} onClick={triggerVibration} className={`group relative block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
+                  <Link href={link.path} onClick={triggerVibration} className={`zone-44 group block text-gray-400 transition-colors hover:text-white touch-manipulation ${isNko ? 'text-lg font-kigelia' : 'text-base'}`}>
                     <i className={`ph-bold ph-caret-right text-or absolute top-1.5 opacity-0 transition-opacity group-hover:opacity-100 ${isNko ? '-end-6' : '-start-6'}`}></i>
                     {link.label}
                   </Link>

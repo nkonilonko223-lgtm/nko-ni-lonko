@@ -39,7 +39,7 @@ export default function PiluleRetour() {
     <button
       type="button"
       onClick={retour}
-      className={`group fixed top-6 z-[9999] flex items-center gap-2 rounded-full border border-white/10 bg-void/40 p-1 shadow-lg backdrop-blur-md transition-all duration-500 hover:border-or/50 hover:bg-void/80 touch-manipulation print:hidden md:px-3 md:py-1.5 ${
+      className={`group fixed top-6 z-[9999] flex items-center gap-2 rounded-full border border-white/10 bg-void/40 p-[5px] shadow-lg backdrop-blur-md transition-all duration-500 hover:border-or/50 hover:bg-void/80 touch-manipulation print:hidden md:px-3 md:py-1.5 ${
         isNko ? "right-4 md:right-8" : "left-4 md:left-8"
       }`}
       aria-label={isNko ? RETOUR.nko : RETOUR.fr}

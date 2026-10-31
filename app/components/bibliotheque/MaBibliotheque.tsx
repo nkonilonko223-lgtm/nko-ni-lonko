@@ -132,7 +132,7 @@ export default function MaBibliotheque({ articles }: { articles: ArticleSauvegar
                   onClick={() => retirer(chemin)}
                   aria-label={enNko && TEXTES.retirer.nko ? TEXTES.retirer.nko : TEXTES.retirer.fr}
                   title={enNko && TEXTES.retirer.nko ? TEXTES.retirer.nko : TEXTES.retirer.fr}
-                  className="absolute end-2 top-2 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white/70 backdrop-blur transition-colors hover:text-white"
+                  className="absolute end-2 top-2 flex h-11 w-11 items-center justify-center rounded-full bg-black/70 text-white/70 backdrop-blur transition-colors hover:text-white"
                 >
                   <i className="ph-bold ph-x" aria-hidden="true"></i>
                 </button>

@@ -123,7 +123,7 @@ export default function TermeLexique({
           type="button"
           onClick={fermer}
           aria-label={t("fermer")}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+          className="zone-44 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
         >
           <i className="ph-bold ph-x" aria-hidden="true"></i>
         </button>
@@ -134,7 +134,7 @@ export default function TermeLexique({
       {terme.slug && (
         <Link
           href={lien(`/lexique/${terme.slug}`)}
-          className={`mt-3 inline-block text-blue-300 underline underline-offset-4 hover:text-white ${nko ? "font-kigelia text-sm" : "font-sans text-xs"}`}
+          className={`zone-44 mt-3 inline-block text-blue-300 underline underline-offset-4 hover:text-white ${nko ? "font-kigelia text-sm" : "font-sans text-xs"}`}
         >
           {t("voirDansLeLexique")}
         </Link>

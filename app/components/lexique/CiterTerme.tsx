@@ -46,7 +46,7 @@ export default function CiterTerme({ termeNko, termeFr, url }: { termeNko?: stri
           type="button"
           onClick={copier}
           aria-label="Copier la référence"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
+          className="zone-44 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
         >
           <i className={`ph-bold ${copie ? "ph-check" : "ph-copy"}`} aria-hidden="true"></i>
         </button>

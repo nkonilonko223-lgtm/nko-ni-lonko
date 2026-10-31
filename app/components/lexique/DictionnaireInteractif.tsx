@@ -150,27 +150,27 @@ export default function DictionnaireInteractif({ termes }: { termes: TermeDictio
       {/* Index des lettres */}
       {!q && (
         <nav aria-label="Index alphabétique" className="mb-10 space-y-3">
-          <div dir="rtl" className="flex flex-wrap justify-center gap-1.5">
+          <div dir="rtl" className="flex flex-wrap justify-center gap-1">
             {lettresNko.map((l) => (
               <a
                 key={l}
                 href={`#lettre-${l.codePointAt(0)}`}
                 onClick={() => setLettreFr("")}
                 lang="nqo"
-                className="flex h-9 min-w-9 items-center justify-center rounded-lg border border-white/10 px-2 font-kigelia text-lg text-blue-300 hover:border-blue-400/50 hover:bg-blue-400/10"
+                className="flex h-11 min-w-11 items-center justify-center rounded-lg border border-white/10 px-2 font-kigelia text-lg text-blue-300 hover:border-blue-400/50 hover:bg-blue-400/10"
               >
                 {l}
               </a>
             ))}
           </div>
-          <div dir="ltr" className="flex flex-wrap justify-center gap-1.5">
+          <div dir="ltr" className="flex flex-wrap justify-center gap-1">
             {lettresFr.map((l) => (
               <button
                 key={l}
                 type="button"
                 onClick={() => setLettreFr(lettreFr === l ? "" : l)}
                 aria-pressed={lettreFr === l}
-                className={`h-8 min-w-8 rounded-lg border px-2 font-sans text-sm uppercase ${
+                className={`h-11 min-w-11 rounded-lg border px-2 font-sans text-sm uppercase ${
                   lettreFr === l ? "border-blue-400 bg-blue-400/20 text-white" : "border-white/10 text-white/70 hover:border-blue-400/50"
                 }`}
               >

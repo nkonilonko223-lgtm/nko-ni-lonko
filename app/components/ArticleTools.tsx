@@ -484,8 +484,8 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
         <div 
           className="fixed z-[9990] flex items-center gap-1 p-1 bg-surface/95 backdrop-blur-xl border border-white/20 shadow-[0_10px_40px_rgba(251,191,36,0.3)] rounded-full animate-in fade-in zoom-in duration-200"
           style={{ 
-            // 👑 Blindage mobile : clamp empêche la pilule de sortir de l'écran
-            left: `clamp(60px, ${selection.x}px, calc(100vw - 60px))`,
+            // 👑 Blindage mobile : clamp empêche la pilule de sortir de l'écran (elle fait 211 px de large : boutons de 44 px)
+            left: `clamp(108px, ${selection.x}px, calc(100vw - 108px))`,
             top: `clamp(80px, ${selection.y}px, calc(100vh - 80px))`,
             transform: 'translate(-50%, -120%)'
           }}
@@ -500,7 +500,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               {/* 🚀 TRADUCTIONS ET ACCESSIBILITÉ IMPLÉMENTÉES */}
               <button 
                 onClick={shareSelectionOnX} 
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors" 
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors" 
                 title={isNko ? "ߞߎߡߦߊ ߣߌ߲߬ ߟߊߦߟߍ߬ ߕߎ߳ߌߕߍߙ ߞߊ߲߬" : "Tweeter cette phrase"}
                 aria-label={isNko ? "ߞߎߡߦߊ ߣߌ߲߬ ߟߊߦߟߍ߬ ߕߎ߳ߌߕߍߙ ߞߊ߲߬" : "Tweeter cette phrase"}
               >
@@ -508,7 +508,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               </button>
               <button 
                 onClick={shareSelectionOnWhatsApp} 
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#25D366] transition-colors" 
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-[#25D366] transition-colors" 
                 title={isNko ? "ߊ߬ ߟߊߖߍ߲ߛߍ߲ ߥߊߕߑߛߊߔ ߞߊ߲߬" : "Partager sur WhatsApp"}
                 aria-label={isNko ? "ߊ߬ ߟߊߖߍ߲ߛߍ߲ ߥߊߕߑߛߊߔ ߞߊ߲߬" : "Partager sur WhatsApp"}
               >
@@ -518,7 +518,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               <button
                 onClick={partagerEnImage}
                 disabled={imageEnCours}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors disabled:opacity-50"
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors disabled:opacity-50"
                 title={isNko && PARTAGER_IMAGE.nko ? PARTAGER_IMAGE.nko : PARTAGER_IMAGE.fr}
                 aria-label={isNko && PARTAGER_IMAGE.nko ? PARTAGER_IMAGE.nko : PARTAGER_IMAGE.fr}
               >
@@ -527,7 +527,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               <div className="w-[1px] h-4 bg-white/20 mx-1"></div>
               <button 
                 onClick={copySelection} 
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors" 
+                className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-white/10 text-white hover:text-or transition-colors" 
                 title={isNko ? "ߞߊ߲ߕߏ߲ ߡߌ߬ߣߊ߬" : "Copier la citation"}
                 aria-label={isNko ? "ߞߊ߲ߕߏ߲ ߡߌ߬ߣߊ߬" : "Copier la citation"}
               >
@@ -571,7 +571,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
               <h4 className={`text-or font-bold ${isNko ? 'font-kigelia tracking-widest' : 'tracking-wider uppercase text-sm'}`}>
                 {isNko ? 'ߞߎߡߘߊ ߢߍߛߓߍ' : 'Sommaire'}
               </h4>
-              <button onClick={() => setShowToc(false)} className="text-gray-400 hover:text-white transition-colors" aria-label="Fermer le sommaire">
+              <button onClick={() => setShowToc(false)} className="zone-44 flex h-8 w-8 items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : "Fermer le sommaire"}>
                 <i className="ph-bold ph-x"></i>
               </button>
             </div>
@@ -610,7 +610,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                 <h4 lang={isNko ? "nqo" : "fr"} dir={isNko ? "rtl" : "ltr"} className={`text-or font-bold ${isNko ? "font-kigelia tracking-wide" : "tracking-wider uppercase text-sm"}`}>
                   {isNko ? CITER.nko : CITER.fr}
                 </h4>
-                <button type="button" onClick={() => setShowCite(false)} className="text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}>
+                <button type="button" onClick={() => setShowCite(false)} className="zone-44 flex h-8 w-8 items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label={isNko ? TEXTES_LEXIQUE.fermer.nko : TEXTES_LEXIQUE.fermer.fr}>
                   <i className="ph-bold ph-x" aria-hidden="true"></i>
                 </button>
               </div>
@@ -630,7 +630,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                       <button
                         type="button"
                         onClick={() => copierCitation("nko", texte)}
-                        className="flex h-8 w-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
+                        className="zone-44 flex h-8 w-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
                         aria-label={`${isNko ? CITER.nko : CITER.fr} (N'Ko)`}
                       >
                         <i className={`ph-bold ${formatCopie === "nko" ? "ph-check text-green-400" : "ph-copy"}`} aria-hidden="true"></i>
@@ -654,7 +654,7 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
                         <button
                           type="button"
                           onClick={() => copierCitation(format, texte)}
-                          className="flex h-8 w-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
+                          className="zone-44 flex h-8 w-9 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-white/20"
                           aria-label={`${isNko ? CITER.nko : CITER.fr} (${format})`}
                         >
                           <i className={`ph-bold ${formatCopie === format ? "ph-check text-green-400" : "ph-copy"}`} aria-hidden="true"></i>
