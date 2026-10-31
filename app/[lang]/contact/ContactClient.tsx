@@ -133,6 +133,7 @@ export default function ContactClient() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setErrorMessage("");
 
     if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -194,7 +195,7 @@ export default function ContactClient() {
       
       if (textareaRef.current) textareaRef.current.style.height = "auto";
 
-      setTimeout(() => setIsSuccess(false), 5000);
+      setTimeout(() => setIsSuccess(false), 20000); // le temps de lire, surtout pour un débutant
 
     } catch (error) {
       // 🔴 GESTION D'ERREUR ÉLÉGANTE
@@ -206,8 +207,7 @@ export default function ContactClient() {
       turnstileRef.current?.reset();
       
       const msg = error instanceof Error ? error.message : "Une erreur de connexion est survenue.";
-      setErrorMessage(msg);
-      setTimeout(() => setErrorMessage(""), 4000);
+      setErrorMessage(msg); // reste affiché jusqu'à la prochaine frappe
     }
   };
 

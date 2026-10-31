@@ -114,6 +114,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
     const value = e.target.value;
     setEmail(value);
     setEmailSubscribed(false);
+    setErrorMessage("");
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     setIsValidEmail(emailRegex.test(value));
   };
@@ -170,8 +171,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
     } catch (error) {
       console.error("Erreur Newsletter:", error);
       const message = error instanceof Error ? error.message : "Impossible de s'abonner pour le moment.";
-      setErrorMessage(message);
-      setTimeout(() => setErrorMessage(""), 4000);
+      setErrorMessage(message); // reste affiché jusqu'à la prochaine frappe
     } finally {
       setIsLoading(false);
       // 🛡️ RÉARMEMENT AUTOMATIQUE : On forge un nouveau jeton pour le prochain essai
