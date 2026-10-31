@@ -35,7 +35,7 @@ export function proxy(request: NextRequest) {
 
   // 🛡️ BOUCLIER 2 : VERROUILLAGE DES MÉTHODES HTTP
   // Les pirates utilisent souvent les méthodes TRACE ou TRACK pour chercher des failles.
-  const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'];
+  const allowedMethods = ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'];
   if (!allowedMethods.includes(method)) {
     console.warn(`🚨 [Middleware] Méthode HTTP interdite bloquée : ${method}`);
     return new NextResponse("ߢߌߣߌ߲ߞߊߟߌ ߣߌ߲߬ ߕߍ߫ ߓߍ߲߬ / Méthode Non Autorisée", { status: 405 });
