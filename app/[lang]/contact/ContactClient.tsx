@@ -9,7 +9,7 @@ import { SIEGE, TELEGRAM, TELEPHONES, lienAppel, lienTelegram, lienWhatsApp } fr
 
 import EtatFormulaire, { useVerification } from "../../components/formulaires/EtatFormulaire";
 import { texteLangue } from "../../components/application/Libelle";
-import { CHAMP_EMAIL } from "../../lib/messages-lecteur";
+import { CHAMP_EMAIL, CHAMP_MESSAGE, CHAMP_NOM } from "../../lib/messages-lecteur";
 
 export default function ContactClient() {
   // 🚀 INTELLIGENCE LINGUISTIQUE (Pour le bouton de retour)
@@ -429,8 +429,8 @@ export default function ContactClient() {
                                 required
                                 dir="auto"
                                 disabled={isSubmitting || !isOnline}
-                                placeholder="ߌ ߕߐ߮ ߘߝߊߣߍ߲ • Votre nom complet" 
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-or focus:ring-1 focus:ring-or transition-all font-light disabled:opacity-50"
+                                placeholder={texteLangue(CHAMP_NOM, isNko)} 
+                                className={`${isNko ? "placeholder:font-kigelia placeholder-shown:text-right " : ""}w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-or focus:ring-1 focus:ring-or transition-all font-light disabled:opacity-50`}
                             />
                         </div>
 
@@ -479,8 +479,8 @@ export default function ContactClient() {
                                 rows={3}
                                 dir="auto"
                                 disabled={isSubmitting || !isOnline}
-                                placeholder="ߌ ߟߊ߫ ߗߋߛߓߍ ߛߓߍ߫ ߦߊ߲߬... • Écrivez votre message ici..." 
-                                className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-or focus:ring-1 focus:ring-or transition-all resize-none font-light disabled:opacity-50 min-h-[120px] max-h-[400px]"
+                                placeholder={texteLangue(CHAMP_MESSAGE, isNko)} 
+                                className={`${isNko ? "placeholder:font-kigelia placeholder-shown:text-right " : ""}w-full bg-white/5 border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-gray-600 focus:outline-none focus:border-or focus:ring-1 focus:ring-or transition-all resize-none font-light disabled:opacity-50 min-h-[120px] max-h-[400px]`}
                             ></textarea>
                         </div>
                         
