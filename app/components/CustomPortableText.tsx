@@ -26,7 +26,7 @@ import { getBlockText, isNko } from "./texte/outils";
 
 // 🚀 IMPORTATION DU STANDARD MATHÉMATIQUE MONDIAL
 import { BlockMath } from 'react-katex';
-import { langueTexte, texteAlternatif } from "./numero/titre";
+import { langueTexte, sensDe, texteAlternatif } from "./numero/titre";
 import 'katex/dist/katex.min.css';
 
 // ==============================================================================
@@ -404,7 +404,7 @@ export default function CustomPortableText({ value, langue = "nqo" }: CustomPort
 
                   {/* 4. Crédit et licence (obligatoire pour les images CC BY) : petit, même texte dans les deux langues */}
                   {imageValue.source && (
-                    <p dir="ltr" translate="no" className="text-[10px] md:text-xs text-gray-400 print:text-gray-600">
+                    <p {...sensDe(imageValue.source)} translate="no" className="text-[10px] md:text-xs text-gray-400 print:text-gray-600">
                       {imageValue.source}
                     </p>
                   )}
@@ -553,7 +553,7 @@ export default function CustomPortableText({ value, langue = "nqo" }: CustomPort
                   ) : texte}
                 </p>
                 {calloutValue.source && (
-                  <p className="mt-1 font-mono text-[10px] text-gray-500 uppercase tracking-widest">— {calloutValue.source}</p>
+                  <p {...sensDe(calloutValue.source)} className="mt-1 font-mono text-[10px] text-gray-500 uppercase tracking-widest">— {calloutValue.source}</p>
                 )}
               </div>
             </FadeInBlock>
@@ -589,7 +589,7 @@ export default function CustomPortableText({ value, langue = "nqo" }: CustomPort
               {/* 👑 SOURCE (si présente) */}
               {calloutValue.source && (
                 <div className={`px-6 py-2 border-t ${config.borderClass} border-opacity-20 flex ${nkoText ? 'justify-start' : 'justify-end'}`}>
-                  <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">
+                  <span {...sensDe(calloutValue.source)} className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">
                     — {calloutValue.source}
                   </span>
                 </div>
