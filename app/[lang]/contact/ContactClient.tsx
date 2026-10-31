@@ -437,7 +437,7 @@ export default function ContactClient() {
                         <div className="flex flex-col text-left relative">
                             <label className="flex flex-col mb-2 items-start" dir="rtl">
                                 <span className="font-kigelia text-xl text-or">ߢߎߡߍߙߋ߲ߞߏ߲ߘߏ</span>
-                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Adresse Email</span>
+                                <span className="text-[10px] uppercase tracking-widest text-gray-400 font-bold" lang="fr" dir="ltr">Adresse e-mail</span>
                             </label>
                             <div className="relative">
                               <input 
