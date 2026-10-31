@@ -196,12 +196,22 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
       } catch { /* stockage indisponible */ }
     };
     const siCachee = () => { if (document.visibilityState === 'hidden') garder(); };
+    // Aussi pendant la lecture (31 octobre 2026) : un lien du site change de page sans « pagehide »,
+    // la place était perdue. Au plus une écriture toutes les 800 ms.
+    let attente: ReturnType<typeof setTimeout> | undefined;
+    const surDefilement = () => {
+      if (attente) return;
+      attente = setTimeout(() => { attente = undefined; garder(); }, 800);
+    };
     window.addEventListener('pagehide', garder);
     document.addEventListener('visibilitychange', siCachee);
+    window.addEventListener('scroll', surDefilement, { passive: true });
     return () => {
       clearTimeout(minuteur);
+      clearTimeout(attente);
       window.removeEventListener('pagehide', garder);
       document.removeEventListener('visibilitychange', siCachee);
+      window.removeEventListener('scroll', surDefilement);
     };
   }, [cleLecture]);
   useEffect(() => {
