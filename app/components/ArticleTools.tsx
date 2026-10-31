@@ -342,13 +342,14 @@ export default function ArticleTools({ onZoomIn, onZoomOut, title, citation, slu
       prevenirLectureHorsLigne("garder", page); // lisible sans connexion
       setIsBookmarked(true);
       setSignetAjoute(true);
+      fermerOutilsSurTelephone(); // le message se posait sur les outils encore ouverts
     }
   };
 
-  // Le message « Sauvegardé · Ma bibliothèque » disparaît seul
+  // Le message « Sauvegardé · Ma bibliothèque » disparaît seul (12 s : le temps de lire et de toucher le lien)
   useEffect(() => {
     if (!signetAjoute) return;
-    const minuterie = setTimeout(() => setSignetAjoute(false), 5000);
+    const minuterie = setTimeout(() => setSignetAjoute(false), 12000);
     return () => clearTimeout(minuterie);
   }, [signetAjoute]);
 
