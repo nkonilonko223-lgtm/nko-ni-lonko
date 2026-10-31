@@ -32,7 +32,7 @@ export default function MessageAbonnement({ nko, onFermer }: { nko: boolean; onF
 
   return (
     <div dir="ltr" data-message-abonnement className={`relative mt-2 text-sm font-medium text-green-400 transition-opacity duration-500 ${fondu ? "opacity-0" : "opacity-100"}`}>
-      <p className={`leading-snug ${nko ? "text-right text-base" : "text-left"}`}>
+      <p className={`leading-snug ${nko ? "text-right text-[15px]" : "text-left"}`}>
         {/* La place de la croix, sur la première ligne seulement : les suivantes gardent toute la largeur
             (L38 tient en 3 lignes à 360 px) */}
         <span className="float-right h-5 w-9" aria-hidden="true"></span>
