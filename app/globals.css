@@ -446,6 +446,20 @@ nav {
     }
   }
   @media (max-width: 1023px) {
+    nav.nav-accueil,
+    nav.nav-accueil.scrolled {
+      flex-wrap: nowrap;
+      height: 68px;
+      min-height: 0;
+      padding-block: 0;
+    }
+    nav.nav-accueil .mobile-toggle {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      font-size: 2rem;
+      line-height: 44px;
+    }
     nav.nav-accueil .brand {
       gap: 8px;
       font-size: 1.15rem;
