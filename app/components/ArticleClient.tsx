@@ -433,7 +433,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             )}
         </div>
 
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center gap-1.5 min-[360px]:gap-3 md:gap-4">
             <button onClick={handleShare} className="zone-44 w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center hover:bg-[#fbbf24] hover:text-black hover:border-or transition-all backdrop-blur-md active:scale-95 touch-manipulation" title={lang === 'nko' ? 'ߊ߬ ߟߊߖߍ߲ߛߍ߲߫' : 'Partager'}>
                 <i className="ph-bold ph-share-network text-xl md:text-lg"></i>
             </button>
@@ -442,7 +442,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
                 {/* Même libellé que sur l'accueil : la langue de la page (31 octobre 2026) */}
                 <span className={lang === 'nko' ? 'font-kigelia text-or' : 'text-or'}>{lang === 'nko' ? 'ߒߞߏ' : 'FR'}</span>
             </button>
-            <Link href={lien("/")} aria-label={lang === 'nko' ? messagesNko.nav.home : 'Accueil'} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all ml-2 md:ml-4">
+            <Link href={lien("/")} aria-label={lang === 'nko' ? messagesNko.nav.home : 'Accueil'} className="group flex items-center gap-3 text-gray-400 hover:text-white transition-all min-[360px]:ml-2 md:ml-4">
                 <div className="zone-44 w-10 h-10 md:w-11 md:h-11 rounded-full border border-gray-600 flex items-center justify-center group-hover:border-or group-hover:bg-[#fbbf24] group-hover:text-black transition-all active:scale-95 touch-manipulation">
                     <i className={`ph-bold ${lang === 'nko' ? 'ph-arrow-right' : 'ph-arrow-left'} text-xl md:text-lg`}></i>
                 </div>
