@@ -139,7 +139,7 @@ export default function AboutClient() {
         </div>
 
         <h1 className="text-4xl md:text-7xl font-extrabold text-or mb-20 tracking-tight font-sans">
-            <span lang="nqo" className="block mb-4 md:mb-6 leading-tight drop-shadow-lg font-kigelia">ߞߊ߲߬ߞߎߡߊ</span>
+            <span lang="nqo" dir="rtl" className="block mb-4 md:mb-6 leading-tight drop-shadow-lg font-kigelia">ߞߊ߲߬ߞߎߡߊ</span>
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 À Propos de nous
             </span>

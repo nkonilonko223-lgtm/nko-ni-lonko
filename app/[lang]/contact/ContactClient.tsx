@@ -256,7 +256,7 @@ export default function ContactClient() {
         </div>
 
         <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-16 tracking-tight font-sans text-center">
-            <span lang="nqo" className="block mb-2 md:mb-4 leading-tight drop-shadow-lg font-kigelia">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬</span>
+            <span lang="nqo" dir="rtl" className="block mb-2 md:mb-4 leading-tight drop-shadow-lg font-kigelia">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬</span>
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 Contactez-nous
             </span>

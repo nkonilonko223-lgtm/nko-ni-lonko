@@ -47,7 +47,7 @@ export default function NotFound() {
           <i className="ph-bold ph-rocket-launch text-xl group-hover:-rotate-45 transition-transform"></i>
           <span>Retour à la base</span>
           <span className="w-[1px] h-4 bg-black/20 mx-1"></span>
-          <span className="font-kigelia">ߞߐߛߊ߬ߦߌ߬</span>
+          <span lang="nqo" dir="rtl" className="font-kigelia">ߞߐߛߊ߬ߦߌ߬</span>
         </LienLangue>
       </div>
     </div>

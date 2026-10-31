@@ -52,7 +52,7 @@ export default function LexiqueArticle({ termes }: { termes: TermeLexiqueData[] 
                 href={lien(`/lexique/${terme.slug}`)}
                 className="mt-3 inline-flex items-center gap-2 text-xs text-blue-300 underline underline-offset-4 hover:text-white print:hidden"
               >
-                <span lang="nqo" className="font-kigelia text-sm">{TEXTES_LEXIQUE.voirDansLeLexique.nko}</span>
+                <span lang="nqo" dir="rtl" className="font-kigelia text-sm">{TEXTES_LEXIQUE.voirDansLeLexique.nko}</span>
                 <span aria-hidden="true">·</span>
                 <span lang="fr">{TEXTES_LEXIQUE.voirDansLeLexique.fr}</span>
               </Link>

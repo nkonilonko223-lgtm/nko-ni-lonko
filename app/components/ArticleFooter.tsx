@@ -233,7 +233,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
         {bioNkoText && (
           <p 
             dir="rtl" 
-            className="text-gray-200 text-base md:text-lg leading-relaxed font-kigelia text-right"
+            lang="nqo" className="text-gray-200 text-base md:text-lg leading-relaxed font-kigelia text-right"
           >
             {bioNkoText}
           </p>
@@ -360,7 +360,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                 
                 {/* 1. L'Étiquette Impériale Fixe (Hiérarchie N'Ko & Séparateur) */}
                 <div className="flex items-center gap-2.5">
-                  <span className="text-or text-base md:text-[17px] font-bold tracking-wide font-kigelia drop-shadow-sm">
+                  <span lang="nqo" dir="rtl" className="text-or text-base md:text-[17px] font-bold tracking-wide font-kigelia drop-shadow-sm">
                     ߛߓߍߦߟߊ
                   </span>
                   
@@ -378,7 +378,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
                     
                     {/* Rôle N'Ko (Prioritaire) */}
                     {author.roleNko && (
-                      <span dir="rtl" className="font-kigelia text-sm text-gray-200">
+                      <span lang="nqo" dir="rtl" className="font-kigelia text-sm text-gray-200">
                         {author.roleNko}
                       </span>
                     )}
@@ -423,7 +423,7 @@ quality={75} // 🚀 3G MAX : AVIF/WebP à 75 = identique à JPEG 85, ~20% plus 
               </div>
               
               {(author.nameNko || isNko) && (
-                <span className={`text-gray-400 leading-none ${isNko ? 'text-sm font-mono tracking-wide mt-1' : 'font-kigelia text-base mt-1'}`}>
+                <span lang={isNko ? "fr" : "nqo"} dir={isNko ? "ltr" : "rtl"} className={`text-gray-400 leading-none ${isNko ? 'text-sm font-mono tracking-wide mt-1' : 'font-kigelia text-base mt-1'}`}>
                   {isNko ? author.name : author.nameNko}
                 </span>
               )}

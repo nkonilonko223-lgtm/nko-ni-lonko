@@ -346,7 +346,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             <Image src="/logo/logo-impression.png" alt="Logo" lang="fr" fill sizes="48px" className="object-contain" />
           </div>
           <div className="flex flex-col">
-            <span className="font-kigelia text-2xl font-bold text-black tracking-widest">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
+            <span lang="nqo" dir="rtl" className="font-kigelia text-2xl font-bold text-black tracking-widest">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span>
             <span className="font-sans text-xs text-gray-500 uppercase tracking-widest">N&apos;Ko ni Lonko - Revue Scientifique</span>
           </div>
         </div>
@@ -602,7 +602,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
 
 {/* 🖨️ PIED DE PAGE D'IMPRESSION INVISIBLE SUR ÉCRAN */}
       <div className="hidden print:block max-w-3xl mx-auto border-t-2 border-black pt-4 mt-8 text-center px-4">
-        <p className="text-sm font-bold text-black font-kigelia mb-1">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ - N&apos;Ko ni Lonko</p>
+        <p className="text-sm font-bold text-black mb-1"><span lang="nqo" dir="rtl" className="font-kigelia">ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ</span> - <span lang="fr" dir="ltr">N&apos;Ko ni Lonko</span></p>
         {/* Adresse exacte de la version lue (N'Ko sans préfixe, français en /fr) */}
         <p lang="fr" dir="ltr" className="text-xs text-gray-600 italic">Document imprimé depuis le site officiel : {adresse(langueAdresse(lang), `/article/${article.slug}`)}</p>
         {/* 🚀 SÉCURITÉ : Ciblage du 1er auteur pour le Copyright */}
