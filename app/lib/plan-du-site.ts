@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next';
-import { client } from '../sanity/client';
-import { getLiensNumeros } from './lib/numeros';
-import { adresse } from './lib/langue';
-import { getLiensAuteurs } from './lib/auteurs';
-import { getValeursCategories } from './lib/cartes-articles';
-import { DISCIPLINES, cleDeCategorie } from './lib/categories';
-import { getLiensRubriques } from './lib/rubriques';
+import { client } from '../../sanity/client';
+import { getLiensNumeros } from './numeros';
+import { adresse } from './langue';
+import { getLiensAuteurs } from './auteurs';
+import { getValeursCategories } from './cartes-articles';
+import { DISCIPLINES, cleDeCategorie } from './categories';
+import { getLiensRubriques } from './rubriques';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -27,7 +27,8 @@ const ARTICLES_QUERY = `*[_type == "article" && defined(slug.current)] {
   "mainImageUrl": mainImage.asset->url
 }`;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+// Les adresses du plan du site (servi par app/sitemap.xml/route.ts)
+export async function entreesPlanDuSite(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nkonilonko.com';
 
   // ==============================================================================

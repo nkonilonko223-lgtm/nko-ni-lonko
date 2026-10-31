@@ -7,7 +7,7 @@
 // ============================================================================
 
 import { NextResponse, type NextRequest } from 'next/server';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { parseBody } from 'next-sanity/webhook';
 
 export const runtime = 'nodejs';
@@ -28,6 +28,11 @@ export async function POST(req: NextRequest) {
     if (!isValidSignature) {
       console.warn("🚨 [Revalidate] Signature invalide : appel refusé.");
       return NextResponse.json({ error: 'Signature invalide' }, { status: 401 });
+    }
+
+    // Toute publication refait aussi le plan du site (app/sitemap.xml/route.ts, 31 octobre 2026)
+    if (['terme', 'numero', 'rubrique', 'author', 'article'].includes(body?._type ?? '')) {
+      revalidatePath('/sitemap.xml');
     }
 
     // 📖 Terme du lexique : dictionnaire, pages des termes, plan du site et articles
