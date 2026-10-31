@@ -250,7 +250,8 @@
   /* Titres — N'Ko */
   body[dir="rtl"] :is(h1, h2, h3) {
     font-weight: 700;
-    line-height: var(--interligne-nko);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
   }
 /* Skip-to-content link (accessibilité clavier) */
   .skip-to-content {
@@ -2063,21 +2064,24 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
 /* ===========================================
    N'KO : LES MARQUES DE TON ENTIÈRES (31 octobre 2026)
    Kigelia annonce une hauteur de 1 em, mais ses marques montent jusqu'à 1,07 em au-dessus de la
-   ligne de base (mesuré sur tout le N'Ko du site). Plus petite hauteur de ligne qui garde cette
-   encre dans sa boîte, de 9 à 96 px : 1,65 em + 2 px (le navigateur arrondit la police au pixel).
+   ligne de base (mesuré sur tout le N'Ko du site). Hauteur de ligne qui garde cette encre dans
+   sa boîte, de 9 à 96 px : 1,75 (le navigateur arrondit la police au pixel ; pire cas : 1,74, à 10 px).
+   Sur la version française, seul lang="nqo" compte : font-kigelia y porte aussi du français.
    =========================================== */
 :root {
-  --interligne-nko: calc(1.65em + 2px);
+  --interligne-nko: 1.75;
 }
 
 /* Écriture liée : jamais d'espace entre les lettres, et jamais de gras imité par le navigateur */
-:is([lang="nqo"], .font-kigelia) {
+:is([lang="nqo"], :where(html:not([lang|="fr"])) .font-kigelia),
+body[dir="rtl"] :is(h1, h2, h3):is([lang="nqo"], .font-kigelia) {
   font-synthesis-weight: none;
   letter-spacing: normal;
 }
 
 /* Jamais de hauteur de ligne serrée. Gardent la leur : le texte plus aéré, et la lettrine */
-:is([lang="nqo"], .font-kigelia):where(:not(.leading-loose, .leading-\[1\.8\], .leading-\[1\.85\], .lettrine)) {
+:is([lang="nqo"], :where(html:not([lang|="fr"])) .font-kigelia):where(:not(.leading-loose, .leading-\[1\.8\], .leading-\[1\.85\], .lettrine)),
+body[dir="rtl"] :is(h1, h2, h3):is([lang="nqo"], .font-kigelia) {
   line-height: var(--interligne-nko);
 }
 
