@@ -429,6 +429,13 @@ nav {
     box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
   }
 
+  /* Fenêtre de langue ouverte (FenetreLangue.tsx) : la page derrière ne défile pas */
+  html:has(#fenetre-langue:not([hidden])),
+  html:has(#fenetre-langue:not([hidden])) body {
+    overflow: hidden;
+    touch-action: none;
+  }
+
   /* Barre de l'accueil : première rangée de 68 px, de même axe que les autres pages, dont le milieu reste
      libre pour le bouton de langue (BoutonLangue, 31 octobre 2026). Grand écran : le menu passe dessous. */
   nav.nav-accueil,
