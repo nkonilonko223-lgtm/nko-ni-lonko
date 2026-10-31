@@ -1,4 +1,5 @@
 import HomeClient from "../components/HomeClient";
+import FenetreLangue from "../components/FenetreLangue";
 import { Metadata } from "next";
 import { versionLangue } from "../lib/carte-partage";
 import { langueDe } from "../lib/langue";
@@ -56,6 +57,9 @@ export default async function Home() {
   const articles = await getArticlesCartes();
 
   return (
-    <HomeClient articles={articles} />
+    <>
+      <FenetreLangue />
+      <HomeClient articles={articles} />
+    </>
   );
 }
