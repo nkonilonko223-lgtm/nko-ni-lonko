@@ -6,10 +6,13 @@
 // Le texte de l'article est préparé par le serveur (CustomPortableText). Seule la visionneuse
 // reste dans le navigateur : un clic sur une image l'ouvre en grand, Échap ou un clic la referme.
 // Elle est placée APRÈS le texte, comme avant (et non dans l'image) : un parent animé
-// (classe « apparition ») fausserait sa position plein écran.
+// (classe « apparition ») fausserait sa position plein écran. Affichée à la racine de la page
+// (createPortal, 31 octobre 2026) : le texte de l'article forme un niveau d'affichage plus bas que
+// la barre du haut, qui recouvrait sinon la croix ; la toucher renvoyait à l'accueil.
 // ============================================================================
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useLanguage } from "../LanguageProvider";
 import { langueTexte } from "../numero/titre";
@@ -42,8 +45,8 @@ export default function Visionneuse({ children }: { children: ReactNode }) {
       {children}
 
       {/* 🚀 LA LOUPE CINÉMATIQUE (Plein écran scrolable) */}
-      {lightbox && (
-        <div 
+      {lightbox && createPortal(
+        <div
           className="ambiance-nuit fixed inset-0 z-[999999] flex flex-col bg-black/98 backdrop-blur-2xl transition-all duration-300 print:hidden"
         >
           <div className="absolute top-0 w-full h-20 bg-gradient-to-b from-black/80 to-transparent z-50 flex items-center justify-end px-6 pointer-events-none">
@@ -98,7 +101,8 @@ export default function Visionneuse({ children }: { children: ReactNode }) {
               </div>
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </OuvrirImage.Provider>
   );
