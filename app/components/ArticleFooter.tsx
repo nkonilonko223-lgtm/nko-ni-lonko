@@ -299,7 +299,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className={`flex items-start gap-3 p-4 h-full rounded-2xl bg-white/5 border border-white/10 hover:border-or/40 hover:bg-or/5 transition-all duration-300 group/link shadow-lg hover:shadow-[0_5px_20px_rgba(251,191,36,0.15)] active:scale-[0.98] touch-manipulation ${isRefNko ? 'flex-row-reverse text-right' : 'text-left'}`}
-                    dir={isRefNko ? "rtl" : "ltr"}
+                    dir={isRefNko ? "rtl" : "ltr"} lang={isRefNko ? "nqo" : "fr"}
                     onClick={triggerVibration}
                   >
                     <div className="mt-0.5 p-2 rounded-full bg-surface/60 border border-white/10 group-hover/link:border-or/50 group-hover/link:bg-or/20 transition-colors shrink-0">
@@ -311,7 +311,7 @@ export default function ArticleFooter({ lang, author, tags, relatedArticles, ref
                   /* 📚 CARTE PHYSIQUE (Manuscrit/Livre - Plaque de Musée) */
                   <div 
                     className={`flex items-start gap-3 p-4 h-full rounded-2xl bg-surface/60 border border-white/5 shadow-inner ${isRefNko ? 'flex-row-reverse text-right' : 'text-left'}`}
-                    dir={isRefNko ? "rtl" : "ltr"}
+                    dir={isRefNko ? "rtl" : "ltr"} lang={isRefNko ? "nqo" : "fr"}
                   >
                     <div className="mt-0.5 p-2 rounded-full bg-white/5 border border-white/10 shrink-0">
                       <i className="ph-fill ph-book-open text-gray-400 text-sm md:text-base"></i>
