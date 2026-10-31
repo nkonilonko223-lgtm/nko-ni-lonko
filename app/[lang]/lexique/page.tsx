@@ -78,7 +78,7 @@ export default async function PageLexique() {
   };
 
   return (
-    <main className="min-h-screen bg-void text-white px-4 py-16 md:py-24">
+    <main className="min-h-screen bg-void text-white px-4 pt-24 pb-16 md:py-24">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesStructurees) }} />
       <div className="max-w-3xl mx-auto">
         <header className="text-center mb-10">

@@ -73,7 +73,7 @@ export default async function DesabonnementPage({
   }
 
   return (
-    <main className="min-h-[70vh] flex flex-col items-center justify-center px-6 py-16 text-center bg-void text-white">
+    <main className="min-h-[70vh] flex flex-col items-center justify-center px-6 pt-24 pb-16 text-center bg-void text-white">
       <h1 className="text-3xl md:text-4xl font-bold mb-6">
         <Bilingue nko={TEXTES_NKO.titre} fr="Se désabonner" />
       </h1>
