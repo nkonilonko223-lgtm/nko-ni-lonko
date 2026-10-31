@@ -30,20 +30,22 @@ export default function MessageAbonnement({ nko, onFermer }: { nko: boolean; onF
     };
   }, [onFermer]);
 
-  const enveloppe = <i className="ph-bold ph-envelope-simple mt-0.5 shrink-0 text-base" aria-hidden="true"></i>;
-
   return (
-    <div dir="ltr" data-message-abonnement className={`mt-2 flex items-start gap-2 text-sm font-medium text-green-400 transition-opacity duration-500 ${fondu ? "opacity-0" : "opacity-100"}`}>
-      {!nko && enveloppe}
-      <p className={`min-w-0 flex-1 ${nko ? "text-right text-base" : "text-left"}`}>
-        <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={nko} className="leading-snug" />
+    <div dir="ltr" data-message-abonnement className={`relative mt-2 text-sm font-medium text-green-400 transition-opacity duration-500 ${fondu ? "opacity-0" : "opacity-100"}`}>
+      <p className={`leading-snug ${nko ? "text-right text-base" : "text-left"}`}>
+        {/* La place de la croix, sur la première ligne seulement : les suivantes gardent toute la largeur
+            (L38 tient en 3 lignes à 360 px) */}
+        <span className="float-right h-5 w-9" aria-hidden="true"></span>
+        <span dir={nko ? "rtl" : "ltr"}>
+          <i className="ph-bold ph-envelope-simple me-1.5 align-[-2px] text-base" aria-hidden="true"></i>
+          <TexteLangue texte={ABONNEMENT_A_CONFIRMER} nko={nko} />
+        </span>
       </p>
-      {nko && enveloppe}
       <button
         type="button"
         onClick={onFermer}
         aria-label={texteLangue(TEXTES_LEXIQUE.fermer, nko)}
-        className="-my-3 -mr-3 flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-green-400/80 transition-colors hover:bg-white/10 hover:text-white"
+        className="absolute -right-3 -top-3.5 flex h-12 w-12 items-center justify-center rounded-full text-green-400/80 transition-colors hover:bg-white/10 hover:text-white"
       >
         <i className="ph-bold ph-x" aria-hidden="true"></i>
       </button>
