@@ -48,6 +48,10 @@ jobs:
       - name: ESLint
         run: node node_modules/eslint/bin/eslint.js .
 
+      # Fichiers de types écrits par Next.js : sans eux, ce contrôle ne voit pas les mêmes types que la construction de Vercel
+      - name: Types de Next.js
+        run: node node_modules/next/dist/bin/next typegen
+
       - name: TypeScript
         run: node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json
 
