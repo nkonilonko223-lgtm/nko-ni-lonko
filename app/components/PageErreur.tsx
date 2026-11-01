@@ -93,7 +93,7 @@ export default function PageErreur({ nko, deuxLangues = false }: { nko: boolean;
         <div style={{ width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12, marginTop: 26 }}>
           {deuxLangues ? (
             <>
-              <a href="" className="erreur-bouton" style={PRINCIPAL}>{ICONE_REESSAYER}{texteDe(REESSAYER)}</a>
+              <a href="" className="erreur-bouton" style={{ ...PRINCIPAL, flexBasis: "100%" }}>{ICONE_REESSAYER}{texteDe(REESSAYER)}</a>
               <a href={"/"} className="erreur-bouton erreur-secondaire" style={SECONDAIRE}>{ICONE_ACCUEIL}<Texte texte={ACCUEIL} nko /></a>
               <a href={"/fr"} className="erreur-bouton erreur-secondaire" style={SECONDAIRE}>{ICONE_ACCUEIL}<Texte texte={ACCUEIL} nko={false} /></a>
             </>
