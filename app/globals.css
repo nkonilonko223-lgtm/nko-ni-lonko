@@ -2196,16 +2196,22 @@ body[dir="rtl"] :is(h1, h2, h3):is([lang="nqo"], .font-kigelia) {
   font-synthesis-style: none;
   letter-spacing: normal;
 }
+/* <html lang="nqo"> transmet cette interdiction à toute la page. Le français la lève : Montserrat n'a pas de fichier
+   italique, son penché est imité par le navigateur. Le N'Ko placé dedans reste interdit (règle ci-dessus). */
+:is([lang|="fr"], [lang|="en"]) {
+  font-synthesis-style: auto;
+}
 
 /* Le N'Ko a un seul dessin, droit : pas de penché. Le gras et l'italique de la rédaction (le chapeau des articles
    est tout en italique) se voient par l'or de la revue. :lang() et non [lang] : la version N'Ko a lang="nqo" sur
-   toute la page, le français qu'elle contient garde son italique et sa couleur. :not([class]) : seulement le texte
-   des articles, pas les libellés qui ont déjà leur couleur. */
+   toute la page, le français marqué lang="fr" y garde son italique et sa couleur. :not([class]) : seulement le texte
+   des articles, pas les libellés qui ont déjà leur couleur. Pas dans un titre : il garde sa couleur, noire à
+   l'impression. Limite : la langue est décidée par bloc, un mot français en italique dans un paragraphe N'Ko passe en or. */
 .article-content blockquote[lang="nqo"],
 em:lang(nqo) {
   font-style: normal;
 }
-:is(strong, b, em):lang(nqo):not([class]) {
+:is(strong, b, em):lang(nqo):not([class]):not(:is(h1, h2, h3, h4, h5, h6) *) {
   color: rgb(var(--rgb-or));
 }
 
