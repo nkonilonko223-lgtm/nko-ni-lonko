@@ -590,6 +590,40 @@ nav {
     color: rgb(var(--rgb-or));
   }
 
+  /* Réaction dès le toucher, sans transition : le lecteur sait tout de suite que le bouton a répondu */
+  a.btn-lang.fixed:active,
+  a.btn-lang.fixed[data-actif] {
+    background: linear-gradient(rgb(var(--rgb-or) / 0.13), rgb(var(--rgb-or) / 0.13)), rgb(var(--rgb-void));
+    --tw-scale-x: 0.96; /* dans le transform de Tailwind, après le centrage : le bouton reste centré */
+    --tw-scale-y: 0.96;
+    transition: none;
+  }
+
+  a.btn-lang.fixed[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  /* L'indicateur a la taille exacte de l'icône qu'il remplace : le libellé ne bouge pas (garde-langue.ts) */
+  .attente-langue {
+    display: none;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    border: 2px solid currentColor;
+    border-block-start-color: transparent;
+    border-radius: 50%;
+  }
+
+  a.btn-lang.fixed:active .attente-langue,
+  a.btn-lang.fixed[data-actif] .attente-langue {
+    display: block;
+  }
+
+  a.btn-lang.fixed:active > i,
+  a.btn-lang.fixed[data-actif] > i {
+    display: none;
+  }
+
   .mobile-toggle {
     display: none;
     background: none;

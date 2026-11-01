@@ -16,6 +16,7 @@ import { noterPlaceLangue } from "../lib/place-langue";
 // (une personne perdue reconnaît la sienne). Pilule et contrastes : globals.css. C'est un vrai lien : il
 // marche avant même la fin du chargement. Sur les pages sans barre fixe, il n'apparaît qu'en haut de la
 // page : posé sur le texte, il prendrait le doigt du lecteur et changerait la langue par erreur.
+// Réaction au toucher et second toucher ignoré : app/lib/garde-langue.ts, un script qui passe avant React.
 // ============================================================================
 
 const NOM_NKO = "ߒߞߏ";
@@ -31,8 +32,12 @@ export default function BoutonLangue() {
     return () => window.removeEventListener("scroll", surDefilement);
   }, []);
 
+  const adresse = usePathname();
+  // Le changement de langue est fini, ou une autre page l'a remplacé : le bouton est libéré (garde-langue.ts)
+  useEffect(() => { window.__langueArrivee?.(); }, [adresse]);
+
   // Avant l'affichage, l'adresse interne de la version N'Ko commence par /nqo (proxy.ts)
-  const chemin = usePathname().replace(/^\/(nqo|fr)(?=\/|$)/, "") || "/";
+  const chemin = adresse.replace(/^\/(nqo|fr)(?=\/|$)/, "") || "/";
   if (chemin.endsWith("/imprimer")) return null; // jamais dans le PDF
   const article = ARTICLE.exec(chemin)?.[1];
   // L'accueil et les articles ont une barre fixe en haut : le bouton y reste, sans rien recouvrir
@@ -48,10 +53,12 @@ export default function BoutonLangue() {
         if (article) noterPlaceLangue(article);
         toggleLanguage();
       }}
+      suppressHydrationWarning // garde-langue.ts peut marquer le bouton avant l'arrivée du code
       aria-label={nko ? CHANGER.versFr : CHANGER.versNko}
       className={`btn-lang fixed left-1/2 top-3 z-[9000] h-11 w-24 -translate-x-1/2 justify-center !gap-1.5 !p-0 no-underline print:hidden focus-visible:translate-y-0 focus-visible:opacity-100 focus-visible:pointer-events-auto ${cache && !avecBarre ? "-translate-y-24 opacity-0 pointer-events-none" : ""}`}
     >
-      <i className="ph ph-translate text-or" aria-hidden="true"></i>
+      <i className="ph ph-translate text-or pointer-events-none" aria-hidden="true"></i>
+      <span className="attente-langue animate-spin text-or pointer-events-none" aria-hidden="true"></span>
       {nko ? <span lang="fr" className="font-fr text-[13px] font-bold text-or">Français</span> : <span lang="nqo" className="font-kigelia text-base font-bold text-or">{NOM_NKO}</span>}
     </a>
   );
