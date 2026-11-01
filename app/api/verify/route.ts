@@ -48,6 +48,7 @@ export async function GET(request: Request) {
       {
         headers: { Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}` },
         cache: 'no-store',
+        signal: AbortSignal.timeout(15_000), // Sanity muet : réponse au lecteur par le catch, comme sanity/client.ts
       }
     );
 
@@ -111,6 +112,7 @@ export async function GET(request: Request) {
           Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}`,
         },
         body: JSON.stringify(sanityMutation),
+        signal: AbortSignal.timeout(15_000),
       }
     );
 

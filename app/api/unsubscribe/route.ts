@@ -57,6 +57,7 @@ export async function POST(request: Request) {
         body: JSON.stringify({
           mutations: [{ delete: { id: docId } }, { delete: { id: `drafts.${docId}` } }],
         }),
+        signal: AbortSignal.timeout(15_000), // Sanity muet : réponse au lecteur par le catch, comme sanity/client.ts
       }
     );
 

@@ -158,7 +158,8 @@ export async function POST(request: Request) {
     const sanityCheckRes = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}&%24email=${emailParam}`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}` },
-        cache: 'no-store' // 🚀 LE BRISE-CACHE : Interdit à Next.js de mentir, force l'interrogation directe à Sanity
+        cache: 'no-store', // 🚀 LE BRISE-CACHE : Interdit à Next.js de mentir, force l'interrogation directe à Sanity
+        signal: AbortSignal.timeout(15_000), // Sanity muet : réponse au lecteur par le catch, comme sanity/client.ts
     });
 
     // Sanity n'a pas répondu : sans cette vérification, l'adresse serait créée une seconde fois
@@ -204,7 +205,8 @@ export async function POST(request: Request) {
         'Content-type': 'application/json',
         Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}`
       },
-      body: JSON.stringify(sanityMutation)
+      body: JSON.stringify(sanityMutation),
+      signal: AbortSignal.timeout(15_000),
     });
 
     if (!sanityRes.ok) {
