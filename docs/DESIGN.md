@@ -70,6 +70,20 @@ Bouton **« Ambiance »** dans la barre d'outils de l'article : **Nuit → Papie
 - **N'Ko d'abord** : dans un article, le paragraphe N'Ko prend l'encre pleine, le français (sa
   traduction) une encre à peine plus douce.
 
+## 4 bis. Le N'Ko a un seul dessin, droit (1er novembre 2026)
+
+- **Un seul fichier : `Kigelia`** (Extrabold, droit). `Kigelia1`, déclaré « gras » jusqu'au 1er novembre 2026,
+  était en réalité l'**Extrabold Italic, penché de 14°**, de même poids : tous les titres N'Ko penchaient.
+  Il est retiré du site, des e-mails, des images de partage et du PDF. Ne pas le réintroduire.
+- **Gras et italique de la rédaction** : ni gras ni penché, ils se voient par l'**or de la revue**
+  (`:lang(nqo)`, fin de `app/globals.css`), dans les trois ambiances (contraste 10,1, 5,4 et 5,5 pour 1).
+  Le chapeau des articles est tout en italique : il paraît donc en or.
+- Le fichier droit est **environ 8 % plus large** que le penché : un titre N'Ko peut prendre une ligne de plus.
+- **Limite connue** : le signe U+061F (point d'interrogation, 68 emplacements dans les textes publiés) n'est pas dans
+  ce fichier. Il s'affiche dans la police du téléphone, comme il le faisait déjà dans le corps des articles.
+- **Licence à vérifier** : les données du fichier disent « Copyright Jamra Patel » et « licensed to Microsoft », alors qu'il
+  est servi publiquement sur le site. Question posée au propriétaire le 1er novembre 2026. Plan B, à vérifier : Noto Sans NKo.
+
 ## 5. Vérifier soi-même
 
 1. Ouvrir un article, toucher **⋮** (téléphone) puis **« Ambiance »** : la page passe en Papier, puis Jour,
