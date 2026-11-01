@@ -67,6 +67,7 @@
 | L45 | Bien utiliser N'Ko ni Lonko | Page des tutoriels, sous le grand titre (nom de la série de vidéos) | `textes.ts` → `SERIE.nko` |
 | L46 | Les tutoriels vidéo de N'Ko ni Lonko, étape par étape, en N'Ko et en français. | Description de la page pour Google et les cartes de partage (160 caractères au plus) | `textes.ts` → `DESCRIPTION.nko` |
 | L47 | Lire la vidéo | Bouton de lecture, seulement pour les lecteurs d'écran (suivi du titre de la vidéo) | `textes.ts` → `LIRE_VIDEO.nko` |
+| L51 | Regarder sur YouTube | Logo de YouTube sous la vidéo, seulement pour les lecteurs d'écran | `textes.ts` → `REGARDER_YOUTUBE.nko` |
 | L48 | Diapositive précédente | Flèche du carrousel, seulement pour les lecteurs d'écran | `textes.ts` → `DIAPO_PRECEDENTE.nko` |
 | L49 | Diapositive suivante | Flèche du carrousel, seulement pour les lecteurs d'écran | `textes.ts` → `DIAPO_SUIVANTE.nko` |
 | L50 | Aucun tutoriel pour l'instant | Page des tutoriels tant qu'aucune vidéo n'est publiée (la page n'a alors aucun lien) | `textes.ts` → `AUCUN_TUTORIEL.nko` |

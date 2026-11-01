@@ -12,6 +12,7 @@ export const TUTORIELS: Libelle = { nko: "", fr: "Tutoriels" }; // L44 : titre d
 export const SERIE: Libelle = { nko: "", fr: "Bien utiliser N'Ko ni Lonko" }; // L45 : sous le titre de la page
 export const DESCRIPTION: Libelle = { nko: "", fr: "Les tutoriels vidéo de N'Ko ni Lonko, étape par étape, en N'Ko et en français." }; // L46 : Google et cartes de partage
 export const LIRE_VIDEO: Libelle = { nko: "", fr: "Lire la vidéo" }; // L47 : lecteurs d'écran, bouton de lecture
+export const REGARDER_YOUTUBE: Libelle = { nko: "", fr: "Regarder sur YouTube" }; // L51 : lecteurs d'écran, logo de YouTube sous la vidéo
 export const DIAPO_PRECEDENTE: Libelle = { nko: "", fr: "Diapositive précédente" }; // L48 : lecteurs d'écran, flèche
 export const DIAPO_SUIVANTE: Libelle = { nko: "", fr: "Diapositive suivante" }; // L49 : lecteurs d'écran, flèche
 export const AUCUN_TUTORIEL: Libelle = { nko: "", fr: "Aucun tutoriel pour l'instant" }; // L50 : page sans vidéo publiée
