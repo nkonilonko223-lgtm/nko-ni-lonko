@@ -90,14 +90,14 @@ export async function GET(request: Request) {
     }
 
     // 🟢 4. FRAPPE CHIRURGICALE — Patch vers "verified"
+    // Sans condition sur la révision du document : deux ouvertures du même lien (double toucher, antivirus de
+    // messagerie) doivent réussir toutes les deux, sinon la seconde affiche une fausse erreur au lecteur abonné.
     const sanityMutation = {
       mutations: [
         {
           patch: {
             id: docId,
             set: { status: 'verified' },
-            // 🛡️ Sécurité supplémentaire : on n'accepte de patcher QUE si pending
-            ifRevisionID: subscriber._rev,
           }
         }
       ]
