@@ -15,7 +15,7 @@ const API_VERSION = '2025-02-19';
 // Formats attendus, aussi contrôlés par scripts/verifier-import.mts
 export const ID_YOUTUBE = /^[A-Za-z0-9_-]{11}$/;
 export const DUREE = /^[0-9]{1,2}:[0-5][0-9]$/;
-export const IMAGE_DIAPO = /-1080x1350-webp$/;
+export const IMAGE_DIAPO = /^image-[A-Za-z0-9_]+-1080x1350-webp$/;
 
 // Contient au moins une lettre N'Ko (plage U+07C0 à U+07FF)
 const contientNko = (texte: string) =>
@@ -49,6 +49,7 @@ const bilingue = (type: 'string' | 'text', nom: string, titre: string) =>
         title: "N'Ko",
         description: 'Copié du fichier _2 validé, jamais tapé.',
         type,
+        ...(type === 'text' ? { rows: 3 } : {}),
         components: { input: ChampRtl },
         validation: (rule: Rule) => [
           rule.required().error("Le N'Ko est obligatoire."),
@@ -59,6 +60,7 @@ const bilingue = (type: 'string' | 'text', nom: string, titre: string) =>
         name: 'fr',
         title: 'Français',
         type,
+        ...(type === 'text' ? { rows: 3 } : {}),
         components: { input: ChampLtr },
         validation: (rule: Rule) => [
           rule.required().error('Le français est obligatoire.'),
@@ -147,7 +149,8 @@ export default defineType({
       description: "L'image affichée avant la lecture. Le mieux : verticale, 1080 × 1920. Une image en largeur reste possible : elle s'affiche entière au milieu du cadre.",
       type: 'image',
       options: { hotspot: true },
-      validation: (rule) => rule.required().error('La miniature est obligatoire.'),
+      // assetRequired : sinon, un point d'intérêt posé sans image passerait pour une image
+      validation: (rule) => rule.required().assetRequired().error('La miniature est obligatoire.'),
     }),
     defineField({
       name: 'diapos',
@@ -166,7 +169,7 @@ export default defineType({
               description: 'WebP, 1080 × 1350.',
               type: 'image',
               validation: (rule) => [
-                rule.required().error("L'image est obligatoire."),
+                rule.required().assetRequired().error("L'image est obligatoire."),
                 rule
                   .custom((v) => {
                     const ref = (v as { asset?: { _ref?: string } } | undefined)?.asset?._ref;

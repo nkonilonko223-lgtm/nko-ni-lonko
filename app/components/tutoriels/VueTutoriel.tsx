@@ -16,7 +16,7 @@ import { LIRE_VIDEO } from "./textes";
 function DiapoEtape({ diapo }: { diapo: Diapo & { image: { url: string } } }) {
   const { url } = diapo.image;
   return (
-    <li className="w-[86%] shrink-0 snap-start lg:w-[72%]">
+    <li className="w-[86%] shrink-0 snap-start snap-always lg:w-[72%]">
       <figure>
         {/* eslint-disable-next-line @next/next/no-img-element -- deux tailles exactes en WebP, servies par Sanity */}
         <img

@@ -236,9 +236,9 @@ const tutorielsDuFichier = new Map<number, string>();
 // Texte { nko, fr } d'un tutoriel : les deux langues obligatoires, chacune à sa place
 function verifierBilingue(v: unknown, ou: string, id: string) {
   const t = (v || {}) as { nko?: unknown; fr?: unknown };
-  if (!t.nko) erreurs.push(`[${id}] ${ou}.nko obligatoire.`);
+  if (!String(t.nko ?? '').trim()) erreurs.push(`[${id}] ${ou}.nko obligatoire.`);
   else if (!contientNko(String(t.nko))) erreurs.push(`[${id}] ${ou}.nko ne contient pas de caractère N'Ko.`);
-  if (!t.fr) erreurs.push(`[${id}] ${ou}.fr obligatoire.`);
+  if (!String(t.fr ?? '').trim()) erreurs.push(`[${id}] ${ou}.fr obligatoire.`);
   else if (contientNko(String(t.fr))) erreurs.push(`[${id}] ${ou}.fr contient du N'Ko.`);
 }
 
@@ -391,7 +391,7 @@ for (const d of docs) {
     const miniature = d.miniature as { asset?: Reference } | undefined;
     if (!miniature?.asset?._ref) erreurs.push(`[${id}] tutoriel : la miniature (miniature.asset) est obligatoire.`);
     verifierReference(miniature?.asset, ['sanity.imageAsset'], 'miniature', id);
-    const diapos = (Array.isArray(d.diapos) ? d.diapos : []) as { _key?: string; image?: { asset?: Reference }; legende?: unknown }[];
+    const diapos = (Array.isArray(d.diapos) ? d.diapos : []) as { _key?: string; _type?: string; image?: { asset?: Reference }; legende?: unknown }[];
     if (!diapos.length) avertissements.push(`[${id}] tutoriel : pas encore de diapositive.`);
     const cles = new Set<string>();
     diapos.forEach((diapo, i) => {
@@ -399,6 +399,7 @@ for (const d of docs) {
       if (!diapo?._key) erreurs.push(`[${id}] ${ou} : pas de « _key ».`);
       else if (cles.has(diapo._key)) erreurs.push(`[${id}] ${ou} : « _key » déjà utilisée dans ce tutoriel.`);
       else cles.add(diapo._key);
+      if (diapo?._type !== 'diapo') erreurs.push(`[${id}] ${ou} : « _type » doit être « diapo » (sinon le Studio ne sait pas l'afficher).`);
       const ref = diapo?.image?.asset?._ref;
       if (!ref) erreurs.push(`[${id}] ${ou} : l'image (image.asset) est obligatoire.`);
       else if (!IMAGE_DIAPO.test(ref)) avertissements.push(`[${id}] ${ou} : image attendue en WebP de 1080 × 1350 (reçu : ${ref}).`);

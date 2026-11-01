@@ -49,8 +49,11 @@ export async function aDesTutoriels(): Promise<boolean> {
   );
 }
 
-// Image d'une diapositive à une largeur donnée, en WebP, par le service d'images de Sanity
-export const adresseDiapo = (url: string, largeur: 540 | 1080) => `${url}?w=${largeur}&fm=webp&q=80`;
+// Image d'une diapositive en WebP, par le service d'images de Sanity. Grande taille : le fichier d'origine, déjà un
+// WebP de 1080 px (une taille ou une qualité demandée le réencoderait, parfois plus lourd : mesuré le 1er novembre 2026).
+// Petite taille : réduite, jamais agrandie.
+export const adresseDiapo = (url: string, largeur: 540 | 1080) =>
+  largeur === 1080 ? `${url}?fm=webp` : `${url}?w=${largeur}&fit=max&fm=webp&q=80`;
 
 // « 3:50 » → « PT3M50S » (durée demandée par Google)
 export function dureeIso(duree: string): string {
