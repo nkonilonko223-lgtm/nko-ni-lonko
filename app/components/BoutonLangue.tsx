@@ -32,7 +32,7 @@ export default function BoutonLangue() {
     return () => window.removeEventListener("scroll", surDefilement);
   }, []);
 
-  const adresse = usePathname();
+  const adresse = usePathname() ?? ""; // jamais vide ici : seuls les types l'envisagent, à cause de pages/500.tsx
   // Le changement de langue est fini, ou une autre page l'a remplacé : le bouton est libéré (garde-langue.ts)
   useEffect(() => { window.__langueArrivee?.(); }, [adresse]);
 

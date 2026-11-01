@@ -6,7 +6,7 @@ import PageErreur from "../components/PageErreur";
 
 // Une page du site ne peut pas s'afficher : le gabarit reste, la page d'erreur prend sa place
 export default function Erreur({ error }: { error: Error & { digest?: string } }) {
-  const { lang } = useParams<{ lang: string }>();
+  const lang = useParams<{ lang: string }>()?.lang; // jamais vide ici : seuls les types l'envisagent, à cause de pages/500.tsx
   useEffect(() => { console.error("[Page d'erreur]", error); }, [error]);
   return <PageErreur nko={lang !== "fr"} />;
 }

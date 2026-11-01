@@ -8,8 +8,11 @@ import { NOM_REVUE } from "../app/lib/messages-lecteur";
 // Une page jamais préparée qui échoue sur le serveur, par exemple pendant une panne de Sanity, ne passe pas
 // par app/[lang]/error.tsx : sans cette page, le lecteur voit un message en anglais. Elle est fabriquée à la
 // construction, sans lire Sanity. Une seule page pour toutes les adresses : le N'Ko puis le français. Seul
-// fichier du dossier pages/ : tout le site reste dans app/.
+// page du dossier pages/ : tout le site reste dans app/. Aucun code envoyé au navigateur : elle s'affiche seule,
+// et le routeur de pages/ ne tente rien sur une adresse qui n'est pas la sienne.
 // ============================================================================
+
+export const config = { unstable_runtimeJS: false };
 
 export default function Page500() {
   return (
