@@ -152,10 +152,13 @@ export async function POST(request: Request) {
     }
 
     // 🔍 PHASE A : LE RADAR ANTI-DOUBLONS (Vérification en Temps Réel)
-    // L'e-mail est transmis comme paramètre GROQ ($email), jamais collé dans la requête
-    const query = encodeURIComponent(`*[_type == "subscriber" && email == $email][0]`);
+    // L'e-mail est transmis comme paramètre GROQ ($email), jamais collé dans la requête.
+    // Une fiche en attente dont le lien a expiré ne compte plus : le lecteur à qui l'accueil conseille de se
+    // réinscrire (LIEN_EXPIRE) doit recevoir un nouvel e-mail. Le nettoyage de la nuit retire l'ancienne fiche.
+    const query = encodeURIComponent(`*[_type == "subscriber" && email == $email && !(status == "pending" && tokenExpiresAt < $maintenant)][0]`);
     const emailParam = encodeURIComponent(JSON.stringify(pureEmail));
-    const sanityCheckRes = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}&%24email=${emailParam}`, {
+    const maintenantParam = encodeURIComponent(JSON.stringify(new Date().toISOString()));
+    const sanityCheckRes = await fetch(`https://${SANITY_PROJECT_ID}.api.sanity.io/v2023-10-01/data/query/${SANITY_DATASET}?query=${query}&%24email=${emailParam}&%24maintenant=${maintenantParam}`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${SANITY_API_WRITE_TOKEN}` },
         cache: 'no-store', // 🚀 LE BRISE-CACHE : Interdit à Next.js de mentir, force l'interrogation directe à Sanity
