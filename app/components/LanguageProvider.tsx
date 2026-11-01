@@ -66,7 +66,9 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
     try { localStorage.setItem("preferred-lang", choix); } catch { /* stockage bloqué */ }
     if (choix === lang) return;
     const { pathname, search, hash } = window.location;
-    router.push(cheminLangue(langueAdresse(choix), cheminSansLangue(pathname)) + search + hash);
+    const adresse = cheminLangue(langueAdresse(choix), cheminSansLangue(pathname)) + search + hash;
+    // « replace » : changer de langue n'ajoute pas de page à remonter avec le bouton retour
+    router.replace(adresse);
   }, [lang, router]);
 
   const toggleLanguage = useCallback(() => {
