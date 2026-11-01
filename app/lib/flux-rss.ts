@@ -36,12 +36,7 @@ const xml = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replac
 
 export async function fluxRss(langue: Langue): Promise<Response> {
   const fr = langue === "fr";
-  let articles: ArticleFlux[] = [];
-  try {
-    articles = await client.fetch<ArticleFlux[]>(REQUETE, {}, { next: { tags: ["article"], revalidate: 3600 } });
-  } catch (error) {
-    console.error("🚨 [RSS] Échec de la récupération des articles :", error);
-  }
+  const articles = await client.fetch<ArticleFlux[]>(REQUETE, {}, { next: { tags: ["article"], revalidate: 3600 } });
 
   const partie = (texte?: string) => {
     const p = separerLangues(texte);

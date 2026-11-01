@@ -34,29 +34,19 @@ export async function entreesPlanDuSite(): Promise<MetadataRoute.Sitemap> {
   // ==============================================================================
   // 2. FETCH DYNAMIQUE
   // ==============================================================================
-  let articles: SitemapArticle[] = [];
-  try {
-    articles = await client.fetch<SitemapArticle[]>(
-      ARTICLES_QUERY,
-      {},
-      // Étiquette « article » : la sonnette Sanity (/api/revalidate) met aussi le plan du site à jour
-      { next: { tags: ["article"], revalidate: 3600 } }
-    );
-  } catch (error) {
-    console.error("🚨 [Sitemap] Échec de la récupération des articles Sanity :", error);
-  }
+  const articles = await client.fetch<SitemapArticle[]>(
+    ARTICLES_QUERY,
+    {},
+    // Étiquette « article » : la sonnette Sanity (/api/revalidate) met aussi le plan du site à jour
+    { next: { tags: ["article"], revalidate: 3600 } }
+  );
 
   // 📖 Dictionnaire : une entrée par terme du lexique
-  let termes: { slug: string }[] = [];
-  try {
-    termes = await client.fetch<{ slug: string }[]>(
-      `*[_type == "terme" && defined(slug.current)]{ "slug": slug.current }`,
-      {},
-      { next: { tags: ["terme"], revalidate: 3600 } }
-    );
-  } catch (error) {
-    console.error("🚨 [Sitemap] Échec de la récupération du lexique :", error);
-  }
+  const termes = await client.fetch<{ slug: string }[]>(
+    `*[_type == "terme" && defined(slug.current)]{ "slug": slug.current }`,
+    {},
+    { next: { tags: ["terme"], revalidate: 3600 } }
+  );
   const termeEntries: MetadataRoute.Sitemap = termes.map((t) => ({
     url: `${baseUrl}/lexique/${t.slug}`,
     changeFrequency: 'monthly' as const,
