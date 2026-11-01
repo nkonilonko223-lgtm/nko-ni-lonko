@@ -1047,11 +1047,15 @@ nav {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('/arriere-plan.webp') center / 300px repeat;
-    background-image: image-set(url('/arriere-plan.avif') type('image/avif'), url('/arriere-plan.webp') type('image/webp'));
     opacity: 0.05;
     pointer-events: none;
     mix-blend-mode: screen;
+  }
+
+  /* Motif presque invisible, tout en bas de la page (42 Ko) : il n'est demandé qu'une fois le code arrivé (G-01) */
+  html[data-site-vivant] footer::before {
+    background: url('/arriere-plan.webp') center / 300px repeat;
+    background-image: image-set(url('/arriere-plan.avif') type('image/avif'), url('/arriere-plan.webp') type('image/webp'));
   }
 
   .footer-grid {
