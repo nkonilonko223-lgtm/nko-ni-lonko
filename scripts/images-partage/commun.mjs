@@ -90,7 +90,7 @@ export const pastille = (nko, fr) =>
 export const modelePhoto = ({ numero, categorie, bandeau, fin = false }) => `<!doctype html><html lang="nqo"><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=block" rel="stylesheet">
 <style>
-@font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia1.otf')});font-weight:700}
+@font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:700}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1200px;height:630px;overflow:hidden;background:#0e1322}
 .abs{position:absolute;inset:0}

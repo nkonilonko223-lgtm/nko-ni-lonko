@@ -20,7 +20,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
-const VERSION = 3; // 2 : logo HD harmonisé ; 3 : palette « Nuit du Mandé » (24 octobre 2026)
+const VERSION = 4; // 2 : logo HD harmonisé ; 3 : palette « Nuit du Mandé » (24 octobre 2026) ; 4 : N'Ko droit (1er novembre 2026)
 const PROJET = resolve(import.meta.dirname, '../..');
 const sharp = createRequire(join(PROJET, 'package.json'))('sharp');
 const CHROME = [
@@ -59,7 +59,7 @@ const base = `
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=block" rel="stylesheet">
 <style>
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:400}
-@font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia1.otf')});font-weight:700}
+@font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:700}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1200px;height:630px;overflow:hidden;background:#0e1322}
 .abs{position:absolute;inset:0}

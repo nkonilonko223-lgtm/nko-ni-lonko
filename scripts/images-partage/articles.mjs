@@ -38,7 +38,7 @@ import {
   imageDeLaSauvegarde, f, echapper, pastille, modelePhoto, preparerCouverture, rendreEnJpeg,
 } from './commun.mjs'; // outils partagés avec scripts/images-partage/numeros.mjs
 
-const MODELE = 3; // 3 : palette « Nuit du Mandé » (24 octobre 2026) ; à augmenter si l'apparence change : toutes les images reçoivent une nouvelle adresse
+const MODELE = 4; // 3 : palette « Nuit du Mandé » (24 octobre 2026) ; 4 : N'Ko droit (1er novembre 2026) ; à augmenter si l'apparence change : toutes les images reçoivent une nouvelle adresse
 const DOSSIER = join(PROJET, 'public/og/articles');
 const LISTE = join(PROJET, 'app/lib/images-partage-articles.json');
 
@@ -90,7 +90,7 @@ const modele =({ titre, numero, categorie, couverture }) => `<!doctype html><htm
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=block" rel="stylesheet">
 <style>
 @font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:400}
-@font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia1.otf')});font-weight:700}
+@font-face{font-family:Kigelia;src:url(${f('fonts/Kigelia.otf')});font-weight:700}
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1200px;height:630px;overflow:hidden;background:#0e1322}
 .abs{position:absolute;inset:0}
