@@ -161,6 +161,11 @@ export async function POST(request: Request) {
         cache: 'no-store' // 🚀 LE BRISE-CACHE : Interdit à Next.js de mentir, force l'interrogation directe à Sanity
     });
 
+    // Sanity n'a pas répondu : sans cette vérification, l'adresse serait créée une seconde fois
+    if (!sanityCheckRes.ok) {
+        throw new Error(`Sanity ne répond pas : ${sanityCheckRes.status}`);
+    }
+
     const sanityCheckData = await sanityCheckRes.json();
 
     // 🛑 ARRÊT SILENCIEUX : Si l'e-mail existe déjà

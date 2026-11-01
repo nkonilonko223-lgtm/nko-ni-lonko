@@ -42,6 +42,9 @@ export async function GET(request: Request) {
        cache: 'no-store'
     });
     
+    // Sanity n'a pas répondu : sinon le nettoyage se dirait « propre » sans avoir rien vérifié
+    if (!fetchRes.ok) throw new Error(`Sanity ne répond pas : ${fetchRes.status}`);
+
     const data = await fetchRes.json();
     const targets = data.result;
 

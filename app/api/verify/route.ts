@@ -51,6 +51,12 @@ export async function GET(request: Request) {
       }
     );
 
+    // Sanity n'a pas répondu : ce n'est pas un jeton inconnu, le lecteur doit pouvoir réessayer
+    if (!checkRes.ok) {
+      console.error(`❌ [Verify] Sanity ne répond pas : ${checkRes.status}`);
+      return NextResponse.redirect(`${baseUrl}?verified=false&reason=server`);
+    }
+
     const checkData = await checkRes.json();
     const subscriber = checkData.result;
 
@@ -119,6 +125,6 @@ export async function GET(request: Request) {
 
   } catch (error) {
     console.error("❌ [Verify] Crash serveur :", error);
-    return NextResponse.redirect(new URL(request.url).origin);
+    return NextResponse.redirect(`${new URL(request.url).origin}?verified=false&reason=server`);
   }
 }
