@@ -10,7 +10,7 @@ import { getSanityClient } from "../../sanity/fetch";
 import essai from "./tutoriels-essai.json"; // BRANCHE D'ESSAI SEULEMENT : jamais fusionnée
 
 export type TexteBilingue = { nko?: string | null; fr?: string | null };
-export type ImageTutoriel = { url?: string | null; largeur?: number | null; hauteur?: number | null; lqip?: string | null; hotspot?: { x?: number; y?: number } | null };
+export type ImageTutoriel = { url?: string | null; largeur?: number | null; hauteur?: number | null; hotspot?: { x?: number; y?: number } | null };
 export type Diapo = { _key: string; legende?: TexteBilingue | null; image?: { url?: string | null } | null };
 export type Tutoriel = {
   _id: string;
@@ -26,7 +26,7 @@ export type Tutoriel = {
 
 const REQUETE_TUTORIELS = `*[_type == "tutoriel" && defined(numero)] | order(numero asc) {
   _id, numero, titre, resume, youtubeId, duree, publishedAt,
-  "miniature": miniature{ "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "lqip": asset->metadata.lqip, "hotspot": hotspot{ x, y } },
+  "miniature": miniature{ "url": asset->url, "largeur": asset->metadata.dimensions.width, "hauteur": asset->metadata.dimensions.height, "hotspot": hotspot{ x, y } },
   "diapos": diapos[]{ _key, legende, "image": image{ "url": asset->url } }
 }`;
 
@@ -52,7 +52,7 @@ export async function aDesTutoriels(): Promise<boolean> {
   );
 }
 
-// Image d'une diapositive en WebP, par le service d'images de Sanity. Grande taille : le fichier d'origine, déjà un
+// Image d'une diapositive en WebP, par le service d'images de Sanity. Grande taille : le plus souvent le fichier d'origine, déjà un
 // WebP de 1080 px (une taille ou une qualité demandée le réencoderait, parfois plus lourd : mesuré le 1er novembre 2026).
 // Petite taille : réduite, jamais agrandie.
 export const adresseDiapo = (url: string, largeur: 540 | 1080) =>
