@@ -1,7 +1,7 @@
 import { client } from "../../../../sanity/client";
 import { getSanityClient } from "../../../../sanity/fetch";
 import type { TermeLexiqueData } from "../../../components/lexique/TermeLexique";
-import { urlFor } from "../../../../sanity/image";
+import { safeUrlFor } from "../../../../sanity/image";
 import ArticleClient from "../../../components/ArticleClient";
 import CustomPortableText from "../../../components/CustomPortableText";
 import { CLE_LANGUE_LECTURE, contientDeuxLangues } from "../../../components/texte/outils";
@@ -128,13 +128,6 @@ export interface SafeArticleData {
 // ==============================================================================
 // 3. FACTORY DE SÉCURITÉ & ANALYSEUR LEXICAL
 // ==============================================================================
-function safeUrlFor(source: SanityImage | null | undefined): string | null {
-  if (!source) return null;
-  try { return urlFor(source)?.url() || null; } 
-  catch { return null; } 
-}
-
-
 function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
   if (!raw) throw new Error("Données article manquantes");
 
@@ -186,7 +179,7 @@ function transformSafeArticle(raw: SanityArticleRaw): SafeArticleData {
 // 4. RÉCUPÉRATION & PRÉ-GÉNÉRATION STATIQUE
 // ==============================================================================
 export async function generateStaticParams() {
-  const query = `*[_type == "article"]{ "slug": slug.current }`;
+  const query = `*[_type == "article" && defined(slug.current)]{ "slug": slug.current }`;
   const slugs = await client.fetch<{slug: string}[]>(query);
   return slugs.map((article) => ({
     slug: article.slug,

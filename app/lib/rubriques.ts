@@ -25,7 +25,7 @@ export type Rubrique = {
 
 const REQUETE_RUBRIQUE = `*[_type == "rubrique" && slug.current == $slug][0] {
   titleNko, titleFr, descriptionFr, "slug": slug.current,
-  "articles": *[_type == "article" && rubrique._ref == ^._id] | order(publishedAt desc) {${CHAMPS_CARTE},
+  "articles": *[_type == "article" && rubrique._ref == ^._id && defined(slug.current)] | order(publishedAt desc) {${CHAMPS_CARTE},
     "numero": *[_type == "numero" && references(^._id)] | order(numero desc)[0] { numero, "slug": slug.current }
   }
 }`;

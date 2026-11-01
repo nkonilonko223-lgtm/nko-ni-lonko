@@ -7,7 +7,7 @@
 
 import { client } from "../../sanity/client";
 import { getSanityClient } from "../../sanity/fetch";
-import { urlFor } from "../../sanity/image";
+import { safeUrlFor } from "../../sanity/image";
 import { positionDuCadrage } from "./point-interet";
 
 // ==============================================================================
@@ -71,7 +71,7 @@ export function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArt
   return {
     title: raw.title || "ߛߊ߲߬ߕߊ߫ ߕߍ߫ | Sans titre",
     slug: raw.slug.current,
-    mainImageUrl: raw.mainImage ? urlFor(raw.mainImage)?.url() || null : null,
+    mainImageUrl: safeUrlFor(raw.mainImage),
     mainImageAlt: raw.mainImage?.alt?.trim() || null,
     mainImageAltNko: raw.mainImage?.altNko?.trim() || null,
     mainImagePosition: positionDuCadrage(raw.mainImage?.hotspot) || null,
@@ -80,7 +80,7 @@ export function transformSafeHomeArticle(raw: SanityHomeArticleRaw): SafeHomeArt
     category: category,
     authorName: primaryAuthor?.name || "N'Ko ni Lonko",
     authorNameNko: primaryAuthor?.nameNko || "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ",
-    authorImageUrl: primaryAuthor?.image ? urlFor(primaryAuthor.image)?.url() || null : null,
+    authorImageUrl: safeUrlFor(primaryAuthor?.image),
     readingTime: calculatedReadingTime,
   };
 }
@@ -107,7 +107,7 @@ export const CHAMPS_CARTE = `
 export async function getArticlesCartes(valeursCategorie?: string[]): Promise<SafeHomeArticle[]> {
   // 🚀 REQUÊTE GROQ 1/1000 : Extraction optimisée avec "authors[]->"
   const filtre = valeursCategorie ? " && category in $valeurs" : "";
-  const query = `*[_type == "article"${filtre}] | order(publishedAt desc) {${CHAMPS_CARTE}
+  const query = `*[_type == "article" && defined(slug.current)${filtre}] | order(publishedAt desc) {${CHAMPS_CARTE}
   }`;
 
   // Mode aperçu (Studio) : brouillons inclus, sans cache ; sinon : version publiée

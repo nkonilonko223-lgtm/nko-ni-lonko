@@ -36,3 +36,10 @@ export function urlFor(source: SanityImageSource): ImageUrlBuilder | undefined {
   // dans nos composants UI (ex: .width(800).format('webp'))
   return builder.image(source);
 }
+
+// Adresse d'une image, ou null si elle est absente ou mal formée (image sans fichier) : la page s'affiche sans elle.
+export function safeUrlFor(source: SanityImageSource | null | undefined): string | null {
+  if (!source) return null;
+  try { return urlFor(source)?.url() || null; }
+  catch { return null; }
+}
