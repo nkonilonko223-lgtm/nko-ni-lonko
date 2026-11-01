@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import fr from "../messages/fr.json";
 import nko from "../messages/nko.json";
 import { cheminLangue, cheminSansLangue, langueAdresse } from "../lib/langue";
+import { dansApplication } from "../lib/installation";
 
 type Dictionary = typeof fr;
 type Language = "fr" | "nko";
@@ -67,8 +68,10 @@ export function LanguageProvider({ children, langue }: { children: React.ReactNo
     if (choix === lang) return;
     const { pathname, search, hash } = window.location;
     const adresse = cheminLangue(langueAdresse(choix), cheminSansLangue(pathname)) + search + hash;
-    // « replace » : changer de langue n'ajoute pas de page à remonter avec le bouton retour
-    router.replace(adresse);
+    // « replace » : changer de langue n'ajoute pas de page à remonter avec le bouton retour. Dans l'application
+    // installée, une vraie ouverture de page : après 3 ou 4 changements sans rechargement, elle se fermait (Redmi, 1er novembre 2026).
+    if (dansApplication()) window.location.replace(adresse);
+    else router.replace(adresse);
   }, [lang, router]);
 
   const toggleLanguage = useCallback(() => {

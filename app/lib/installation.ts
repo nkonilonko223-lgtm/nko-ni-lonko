@@ -33,7 +33,7 @@ const memoriserInstallee = () => {
   try { localStorage.setItem(CLE_INSTALLEE, "1"); } catch { /* stockage bloqué */ }
 };
 
-const dansApplication = () =>
+export const dansApplication = () =>
   window.matchMedia("(display-mode: standalone)").matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
 
 if (typeof window !== "undefined") {
