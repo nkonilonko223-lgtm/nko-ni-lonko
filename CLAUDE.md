@@ -115,6 +115,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 - Les fichiers sont en fins de ligne **Windows (CRLF)** : préférer l'outil d'édition aux remplacements par script.
 - Dans le code, écrire les plages Unicode par **numéro** (`code >= 0x07c0`) plutôt qu'avec des barres obliques (`\u07C0`), qui peuvent être déformées par les outils.
 - Le `.env.local` local n'a peut-être pas `SANITY_API_READ_TOKEN` (la route d'aperçu répond 500 en local, sans risque).
+- Une construction sans réseau **échoue** (Sanity injoignable), et c'est voulu : elle ne produit plus de pages fausses.
 
 ## 4. Architecture (fichiers importants)
 
@@ -162,6 +163,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 
 ## 5. Données Sanity (à connaître avant toute écriture)
 
+- **Lecture de Sanity : ne jamais attraper l'erreur** pour rendre `null` ou `[]` (1er novembre 2026). Une panne n'est pas une absence : si l'erreur remonte, Next.js garde la dernière bonne page et une construction échoue. Mesuré sans cette règle : articles en 404, accueil et lexique vides. `null` veut dire « le document n'existe pas ». Une image cassée passe par `safeUrlFor` (`sanity/image.ts`).
 - **Abonnés** : identifiant **avec un point** `subscriber.<uuid>` → **invisibles** pour le public (dataset public). Ne jamais créer d'abonné sans point.
 - **Article** : `title` et `excerpt` obligatoires (erreur), `publishedAt` obligatoire, `slug` en `a-z0-9-` seulement. Garde-fous (avertissements) : texte non NFC ; terme du lexique non relié en N'Ko **et** en français, ou relié plusieurs fois.
 - **Encadrés (`callout.intent`)** : `success` = **Définition** (bleu, compact) · `amazing` = Le saviez-vous ? · `question` = Question · `info` · `warning`.
