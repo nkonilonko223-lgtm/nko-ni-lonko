@@ -587,13 +587,13 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         </div>
       </div>
 
-      <header className="hero pt-24 pb-2 md:py-0 flex flex-col justify-center min-h-[40vh] md:min-h-[70vh]">
+      <header className="hero">
         {/* 🚀 MODIF 1/1000 : Clé "key" pour forcer la réanimation fluide sans bug fantôme */}
-        <h1 className={`reveal mb-1 md:mb-6 ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
+        <h1 className={`reveal ${isNko ? "font-kigelia text-6xl md:text-8xl leading-normal" : "text-4xl md:text-6xl leading-tight"}`}>
           {typedT.home?.hero?.title}
         </h1>
         
-        <p className={`reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 mb-4 md:mb-10 ${isNko ? "font-kigelia" : ""}`}>
+        <p className={`reveal text-base md:text-xl max-w-md md:max-w-2xl mx-auto opacity-80 ${isNko ? "font-kigelia" : ""}`}>
           {typedT.home?.hero?.subtitle}
         </p>
         
@@ -639,7 +639,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
 
 {/* 🚀 MODIF 1/1000: Wrapper relatif pour les masques de scroll */}
       {/* MOBILE: Dropdown Custom Premium */}
-<div className="md:hidden w-full mb-6 px-6">
+<div className="md:hidden w-full mb-6 px-[var(--content-padding)]">
   <div className="category-dropdown-wrapper">
     <button
       id="filtre-categories"

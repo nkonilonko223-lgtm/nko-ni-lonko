@@ -2083,6 +2083,57 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
 }
 
 /* ===========================================
+   ACCUEIL AU TÉLÉPHONE (1er novembre 2026)
+   L'en-tête prenait 90 % de l'écran : le premier article n'arrivait qu'après plus d'un écran.
+   Un seul bord pour tous les blocs (--content-padding), une seule hauteur pour les 3 commandes (56 px),
+   des vides serrés dans un groupe, plus larges entre deux groupes. Le haut respire selon l'écran.
+   =========================================== */
+@media (max-width: 767px) {
+  header.hero {
+    min-height: 0;
+    padding: clamp(32px, 7dvh, 64px) var(--content-padding) 0;
+  }
+
+  .hero h1 {
+    margin-bottom: 8px;
+  }
+
+  .hero p {
+    margin-bottom: 20px;
+  }
+
+  .cta-btn {
+    min-height: 56px;
+    padding-block: 0;
+    padding-inline: 16px;
+  }
+
+  .search-container {
+    margin: 24px auto 12px;
+    padding: 0 var(--content-padding);
+  }
+
+  .search-bar {
+    min-height: 56px;
+  }
+
+  .category-dropdown-trigger {
+    min-height: 56px;
+    padding-block: 0;
+    padding-inline: 20px;
+  }
+
+  .category-dropdown-trigger:not(.font-kigelia) {
+    font-size: 1rem;
+  }
+
+  .section-header {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+}
+
+/* ===========================================
    N'KO : LES MARQUES DE TON ENTIÈRES (31 octobre 2026)
    Kigelia annonce une hauteur de 1 em, mais ses marques montent jusqu'à 1,07 em au-dessus de la
    ligne de base (mesuré sur tout le N'Ko du site). Hauteur de ligne qui garde cette encre dans
