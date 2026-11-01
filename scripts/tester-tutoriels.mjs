@@ -232,6 +232,17 @@ try {
     await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
     e = await repos(o);
     verifier(e.i === 1 && e.point === 1, 'Glisser au doigt : la suivante, posée juste au bord', JSON.stringify({ i: e.i, point: e.point }));
+    verifier(rtl ? e.position < 0 : e.position > 0, rtl ? 'En N'Ko, la position part de 0 et devient négative' : 'En français, la position part de 0 et devient positive', String(e.position));
+
+    // Un glissement vertical commencé sur une diapositive doit faire défiler la page, pas se bloquer
+    const avantVertical = await o.evaluer('scrollY');
+    for (let pas = 0; pas <= 10; pas++) {
+      await envoyer('Input.dispatchTouchEvent', { type: pas === 0 ? 'touchStart' : 'touchMove', touchPoints: [{ x: p.x, y: p.y - pas * 12 }] }, o.s);
+      await pause(16);
+    }
+    await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
+    await pause(500);
+    verifier((await o.evaluer('scrollY')) > avantVertical + 20, 'Glisser vers le haut sur une diapositive fait défiler la page');
 
     // Clavier
     await o.evaluer(`${GROUPE}.querySelector('ul').focus({ preventScroll: true })`);

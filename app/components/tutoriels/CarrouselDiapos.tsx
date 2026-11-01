@@ -128,7 +128,7 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
       )}
 
       {/* Annonce la diapositive en cours aux lecteurs d'écran */}
-      {!seule && <p className="sr-only" aria-live="polite">{`${chiffre(active + 1)} / ${chiffre(nombre)}`}</p>}
+      {!seule && <p className="sr-only" aria-live="polite" aria-atomic="true">{`${chiffre(active + 1)} / ${chiffre(nombre)}`}</p>}
     </div>
   );
 }
