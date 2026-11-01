@@ -43,7 +43,7 @@ export default function FacadeVideo({ youtubeId, titre, libelle, langueLibelle, 
     <div className="relative mx-auto aspect-[9/16] w-full max-w-[420px] overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-2xl print:hidden">
       {paysage && miniature?.lqip && (
         // eslint-disable-next-line @next/next/no-img-element -- image minuscule déjà dans la page : aucun optimiseur à appeler
-        <img src={miniature.lqip} alt="" className="absolute inset-0 h-full w-full object-cover opacity-50" />
+        <img src={miniature.lqip} alt="" className="absolute inset-0 h-full w-full object-cover opacity-40" />
       )}
       {miniature?.url && (
         <Image

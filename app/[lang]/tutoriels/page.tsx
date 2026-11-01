@@ -82,10 +82,10 @@ export default async function PageTutoriels({ params }: { params: Promise<{ lang
   };
 
   return (
-    <main className="min-h-screen bg-void px-4 pb-20 pt-28 text-white md:pt-36">
+    <main className="min-h-screen bg-void px-4 pb-20 pt-20 text-white md:pt-36">
       {videos.length > 0 && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(donneesGoogle) }} />}
       <PiluleRetour />
-      <header className="mx-auto mb-12 max-w-3xl text-center">
+      <header className="mx-auto mb-8 max-w-3xl text-center md:mb-12">
         <h1 className="flex flex-col items-center gap-1">
           {TUTORIELS.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{TUTORIELS.nko}</span>}
           <span lang="fr" dir="ltr" className={TUTORIELS.nko ? "text-xs uppercase tracking-widest text-white/60" : "text-3xl font-bold text-or md:text-4xl"}>{TUTORIELS.fr}</span>
