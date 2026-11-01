@@ -4,7 +4,7 @@
 // ============================================================================
 // « Test à blanc » : lit un fichier JSON (tableau de documents Sanity) et liste
 // les problèmes. N'ÉCRIT RIEN dans Sanity et ne se connecte à rien.
-// Types acceptés : article, terme, rubrique, numero.
+// Types acceptés : article, terme, rubrique, numero, tutoriel.
 //
 // NFC (décision du propriétaire, 5 octobre 2026) : la normalisation NFC n'est PAS
 // une modification du texte. Si des textes ne sont pas en NFC, le script crée une
@@ -25,10 +25,21 @@
 // ============================================================================
 
 import { readFileSync, writeFileSync } from 'node:fs';
+import nodeModule from 'node:module';
 import { gunzipSync } from 'node:zlib';
+
+// Les schémas importent sans extension (« ../correcteur-nko ») : normal pour Next.js et Sanity, pas pour Node seul.
+// Sans ceci, le script s'arrêtait au démarrage depuis le 20 octobre 2026. Types écrits ici : ceux du projet ne connaissent pas encore registerHooks.
+type Contexte = { parentURL?: string };
+type Crochets = { registerHooks(c: { resolve(nom: string, contexte: Contexte, suite: (nom: string, contexte: Contexte) => unknown): unknown }): void };
+(nodeModule as unknown as Crochets).registerHooks({
+  resolve: (nom, contexte, suite) =>
+    suite(contexte.parentURL?.includes('/sanity/schemas/') && nom.startsWith('.') && !nom.endsWith('.ts') ? `${nom}.ts` : nom, contexte),
+});
 
 // Import « dynamique » du schéma : Node sait lire le .ts, et la construction du site n'est pas gênée
 const { default: article } = await import(new URL('../sanity/schemas/article.ts', import.meta.url).href);
+const { DUREE, ID_YOUTUBE, IMAGE_DIAPO } = await import(new URL('../sanity/schemas/tutoriel.ts', import.meta.url).href);
 
 type Doc = Record<string, unknown> & { _id?: string; _type?: string };
 type Reference = { _ref?: string; _key?: string; _weak?: boolean; _strengthenOnPublish?: unknown };
@@ -220,6 +231,16 @@ function verifierExistence(d: Doc, id: string) {
 const liensRubriques = new Map<string, string>();
 const ordresRubriques = new Map<number, string>();
 const numerosDuFichier = new Map<number, string>();
+const tutorielsDuFichier = new Map<number, string>();
+
+// Texte { nko, fr } d'un tutoriel : les deux langues obligatoires, chacune à sa place
+function verifierBilingue(v: unknown, ou: string, id: string) {
+  const t = (v || {}) as { nko?: unknown; fr?: unknown };
+  if (!t.nko) erreurs.push(`[${id}] ${ou}.nko obligatoire.`);
+  else if (!contientNko(String(t.nko))) erreurs.push(`[${id}] ${ou}.nko ne contient pas de caractère N'Ko.`);
+  if (!t.fr) erreurs.push(`[${id}] ${ou}.fr obligatoire.`);
+  else if (contientNko(String(t.fr))) erreurs.push(`[${id}] ${ou}.fr contient du N'Ko.`);
+}
 
 for (const d of docs) {
   const id = d._id || '(sans _id)';
@@ -350,8 +371,42 @@ for (const d of docs) {
     if (d.excerpt && String(d.excerpt).length > 200) avertissements.push(`[${id}] numéro : résumé de plus de 200 caractères.`);
     if (d.excerptFr && [...String(d.excerptFr)].length > 160) avertissements.push(`[${id}] numéro : résumé français (excerptFr) de plus de 160 caractères : il sera coupé sur les cartes.`);
     if (d.excerptFr && contientNko(String(d.excerptFr))) avertissements.push(`[${id}] numéro : le résumé français (excerptFr) contient du N'Ko.`);
+  } else if (d._type === 'tutoriel') {
+    if (!entier(d.numero, 1)) erreurs.push(`[${id}] tutoriel : « numero » doit être un nombre entier à partir de 1.`);
+    else if (tutorielsDuFichier.has(d.numero as number)) erreurs.push(`[${id}] tutoriel : le numéro ${d.numero} est déjà utilisé dans le fichier par ${tutorielsDuFichier.get(d.numero as number)}.`);
+    else tutorielsDuFichier.set(d.numero as number, id);
+    if (entier(d.numero, 1) && sauvegarde) {
+      for (const f of sauvegarde.values()) {
+        if (f._type === 'tutoriel' && f.numero === d.numero && idPublie(f._id) !== idPublie(d._id)) {
+          erreurs.push(`[${id}] tutoriel : le numéro ${d.numero} est déjà utilisé dans Sanity par ${f._id}.`);
+          break;
+        }
+      }
+    }
+    verifierBilingue(d.titre, 'titre', id);
+    verifierBilingue(d.resume, 'resume', id);
+    if (!ID_YOUTUBE.test(String(d.youtubeId ?? ''))) erreurs.push(`[${id}] tutoriel : « youtubeId » doit être l'identifiant seul, 11 caractères.`);
+    if (!DUREE.test(String(d.duree ?? ''))) erreurs.push(`[${id}] tutoriel : « duree » doit s'écrire ainsi : 3:50.`);
+    if (!d.publishedAt || Number.isNaN(Date.parse(String(d.publishedAt)))) erreurs.push(`[${id}] tutoriel : « publishedAt » obligatoire (date ISO de la mise en ligne sur YouTube).`);
+    const miniature = d.miniature as { asset?: Reference } | undefined;
+    if (!miniature?.asset?._ref) erreurs.push(`[${id}] tutoriel : la miniature (miniature.asset) est obligatoire.`);
+    verifierReference(miniature?.asset, ['sanity.imageAsset'], 'miniature', id);
+    const diapos = (Array.isArray(d.diapos) ? d.diapos : []) as { _key?: string; image?: { asset?: Reference }; legende?: unknown }[];
+    if (!diapos.length) avertissements.push(`[${id}] tutoriel : pas encore de diapositive.`);
+    const cles = new Set<string>();
+    diapos.forEach((diapo, i) => {
+      const ou = `diapos[${i}]`;
+      if (!diapo?._key) erreurs.push(`[${id}] ${ou} : pas de « _key ».`);
+      else if (cles.has(diapo._key)) erreurs.push(`[${id}] ${ou} : « _key » déjà utilisée dans ce tutoriel.`);
+      else cles.add(diapo._key);
+      const ref = diapo?.image?.asset?._ref;
+      if (!ref) erreurs.push(`[${id}] ${ou} : l'image (image.asset) est obligatoire.`);
+      else if (!IMAGE_DIAPO.test(ref)) avertissements.push(`[${id}] ${ou} : image attendue en WebP de 1080 × 1350 (reçu : ${ref}).`);
+      verifierReference(diapo?.image?.asset, ['sanity.imageAsset'], `${ou}.image`, id);
+      verifierBilingue(diapo?.legende, `${ou}.legende`, id);
+    });
   } else {
-    erreurs.push(`[${id}] type « ${d._type} » non prévu dans un import (seulement « article », « terme », « rubrique » et « numero »).`);
+    erreurs.push(`[${id}] type « ${d._type} » non prévu dans un import (seulement « article », « terme », « rubrique », « numero » et « tutoriel »).`);
   }
 }
 
@@ -359,7 +414,7 @@ for (const d of docs) {
 const nombre = (t: string) => docs.filter((d) => d._type === t).length;
 console.log(`Fichier : ${fichier}`);
 if (cheminExport && sauvegarde) console.log(`Sauvegarde utilisée pour les références : ${cheminExport} (${sauvegarde.size} documents)`);
-console.log(`Documents : ${nombre('article')} article(s), ${nombre('terme')} terme(s)${nombre('rubrique') ? `, ${nombre('rubrique')} rubrique(s)` : ''}${nombre('numero') ? `, ${nombre('numero')} numéro(s)` : ''}`);
+console.log(`Documents : ${nombre('article')} article(s), ${nombre('terme')} terme(s)${nombre('rubrique') ? `, ${nombre('rubrique')} rubrique(s)` : ''}${nombre('numero') ? `, ${nombre('numero')} numéro(s)` : ''}${nombre('tutoriel') ? `, ${nombre('tutoriel')} tutoriel(s)` : ''}`);
 console.log(`\n❌ Erreurs (${erreurs.length}) :`);
 erreurs.forEach((e) => console.log('  • ' + e));
 console.log(`\n⚠️ Avertissements (${avertissements.length}) :`);
