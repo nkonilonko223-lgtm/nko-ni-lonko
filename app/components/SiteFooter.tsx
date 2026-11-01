@@ -12,12 +12,14 @@ import { LIEN_ICONE_WHATSAPP, SIEGE, TELEGRAM } from "../lib/coordonnees";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { CHAMP_EMAIL } from "../lib/messages-lecteur";
 import MessageAbonnement from "./formulaires/MessageAbonnement";
-import { texteLangue } from "./application/Libelle";
+import { TexteLangue, texteLangue } from "./application/Libelle";
+import { TUTORIELS } from "./tutoriels/textes";
 import EtatFormulaire, { useVerification } from "./formulaires/EtatFormulaire";
 
 interface SiteFooterProps {
   activeCategory: string;
   setActiveCategory: (category: string) => void;
+  aDesTutoriels: boolean;
 }
 
 interface TranslationData {
@@ -27,7 +29,7 @@ interface TranslationData {
   home: { categories: Record<string, string> };
 }
 
-export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFooterProps) {
+export default function SiteFooter({ activeCategory, setActiveCategory, aDesTutoriels }: SiteFooterProps) {
   const { t, lang, lien } = useLanguage();
   const typedT = t as unknown as TranslationData;
   const isNko = lang === 'nko';
@@ -325,6 +327,7 @@ export default function SiteFooter({ activeCategory, setActiveCategory }: SiteFo
               {[
                 { path: lien("/numeros"), label: typedT?.nav?.numeros || "Numéros" },
                 { path: lien("/lexique"), label: isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr },
+                ...(aDesTutoriels ? [{ path: lien("/tutoriels"), label: <TexteLangue texte={TUTORIELS} nko={isNko} /> }] : []),
                 { path: lien("/bibliotheque"), label: isNko ? "ߒ ߠߊ߫ ߟߍߙߘߊ" : "Ma bibliothèque" }, // libellé N'Ko : L16 (rédaction, 23 octobre 2026 ; copié tel quel par programme)
                 { path: lien("/about"), label: typedT?.nav?.about || "À propos" },
                 { path: lien("/contact"), label: typedT?.footer?.contact || "Contact" },

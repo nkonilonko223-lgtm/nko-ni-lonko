@@ -13,7 +13,8 @@ import { abonnerInstallation, installer, modeInstallation, modeInstallationServe
 import { toNkoDigits } from "./texte/outils";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { FERMER, MA_BIBLIOTHEQUE, type Libelle } from "./application/textes";
-import { texteLangue } from "./application/Libelle";
+import { TexteLangue, texteLangue } from "./application/Libelle";
+import { TUTORIELS } from "./tutoriels/textes";
 import { ABONNEMENT_CONFIRME, LIEN_ERREUR_SERVEUR, LIEN_EXPIRE, LIEN_INVALIDE } from "../lib/messages-lecteur";
 
 
@@ -200,8 +201,9 @@ interface MobileMenuProps {
 showInstallBtn?: boolean;
   onInstallClick?: () => void;
   isNko?: boolean;
+  aDesTutoriels: boolean;
 }
-function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNko }: MobileMenuProps) {
+function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNko, aDesTutoriels }: MobileMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const { lien } = useLanguage();
 
@@ -268,6 +270,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
               { href: "#articles", label: nav.articles },
               { href: lien("/numeros"), label: nav.numeros },
               { href: lien("/lexique"), label: isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr },
+              ...(aDesTutoriels ? [{ href: lien("/tutoriels"), label: <TexteLangue texte={TUTORIELS} nko={!!isNko} /> }] : []),
               { href: lien("/bibliotheque"), label: isNko ? MA_BIBLIOTHEQUE.nko : MA_BIBLIOTHEQUE.fr },
               { href: lien("/about"), label: nav.about },
               { href: lien("/contact"), label: nav.contact }
@@ -294,7 +297,7 @@ function MobileMenu({ isOpen, onClose, nav, showInstallBtn, onInstallClick, isNk
 // ==============================================================================
 // 5. COMPOSANT PRINCIPAL
 // ==============================================================================
-export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
+export default function HomeClient({ articles, aDesTutoriels }: { articles: HomeArticle[]; aDesTutoriels: boolean }) {
   const { t, lang, lien } = useLanguage();
   const isNko = lang === "nko";
   
@@ -542,6 +545,11 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           <li className="nav-item">
             <Link href={lien("/lexique")}>{isNko ? TEXTES_LEXIQUE.lexique.nko : TEXTES_LEXIQUE.lexique.fr}</Link>
           </li>
+          {aDesTutoriels && (
+            <li className="nav-item">
+              <Link href={lien("/tutoriels")}><TexteLangue texte={TUTORIELS} nko={isNko} /></Link>
+            </li>
+          )}
           <li className="nav-item">
             <Link href={lien("/bibliotheque")}>{isNko ? MA_BIBLIOTHEQUE.nko : MA_BIBLIOTHEQUE.fr}</Link>
           </li>
@@ -588,6 +596,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         showInstallBtn={showInstallBtn}
         onInstallClick={handleInstallClick}
         isNko={isNko}
+        aDesTutoriels={aDesTutoriels}
       />
 
       <main>
@@ -857,7 +866,7 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
 </div>
       </main>
 
-      <SiteFooter activeCategory={activeCategory} setActiveCategory={handleCategoryChange} />
+      <SiteFooter activeCategory={activeCategory} setActiveCategory={handleCategoryChange} aDesTutoriels={aDesTutoriels} />
     </>
   );
 }

@@ -5,6 +5,7 @@ import { versionLangue } from "../lib/carte-partage";
 import { langueDe } from "../lib/langue";
 import { IMAGE_PARTAGE_ACCUEIL } from "../lib/partage";
 import { getArticlesCartes } from "../lib/cartes-articles";
+import { aDesTutoriels } from "../lib/tutoriels";
 
 // ==============================================================================
 // CONSTANTE GLOBALE (Sécurité SEO)
@@ -54,12 +55,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 // LA PAGE (Server Component) — cartes des articles : app/lib/cartes-articles.ts
 // ==============================================================================
 export default async function Home() {
-  const articles = await getArticlesCartes();
+  const [articles, tutoriels] = await Promise.all([getArticlesCartes(), aDesTutoriels()]);
 
   return (
     <>
       <FenetreLangue />
-      <HomeClient articles={articles} />
+      <HomeClient articles={articles} aDesTutoriels={tutoriels} />
     </>
   );
 }
