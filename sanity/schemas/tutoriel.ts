@@ -64,7 +64,8 @@ const bilingue = (type: 'string' | 'text', nom: string, titre: string) =>
         components: { input: ChampLtr },
         validation: (rule: Rule) => [
           rule.required().error('Le français est obligatoire.'),
-          rule.custom((v) => (typeof v === 'string' && contientNko(v) ? "Ce champ est en français : le N'Ko va dans le champ « N'Ko »." : true)),
+          // Simple avertissement : une phrase française peut citer un mot N'Ko
+          rule.custom((v) => (typeof v === 'string' && contientNko(v) ? "Ce champ est en français et contient du N'Ko : à vérifier." : true)).warning(),
         ],
       },
     ],
@@ -181,7 +182,7 @@ export default defineType({
             bilingue('text', 'legende', 'Légende'),
           ],
           preview: {
-            select: { titre: 'legende.nko', sousTitre: 'legende.fr', media: 'image' },
+            select: { title: 'legende.nko', subtitle: 'legende.fr', media: 'image' },
           },
         },
       ],
