@@ -4,8 +4,9 @@
  * Serwist ne fonctionne pas avec Turbopack : ce fichier le remplace, sans dépendance.
  *
  * Règles (prudentes) :
- * - PAGES : toujours le réseau d'abord. La copie gardée sert SEULEMENT sans connexion
- *   (jamais de page périmée pour un lecteur connecté). Sans copie : la page /offline.
+ * - PAGES : toujours le réseau d'abord. La copie gardée sert SEULEMENT sans connexion ou si le serveur
+ *   est en panne, réponse 500 et plus (sinon, jamais de page périmée pour un lecteur connecté). Sans
+ *   connexion et sans copie : la page /offline. Serveur en panne et sans copie : la page d'erreur du serveur.
  * - « Ma bibliothèque » : les articles sauvegardés avec le signet sont gardés à part,
  *   sans limite, avec leurs images, pour être lus sans connexion (message « garder » / « oublier »).
  * - NUMÉROS TÉLÉCHARGÉS (« Télécharger le numéro ») : la page du numéro et ses articles, avec
@@ -206,7 +207,8 @@ self.addEventListener("activate", (event) => {
   })());
 });
 
-// Pages : réseau d'abord ; sans connexion, la copie (bibliothèque ou pages lues), sinon /offline
+// Pages : réseau d'abord ; sans connexion, la copie (bibliothèque ou pages lues), sinon /offline.
+// Serveur en panne (500 et plus) : la copie aussi, sinon sa page d'erreur
 async function page(event) {
   const cle = cleDePage(event.request.url);
   const horsLigne = cleDePage(horsLigneDe(new URL(event.request.url).pathname));
@@ -237,6 +239,7 @@ async function page(event) {
         await limiter(CACHE_PAGES, MAX_PAGES);
       })());
     }
+    if (reponse.status >= 500) return (await caches.match(cle)) || reponse;
     return reponse;
   } catch {
     return (await caches.match(cle)) || (await caches.match(horsLigne)) || (await caches.match(cleDePage(PAGE_HORS_LIGNE))) || Response.error();

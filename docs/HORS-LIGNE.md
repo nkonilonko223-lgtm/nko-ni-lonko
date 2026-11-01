@@ -12,13 +12,14 @@
 - Un **numéro téléchargé** (bouton de la page du numéro) se lit entièrement sans connexion.
 - Une page jamais lue, sans connexion : la page `/offline` (« pas de connexion »), dans la langue
   du lecteur, avec la liste de ce qui est disponible sur l'appareil.
-- Connecté, le lecteur voit **toujours la version en ligne** (le réseau passe d'abord).
+- Connecté, le lecteur voit **toujours la version en ligne** (le réseau passe d'abord). Seule
+  exception : si le serveur est en panne (réponse 500 et plus), il garde sa copie s'il en a une.
 
 ## Règles
 
 | Quoi | Règle |
 |---|---|
-| Pages | Réseau d'abord ; la copie ne sert que sans connexion ; 60 pages au plus (+ la bibliothèque) |
+| Pages | Réseau d'abord ; la copie ne sert que sans connexion ou si le serveur est en panne (500 et plus) ; 60 pages au plus (+ la bibliothèque) |
 | « Ma bibliothèque » | Copie gardée **avec ses images** quand on met le signet, oubliée (images comprises) quand on l'enlève (N'Ko `/article/…` et français `/fr/article/…`) |
 | Numéros téléchargés | « Télécharger le numéro » : page du numéro et articles, avec leurs images, dans un cache par numéro et par langue (`nko-numero-003-nqo`), sans limite ; « Retirer de l'appareil » l'efface (`docs/APPLICATION.md`) |
 | Copies gardées (bibliothèque, numéros) | Mises à jour à chaque lecture connectée |
