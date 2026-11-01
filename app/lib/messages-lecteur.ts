@@ -51,6 +51,12 @@ export const ACCUEIL: Libelle = { nko: "ߟߊ߬ߓߍ߲߬ߠߌ", fr: "Accueil" };
 // Repris tel quel du nom du site (messages/nko.json, metadata.siteName)
 export const NOM_REVUE: Libelle = { nko: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ", fr: "N'Ko ni Lonko" };
 
+// Lien de confirmation qui a abouti (accueil). N'Ko repris tel quel, par programme, de HomeClient.tsx
+export const ABONNEMENT_CONFIRME: Libelle = {
+  nko: "ߌ ߣߌ߫ ߗߋ߫ ߸ ߌ ߓߘߊ߫ ߟߊߜߊ߲ߞߎ߲߫ ߞߏߢߊ߬ !",
+  fr: "Félicitations, votre abonnement est confirmé !",
+};
+
 // Lien reçu par e-mail qui n'a pas abouti (page de désabonnement, message de l'accueil pour la confirmation).
 // N'Ko repris tel quel, par programme, de la page de désabonnement
 export const LIEN_ERREUR_SERVEUR: Libelle = {

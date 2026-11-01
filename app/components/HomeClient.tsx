@@ -14,7 +14,7 @@ import { toNkoDigits } from "./texte/outils";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { FERMER, MA_BIBLIOTHEQUE, type Libelle } from "./application/textes";
 import { texteLangue } from "./application/Libelle";
-import { LIEN_ERREUR_SERVEUR, LIEN_EXPIRE, LIEN_INVALIDE } from "../lib/messages-lecteur";
+import { ABONNEMENT_CONFIRME, LIEN_ERREUR_SERVEUR, LIEN_EXPIRE, LIEN_INVALIDE } from "../lib/messages-lecteur";
 
 
 // ==============================================================================
@@ -402,24 +402,29 @@ const handleCategorySelect = useCallback((key: string) => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
+      // Nettoyage : on efface "?verified=…" de l'URL silencieusement. Pas tant que la fenêtre de langue est
+      // ouverte : si le lecteur choisit l'autre langue, elle emporte ces paramètres et le message y reparaît
+      const nettoyer = () => {
+        if (document.getElementById("fenetre-langue")?.hidden !== false) window.history.replaceState(null, "", window.location.pathname);
+      };
       if (params.get("verified") === "true") {
         // Le délai de 10ms empêche le bug "cascading render" de React
         setTimeout(() => {
           triggerVibration();
           setShowVerifyToast(true);
         }, 10);
-        
-        // Nettoyage : On efface "?verified=true" de l'URL silencieusement
-        window.history.replaceState(null, "", window.location.pathname);
-        
+
+        nettoyer();
+
         // Disparition après 6 secondes
         setTimeout(() => setShowVerifyToast(false), 6000);
       }
-      // Lien de confirmation qui n'a pas abouti (app/api/verify) : le lecteur doit le savoir
+      // Lien de confirmation qui n'a pas abouti (app/api/verify) : le lecteur doit le savoir.
+      // « notfound » : la fiche d'un lien trop ancien a été retirée par le nettoyage de la nuit, se réinscrire marche
       if (params.get("verified") === "false") {
         const raison = params.get("reason");
-        setTimeout(() => setErreurLien(raison === "server" ? LIEN_ERREUR_SERVEUR : raison === "expired" ? LIEN_EXPIRE : LIEN_INVALIDE), 10);
-        window.history.replaceState(null, "", window.location.pathname);
+        setTimeout(() => setErreurLien(raison === "server" ? LIEN_ERREUR_SERVEUR : raison === "expired" || raison === "notfound" ? LIEN_EXPIRE : LIEN_INVALIDE), 10);
+        nettoyer();
       }
     }
   }, [triggerVibration]);
@@ -587,13 +592,15 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
 
       <main>
       {/* 🚀 TOAST DE TRIOMPHE (Abonnement Confirmé). Au-dessus de la fenêtre de langue (FenetreLangue, z-[99999]) :
-          un lien ouvert depuis une application d'e-mail arrive souvent sans langue choisie */}
-      <div role="status" className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100000] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
-        <div className="bg-black/95 backdrop-blur-xl border border-green-500/50 text-green-400 px-6 py-4 rounded-full shadow-[0_10px_40px_rgba(34,197,94,0.2)] flex items-center gap-3">
+          un lien ouvert depuis une application d'e-mail arrive souvent sans langue choisie : donc les deux langues.
+          aria-hidden : invisible, il ne doit pas être lu à voix haute à chaque visite */}
+      <div role="status" className={`fixed top-24 inset-x-4 flex justify-center z-[100000] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
+        <div aria-hidden={!showVerifyToast} className="max-w-md bg-black/95 backdrop-blur-xl border border-green-500/50 text-green-400 px-6 py-4 rounded-2xl shadow-[0_10px_40px_rgba(34,197,94,0.2)] flex items-center gap-3">
           <i className="ph-fill ph-check-circle text-2xl animate-pulse"></i>
-          <span className={`text-sm md:text-base font-bold ${isNko ? 'font-kigelia text-lg' : 'tracking-wide'}`}>
-            {isNko ? 'ߌ ߣߌ߫ ߗߋ߫ ߸ ߌ ߓߘߊ߫ ߟߊߜߊ߲ߞߎ߲߫ ߞߏߢߊ߬ !' : 'Félicitations, votre abonnement est confirmé !'}
-          </span>
+          <div className="text-center font-bold">
+            <p lang="nqo" dir="rtl" className="font-kigelia text-lg">{ABONNEMENT_CONFIRME.nko}</p>
+            <p lang="fr" dir="ltr" className="text-sm tracking-wide">{ABONNEMENT_CONFIRME.fr}</p>
+          </div>
         </div>
       </div>
 

@@ -62,7 +62,7 @@
 | L40 | La vérification n'a pas abouti. Vérifiez votre connexion, puis réessayez. | Sous le bouton d'envoi : lettre et page de contact (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `VERIFICATION_ECHEC.nko` |
 | L41 | Cette page n'a pas pu se charger. | Titre de la page d'erreur (50 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TITRE.nko` |
 | L42 | Votre connexion est peut-être faible. Réessayez, ou revenez à l'accueil. | Texte de la page d'erreur (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TEXTE.nko` |
-| L43 | Ce lien a expiré : il n'est valable que 24 heures. Inscrivez-vous de nouveau pour en recevoir un autre. | Accueil, quand le lien de confirmation de l'e-mail a expiré (110 caractères au plus). **Pas encore fourni : seul le français s'affiche** | `app/lib/messages-lecteur.ts` → `LIEN_EXPIRE.nko` |
+| L43 | Ce lien a expiré : il n'est valable que 24 heures. Inscrivez-vous de nouveau pour en recevoir un autre. | Accueil, quand le lien de confirmation de l'e-mail a expiré ou que sa fiche a déjà été retirée, 3 à 4 jours après l'inscription (110 caractères au plus). **Pas encore fourni : seul le français s'affiche** | `app/lib/messages-lecteur.ts` → `LIEN_EXPIRE.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 

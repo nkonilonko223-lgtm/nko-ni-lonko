@@ -9,7 +9,8 @@ import Image from "next/image";
 // la montre avant l'affichage de la page, s'il n'y a aucun choix gardé, et ses deux boutons sont de vrais
 // liens qui répondent tout de suite, même si le reste du code n'est pas encore arrivé (réseau lent).
 // Le choix reste gardé dans « preferred-lang », comme le bouton de langue. La page derrière ne défile
-// pas tant que la fenêtre est ouverte : règle CSS (globals.css), qui ne dépend d'aucun code.
+// pas tant que la fenêtre est ouverte : règle CSS (globals.css), qui ne dépend d'aucun code. Vers l'autre
+// langue, le lien emporte les paramètres de l'adresse : le résultat d'un lien de confirmation (« ?verified=… »).
 // ============================================================================
 
 const SCRIPT = `(function(){
@@ -19,7 +20,7 @@ f.hidden=false;
 f.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[data-choix]');if(!a)return;
 var c=a.getAttribute('data-choix');try{localStorage.setItem('preferred-lang',c)}catch(x){}
 if(navigator.vibrate)navigator.vibrate(c==='nko'?[50,30,50]:30);
-if(new URL(a.href).pathname!==location.pathname)return;
+if(new URL(a.href).pathname!==location.pathname){a.href+=location.search;return}
 e.preventDefault();f.hidden=true})})();`;
 
 export default function FenetreLangue() {
