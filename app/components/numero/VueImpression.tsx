@@ -56,7 +56,7 @@ function Article({ article, marque, langue }: { article: ArticleComplet; marque?
       {article.image?.url && (
         <figure className="mt-6 break-inside-avoid">
           {/* eslint-disable-next-line @next/next/no-img-element -- impression : image chargée tout de suite (pas de chargement différé) */}
-          <img src={image(article.image.url, 1400)} alt={texteAlternatif(article.image, langue)} lang={langueTexte(texteAlternatif(article.image, langue))} className="w-full rounded-lg" />
+          <img src={image(article.image.url, 1400)} alt={texteAlternatif(article.image, langue)} lang={langueTexte(texteAlternatif(article.image, langue))} className="mx-auto max-h-[170mm] w-auto rounded-lg" />
           {(article.image.captionNko || article.image.caption || article.image.source) && (
             <figcaption className="mt-2 flex flex-col gap-1 text-center text-xs text-neutral-600">
               {article.image.captionNko && <span lang="nqo" dir="rtl" className="font-kigelia text-sm">{article.image.captionNko}</span>}
