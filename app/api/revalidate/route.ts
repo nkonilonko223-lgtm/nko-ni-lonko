@@ -31,8 +31,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Toute publication refait aussi le plan du site (app/sitemap.xml/route.ts, 31 octobre 2026)
-    if (['terme', 'numero', 'rubrique', 'author', 'article'].includes(body?._type ?? '')) {
+    if (['terme', 'numero', 'rubrique', 'author', 'article', 'tutoriel'].includes(body?._type ?? '')) {
       revalidatePath('/sitemap.xml');
+    }
+
+    // 🎬 Tutoriel : page /tutoriels, plan du site et lien du menu de l'accueil. Le webhook Sanity doit avoir « tutoriel » dans son filtre.
+    if (body?._type === 'tutoriel') {
+      revalidateTag('tutoriel', { expire: 0 });
+      console.info("🔔 [Revalidate] Tutoriels mis à jour.");
+      return NextResponse.json({ revalidated: true, now: Date.now() });
     }
 
     // 📖 Terme du lexique : dictionnaire, pages des termes, plan du site et articles

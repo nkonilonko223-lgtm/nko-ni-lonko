@@ -59,7 +59,7 @@ export function proxy(request: NextRequest) {
     img-src 'self' blob: data: https://cdn.sanity.io https://img.youtube.com https://i.ytimg.com;
     font-src 'self' data:;
     connect-src 'self' https://*.sanity.io wss://*.sanity.io https://challenges.cloudflare.com;
-    frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com;
+    frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com https://www.youtube-nocookie.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';

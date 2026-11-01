@@ -6,6 +6,7 @@ import { getLiensAuteurs } from './auteurs';
 import { getValeursCategories } from './cartes-articles';
 import { DISCIPLINES, cleDeCategorie } from './categories';
 import { getLiensRubriques } from './rubriques';
+import { aDesTutoriels } from './tutoriels';
 
 // ==============================================================================
 // 1. TYPAGE STRICT (Dogme 2 : Zéro Any)
@@ -84,6 +85,11 @@ export async function entreesPlanDuSite(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  // 🎬 Page des tutoriels (seulement quand une vidéo est publiée)
+  const tutorielEntries: MetadataRoute.Sitemap = (await aDesTutoriels())
+    ? [{ url: `${baseUrl}/tutoriels`, changeFrequency: 'monthly' as const, priority: 0.7 }]
+    : [];
+
   // ==============================================================================
   // 3. GÉNÉRATION DES ROUTES AVEC IMAGES
   // ==============================================================================
@@ -147,6 +153,7 @@ export async function entreesPlanDuSite(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     ...termeEntries,
+    ...tutorielEntries,
   ];
 
   // Langue dans l'adresse (B6, 22 octobre 2026) : chaque page en N'Ko (adresse sans préfixe)
