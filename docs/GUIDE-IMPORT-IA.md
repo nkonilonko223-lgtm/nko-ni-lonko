@@ -184,7 +184,8 @@ Une vidéo YouTube verticale et les diapositives de ses étapes. **Une fiche n'e
 
 - `numero` : entier ≥ 1, **unique** (ordre sur la page, ancre `/tutoriels#video-1`). Pas de `slug` : une seule page.
 - `titre`, `resume`, chaque `legende` : **les deux langues obligatoires**. Le N'Ko est copié **par programme** du fichier `_2` validé (`NKO\Revue\Site\traduction\TUTO-…_2_NKO-valide-MckV.md`), le français du `_0`.
-- `youtubeId` : les **11 caractères** après `v=`, pas l'adresse entière. `duree` : `m:ss`. `publishedAt` : date de mise en ligne sur YouTube (Google l'exige).
+- `youtubeId` : les **11 caractères** après `v=`, pas l'adresse entière, d'une vidéo **vraiment verticale** (une vidéo en largeur laisserait 68 % du cadre vide). `duree` : `m:ss`, la vraie durée sur YouTube. `publishedAt` : date de mise en ligne sur YouTube (Google l'exige).
+- **Sur YouTube, la miniature de la vidéo doit rester lisible en son milieu** : sans lecture automatique, le lecteur montre cette image coupée à ses côtés (seul le tiers central d'une image 16:9 reste visible) avant le second toucher.
 - `miniature` : l'image avant la lecture. Le mieux : **verticale, 1080 × 1920, sans texte entre 65 % et 85 % de la hauteur** (le bouton de lecture s'y pose). Une image en largeur reste acceptée : elle s'affiche entière au milieu du cadre.
 - `diapos` : **WebP de 1080 × 1350** (avertissement sinon), dans l'ordre des étapes, chacune avec son `_key`. La légende est du **texte**, sous l'image : ne pas compter sur un texte écrit dans l'image pour l'accessibilité. Pas de champ `alt` : la légende en tient lieu.
 - Pas de référence vers un autre document : l'ordre de publication des tutoriels est libre.
