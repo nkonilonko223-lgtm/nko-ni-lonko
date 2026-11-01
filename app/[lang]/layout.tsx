@@ -43,8 +43,9 @@ const kigelia = localFont({
     // WOFF2 (18 octobre 2026) : même police compressée sans perte (−45 %), tables de dessin et de
     // liaison identiques, rendu Chrome identique au pixel près. Les OTF restent dans public/fonts
     // (e-mails, images de partage).
-    { path: "../fonts/Kigelia.woff2", weight: "400", style: "normal" },
-    { path: "../fonts/Kigelia1.woff2", weight: "700", style: "normal" },
+    // Un seul fichier (1er novembre 2026) : le second, déclaré « gras », était l'Extrabold Italic, penché de 14° : tous
+    // les titres N'Ko penchaient. Le N'Ko n'a pas d'italique, et celui-ci est déjà Extrabold : il couvre tous les poids.
+    { path: "../fonts/Kigelia.woff2", weight: "400 800", style: "normal" },
   ],
   variable: "--font-kigelia",
   display: "swap",

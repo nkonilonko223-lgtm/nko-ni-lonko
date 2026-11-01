@@ -2189,11 +2189,24 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
   --interligne-nko: 1.75;
 }
 
-/* Écriture liée : jamais d'espace entre les lettres, et jamais de gras imité par le navigateur */
+/* Écriture liée : jamais d'espace entre les lettres, et jamais de gras ni de penché imités par le navigateur */
 :is([lang="nqo"], :where(html:not([lang|="fr"])) .font-kigelia),
 body[dir="rtl"] :is(h1, h2, h3):is([lang="nqo"], .font-kigelia) {
   font-synthesis-weight: none;
+  font-synthesis-style: none;
   letter-spacing: normal;
+}
+
+/* Le N'Ko a un seul dessin, droit : pas de penché. Le gras et l'italique de la rédaction (le chapeau des articles
+   est tout en italique) se voient par l'or de la revue. :lang() et non [lang] : la version N'Ko a lang="nqo" sur
+   toute la page, le français qu'elle contient garde son italique et sa couleur. :not([class]) : seulement le texte
+   des articles, pas les libellés qui ont déjà leur couleur. */
+.article-content blockquote[lang="nqo"],
+em:lang(nqo) {
+  font-style: normal;
+}
+:is(strong, b, em):lang(nqo):not([class]) {
+  color: rgb(var(--rgb-or));
 }
 
 /* Jamais de hauteur de ligne serrée. Gardent la leur : le texte plus aéré, et la lettrine */

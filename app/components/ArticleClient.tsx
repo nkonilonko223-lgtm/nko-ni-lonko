@@ -552,7 +552,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             )}
           </div>
         ) : (
-         <span className={`inline-block bg-surface/60 print:bg-transparent backdrop-blur-md border border-white/10 print:border-none px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 print:text-gray-600 italic shadow-[0_0_20px_rgba(251,191,36,0.1)] print:shadow-none ${lang === 'nko' ? 'font-kigelia' : ''}`}>
+         <span className={`inline-block bg-surface/60 print:bg-transparent backdrop-blur-md border border-white/10 print:border-none px-4 py-1.5 md:px-6 md:py-2 rounded-full text-[10px] md:text-xs text-gray-400 print:text-gray-600 shadow-[0_0_20px_rgba(251,191,36,0.1)] print:shadow-none ${lang === 'nko' ? 'font-kigelia' : 'italic'}`}>
             {captionText}
          </span>
         )}

@@ -327,7 +327,7 @@ export default function CustomPortableText({ value, langue = "nqo" }: CustomPort
         if (nko) {
           return (
             <FadeInBlock>
-              <blockquote dir="rtl" lang="nqo" className="relative border-r-4 border-or print:border-black pr-6 md:pr-8 py-5 my-10 md:my-14 italic text-or print:text-black bg-gradient-to-l from-or/10 to-transparent print:bg-transparent rounded-l-xl font-kigelia" style={{ fontSize: '1.3em', lineHeight: '2.0' }}>
+              <blockquote dir="rtl" lang="nqo" className="relative border-r-4 border-or print:border-black pr-6 md:pr-8 py-5 my-10 md:my-14 text-or print:text-black bg-gradient-to-l from-or/10 to-transparent print:bg-transparent rounded-l-xl font-kigelia" style={{ fontSize: '1.3em', lineHeight: '2.0' }}>
                 <i className="ph-fill ph-quotes absolute top-3 right-3 text-or/20 text-3xl print:hidden"></i>
                 {children}
               </blockquote>
