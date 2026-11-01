@@ -89,7 +89,8 @@ export default function PageErreur({ nko, deuxLangues = false }: { nko: boolean;
         </p>
         <div aria-hidden="true" style={{ width: 72, height: 2, margin: "20px 0", borderRadius: 2, background: "linear-gradient(90deg, transparent, #f2b544, transparent)" }} />
         <h1 style={{ margin: 0, fontSize: 25, fontWeight: 800, lineHeight: 1.3, color: "#fff7e8" }}>{texteDe(PAGE_ERREUR_TITRE)}</h1>
-        <p style={{ margin: "12px 0 0", maxWidth: 340, fontSize: 16, lineHeight: 1.6, color: "#c9c3b4" }}>{texteDe(PAGE_ERREUR_TEXTE)}</p>
+        {/* Page de secours du serveur : c'est lui qui a échoué, le texte sur une connexion faible serait faux */}
+        {!deuxLangues && <p style={{ margin: "12px 0 0", maxWidth: 340, fontSize: 16, lineHeight: 1.6, color: "#c9c3b4" }}>{texteDe(PAGE_ERREUR_TEXTE)}</p>}
         <div style={{ width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12, marginTop: 26 }}>
           {deuxLangues ? (
             <>
