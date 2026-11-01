@@ -132,6 +132,8 @@ function lireSauvegarde(chemin: string): Map<string, Fiche> {
   const tar = gunzipSync(readFileSync(chemin));
   const texte = (b: Buffer) => { const fin = b.indexOf(0); return b.subarray(0, fin < 0 ? b.length : fin).toString('utf8'); };
   const SAUT = String.fromCharCode(10);
+  const fiches = new Map<string, Fiche>();
+  let trouve = false;
   let pos = 0;
   let nomPax = '';
   while (pos + 512 <= tar.length) {
@@ -147,17 +149,24 @@ function lireSauvegarde(chemin: string): Map<string, Fiche> {
       const contenu = texte(donnees);
       nomPax = type === 'L' ? contenu : (contenu.split(SAUT).find((l) => l.includes(' path=')) || '').split(' path=')[1] || '';
     } else if (nom.endsWith('data.ndjson')) {
-      const fiches = new Map<string, Fiche>();
+      trouve = true;
       for (const ligne of donnees.toString('utf8').split(SAUT)) {
         if (!ligne.trim()) continue;
         const d = JSON.parse(ligne) as Doc & { numero?: unknown };
         if (d._id && d._type) fiches.set(d._id, { _id: d._id, _type: d._type, slug: lienDe(d), numero: d.numero });
       }
-      return fiches;
+    } else {
+      // Les images ne sont pas dans data.ndjson : ce sont des fichiers images/<empreinte>-<L>x<H>.<format> de l'archive
+      const image = /(?:^|\/)images\/([0-9a-f]+)-([0-9]+x[0-9]+)\.([a-z0-9]+)$/.exec(nom);
+      if (image) {
+        const idImage = `image-${image[1]}-${image[2]}-${image[3]}`;
+        fiches.set(idImage, { _id: idImage, _type: 'sanity.imageAsset' });
+      }
     }
     pos += 512 + Math.ceil(taille / 512) * 512;
   }
-  throw new Error('data.ndjson introuvable dans la sauvegarde');
+  if (!trouve) throw new Error('data.ndjson introuvable dans la sauvegarde');
+  return fiches;
 }
 
 let sauvegarde: Map<string, Fiche> | undefined;
@@ -239,7 +248,7 @@ function verifierBilingue(v: unknown, ou: string, id: string) {
   if (!String(t.nko ?? '').trim()) erreurs.push(`[${id}] ${ou}.nko obligatoire.`);
   else if (!contientNko(String(t.nko))) erreurs.push(`[${id}] ${ou}.nko ne contient pas de caractère N'Ko.`);
   if (!String(t.fr ?? '').trim()) erreurs.push(`[${id}] ${ou}.fr obligatoire.`);
-  else if (contientNko(String(t.fr))) erreurs.push(`[${id}] ${ou}.fr contient du N'Ko.`);
+  else if (contientNko(String(t.fr))) avertissements.push(`[${id}] ${ou}.fr contient du N'Ko : à vérifier (une phrase française peut citer un mot N'Ko).`);
 }
 
 for (const d of docs) {
@@ -387,7 +396,7 @@ for (const d of docs) {
     verifierBilingue(d.resume, 'resume', id);
     if (!ID_YOUTUBE.test(String(d.youtubeId ?? ''))) erreurs.push(`[${id}] tutoriel : « youtubeId » doit être l'identifiant seul, 11 caractères.`);
     if (!DUREE.test(String(d.duree ?? ''))) erreurs.push(`[${id}] tutoriel : « duree » doit s'écrire ainsi : 3:50.`);
-    if (!d.publishedAt || Number.isNaN(Date.parse(String(d.publishedAt)))) erreurs.push(`[${id}] tutoriel : « publishedAt » obligatoire (date ISO de la mise en ligne sur YouTube).`);
+    if (!/^[0-9]{4}-[0-9]{2}-[0-9]{2}T/.test(String(d.publishedAt ?? '')) || Number.isNaN(Date.parse(String(d.publishedAt)))) erreurs.push(`[${id}] tutoriel : « publishedAt » obligatoire, date ISO de la mise en ligne sur YouTube (ex. 2026-11-02T18:00:00.000Z).`);
     const miniature = d.miniature as { asset?: Reference } | undefined;
     if (!miniature?.asset?._ref) erreurs.push(`[${id}] tutoriel : la miniature (miniature.asset) est obligatoire.`);
     verifierReference(miniature?.asset, ['sanity.imageAsset'], 'miniature', id);
