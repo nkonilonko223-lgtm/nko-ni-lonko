@@ -175,7 +175,7 @@ const blocArticle = (a: Article & { slug: string; title: string }) => {
 const html = `<!DOCTYPE html>
 <html lang="nqo" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><title>${echapper(sujet)}</title>
-<style>@font-face{font-family:'Kigelia';src:url('${SITE}/fonts/Kigelia.otf') format('opentype');font-weight:normal}@font-face{font-family:'Kigelia';src:url('${SITE}/fonts/Kigelia1.otf') format('opentype');font-weight:bold}</style>
+<style>@font-face{font-family:'Kigelia';src:url('${SITE}/fonts/Kigelia.otf') format('opentype');font-weight:normal}@font-face{font-family:'Kigelia';src:url('${SITE}/fonts/Kigelia.otf') format('opentype');font-weight:bold}</style>
 </head><body style="margin:0;padding:0;background:#000000">
 <div style="display:none;max-height:0;overflow:hidden">${echapper([T.numeroFr(n.numero), n.titleFr, articles.length + ' articles'].filter(Boolean).join(' · '))}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#000000"><tr><td align="center" style="padding:32px 12px">

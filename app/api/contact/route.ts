@@ -136,7 +136,7 @@ const safeMessage = sanitizeHtml(message, { allowedTags: [] });
               }
               @font-face {
                 font-family: 'Kigelia';
-                src: url('https://www.nkonilonko.com/fonts/Kigelia1.otf') format('opentype');
+                src: url('https://www.nkonilonko.com/fonts/Kigelia.otf') format('opentype');
                 font-weight: bold;
               }
               body { background-color: #000000; color: #ffffff; margin: 0; padding: 40px 20px; font-family: 'Kigelia', system-ui, sans-serif; text-align: right; }

@@ -27,7 +27,7 @@ export const generateWelcomeEmail = (verifyLink: string, unsubscribeLink: string
 
         @font-face {
           font-family: 'Kigelia';
-          src: url('https://www.nkonilonko.com/fonts/Kigelia1.otf') format('opentype');
+          src: url('https://www.nkonilonko.com/fonts/Kigelia.otf') format('opentype');
           font-weight: bold;
           font-style: normal;
         }
