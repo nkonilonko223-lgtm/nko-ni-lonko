@@ -1,7 +1,7 @@
 # N'Ko ni Lonko — Mémoire du projet (CLAUDE.md)
 
 > Revue scientifique bilingue **N'Ko / français** — https://www.nkonilonko.com
-> Ce fichier est lu au début de chaque session. Mis à jour le 24 octobre 2026.
+> Ce fichier est lu au début de chaque session. Mis à jour le 1er novembre 2026.
 
 ---
 
@@ -116,6 +116,8 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 - Dans le code, écrire les plages Unicode par **numéro** (`code >= 0x07c0`) plutôt qu'avec des barres obliques (`\u07C0`), qui peuvent être déformées par les outils.
 - Le `.env.local` local n'a peut-être pas `SANITY_API_READ_TOKEN` (la route d'aperçu répond 500 en local, sans risque).
 - Une construction sans réseau **échoue** (Sanity injoignable), et c'est voulu : elle ne produit plus de pages fausses.
+- **Dossier `pages/`** : seulement la page de secours (voir partie 4). Sa présence change les types de Next.js (`usePathname()` et `useParams()` « peuvent être vides ») et Next.js contrôle aussi ce qu'exporte chaque page. `tsc` seul ne le voit qu'après une construction (`next-env.d.ts`, `.next/types`) : après un changement dans `pages/`, lancer **la construction**. Elle ne marche que dans `C:\Dev\nko-souverain` : Turbopack refuse un dossier dont `node_modules` est un raccourci.
+- **Vercel ne se comporte pas comme `next start`** quand une page ne peut pas se refaire (voir `app/api/revalidate`, partie 4). Une conclusion sur le cache se vérifie sur un aperçu, pas seulement en local.
 
 ## 4. Architecture (fichiers importants)
 
@@ -138,7 +140,8 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/api/newsletter` · `verify` · `unsubscribe` | Inscription, confirmation, désinscription (fiches **privées** `subscriber.<uuid>`) ; désinscription « en un clic » des messageries (RFC 8058) pour la lettre (`scripts/lettre/envoyer.mts`) |
 | `app/api/contact` | Formulaire de contact (e-mail Resend, rien n'est stocké) |
 | `app/api/cron/cleanup` | Nettoyage nocturne (Vercel Cron, protégé par `CRON_SECRET`) |
-| `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique, numéros, auteurs dès une publication (filtre du webhook, dans sanity.io/manage → API → Webhooks : `_type in ["article","terme","numero","rubrique","author"]`). Le site lit Sanity **sans CDN** (`sanity/client.ts`, 23 octobre 2026) : sinon la page reconstruite juste après la sonnette pouvait garder l'ancienne version une heure |
+| `app/api/revalidate` | « Sonnette » Sanity : met à jour accueil, plan du site, articles, lexique, numéros, auteurs dès une publication (filtre du webhook, dans sanity.io/manage → API → Webhooks : `_type in ["article","terme","numero","rubrique","author"]`). Le site lit Sanity **sans CDN** (`sanity/client.ts`, 23 octobre 2026) : sinon la page reconstruite juste après la sonnette pouvait garder l'ancienne version une heure. Si Sanity tombe juste après une publication, **Vercel sert la dernière bonne copie**, statut 200 (observé le 1er novembre 2026 sur un aperçu, en-tête `REVALIDATED`) : `{ expire: 0 }` reste donc le bon réglage, mise à jour immédiate et pas d'erreur. Ce filet n'existe pas avec `next start` en local |
+| `pages/500.tsx` · `pages/_document.tsx` · `app/components/PageErreur.tsx` | **Page de secours** (1er novembre 2026) : ce que Vercel montre quand une adresse jamais préparée échoue sur le serveur, par exemple pendant une panne de Sanity (sinon « Internal Server Error », en anglais). N'Ko puis français, aucun code envoyé au navigateur (`unstable_runtimeJS`). Observée sur un aperçu Vercel. `app/[lang]/error.tsx` reste la page d'erreur dans le navigateur |
 | `app/api/draft-mode/enable` · `disable` | Aperçu des brouillons (onglet **Presentation** du Studio) |
 | `sanity/fetch.ts` | `getSanityClient()` : brouillons en mode aperçu (clé Viewer), sinon contenu publié |
 | `sanity/schemas/` | `article.ts`, `terme.ts`, `author.ts`, `subscriber.ts`, `rubrique.ts`, `numero.ts` (`index.ts` est un reste inutilisé) |
@@ -150,7 +153,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 | `app/fonts/` · `public/arriere-plan.avif` | Police Kigelia en **WOFF2** (les OTF de `public/fonts` servent aux e-mails et aux images de partage) ; motif de fond en AVIF, WebP en repli (`image-set` dans `globals.css`) |
 | **Design « Nuit du Mandé »** : haut de `app/globals.css` · `tailwind.config.ts` · `app/lib/ambiance.ts` · `app/fonts/lecture.ts` | Couleurs en **variables** (seul endroit où les changer). **`white` = couleur du TEXTE** (ivoire, ou encre sur le papier) ; vrai blanc : **`blanc`** ; fond `void`, panneau `surface`, or `or` (bouton doré plein : `bg-[#fbbf24]`). Ambiances de lecture des articles **Nuit / Papier / Jour** (`html[data-ambiance]`, îlot toujours sombre : `ambiance-nuit`). Texte français des articles en **Literata**. Tout dans **`docs/DESIGN.md`** |
 | `app/bibliotheque/` · `app/lib/bibliotheque.ts` | « Ma bibliothèque » : articles sauvegardés avec le signet (dans le navigateur du lecteur, clé `nko_bookmarks`), lisibles sans connexion |
-| `public/sw.js` · `app/components/LectureHorsLigne.tsx` | **Lecture hors ligne** (service worker écrit à la main ; Serwist retiré). Réseau d'abord pour les pages ; jamais `/studio`, `/api`. Bibliothèque et numéros téléchargés gardés avec leurs images. Arrêt d'urgence : `docs/HORS-LIGNE.md` |
+| `public/sw.js` · `app/components/LectureHorsLigne.tsx` | **Lecture hors ligne** (service worker écrit à la main ; Serwist retiré). Réseau d'abord pour les pages, la copie seulement sans connexion ou si le serveur répond 500 et plus ; jamais `/studio`, `/api`. Bibliothèque et numéros téléchargés gardés avec leurs images. Arrêt d'urgence : `docs/HORS-LIGNE.md` |
 | `app/components/application/` · `app/lib/installation.ts` · `public/manifest*.json` · `public/application/` | **Application du site** (étapes 1 et 2) : un manifeste par langue, icônes masquables, raccourcis, captures, écrans de démarrage iPhone (fabriqués par `scripts/application/generer.mjs`) ; proposition d'installer (2ᵉ article), guide iPhone, « Télécharger le numéro », page « pas de connexion » qui liste ce qui est gardé. Textes : `application/textes.ts`. Détails : `docs/APPLICATION.md` |
 | `app/auteurs/[slug]/` · `app/lib/auteurs.ts` | Pages auteurs (biographie N'Ko puis française, articles). **WhatsApp jamais publié** (numéro de téléphone) |
 | `app/components/PiluleRetour.tsx` | Bouton « Retour » des pages sans navigation (numéros, auteurs, bibliothèque) : venu d'un autre site → accueil |
@@ -163,7 +166,7 @@ PYTHON=<chemin de python> node scripts/icones/generer-icones.mjs
 
 ## 5. Données Sanity (à connaître avant toute écriture)
 
-- **Lecture de Sanity : ne jamais attraper l'erreur** pour rendre `null` ou `[]` (1er novembre 2026). Une panne n'est pas une absence : si l'erreur remonte, Next.js garde la dernière bonne page et une construction échoue. Mesuré sans cette règle : articles en 404, accueil et lexique vides. `null` veut dire « le document n'existe pas ». Une image cassée passe par `safeUrlFor` (`sanity/image.ts`).
+- **Lecture de Sanity : ne jamais attraper l'erreur** pour rendre `null` ou `[]` (1er novembre 2026). Une panne n'est pas une absence : si l'erreur remonte, Next.js garde la dernière bonne page et une construction échoue. Mesuré sans cette règle : articles en 404, accueil et lexique vides. `null` veut dire « le document n'existe pas ». Une image cassée passe par `safeUrlFor` (`sanity/image.ts`). Sanity muet : délai de 15 s et 2 réessais (`sanity/client.ts`) ; la plus longue requête normale mesurée fait moins de 2 s.
 - **Abonnés** : identifiant **avec un point** `subscriber.<uuid>` → **invisibles** pour le public (dataset public). Ne jamais créer d'abonné sans point.
 - **Article** : `title` et `excerpt` obligatoires (erreur), `publishedAt` obligatoire, `slug` en `a-z0-9-` seulement. Garde-fous (avertissements) : texte non NFC ; terme du lexique non relié en N'Ko **et** en français, ou relié plusieurs fois.
 - **Encadrés (`callout.intent`)** : `success` = **Définition** (bleu, compact) · `amazing` = Le saviez-vous ? · `question` = Question · `info` · `warning`.
