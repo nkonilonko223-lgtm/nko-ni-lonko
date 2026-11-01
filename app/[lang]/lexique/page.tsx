@@ -53,12 +53,7 @@ const QUERY = `*[_type == "terme" && defined(slug.current)] {
 
 export default async function PageLexique() {
   const { client: sanity, apercu } = await getSanityClient();
-  let termes: TermeDictionnaire[] = [];
-  try {
-    termes = await sanity.fetch<TermeDictionnaire[]>(QUERY, {}, apercu ? { cache: "no-store" } : { next: { tags: ["terme"], revalidate: 3600 } });
-  } catch (error) {
-    console.error("Erreur Fetch Lexique:", error);
-  }
+  const termes = await sanity.fetch<TermeDictionnaire[]>(QUERY, {}, apercu ? { cache: "no-store" } : { next: { tags: ["terme"], revalidate: 3600 } });
   termes.sort((a, b) => comparerNko(a.termeNko, b.termeNko));
 
   const donneesStructurees = {

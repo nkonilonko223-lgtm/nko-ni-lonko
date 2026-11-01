@@ -39,25 +39,16 @@ const QUERY = `*[_type == "terme" && slug.current == $slug][0] {
 
 async function getTerme(slug: string): Promise<TermeComplet | null> {
   const { client: sanity, apercu } = await getSanityClient();
-  try {
-    return await sanity.fetch<TermeComplet | null>(
-      QUERY,
-      { slug },
-      apercu ? { cache: "no-store" } : { next: { tags: ["terme"], revalidate: 3600 } }
-    );
-  } catch (error) {
-    console.error("Erreur Fetch Terme:", error);
-    return null;
-  }
+  return sanity.fetch<TermeComplet | null>(
+    QUERY,
+    { slug },
+    apercu ? { cache: "no-store" } : { next: { tags: ["terme"], revalidate: 3600 } }
+  );
 }
 
 export async function generateStaticParams() {
-  try {
-    const slugs = await client.fetch<{ slug: string }[]>(`*[_type == "terme" && defined(slug.current)]{ "slug": slug.current }`);
-    return slugs.map(({ slug }) => ({ slug }));
-  } catch {
-    return [];
-  }
+  const slugs = await client.fetch<{ slug: string }[]>(`*[_type == "terme" && defined(slug.current)]{ "slug": slug.current }`);
+  return slugs.map(({ slug }) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; slug: string }> }): Promise<Metadata> {

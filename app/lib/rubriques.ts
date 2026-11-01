@@ -37,32 +37,23 @@ type RubriqueBrute = Omit<Rubrique, "articles"> & {
 // Une rubrique et ses articles publiés ; null si absente ou sans article publié
 export async function getRubrique(slug: string): Promise<Rubrique | null> {
   const { client: sanity, apercu } = await getSanityClient();
-  try {
-    const brut = await sanity.fetch<RubriqueBrute | null>(
-      REQUETE_RUBRIQUE,
-      { slug },
-      apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article"], revalidate: 3600 } }
-    );
-    if (!brut?.articles?.length) return null;
-    return {
-      ...brut,
-      articles: brut.articles.map((a) => ({ ...transformSafeHomeArticle(a), numero: a.numero ?? null })),
-    };
-  } catch (error) {
-    console.error("Erreur Fetch Rubrique:", error);
-    return null;
-  }
+  const brut = await sanity.fetch<RubriqueBrute | null>(
+    REQUETE_RUBRIQUE,
+    { slug },
+    apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article"], revalidate: 3600 } }
+  );
+  if (!brut?.articles?.length) return null;
+  return {
+    ...brut,
+    articles: brut.articles.map((a) => ({ ...transformSafeHomeArticle(a), numero: a.numero ?? null })),
+  };
 }
 
 // Rubriques qui ont au moins un article publié (pages construites à l'avance et plan du site)
 export async function getLiensRubriques(): Promise<{ slug: string }[]> {
-  try {
-    return await client.fetch<{ slug: string }[]>(
-      `*[_type == "rubrique" && defined(slug.current) && count(*[_type == "article" && rubrique._ref == ^._id]) > 0]{ "slug": slug.current }`,
-      {},
-      { next: { tags: ["numero", "article"], revalidate: 3600 } }
-    );
-  } catch {
-    return [];
-  }
+  return client.fetch<{ slug: string }[]>(
+    `*[_type == "rubrique" && defined(slug.current) && count(*[_type == "article" && rubrique._ref == ^._id]) > 0]{ "slug": slug.current }`,
+    {},
+    { next: { tags: ["numero", "article"], revalidate: 3600 } }
+  );
 }

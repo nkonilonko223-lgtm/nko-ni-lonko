@@ -44,25 +44,16 @@ const REQUETE_AUTEUR = `*[_type == "author" && slug.current == $slug][0]{
 const CACHE = { next: { tags: ["article", "author"], revalidate: 3600 } };
 
 export async function getAuteur(slug: string): Promise<Auteur | null> {
-  try {
-    return await client.fetch<Auteur | null>(REQUETE_AUTEUR, { slug }, CACHE);
-  } catch (error) {
-    console.error("Erreur Fetch Auteur:", error);
-    return null;
-  }
+  return client.fetch<Auteur | null>(REQUETE_AUTEUR, { slug }, CACHE);
 }
 
 // Auteurs qui ont au moins un article publié (pages construites à l'avance et plan du site)
 export async function getLiensAuteurs(): Promise<{ slug: string; modifie?: string }[]> {
-  try {
-    return await client.fetch<{ slug: string; modifie?: string }[]>(
-      `*[_type == "author" && defined(slug.current) && count(*[_type == "article" && references(^._id)]) > 0]{
-        "slug": slug.current, "modifie": _updatedAt
-      }`,
-      {},
-      CACHE
-    );
-  } catch {
-    return [];
-  }
+  return client.fetch<{ slug: string; modifie?: string }[]>(
+    `*[_type == "author" && defined(slug.current) && count(*[_type == "article" && references(^._id)]) > 0]{
+      "slug": slug.current, "modifie": _updatedAt
+    }`,
+    {},
+    CACHE
+  );
 }

@@ -84,47 +84,33 @@ const REQUETE_NUMEROS = `*[_type == "numero" && defined(slug.current)] | order(n
 // Un numéro complet (page /numeros/[slug]). null si absent ou non publié.
 export async function getNumero(slug: string): Promise<Numero | null> {
   const { client: sanity, apercu } = await getSanityClient();
-  try {
-    const brut = await sanity.fetch<(Omit<Numero, "sommaire"> & { sommaire?: (ArticleDuSommaire | null)[] }) | null>(
-      REQUETE_NUMERO,
-      { slug },
-      apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article"], revalidate: 3600 } }
-    );
-    if (!brut) return null;
-    // Un article du sommaire pas encore publié est renvoyé vide : on l'écarte
-    return { ...brut, sommaire: (brut.sommaire || []).filter((a): a is ArticleDuSommaire => !!a?.slug) };
-  } catch (error) {
-    console.error("Erreur Fetch Numéro:", error);
-    return null;
-  }
+  const brut = await sanity.fetch<(Omit<Numero, "sommaire"> & { sommaire?: (ArticleDuSommaire | null)[] }) | null>(
+    REQUETE_NUMERO,
+    { slug },
+    apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article"], revalidate: 3600 } }
+  );
+  if (!brut) return null;
+  // Un article du sommaire pas encore publié est renvoyé vide : on l'écarte
+  return { ...brut, sommaire: (brut.sommaire || []).filter((a): a is ArticleDuSommaire => !!a?.slug) };
 }
 
 // Tous les numéros publiés, du plus récent au plus ancien (page /numeros)
 export async function getNumeros(): Promise<NumeroCourt[]> {
   const { client: sanity, apercu } = await getSanityClient();
-  try {
-    return await sanity.fetch<NumeroCourt[]>(
-      REQUETE_NUMEROS,
-      {},
-      apercu ? { cache: "no-store" } : { next: { tags: ["numero"], revalidate: 3600 } }
-    );
-  } catch (error) {
-    console.error("Erreur Fetch Numéros:", error);
-    return [];
-  }
+  return sanity.fetch<NumeroCourt[]>(
+    REQUETE_NUMEROS,
+    {},
+    apercu ? { cache: "no-store" } : { next: { tags: ["numero"], revalidate: 3600 } }
+  );
 }
 
 // Liens des numéros publiés (pages construites à l'avance et plan du site)
 export async function getLiensNumeros(): Promise<{ slug: string; publishedAt?: string }[]> {
-  try {
-    return await client.fetch<{ slug: string; publishedAt?: string }[]>(
-      `*[_type == "numero" && defined(slug.current)]{ "slug": slug.current, publishedAt }`,
-      {},
-      { next: { tags: ["numero"], revalidate: 3600 } }
-    );
-  } catch {
-    return [];
-  }
+  return client.fetch<{ slug: string; publishedAt?: string }[]>(
+    `*[_type == "numero" && defined(slug.current)]{ "slug": slug.current, publishedAt }`,
+    {},
+    { next: { tags: ["numero"], revalidate: 3600 } }
+  );
 }
 
 // Numéro COMPLET, textes des articles compris (page d'impression /numeros/[slug]/imprimer → PDF).
@@ -156,16 +142,11 @@ const REQUETE_NUMERO_COMPLET = `*[_type == "numero" && slug.current == $slug][0]
 
 export async function getNumeroComplet(slug: string): Promise<NumeroComplet | null> {
   const { client: sanity, apercu } = await getSanityClient();
-  try {
-    const brut = await sanity.fetch<(Omit<NumeroComplet, "sommaire"> & { sommaire?: (ArticleComplet | null)[] }) | null>(
-      REQUETE_NUMERO_COMPLET,
-      { slug },
-      apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article", "terme"], revalidate: 3600 } }
-    );
-    if (!brut) return null;
-    return { ...brut, sommaire: (brut.sommaire || []).filter((a): a is ArticleComplet => !!a?.slug) };
-  } catch (error) {
-    console.error("Erreur Fetch Numéro complet:", error);
-    return null;
-  }
+  const brut = await sanity.fetch<(Omit<NumeroComplet, "sommaire"> & { sommaire?: (ArticleComplet | null)[] }) | null>(
+    REQUETE_NUMERO_COMPLET,
+    { slug },
+    apercu ? { cache: "no-store" } : { next: { tags: ["numero", "article", "terme"], revalidate: 3600 } }
+  );
+  if (!brut) return null;
+  return { ...brut, sommaire: (brut.sommaire || []).filter((a): a is ArticleComplet => !!a?.slug) };
 }

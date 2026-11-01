@@ -110,31 +110,22 @@ export async function getArticlesCartes(valeursCategorie?: string[]): Promise<Sa
   const query = `*[_type == "article"${filtre}] | order(publishedAt desc) {${CHAMPS_CARTE}
   }`;
 
-  try {
-    // Mode aperçu (Studio) : brouillons inclus, sans cache ; sinon : version publiée
-    const { client: sanity, apercu } = await getSanityClient();
-    const rawArticles = await sanity.fetch<SanityHomeArticleRaw[]>(
-      query,
-      { valeurs: valeursCategorie ?? [] },
-      apercu ? { cache: "no-store" } : { next: { tags: ["article", "home-articles"], revalidate: 3600 } }
-    );
-    return rawArticles.map(transformSafeHomeArticle);
-  } catch (error) {
-    console.error("Erreur Fetch Home:", error);
-    return [];
-  }
+  // Mode aperçu (Studio) : brouillons inclus, sans cache ; sinon : version publiée
+  const { client: sanity, apercu } = await getSanityClient();
+  const rawArticles = await sanity.fetch<SanityHomeArticleRaw[]>(
+    query,
+    { valeurs: valeursCategorie ?? [] },
+    apercu ? { cache: "no-store" } : { next: { tags: ["article", "home-articles"], revalidate: 3600 } }
+  );
+  return rawArticles.map(transformSafeHomeArticle);
 }
 
 // Valeurs de catégorie des articles publiés : une discipline n'a de page que si elle a des articles
 // (pages construites à l'avance et plan du site ; étiquette « article », vidée par la sonnette)
 export async function getValeursCategories(): Promise<string[]> {
-  try {
-    return await client.fetch<string[]>(
-      `array::unique(*[_type == "article" && defined(category)].category)`,
-      {},
-      { next: { tags: ["article"], revalidate: 3600 } }
-    );
-  } catch {
-    return [];
-  }
+  return client.fetch<string[]>(
+    `array::unique(*[_type == "article" && defined(category)].category)`,
+    {},
+    { next: { tags: ["article"], revalidate: 3600 } }
+  );
 }

@@ -21,18 +21,13 @@ export const metadata: Metadata = {
 };
 
 async function getArticles(): Promise<ArticleSauvegardable[]> {
-  try {
-    return await client.fetch<ArticleSauvegardable[]>(
-      `*[_type == "article" && defined(slug.current)] | order(publishedAt desc) {
-        title, "slug": slug.current, publishedAt, category, "image": mainImage{ alt, altNko, "url": asset->url }
-      }`,
-      {},
-      { next: { tags: ["article"], revalidate: 3600 } }
-    );
-  } catch (error) {
-    console.error("Erreur Fetch Bibliothèque:", error);
-    return [];
-  }
+  return client.fetch<ArticleSauvegardable[]>(
+    `*[_type == "article" && defined(slug.current)] | order(publishedAt desc) {
+      title, "slug": slug.current, publishedAt, category, "image": mainImage{ alt, altNko, "url": asset->url }
+    }`,
+    {},
+    { next: { tags: ["article"], revalidate: 3600 } }
+  );
 }
 
 export default async function PageBibliotheque() {
