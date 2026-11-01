@@ -600,6 +600,12 @@ nav {
     padding: 8px;
   }
 
+  /* En changeant de langue, le routeur amène <main> tout en haut de l'écran : il commence sous la barre
+     du haut, et le titre de l'accueil passait dessous. Cette marge ramène la page à son vrai début. */
+  main {
+    scroll-margin-top: 120px;
+  }
+
   /* =========================================
      2.5 — HERO
      ========================================= */
