@@ -11,7 +11,7 @@
  * ==============================================================================
  */
 
-import { useState, useEffect, useCallback, type ReactNode } from "react";
+import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +21,7 @@ import { PortableTextBlock } from "@portabletext/types";
 import { CLE_LANGUE_LECTURE, formatDateNko, toNkoDigits } from "./texte/outils";
 import LexiqueArticle from "./lexique/LexiqueArticle";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
-import { retrouverPlaceLangue } from "../lib/place-langue";
+import { blocEnHaut, blocs, retrouverPlaceLangue } from "../lib/place-langue";
 import { cheminDeCle, cleDeCategorie } from "../lib/categories";
 import { contientNko, sensDe, separerLangues, separerTitre, texteDePartage, langueTexte, texteAlternatif } from "./numero/titre";
 import type { TermeLexiqueData } from "./lexique/TermeLexique";
@@ -180,22 +180,30 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   // (jamais un défilement imposé) propose de reprendre au même endroit
   const cleLecture = `nko_lecture:${article.slug}`;
   const [reprise, setReprise] = useState<number | null>(null);
+  // Tant que le bouton est proposé, la place gardée ne change pas : un coup d'œil au début ne l'efface pas
+  const proposee = useRef(false);
   useEffect(() => {
-    const blocs = () => Array.from(document.querySelectorAll<HTMLElement>("article.article-content .apparition"));
+    let aLuIci = false; // le lecteur est descendu pendant cette visite
     const minuteur = setTimeout(() => {
       try {
         // Arrivée par le bouton de langue : le lecteur retrouve son paragraphe, sans rien toucher
         if (retrouverPlaceLangue(article.slug)) return;
         const i = Number(localStorage.getItem(cleLecture));
-        if (Number.isInteger(i) && i >= 2 && i < blocs().length - 2) setReprise(i);
+        // Déjà à ce paragraphe (bouton retour du téléphone) : rien à proposer
+        if (Number.isInteger(i) && i >= 2 && i < blocs().length - 2 && Math.abs(blocEnHaut() - i) > 1) {
+          proposee.current = true;
+          setReprise(i);
+        }
       } catch { /* stockage indisponible */ }
     }, 0);
     const garder = () => {
+      if (proposee.current) return;
       const liste = blocs();
-      const i = liste.findIndex((b) => b.getBoundingClientRect().bottom > 120); // premier bloc sous la barre du haut
+      const i = blocEnHaut();
       try {
         if (i < 0 || i >= liste.length - 2) localStorage.removeItem(cleLecture); // article terminé
-        else if (i >= 2) localStorage.setItem(cleLecture, String(i));
+        else if (i >= 2) { aLuIci = true; localStorage.setItem(cleLecture, String(i)); }
+        else if (aLuIci) localStorage.removeItem(cleLecture); // remonté tout en haut : il repart du début
       } catch { /* stockage indisponible */ }
     };
     const siCachee = () => { if (document.visibilityState === 'hidden') garder(); };
@@ -220,7 +228,14 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   useEffect(() => {
     if (reprise === null) return;
     const minuteur = setTimeout(() => setReprise(null), 12000); // le bouton disparaît seul
-    return () => clearTimeout(minuteur);
+    // Il disparaît aussi quand le lecteur arrive à ce paragraphe (le bouton retour y ramène parfois après coup)
+    const surDefilement = () => { if (Math.abs(blocEnHaut() - reprise) <= 1) setReprise(null); };
+    window.addEventListener('scroll', surDefilement, { passive: true });
+    return () => {
+      proposee.current = false;
+      clearTimeout(minuteur);
+      window.removeEventListener('scroll', surDefilement);
+    };
   }, [reprise]);
   // A4 — Langue de lecture : le choix vit sur <html data-lecture> (posé avant l'affichage par le
   // petit script ci-dessous) ; l'état React ne sert qu'à marquer le bouton choisi
@@ -249,7 +264,7 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
   const reprendreLecture = () => {
     if (reprise === null) return;
     triggerVibration();
-    const bloc = document.querySelectorAll<HTMLElement>("article.article-content .apparition")[reprise];
+    const bloc = blocs()[reprise];
     if (bloc) window.scrollTo({ top: bloc.getBoundingClientRect().top + window.scrollY - 110, behavior: 'smooth' });
     setReprise(null);
   };
