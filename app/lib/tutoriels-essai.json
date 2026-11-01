@@ -1,0 +1,76 @@
+[
+  {
+    "_id": "essai-tuto-01",
+    "numero": 1,
+    "titre": {
+      "nko": "ߖߊ߬ߖߙߎ ߁߭ : ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߞߊ߬߸ ߊ߬ ߣߌ߫ ߦߴߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌ߫",
+      "fr": "Vidéo 1 : ouvrir N'Ko ni Lonko et choisir sa langue"
+    },
+    "resume": {
+      "nko": "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊߞߊ߬ߢߊ ߌ ߟߊ߫ ߜߋߟߋ߲ߜߋߟߋ߲ ߠߊ߫߸ ߥߊߕߑߛߊߔ ߛߘߌ߬ߜߋ߲ ߟߊߛߐ߬ߘߐ߲߬ߣߍ߲ ߘߏ߫ ߝߍ߬ ߥߟߊ߫ ߛߘߐ߬ߓߛߍ ߛߓߍ߫ ߗߞߏ ߝߍ߬߸ ߏ߬ ߞߐߝߍ߬߸ ߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌߟߌ ߊ߬ ߣߴߊ߬ ߡߊߝߊ߬ߟߋ߲߬ߠߌ߲ ߞߍߢߊ߹",
+      "fr": "Comment ouvrir N'Ko ni Lonko sur son téléphone, par un lien reçu sur WhatsApp ou en écrivant l'adresse, puis choisir et changer sa langue."
+    },
+    "youtubeId": "iRo48OcxWzU",
+    "duree": "3:50",
+    "publishedAt": "2026-11-01T20:00:00.000Z",
+    "miniature": {
+      "url": "/essai-tutoriels/miniature.jpg",
+      "largeur": 540,
+      "hauteur": 960,
+      "lqip": "data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCAAkABQDASIAAhEBAxEB/8QAGQABAAMBAQAAAAAAAAAAAAAAAAECAwQG/8QAIhAAAgECBwADAAAAAAAAAAAAAAECAxEEEiEiMUFRcZHh/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAIBA//EABYRAQEBAAAAAAAAAAAAAAAAAAABEf/aAAwDAQACEQMRAD8A8alcs4tEwdmveTqxWJeIjByjZw0b9KtS4gS+QaNaNB1UnGXzt4NZ0M0VrGFtHtf2cipt/pLpP1DDSolGbUZZrd2sCri10ANIslsA7IVu12ACWv/Z",
+      "hotspot": null
+    },
+    "diapos": [
+      {
+        "_key": "e03",
+        "legende": {
+          "nko": "ߥߊߕߑߛߊߔ ߛߘߌ߬ߜߋ߲ ߟߊߛߐ߬ߘߐ߲߬ߣߍ߲ ߘߏ߫ ߝߍ߬",
+          "fr": "Par un lien reçu sur WhatsApp"
+        },
+        "image": {
+          "url": "/essai-tutoriels/diapo-1.webp"
+        }
+      },
+      {
+        "_key": "e05",
+        "legende": {
+          "nko": "ߛߘߐ߬ߓߛߍ ߛߓߍ߫",
+          "fr": "En écrivant l'adresse"
+        },
+        "image": {
+          "url": "/essai-tutoriels/diapo-2.webp"
+        }
+      },
+      {
+        "_key": "e07",
+        "legende": {
+          "nko": "ߞߵߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌ߫",
+          "fr": "Choisir sa langue"
+        },
+        "image": {
+          "url": "/essai-tutoriels/diapo-3.webp"
+        }
+      },
+      {
+        "_key": "e08",
+        "legende": {
+          "nko": "ߞߊ߬ ߞߊ߲ ߡߊߝߊ߬ߟߋ߲߬",
+          "fr": "Changer de langue"
+        },
+        "image": {
+          "url": "/essai-tutoriels/diapo-4.webp"
+        }
+      },
+      {
+        "_key": "e12",
+        "legende": {
+          "nko": "ߊߟߎ߫ ߦߋ߫ ߞߊ߲ ߡߊߝߊ߬ߟߋ߲߬ ߛߊ߲ߝߍ߬ ߡߞߊ߬ߦߙߐ ߟߊ߫",
+          "fr": "Changez de langue avec le bouton en haut"
+        },
+        "image": {
+          "url": "/essai-tutoriels/diapo-5.webp"
+        }
+      }
+    ]
+  }
+]

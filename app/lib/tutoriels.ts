@@ -7,6 +7,7 @@
 
 import { client } from "../../sanity/client";
 import { getSanityClient } from "../../sanity/fetch";
+import essai from "./tutoriels-essai.json"; // BRANCHE D'ESSAI SEULEMENT : jamais fusionnée
 
 export type TexteBilingue = { nko?: string | null; fr?: string | null };
 export type ImageTutoriel = { url?: string | null; largeur?: number | null; hauteur?: number | null; lqip?: string | null; hotspot?: { x?: number; y?: number } | null };
@@ -31,6 +32,7 @@ const REQUETE_TUTORIELS = `*[_type == "tutoriel" && defined(numero)] | order(num
 
 // Tous les tutoriels publiés, dans l'ordre des vidéos
 export async function getTutoriels(): Promise<Tutoriel[]> {
+  if (essai.length) return essai as Tutoriel[]; // BRANCHE D'ESSAI SEULEMENT
   const { client: sanity, apercu } = await getSanityClient();
   return sanity.fetch<Tutoriel[]>(
     REQUETE_TUTORIELS,
@@ -42,6 +44,7 @@ export async function getTutoriels(): Promise<Tutoriel[]> {
 // Y a-t-il au moins un tutoriel publié ? Sinon, ni lien dans le menu, ni entrée dans le plan du site :
 // le lecteur ne tombe pas sur une page vide entre la mise en ligne du code et celle des vidéos.
 export async function aDesTutoriels(): Promise<boolean> {
+  if (essai.length) return true; // BRANCHE D'ESSAI SEULEMENT
   return client.fetch<boolean>(
     `count(*[_type == "tutoriel" && defined(numero)]) > 0`,
     {},
