@@ -3,7 +3,7 @@ import type { Langue } from "../../lib/langue";
 import { chiffresNko } from "../numero/textes";
 import CarrouselDiapos from "./CarrouselDiapos";
 import FacadeVideo from "./FacadeVideo";
-import { LIRE_VIDEO } from "./textes";
+import { LIRE_VIDEO, REGARDER_YOUTUBE } from "./textes";
 
 // ============================================================================
 // N'KO NI LONKO — Un tutoriel de la page /tutoriels (composant serveur)
@@ -16,7 +16,7 @@ import { LIRE_VIDEO } from "./textes";
 function DiapoEtape({ diapo }: { diapo: Diapo & { image: { url: string } } }) {
   const { url } = diapo.image;
   return (
-    <li className="w-[86%] shrink-0 snap-start snap-always lg:w-[72%]">
+    <li className="w-full shrink-0 snap-center snap-always">
       <figure>
         {/* eslint-disable-next-line @next/next/no-img-element -- deux tailles exactes en WebP, servies par Sanity */}
         <img
@@ -24,7 +24,7 @@ function DiapoEtape({ diapo }: { diapo: Diapo & { image: { url: string } } }) {
           decoding="async"
           src={adresseDiapo(url, 1080)}
           srcSet={`${adresseDiapo(url, 540)} 540w, ${adresseDiapo(url, 1080)} 1080w`}
-          sizes="(min-width: 480px) 400px, 86vw"
+          sizes="(min-width: 452px) 361px, calc(86vw - 28px)"
           width={1080}
           height={1350}
           alt=""
@@ -57,11 +57,11 @@ export default function VueTutoriel({ tutoriel, langue, premier }: { tutoriel: T
           {fr ? numero : chiffresNko(String(numero))}
         </span>
         <h2>
-          {titre?.nko && <span lang="nqo" dir="rtl" className="block text-balance font-kigelia text-2xl font-bold text-white md:text-3xl">{titre.nko}</span>}
+          {titre?.nko && <span lang="nqo" dir="rtl" className="block text-balance font-kigelia text-2xl font-bold text-white md:text-3xl md:leading-[1.75]">{titre.nko}</span>}
           {titre?.fr && <span lang="fr" dir="ltr" className="mt-1 block text-balance font-fr text-base font-medium text-white/80 md:text-lg">{titre.fr}</span>}
         </h2>
-        {resume?.nko && <p lang="nqo" dir="rtl" className="mt-4 font-kigelia text-lg text-white/80">{resume.nko}</p>}
-        {resume?.fr && <p lang="fr" dir="ltr" className="mt-2 font-fr text-sm leading-relaxed text-white/70">{resume.fr}</p>}
+        {resume?.nko && <p lang="nqo" dir="rtl" className="mt-4 text-balance font-kigelia text-lg text-white/80">{resume.nko}</p>}
+        {resume?.fr && <p lang="fr" dir="ltr" className="mt-2 text-balance font-fr text-sm leading-relaxed text-white/70">{resume.fr}</p>}
       </header>
 
       {youtubeId && (
@@ -71,6 +71,8 @@ export default function VueTutoriel({ tutoriel, langue, premier }: { tutoriel: T
             titre={nom}
             libelle={lire ? `${lire} : ${nom}` : nom}
             langueLibelle={fr || !titre?.nko ? "fr" : "nqo"}
+            libelleYoutube={!fr && REGARDER_YOUTUBE.nko ? REGARDER_YOUTUBE.nko : REGARDER_YOUTUBE.fr}
+            langueYoutube={!fr && REGARDER_YOUTUBE.nko ? "nqo" : "fr"}
             miniature={miniature}
             duree={duree ? (fr ? duree : chiffresNko(duree)) : null}
             langue={langue}
@@ -81,7 +83,7 @@ export default function VueTutoriel({ tutoriel, langue, premier }: { tutoriel: T
 
       {etapes.length > 0 && (
         // Largeur limitée : une seule diapositive à la fois, sinon le point en cours serait ambigu
-        <div className="mx-auto w-full min-w-0 max-w-[420px] lg:col-start-2 lg:max-w-none">
+        <div className="mx-auto w-full min-w-0 max-w-[420px] lg:col-start-2">
           <CarrouselDiapos nombre={etapes.length} libelle={nom} langue={langue}>
             {etapes.map((diapo) => <DiapoEtape key={diapo._key} diapo={diapo} />)}
           </CarrouselDiapos>

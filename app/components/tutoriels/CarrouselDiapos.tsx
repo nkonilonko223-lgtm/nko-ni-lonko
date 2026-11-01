@@ -10,7 +10,9 @@ import { DIAPO_PRECEDENTE, DIAPO_SUIVANTE } from "./textes";
 // Le défilement est celui du navigateur (scroll-snap) : le doigt marche avant même que le code arrive.
 // Ce code ajoute les flèches, les points et le clavier. Les diapositives sont préparées par le serveur.
 // En N'Ko, tout suit le sens de la page : la première diapositive est à droite, on avance vers la gauche.
-// Aucun calcul ne dépend du signe de scrollLeft, qui change avec le sens : la position vient de l'écran.
+// La diapositive en cours est au milieu, sur l'axe du texte, des points et des flèches ; un bout de la voisine
+// dépasse pour montrer qu'il y en a d'autres. La position vient de l'écran : aucun calcul ne dépend du signe
+// de scrollLeft, qui change avec le sens.
 // ============================================================================
 
 type Props = {
@@ -53,12 +55,13 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
     const b = el.getBoundingClientRect();
     // scrollTo et non scrollBy : avec snap-always, un scrollBy s'arrêterait à la diapositive voisine
     el.scrollTo({
-      left: el.scrollLeft + (rtl ? a.right - b.right : a.left - b.left),
+      left: el.scrollLeft + (a.left + a.width / 2) - (b.left + b.width / 2),
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
     });
   };
 
   const touche = (e: KeyboardEvent) => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return; // Alt+← et Ctrl+Fin restent au navigateur
     const cibles: Record<string, number> = {
       [rtl ? "ArrowLeft" : "ArrowRight"]: Math.min(active + 1, nombre - 1),
       [rtl ? "ArrowRight" : "ArrowLeft"]: Math.max(active - 1, 0),
@@ -100,7 +103,7 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
         role="list"
         tabIndex={seule ? undefined : 0}
         style={{ scrollbarWidth: "none" }}
-        className="flex snap-x snap-mandatory items-start gap-3 overflow-x-auto overscroll-x-contain rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-or"
+        className="flex snap-x snap-mandatory items-start gap-3 overflow-x-auto overscroll-x-contain rounded-2xl px-[7%] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-or print:flex-wrap print:overflow-visible"
       >
         {children}
       </ul>
@@ -119,7 +122,7 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
                   aria-label={fr ? `Diapositive ${i + 1} sur ${nombre}` : `${chiffre(i + 1)} / ${chiffre(nombre)}`}
                   className="flex h-6 w-6 touch-manipulation items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-or"
                 >
-                  <span className={`h-2 rounded-full transition-all motion-reduce:transition-none ${i === active ? "w-5 bg-or" : "w-2 bg-white/30"}`} />
+                  <span className={`h-2 rounded-full transition-all motion-reduce:transition-none ${i === active ? "w-5 bg-or" : "w-2 bg-white/40"}`} />
                 </button>
               </li>
             ))}
