@@ -65,7 +65,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ revalidated: false, message: 'Type ignoré' });
     }
 
-    // { expire: 0 } : le prochain visiteur reçoit directement la version à jour
+    // { expire: 0 } : le prochain visiteur reçoit directement la version à jour. Si Sanity est en panne à ce
+    // moment, Vercel lui sert la dernière bonne copie, statut 200 (observé le 1er novembre 2026, « REVALIDATED »).
+    // Ce filet n'existe pas avec « next start » en local : ne pas en déduire qu'il manque sur le vrai site.
     revalidateTag('article', { expire: 0 });
     if (body.slug) revalidateTag(`article-${body.slug}`, { expire: 0 });
 
