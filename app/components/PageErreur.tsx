@@ -59,9 +59,25 @@ function Embleme() {
   );
 }
 
-const BOUTON = { display: "inline-flex", flex: "1 1 150px", alignItems: "center", justifyContent: "center", gap: 10, minHeight: 52, padding: "0 22px", borderRadius: 999, fontSize: 16, fontWeight: 700, textDecoration: "none", cursor: "pointer", boxSizing: "border-box" } as const;
+const BOUTON = { display: "inline-flex", flex: "1 1 150px", alignItems: "center", justifyContent: "center", gap: 10, minHeight: 52, padding: "6px 22px", borderRadius: 999, fontSize: 16, fontWeight: 700, textDecoration: "none", cursor: "pointer", boxSizing: "border-box" } as const;
+const PRINCIPAL = { ...BOUTON, border: "none", color: "#0e1322", background: "linear-gradient(135deg, #f8cc70, #f2b544 55%, #dd9c34)", boxShadow: "0 10px 28px rgba(242,181,68,.3)" } as const;
+const SECONDAIRE = { ...BOUTON, border: "1px solid rgba(242,181,68,.55)", color: "#f2b544" } as const;
+const ICONE_REESSAYER = <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" /></svg>;
+const ICONE_ACCUEIL = <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11.5 12 4l9 7.5" /><path d="M5.5 10v9.5h13V10" /></svg>;
 
-export default function PageErreur({ nko }: { nko: boolean }) {
+function DeuxLangues({ texte }: { texte: Libelle }) {
+  return (
+    <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      <Texte texte={texte} nko />
+      <Texte texte={texte} nko={false} />
+    </span>
+  );
+}
+
+// deuxLangues : page de secours du serveur (pages/500.tsx), une seule page pour toutes les adresses, donc
+// le N'Ko puis le français. Ici, pas de code garanti : « Réessayer » est un simple lien vers la même adresse.
+export default function PageErreur({ nko, deuxLangues = false }: { nko: boolean; deuxLangues?: boolean }) {
+  const texteDe = (texte: Libelle) => (deuxLangues ? <DeuxLangues texte={texte} /> : <Texte texte={texte} nko={nko} />);
   return (
     <main dir={nko ? "rtl" : "ltr"} style={{ position: "relative", minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", padding: "32px 16px", boxSizing: "border-box", textAlign: "center", color: "#ebe5d8", background: "radial-gradient(120% 60% at 50% -5%, rgba(242,181,68,.2), transparent 62%), radial-gradient(100% 50% at 50% 108%, rgba(62,92,170,.24), transparent 65%), #0e1322" }}>
       <style dangerouslySetInnerHTML={{ __html: STYLE }} />
@@ -72,17 +88,21 @@ export default function PageErreur({ nko }: { nko: boolean }) {
           <span lang="fr" dir="ltr" style={{ fontFamily: POLICES_FR, fontSize: 12, fontWeight: 600, letterSpacing: ".18em", textTransform: "uppercase", color: "#b5ad9c" }}>{NOM_REVUE.fr}</span>
         </p>
         <div aria-hidden="true" style={{ width: 72, height: 2, margin: "20px 0", borderRadius: 2, background: "linear-gradient(90deg, transparent, #f2b544, transparent)" }} />
-        <h1 style={{ margin: 0, fontSize: 25, fontWeight: 800, lineHeight: 1.3, color: "#fff7e8" }}><Texte texte={PAGE_ERREUR_TITRE} nko={nko} /></h1>
-        <p style={{ margin: "12px 0 0", maxWidth: 340, fontSize: 16, lineHeight: 1.6, color: "#c9c3b4" }}><Texte texte={PAGE_ERREUR_TEXTE} nko={nko} /></p>
+        <h1 style={{ margin: 0, fontSize: 25, fontWeight: 800, lineHeight: 1.3, color: "#fff7e8" }}>{texteDe(PAGE_ERREUR_TITRE)}</h1>
+        <p style={{ margin: "12px 0 0", maxWidth: 340, fontSize: 16, lineHeight: 1.6, color: "#c9c3b4" }}>{texteDe(PAGE_ERREUR_TEXTE)}</p>
         <div style={{ width: "100%", display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12, marginTop: 26 }}>
-          <button type="button" className="erreur-bouton" onClick={() => window.location.reload()} style={{ ...BOUTON, border: "none", color: "#0e1322", background: "linear-gradient(135deg, #f8cc70, #f2b544 55%, #dd9c34)", boxShadow: "0 10px 28px rgba(242,181,68,.3)" }}>
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36" /><path d="M21 3v6h-6" /></svg>
-            <Texte texte={REESSAYER} nko={nko} />
-          </button>
-          <a href={nko ? "/" : "/fr"} className="erreur-bouton erreur-secondaire" style={{ ...BOUTON, border: "1px solid rgba(242,181,68,.55)", color: "#f2b544" }}>
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11.5 12 4l9 7.5" /><path d="M5.5 10v9.5h13V10" /></svg>
-            <Texte texte={ACCUEIL} nko={nko} />
-          </a>
+          {deuxLangues ? (
+            <>
+              <a href="" className="erreur-bouton" style={PRINCIPAL}>{ICONE_REESSAYER}{texteDe(REESSAYER)}</a>
+              <a href={"/"} className="erreur-bouton erreur-secondaire" style={SECONDAIRE}>{ICONE_ACCUEIL}<Texte texte={ACCUEIL} nko /></a>
+              <a href={"/fr"} className="erreur-bouton erreur-secondaire" style={SECONDAIRE}>{ICONE_ACCUEIL}<Texte texte={ACCUEIL} nko={false} /></a>
+            </>
+          ) : (
+            <>
+              <button type="button" className="erreur-bouton" onClick={() => window.location.reload()} style={PRINCIPAL}>{ICONE_REESSAYER}<Texte texte={REESSAYER} nko={nko} /></button>
+              <a href={nko ? "/" : "/fr"} className="erreur-bouton erreur-secondaire" style={SECONDAIRE}>{ICONE_ACCUEIL}<Texte texte={ACCUEIL} nko={nko} /></a>
+            </>
+          )}
         </div>
       </div>
     </main>
