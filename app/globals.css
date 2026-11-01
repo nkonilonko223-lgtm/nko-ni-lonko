@@ -2130,6 +2130,7 @@ body[dir="rtl"] .category-dropdown-option.premium::after {
   .section-header {
     margin-bottom: 12px;
     padding-bottom: 8px;
+    scroll-margin-top: 76px; /* « Découvrir » : le titre reste visible sous la barre du haut */
   }
 }
 
