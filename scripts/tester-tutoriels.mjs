@@ -54,7 +54,7 @@ for (const [i, v] of VERSIONS.entries()) {
   verifier(statut === 200 && racine.includes(`lang="${v.lang}"`) && racine.includes(`dir="${v.dir}"`), `${v.chemin} répond, langue et sens justes`, `${statut}`);
   verifier(!/<iframe/.test(html) && !/<(link|script)[^>]+(youtube|ytimg)/.test(html), `${v.chemin} : aucun lecteur ni fichier YouTube dans la page`);
   const noindex = /<meta[^>]+name="robots"[^>]+noindex/.test(html);
-  const dansPlan = plan.includes(`${v.chemin}<`);
+  const dansPlan = new RegExp(`//[^/]+${v.chemin}<`).test(plan);
   const accueil = (await lire(v.accueil)).html;
   const lien = accueil.includes(`href="${v.chemin}"`);
   if (!remplie) {
@@ -73,11 +73,13 @@ for (const [i, v] of VERSIONS.entries()) {
   for (const d of videos) {
     const langueJuste = v.lang === 'nqo' ? contientNko(d.name) && contientNko(d.description) : !contientNko(d.name) && !contientNko(d.description);
     verifier(!!d.name && !!d.description && langueJuste, `${d['@id']} : nom et description dans la langue de la version`);
-    verifier(!!d.thumbnailUrl && /^(https:|\/)/.test(d.thumbnailUrl), `${d['@id']} : thumbnailUrl`, d.thumbnailUrl);
+    verifier(!!d.thumbnailUrl && /^(https:|\/essai-tutoriels\/)/.test(d.thumbnailUrl), `${d['@id']} : thumbnailUrl`, d.thumbnailUrl);
     verifier(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.test(d.uploadDate || ''), `${d['@id']} : uploadDate avec fuseau horaire`, d.uploadDate);
     verifier(/^PT\d+M\d+S$/.test(d.duration || ''), `${d['@id']} : duration`, d.duration);
     verifier(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}$/.test(d.embedUrl || ''), `${d['@id']} : embedUrl`, d.embedUrl);
   }
+  const articles = [...html.matchAll(/<article id="video-.*?<\/article>/gs)].map((m) => m[0]);
+  verifier(articles.every((a) => /<h2>.*lang="nqo" dir="rtl".*lang="fr" dir="ltr".*<\/h2>/s.test(a) && /<p lang="nqo" dir="rtl"/.test(a) && /<p lang="fr" dir="ltr"/.test(a)), `${v.chemin} : titres et résumés marqués lang et dir`, `${articles.length} tutoriel(s)`);
   const diapos = [...html.matchAll(/<figure>(.*?)<\/figure>/gs)].map((m) => m[1]);
   const imagesJustes = diapos.every((d) => /loading="lazy"/.test(d) && /540w/.test(d) && /1080w/.test(d) && /fm=webp/.test(d) && /width="1080"/.test(d) && /height="1350"/.test(d));
   verifier(imagesJustes, `${v.chemin} : images WebP 540 et 1080, chargement différé`, `${diapos.length} diapositive(s)`);
@@ -155,11 +157,9 @@ try {
   const FLECHES = `[...${GROUPE}.querySelectorAll('button[aria-disabled]')]`;
   // Où en est le carrousel, d'après l'écran seulement
   const etat = `(() => {
-    const g = ${GROUPE}; const u = g.querySelector('ul'); const c = u.getBoundingClientRect(); const rtl = getComputedStyle(u).direction === 'rtl';
-    const l = [...u.children]; const bord = (e) => { const r = e.getBoundingClientRect(); return rtl ? c.right - r.right : r.left - c.left; };
-    const fin = u.scrollWidth - u.clientWidth - Math.abs(u.scrollLeft) < 1.5;
-    let i = l.findIndex((e) => Math.abs(bord(e)) < 1.5);
-    if (fin) i = l.length - 1;
+    const g = ${GROUPE}; const u = g.querySelector('ul'); const c = u.getBoundingClientRect();
+    const l = [...u.children]; const milieu = (r) => r.left + r.width / 2;
+    const i = l.findIndex((e) => Math.abs(milieu(e.getBoundingClientRect()) - milieu(c)) < 1.5);
     const points = [...g.querySelector('ol').querySelectorAll('button')];
     const f = [...g.querySelectorAll('button[aria-disabled]')].map((b) => b.getAttribute('aria-disabled'));
     return { i, nombre: l.length, point: points.findIndex((p) => p.getAttribute('aria-current') === 'true'), points: points.length, avant: f[0], apres: f[1], haut: scrollY, position: u.scrollLeft };
@@ -188,7 +188,7 @@ try {
     verifier(largeurs.page <= largeurs.ecran, 'La page ne déborde pas en largeur', `${largeurs.page} pour ${largeurs.ecran} px`);
     const haut = await o.evaluer(`(() => { const t = document.querySelector('h1').getBoundingClientRect(); const b = document.querySelector('a.btn-lang').getBoundingClientRect(); return { titre: Math.round(t.top), bouton: Math.round(b.bottom) }; })()`);
     verifier(haut.titre >= haut.bouton, 'Le titre de la page reste sous le bouton de langue', `titre à ${haut.titre} px, bouton jusqu'à ${haut.bouton} px`);
-    const cadreAvant = await o.evaluer(`(() => { const r = document.querySelector('a[href*="youtube.com/watch"]').parentElement.getBoundingClientRect(); return { l: r.width, h: r.height, x: r.left, y: r.top + scrollY }; })()`);
+    const cadreAvant = await o.evaluer(`(() => { const r = document.querySelector('[data-video] a').parentElement.getBoundingClientRect(); return { l: r.width, h: r.height, x: r.left, y: r.top + scrollY }; })()`);
     verifier(Math.abs(cadreAvant.l / cadreAvant.h - 9 / 16) < 0.01, 'Cadre de la vidéo au format 9:16', `${Math.round(cadreAvant.l)} × ${Math.round(cadreAvant.h)} px`);
     const nbAvant = (await o.evaluer(`performance.getEntriesByType('resource').filter((e) => /fm=webp/.test(e.name)).length`)) ?? 0;
     const nbDiapos = await o.evaluer(`document.querySelectorAll('article [role="group"] li img').length`);
@@ -233,7 +233,7 @@ try {
     }
     await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
     e = await repos(o);
-    verifier(e.i === 1 && e.point === 1, 'Glisser au doigt : la suivante, posée juste au bord', JSON.stringify({ i: e.i, point: e.point }));
+    verifier(e.i === 1 && e.point === 1, 'Glisser au doigt : la suivante, posée au milieu', JSON.stringify({ i: e.i, point: e.point }));
     verifier(rtl ? e.position < 0 : e.position > 0, rtl ? "En N'Ko, la position part de 0 et devient négative" : 'En français, la position part de 0 et devient positive', String(e.position));
 
     // Un glissement vertical commencé sur une diapositive doit faire défiler la page, pas se bloquer
@@ -267,16 +267,28 @@ try {
     verifier((await o.evaluer('window.__decalage')) < 0.02, 'Pas de saut de mise en page au chargement', String(await o.evaluer('window.__decalage')));
     await o.evaluer(`window.scrollTo({ top: 0, behavior: 'instant' })`);
     await pause(200);
-    await o.toucher(`document.querySelector('a[href*="youtube.com/watch"]')`);
+    await o.toucher(`document.querySelector('[data-video] a')`);
     verifier(await o.attendre(`!!document.querySelector('iframe')`, 5000), 'Le toucher ouvre le lecteur dans la page');
-    const lecteur = await o.evaluer(`(() => { const f = document.querySelector('iframe'); const r = f.parentElement.getBoundingClientRect(); return { src: f.src, titre: f.title, lien: !!document.querySelector('a[href*="youtube.com/watch"]'), l: r.width, h: r.height, y: r.top + scrollY, focus: document.activeElement === f }; })()`);
+    const lecteur = await o.evaluer(`(() => { const f = document.querySelector('iframe'); const r = f.parentElement.getBoundingClientRect(); return { src: f.src, titre: f.title, lien: !!f.parentElement.querySelector('[data-video] a'), l: r.width, h: r.height, y: r.top + scrollY, focus: document.activeElement === f }; })()`);
     verifier(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}\?/.test(lecteur.src), 'Lecteur youtube-nocookie.com', lecteur.src);
     verifier(!/autoplay/.test(lecteur.src), 'Pas de lecture automatique');
     verifier(!lecteur.lien, 'Le bouton a laissé la place au lecteur');
+    verifier(await o.evaluer(`getComputedStyle(document.querySelector('[data-video]')).zIndex === '10000' && !!document.querySelector('[data-video] + a[href*="youtube.com/watch"][aria-label]')`), 'Le lecteur passe au-dessus du bouton Retour ; le logo de YouTube reste sous le cadre');
+    await o.evaluer(`window.scrollTo({ top: document.querySelector('[data-video]').getBoundingClientRect().top + scrollY - 10, behavior: 'instant' })`);
+    await pause(200);
+    const sousLeDoigt = await o.evaluer(`(() => { const b = document.querySelector('main > button').getBoundingClientRect(); return document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2)?.tagName; })()`);
+    verifier(sousLeDoigt === 'IFRAME', "Cadre en haut de l'écran : le doigt touche le lecteur, pas le bouton Retour", sousLeDoigt);
     verifier(lecteur.focus, 'Le clavier continue dans le lecteur');
     verifier(rtl ? contientNko(lecteur.titre) : !contientNko(lecteur.titre) && !!lecteur.titre, 'Titre du lecteur dans la langue de la page');
     verifier(Math.abs(lecteur.l - cadreAvant.l) < 1 && Math.abs(lecteur.h - cadreAvant.h) < 1 && Math.abs(lecteur.y - cadreAvant.y) < 2, 'Le cadre ne change ni de taille ni de place');
     verifier(await o.attendre(`document.querySelector('iframe') && !document.querySelector('.animate-spin.border-or')`, 20000), 'Le lecteur finit de se charger');
+    if (await o.evaluer(`!!document.querySelector('[data-video] a')`)) {
+      const adresse = await o.evaluer(`new URL(document.querySelector('[data-video] a').href).searchParams.get('v')`);
+      await o.toucher(`document.querySelector('[data-video] a')`);
+      await o.attendre(`document.querySelector('iframe')?.src.includes(${JSON.stringify(adresse)})`, 5000);
+      const seul = await o.evaluer(`({ n: document.querySelectorAll('iframe').length, src: document.querySelector('iframe')?.src })`);
+      verifier(seul.n === 1 && seul.src.includes(adresse), 'Toucher une autre vidéo referme le lecteur ouvert', `${seul.n} lecteur(s)`);
+    }
     await o.fermer();
 
     // Menu et bouton de langue
@@ -298,18 +310,25 @@ try {
     const c = await onglet({ langue: v.langueInterface, sansCode: true });
     await c.ouvrir(v.chemin);
     // Sans JavaScript, seul le protocole de débogage lit encore la page
-    const sans = await c.evaluer(`(() => { const a = document.querySelector('a[href*="youtube.com/watch"]'); const g = ${GROUPE}; return { href: a?.href, cible: a?.target, fleches: [...g.querySelectorAll('button[aria-disabled]')].map((b) => b.getAttribute('aria-disabled')), defile: getComputedStyle(g.querySelector('ul')).overflowX }; })()`);
+    const sans = await c.evaluer(`(() => { const a = document.querySelector('[data-video] a'); const g = ${GROUPE}; return { href: a?.href, cible: a?.target, fleches: [...g.querySelectorAll('button[aria-disabled]')].map((b) => b.getAttribute('aria-disabled')), defile: getComputedStyle(g.querySelector('ul')).overflowX }; })()`);
     verifier(/^https:\/\/www\.youtube\.com\/watch\?v=/.test(sans?.href || '') && sans?.cible === '_blank', 'Le bouton de lecture mène à YouTube', sans?.href);
     verifier(sans?.fleches?.every((f) => f === 'true'), 'Les flèches restent éteintes, jamais de bouton mort', JSON.stringify(sans?.fleches));
     verifier(sans?.defile === 'auto', 'Le doigt fait déjà défiler (défilement du navigateur)');
     await c.fermer();
+
+    // Téléphone tourné : le lecteur tient en entier
+    const t = await onglet({ largeur: 740, hauteur: 360, langue: v.langueInterface });
+    await t.ouvrir(v.chemin);
+    const tourne = await t.evaluer(`(() => { const r = document.querySelector('[data-video]').getBoundingClientRect(); return { l: r.width, h: r.height, page: document.documentElement.scrollWidth, ecran: innerWidth }; })()`);
+    verifier(tourne.h <= 360 + 1 && Math.abs(tourne.l / tourne.h - 9 / 16) < 0.01 && tourne.page <= tourne.ecran, "Téléphone tourné : le lecteur tient dans l'écran", `${Math.round(tourne.l)} × ${Math.round(tourne.h)} px`);
+    await t.fermer();
 
     // Ordinateur
     console.log(`--- Ordinateur, ${v.nom} ---`);
     for (const largeur of [1366, 1024]) {
       const d = await onglet({ largeur, hauteur: 768, mobile: false, langue: v.langueInterface });
       await d.ouvrir(v.chemin);
-      const g = await d.evaluer(`(() => { const f = document.querySelector('a[href*="youtube.com/watch"]').parentElement.getBoundingClientRect(); const t = document.querySelector('article header').getBoundingClientRect(); return { l: f.width, h: f.height, video: f.left + f.width / 2, texte: t.left + t.width / 2, page: document.documentElement.scrollWidth, ecran: innerWidth }; })()`);
+      const g = await d.evaluer(`(() => { const f = document.querySelector('[data-video] a').parentElement.getBoundingClientRect(); const t = document.querySelector('article header').getBoundingClientRect(); return { l: f.width, h: f.height, video: f.left + f.width / 2, texte: t.left + t.width / 2, page: document.documentElement.scrollWidth, ecran: innerWidth }; })()`);
       verifier(g.l <= 420 && Math.abs(g.l / g.h - 9 / 16) < 0.01, `${largeur} px : vidéo de 420 px au plus, 9:16`, `${Math.round(g.l)} × ${Math.round(g.h)} px`);
       verifier(rtl ? g.video > g.texte : g.video < g.texte, `${largeur} px : la vidéo du côté où la lecture commence`);
       verifier(g.page <= g.ecran, `${largeur} px : la page ne déborde pas`, `${g.page} pour ${g.ecran} px`);
