@@ -51,8 +51,9 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
     if (!el || !cible) return;
     const a = cible.getBoundingClientRect();
     const b = el.getBoundingClientRect();
-    el.scrollBy({
-      left: rtl ? a.right - b.right : a.left - b.left,
+    // scrollTo et non scrollBy : avec snap-always, un scrollBy s'arrêterait à la diapositive voisine
+    el.scrollTo({
+      left: el.scrollLeft + (rtl ? a.right - b.right : a.left - b.left),
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
     });
   };

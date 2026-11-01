@@ -10,12 +10,15 @@ import type { ImageTutoriel } from "../../lib/tutoriels";
 // ============================================================================
 // Avant le toucher, rien ne part vers YouTube : ni lecteur, ni image, ni donnée. Au toucher, le lecteur
 // youtube-nocookie.com remplace le bouton. Pas de lecture automatique (paramètre « autoplay » absent) :
-// YouTube s'ouvre, puis c'est la personne qui lance la vidéo.
+// YouTube s'ouvre, puis c'est la personne qui lance la vidéo. Rien n'est posé sur le lecteur (règle de YouTube).
 // Le bouton est un vrai lien : touché avant que le code soit arrivé (réseau lent), il ouvre la vidéo sur
 // YouTube au lieu de ne rien faire.
 // Miniature en largeur : affichée entière au milieu du cadre, sur son propre fond flou (image minuscule
 // agrandie : aucun filtre à calculer pour le téléphone).
 // ============================================================================
+
+// Un seul lecteur ouvert à la fois : deux vidéos joueraient ensemble, et chaque lecteur pèse sur un petit téléphone
+let fermerLePrecedent: (() => void) | null = null;
 
 type Props = {
   youtubeId: string;
@@ -85,6 +88,11 @@ export default function FacadeVideo({ youtubeId, titre, libelle, langueLibelle, 
           lang={langueLibelle}
           onClick={(e) => {
             e.preventDefault();
+            fermerLePrecedent?.();
+            fermerLePrecedent = () => {
+              setLecture(false);
+              setLecteurPret(false);
+            };
             setLecture(true);
           }}
           // Le bouton en bas du milieu : au centre, il cacherait le titre écrit sur la miniature
@@ -93,6 +101,8 @@ export default function FacadeVideo({ youtubeId, titre, libelle, langueLibelle, 
           <span className="flex h-20 w-20 items-center justify-center rounded-full bg-[#fbbf24] shadow-[0_0_40px_rgba(251,191,36,0.5)] transition-transform duration-300 group-hover:scale-110 group-focus-visible:ring-4 group-focus-visible:ring-white motion-reduce:transition-none">
             <i className="ph-fill ph-play translate-x-0.5 text-4xl text-black" aria-hidden="true"></i>
           </span>
+          {/* La vidéo vient de YouTube : le lecteur le sait avant de toucher (règle de YouTube, sans texte à traduire) */}
+          <i className="ph-fill ph-youtube-logo absolute bottom-3 start-3 rounded-lg bg-black/75 px-1.5 py-0.5 text-xl text-blanc" aria-hidden="true"></i>
           {duree && (
             <span
               lang={langue}

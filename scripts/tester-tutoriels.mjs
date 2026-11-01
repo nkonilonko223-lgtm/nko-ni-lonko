@@ -203,6 +203,8 @@ try {
     const sens = await o.evaluer(`(() => { const l = [...${GROUPE}.querySelectorAll('ul > li')].map((e) => e.getBoundingClientRect()); return { a: l[0].left, b: l[1]?.left ?? null }; })()`);
     verifier(sens.b !== null && (rtl ? sens.b < sens.a : sens.b > sens.a), rtl ? 'La première diapositive est à droite, la suivante à sa gauche' : 'La première diapositive est à gauche, la suivante à sa droite');
 
+    const cadreDiapos = await o.evaluer(`(() => { const u = ${GROUPE}.querySelector('ul'); return { h: u.scrollHeight, c: u.clientHeight }; })()`);
+    verifier(cadreDiapos.h <= cadreDiapos.c, 'Le cadre des diapositives ne défile qu\'en largeur', `${cadreDiapos.h} pour ${cadreDiapos.c} px`);
     let e = await o.evaluer(etat);
     verifier(e.i === 0 && e.point === 0 && e.points === e.nombre, 'Au départ : première diapositive, premier point', JSON.stringify({ i: e.i, point: e.point }));
     verifier(e.avant === 'true' && e.apres === 'false', 'Flèche « précédente » éteinte, « suivante » allumée', `${e.avant} / ${e.apres}`);
@@ -232,17 +234,17 @@ try {
     await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
     e = await repos(o);
     verifier(e.i === 1 && e.point === 1, 'Glisser au doigt : la suivante, posée juste au bord', JSON.stringify({ i: e.i, point: e.point }));
-    verifier(rtl ? e.position < 0 : e.position > 0, rtl ? 'En N'Ko, la position part de 0 et devient négative' : 'En français, la position part de 0 et devient positive', String(e.position));
+    verifier(rtl ? e.position < 0 : e.position > 0, rtl ? "En N'Ko, la position part de 0 et devient négative" : 'En français, la position part de 0 et devient positive', String(e.position));
 
     // Un glissement vertical commencé sur une diapositive doit faire défiler la page, pas se bloquer
     const avantVertical = await o.evaluer('scrollY');
     for (let pas = 0; pas <= 10; pas++) {
-      await envoyer('Input.dispatchTouchEvent', { type: pas === 0 ? 'touchStart' : 'touchMove', touchPoints: [{ x: p.x, y: p.y - pas * 12 }] }, o.s);
+      await envoyer('Input.dispatchTouchEvent', { type: pas === 0 ? 'touchStart' : 'touchMove', touchPoints: [{ x: p.x, y: p.y + pas * 12 }] }, o.s);
       await pause(16);
     }
     await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
     await pause(500);
-    verifier((await o.evaluer('scrollY')) > avantVertical + 20, 'Glisser vers le haut sur une diapositive fait défiler la page');
+    verifier((await o.evaluer('scrollY')) < avantVertical - 20, 'Glisser vers le bas sur une diapositive fait défiler la page');
 
     // Clavier
     await o.evaluer(`${GROUPE}.querySelector('ul').focus({ preventScroll: true })`);
