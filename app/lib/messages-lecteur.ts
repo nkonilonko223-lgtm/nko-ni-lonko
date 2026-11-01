@@ -50,3 +50,18 @@ export const PAGE_ERREUR_TEXTE: Libelle = {
 export const ACCUEIL: Libelle = { nko: "ߟߊ߬ߓߍ߲߬ߠߌ", fr: "Accueil" };
 // Repris tel quel du nom du site (messages/nko.json, metadata.siteName)
 export const NOM_REVUE: Libelle = { nko: "ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ", fr: "N'Ko ni Lonko" };
+
+// Lien reçu par e-mail qui n'a pas abouti (page de désabonnement, message de l'accueil pour la confirmation).
+// N'Ko repris tel quel, par programme, de la page de désabonnement
+export const LIEN_ERREUR_SERVEUR: Libelle = {
+  nko: "ߝߎ߬ߕߎ߲߬ߕߌ ߟߋ߬߹ ߊ߬ ߡߊߝߟߍ߫ ߕߎ߲߯ ߞߐߟߊ߫߸ ߥߟߊ߫ ߞߊ߬ ߛߓߍߟߌ ߞߍ߫ ߊ߲ ߡߊ߬ ߟߊߛߐ߬ߘߐ߲߬ߠߌ ߞߐߜߍ ߞߊ߲߬߹",
+  fr: "Une erreur est survenue. Réessayez plus tard, ou écrivez-nous depuis la page Contact.",
+};
+export const LIEN_INVALIDE: Libelle = {
+  nko: "ߛߘߌ߬ߜߋ߲ ߣߌ߲߬ ߡߊ߲߫ ߢߊ߬ ߥߟߴߊ߬ ߡߊ߫ ߘߝߊ߫߹ ߌ ߓߟߏߞߍ߫ ߛߘߌ߬ߜߋ߲ ߠߊ߫߸ ߌ ߞߊ߬  ߊ߲ ߛߐ߬ߘߐ߲߬ ߊ߲ ߠߊ߫ ߢߎߡߍߙߋ߲ߗߋ ߘߐ߫ ߡߍ߲ ߝߍ߬߹",
+  fr: "Ce lien est invalide ou incomplet. Utilisez le lien reçu dans notre e-mail.",
+};
+export const LIEN_EXPIRE: Libelle = {
+  nko: "", // L43 : à demander à la rédaction (docs/TEXTES-NKO-A-DEMANDER.md)
+  fr: "Ce lien a expiré : il n'est valable que 24 heures. Inscrivez-vous de nouveau pour en recevoir un autre.",
+};

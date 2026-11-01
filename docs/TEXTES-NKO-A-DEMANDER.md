@@ -62,6 +62,7 @@
 | L40 | La vérification n'a pas abouti. Vérifiez votre connexion, puis réessayez. | Sous le bouton d'envoi : lettre et page de contact (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `VERIFICATION_ECHEC.nko` |
 | L41 | Cette page n'a pas pu se charger. | Titre de la page d'erreur (50 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TITRE.nko` |
 | L42 | Votre connexion est peut-être faible. Réessayez, ou revenez à l'accueil. | Texte de la page d'erreur (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TEXTE.nko` |
+| L43 | Ce lien a expiré : il n'est valable que 24 heures. Inscrivez-vous de nouveau pour en recevoir un autre. | Accueil, quand le lien de confirmation de l'e-mail a expiré (110 caractères au plus). **Pas encore fourni : seul le français s'affiche** | `app/lib/messages-lecteur.ts` → `LIEN_EXPIRE.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 
@@ -71,6 +72,7 @@ Déjà fournis et réutilisés tels quels : « Sommaire », « Édito », « À 
 
 ## À vérifier par la rédaction (constats du 20 octobre 2026, rien n'a été modifié)
 
+0. **Deux espaces de suite** (constat du 1er novembre 2026) dans le texte N'Ko « Ce lien est invalide ou incomplet » : deuxième phrase, entre le 6ᵉ et le 7ᵉ mot. Texte de la page de désabonnement, copié tel quel dans `app/lib/messages-lecteur.ts` (`LIEN_INVALIDE`), qui sert aussi à l'accueil. Même chose dans le « Fermer » N'Ko (`app/components/application/textes.ts`, `FERMER`), entre ses deux mots. Est-ce voulu ?
 1. **Marque doublée** dans le texte de l'article publié « Le géant à crête du Niger » (deux marques de ton sur une même lettre). Le correcteur N'Ko du Studio l'affiche en avertissement depuis la fusion du Lot 2 (22 octobre).
 2. **Nom N'Ko du fondateur écrit de deux façons** : la fiche auteur de Sanity (affichée sur la page auteur et sous chaque article) et les données Google du site (`app/[lang]/layout.tsx`, `app/[lang]/article/[slug]/page.tsx` et `app/[lang]/about/page.tsx`, « founder ») n'ont pas la même orthographe du nom de famille (place de la lettre « m » et de la marque de ton). Laquelle est la bonne ? La bonne sera recopiée aux autres endroits.
 3. **Structure des titres** dans les longs articles : sous le titre de l'article, les intertitres commencent au niveau 4 (le niveau 2 est sauté). Pour les lecteurs d'écran et Google, il vaut mieux commencer les intertitres au niveau 2 (« H2 ») dans le Studio.

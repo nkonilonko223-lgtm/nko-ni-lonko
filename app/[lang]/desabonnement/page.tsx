@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import LienLangue from "../../components/LienLangue";
+import { LIEN_ERREUR_SERVEUR, LIEN_INVALIDE } from "../../lib/messages-lecteur";
 
 // ============================================================================
 // N'KO NI LONKO — Page de désinscription
@@ -19,8 +20,6 @@ const TEXTES_NKO = {
   explication: "ߘߌ߯ߟߊ߲ ߣߌ߲߬ ߘߌ߯߸ ߞߊ߬ ߌ ߟߊ߫ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߓߐ߫ ߒߞߏ ߣߌ߫ ߟߐ߲ߞߏ ߟߊ߫ ߛߙߍߘߍ ߘߐ߫߹",
   bouton: "ߒ ߡߊߝߘߎ ߓߐ߫",
   fait: "ߊ߬ ߓߘߊ߫ ߞߍ߫߸ ߌ ߟߊ߫ ߛߊ߲߬ߓߊ߬ߕߐ߮ ߓߘߊ߫ ߓߐ߫ ߊ߲ ߠߊ߫ ߛߙߍߘߍ ߘߐ߫߹ ߌ ߕߍߣߊ߬ ߊ߲ ߠߊ߫ ߢߎߡߍߙߋ߲ߗߋ ߟߎ߬ ߛߐ߬ߘߐ߲߬ ߠߊ߫ ߡߎ߬ߕߎ߲߬߹",
-  invalide: "ߛߘߌ߬ߜߋ߲ ߣߌ߲߬ ߡߊ߲߫ ߢߊ߬ ߥߟߴߊ߬ ߡߊ߫ ߘߝߊ߫߹ ߌ ߓߟߏߞߍ߫ ߛߘߌ߬ߜߋ߲ ߠߊ߫߸ ߌ ߞߊ߬  ߊ߲ ߛߐ߬ߘߐ߲߬ ߊ߲ ߠߊ߫ ߢߎߡߍߙߋ߲ߗߋ ߘߐ߫ ߡߍ߲ ߝߍ߬߹",
-  erreur: "ߝߎ߬ߕߎ߲߬ߕߌ ߟߋ߬߹ ߊ߬ ߡߊߝߟߍ߫ ߕߎ߲߯ ߞߐߟߊ߫߸ ߥߟߊ߫ ߞߊ߬ ߛߓߍߟߌ ߞߍ߫ ߊ߲ ߡߊ߬ ߟߊߛߐ߬ߘߐ߲߬ߠߌ ߞߐߜߍ ߞߊ߲߬߹",
   accueil: "ߛߊ߬ߦߌ߲߬ ߟߊ߬ߓߍ߲߬ߠߌ ߡߊ߬",
 };
 
@@ -56,20 +55,14 @@ export default async function DesabonnementPage({
       fr: "C'est fait : votre adresse a été supprimée de notre liste. Vous ne recevrez plus nos e-mails.",
     };
   } else if (error === "server") {
-    message = {
-      nko: TEXTES_NKO.erreur,
-      fr: "Une erreur est survenue. Réessayez plus tard, ou écrivez-nous depuis la page Contact.",
-    };
+    message = LIEN_ERREUR_SERVEUR;
   } else if (tokenValide) {
     message = {
       nko: TEXTES_NKO.explication,
       fr: "Cliquez sur le bouton pour supprimer votre adresse de la liste de N'Ko ni Lonko.",
     };
   } else {
-    message = {
-      nko: TEXTES_NKO.invalide,
-      fr: "Ce lien est invalide ou incomplet. Utilisez le lien reçu dans notre e-mail.",
-    };
+    message = LIEN_INVALIDE;
   }
 
   return (

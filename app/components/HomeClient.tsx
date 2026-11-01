@@ -12,7 +12,9 @@ import { cleDeCategorie, iconeDeCle } from "../lib/categories";
 import { abonnerInstallation, installer, modeInstallation, modeInstallationServeur } from "../lib/installation";
 import { toNkoDigits } from "./texte/outils";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
-import { MA_BIBLIOTHEQUE } from "./application/textes";
+import { FERMER, MA_BIBLIOTHEQUE, type Libelle } from "./application/textes";
+import { TexteBilingue, texteLangue } from "./application/Libelle";
+import { LIEN_ERREUR_SERVEUR, LIEN_EXPIRE, LIEN_INVALIDE } from "../lib/messages-lecteur";
 
 
 // ==============================================================================
@@ -300,7 +302,8 @@ export default function HomeClient({ articles }: { articles: HomeArticle[] }) {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showVerifyToast, setShowVerifyToast] = useState(false); // 🚀 NOUVEAU : Le déclencheur du Toast
-  
+  const [erreurLien, setErreurLien] = useState<Libelle | null>(null); // lien de confirmation qui n'a pas abouti
+
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [visibleCount, setVisibleCount] = useState(ARTICLES_PER_PAGE);
@@ -411,6 +414,12 @@ const handleCategorySelect = useCallback((key: string) => {
         
         // Disparition après 6 secondes
         setTimeout(() => setShowVerifyToast(false), 6000);
+      }
+      // Lien de confirmation qui n'a pas abouti (app/api/verify) : le lecteur doit le savoir
+      if (params.get("verified") === "false") {
+        const raison = params.get("reason");
+        setTimeout(() => setErreurLien(raison === "server" ? LIEN_ERREUR_SERVEUR : raison === "expired" ? LIEN_EXPIRE : LIEN_INVALIDE), 10);
+        window.history.replaceState(null, "", window.location.pathname);
       }
     }
   }, [triggerVibration]);
@@ -586,6 +595,19 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
           </span>
         </div>
       </div>
+
+      {/* Message du lien de confirmation : dans les deux langues, il reste jusqu'à ce que le lecteur le ferme */}
+      {erreurLien && (
+        <div role="alert" className="fixed top-24 inset-x-4 z-[9999] flex justify-center print:hidden">
+          <div className="max-w-md flex items-start gap-3 bg-black/95 backdrop-blur-xl border border-or/50 text-white ps-5 pe-2 py-3 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+            <i className="ph-fill ph-warning-circle text-2xl text-or mt-1" aria-hidden="true"></i>
+            <TexteBilingue texte={erreurLien} />
+            <button type="button" onClick={() => setErreurLien(null)} aria-label={texteLangue(FERMER, isNko)} className="shrink-0 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white">
+              <i className="ph ph-x text-xl" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      )}
 
       <header className="hero">
         {/* 🚀 MODIF 1/1000 : Clé "key" pour forcer la réanimation fluide sans bug fantôme */}
