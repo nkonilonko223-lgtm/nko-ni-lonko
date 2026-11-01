@@ -476,9 +476,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <div className="bg-layer-space" ref={spaceRef} style={{ backgroundImage: 'none' }}>
           <Image 
             src="/jams-webb.png" 
-            alt="Espace cosmique" lang="fr" 
-            fill 
-            priority 
+            alt="Espace cosmique" lang="fr"
+            fill
+            fetchPriority="low" // décor : il passe après le code, pour que les boutons répondent plus tôt (G-01)
             quality={60}
             sizes="100vw"
             className="object-cover"
@@ -492,9 +492,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
         <div className="bg-layer-baobab" ref={baobabRef} style={{ backgroundImage: 'none' }}>
           <Image 
             src="/le-baobaob.png" 
-            alt="Baobab de la connaissance" lang="fr" 
-            fill 
-            priority 
+            alt="Baobab de la connaissance" lang="fr"
+            fill
+            fetchPriority="low" // décor : il passe après le code (G-01)
             quality={60}
             sizes="100vw"
             className="object-cover"
