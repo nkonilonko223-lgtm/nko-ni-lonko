@@ -13,7 +13,7 @@ import { abonnerInstallation, installer, modeInstallation, modeInstallationServe
 import { toNkoDigits } from "./texte/outils";
 import { TEXTES_LEXIQUE } from "./lexique/textes";
 import { FERMER, MA_BIBLIOTHEQUE, type Libelle } from "./application/textes";
-import { TexteBilingue, texteLangue } from "./application/Libelle";
+import { texteLangue } from "./application/Libelle";
 import { LIEN_ERREUR_SERVEUR, LIEN_EXPIRE, LIEN_INVALIDE } from "../lib/messages-lecteur";
 
 
@@ -586,8 +586,9 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
       />
 
       <main>
-      {/* 🚀 TOAST DE TRIOMPHE (Abonnement Confirmé) */}
-      <div role="status" className={`fixed top-24 left-1/2 -translate-x-1/2 z-[9999] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
+      {/* 🚀 TOAST DE TRIOMPHE (Abonnement Confirmé). Au-dessus de la fenêtre de langue (FenetreLangue, z-[99999]) :
+          un lien ouvert depuis une application d'e-mail arrive souvent sans langue choisie */}
+      <div role="status" className={`fixed top-24 left-1/2 -translate-x-1/2 z-[100000] transition-all duration-700 ease-out print:hidden ${showVerifyToast ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10 pointer-events-none'}`}>
         <div className="bg-black/95 backdrop-blur-xl border border-green-500/50 text-green-400 px-6 py-4 rounded-full shadow-[0_10px_40px_rgba(34,197,94,0.2)] flex items-center gap-3">
           <i className="ph-fill ph-check-circle text-2xl animate-pulse"></i>
           <span className={`text-sm md:text-base font-bold ${isNko ? 'font-kigelia text-lg' : 'tracking-wide'}`}>
@@ -598,11 +599,12 @@ const hasMore = visibleCount < filteredArticles.length && visibleCount < MAX_ART
 
       {/* Message du lien de confirmation : dans les deux langues, il reste jusqu'à ce que le lecteur le ferme */}
       {erreurLien && (
-        <div role="alert" className="fixed top-24 inset-x-4 z-[9999] flex justify-center print:hidden">
-          <div className="max-w-md flex items-start gap-3 bg-black/95 backdrop-blur-xl border border-or/50 text-white ps-5 pe-2 py-3 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-            <i className="ph-fill ph-warning-circle text-2xl text-or mt-1" aria-hidden="true"></i>
-            <TexteBilingue texte={erreurLien} />
-            <button type="button" onClick={() => setErreurLien(null)} aria-label={texteLangue(FERMER, isNko)} className="shrink-0 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white">
+        <div role="alert" className="fixed top-24 inset-x-4 z-[100000] flex justify-center print:hidden">
+          <div className="relative w-full max-w-md bg-black/95 backdrop-blur-xl border border-or/50 text-white text-center px-11 py-4 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+            <i className="ph-fill ph-warning-circle block text-2xl text-or mb-2" aria-hidden="true"></i>
+            {erreurLien.nko && <p lang="nqo" dir="rtl" className="font-kigelia text-base mb-2">{erreurLien.nko}</p>}
+            <p lang="fr" dir="ltr" className="text-sm">{erreurLien.fr}</p>
+            <button type="button" onClick={() => setErreurLien(null)} aria-label={texteLangue(FERMER, isNko)} className="absolute top-1 end-1 w-11 h-11 flex items-center justify-center text-white/70 hover:text-white">
               <i className="ph ph-x text-xl" aria-hidden="true"></i>
             </button>
           </div>
