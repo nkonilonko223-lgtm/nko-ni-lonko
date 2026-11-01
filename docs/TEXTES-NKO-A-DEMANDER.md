@@ -63,6 +63,13 @@
 | L41 | Cette page n'a pas pu se charger. | Titre de la page d'erreur (50 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TITRE.nko` |
 | L42 | Votre connexion est peut-être faible. Réessayez, ou revenez à l'accueil. | Texte de la page d'erreur (90 caractères au plus) | `app/lib/messages-lecteur.ts` → `PAGE_ERREUR_TEXTE.nko` |
 | L43 | Ce lien a expiré : il n'est valable que 24 heures. Inscrivez-vous de nouveau pour en recevoir un autre. | Accueil, quand le lien de confirmation de l'e-mail a expiré ou que sa fiche a déjà été retirée, 3 à 4 jours après l'inscription (110 caractères au plus). **Pas encore fourni : seul le français s'affiche** | `app/lib/messages-lecteur.ts` → `LIEN_EXPIRE.nko` |
+| L44 | Tutoriels | Page des tutoriels (grand titre, onglet), menu de l'accueil, menu du pied de page. **Pas encore fourni : le français s'affiche aussi sur la version N'Ko** | `app/components/tutoriels/textes.ts` → `TUTORIELS.nko` |
+| L45 | Bien utiliser N'Ko ni Lonko | Page des tutoriels, sous le grand titre (nom de la série de vidéos) | `textes.ts` → `SERIE.nko` |
+| L46 | Les tutoriels vidéo de N'Ko ni Lonko, étape par étape, en N'Ko et en français. | Description de la page pour Google et les cartes de partage (160 caractères au plus) | `textes.ts` → `DESCRIPTION.nko` |
+| L47 | Lire la vidéo | Bouton de lecture, seulement pour les lecteurs d'écran (suivi du titre de la vidéo) | `textes.ts` → `LIRE_VIDEO.nko` |
+| L48 | Diapositive précédente | Flèche du carrousel, seulement pour les lecteurs d'écran | `textes.ts` → `DIAPO_PRECEDENTE.nko` |
+| L49 | Diapositive suivante | Flèche du carrousel, seulement pour les lecteurs d'écran | `textes.ts` → `DIAPO_SUIVANTE.nko` |
+| L50 | Aucun tutoriel pour l'instant | Page des tutoriels tant qu'aucune vidéo n'est publiée (la page n'a alors aucun lien) | `textes.ts` → `AUCUN_TUTORIEL.nko` |
 
 **Pour L21 à L34** : déjà fournis et **réutilisés tels quels** (rien à traduire) : « Installer l'application », « Installer » (bouton de l'accueil), « Fermer », « Lexique », « Numéros », « Ma bibliothèque ». Les nombres (« 3 / 8 ») sont écrits en chiffres N'Ko par le code. Plus tard (étape 4 de l'application, notifications) : d'autres textes seront demandés à part.
 
@@ -73,6 +80,7 @@ Déjà fournis et réutilisés tels quels : « Sommaire », « Édito », « À 
 ## À vérifier par la rédaction (constats du 20 octobre 2026, rien n'a été modifié)
 
 0. **Deux espaces de suite** (constat du 1er novembre 2026) dans le texte N'Ko « Ce lien est invalide ou incomplet » : deuxième phrase, entre le 6ᵉ et le 7ᵉ mot. Texte de la page de désabonnement, copié tel quel dans `app/lib/messages-lecteur.ts` (`LIEN_INVALIDE`), qui sert aussi à l'accueil. Même chose dans le « Fermer » N'Ko (`app/components/application/textes.ts`, `FERMER`), entre ses deux mots. Est-ce voulu ?
+0 bis. **« Suivant » et « Précédent » ont deux traductions opposées** (constat du 1er novembre 2026) : dans `app/messages/nko.json` (`common.next`, `common.previous`, jamais affichés aujourd'hui), le mot N'Ko de « Suivant » est celui qui veut dire « précédent » dans `TEXTES_NUMEROS.articlePrecedent` (`app/components/numero/textes.ts`, textes de la rédaction du 16 octobre, affichés sur les articles), et inversement. Rien n'a été modifié ; c'est pourquoi les flèches du carrousel ne les reprennent pas (L48, L49). Le mot juste est-il bien celui des articles ?
 1. **Marque doublée** dans le texte de l'article publié « Le géant à crête du Niger » (deux marques de ton sur une même lettre). Le correcteur N'Ko du Studio l'affiche en avertissement depuis la fusion du Lot 2 (22 octobre).
 2. **Nom N'Ko du fondateur écrit de deux façons** : la fiche auteur de Sanity (affichée sur la page auteur et sous chaque article) et les données Google du site (`app/[lang]/layout.tsx`, `app/[lang]/article/[slug]/page.tsx` et `app/[lang]/about/page.tsx`, « founder ») n'ont pas la même orthographe du nom de famille (place de la lettre « m » et de la marque de ton). Laquelle est la bonne ? La bonne sera recopiée aux autres endroits.
 3. **Structure des titres** dans les longs articles : sous le titre de l'article, les intertitres commencent au niveau 4 (le niveau 2 est sauté). Pour les lecteurs d'écran et Google, il vaut mieux commencer les intertitres au niveau 2 (« H2 ») dans le Studio.

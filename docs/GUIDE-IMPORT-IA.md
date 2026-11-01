@@ -156,10 +156,46 @@ Annotation `termeLexique` sur le mot, dans `markDefs` du paragraphe :
 - `edito` et `aLaUne` (facultatifs) doivent **figurer dans le sommaire**.
 - Le numéro pointe vers ses articles : **ne rien ajouter** dans les articles pour dire à quel numéro ils appartiennent.
 
+## 4 ter. Tutoriels vidéo (`tutoriel`, page `/tutoriels`)
+
+Une vidéo YouTube verticale et les diapositives de ses étapes. **Une fiche n'est publiée que quand sa vidéo est en ligne sur YouTube** : il faut son identifiant et sa date. Tant qu'aucune fiche n'est publiée, la page reste sans lien dans le menu et hors de Google.
+
+```json
+{
+  "_id": "drafts.tutoriel-01",
+  "_type": "tutoriel",
+  "numero": 1,
+  "titre": { "nko": "<N'Ko du fichier _2>", "fr": "Vidéo 1 : ouvrir N'Ko ni Lonko et choisir sa langue" },
+  "resume": { "nko": "<N'Ko du fichier _2>", "fr": "Comment ouvrir N'Ko ni Lonko sur son téléphone…" },
+  "youtubeId": "abcdefghijk",
+  "duree": "3:50",
+  "publishedAt": "2026-11-02T18:00:00.000Z",
+  "miniature": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…-1080x1920-jpg" } },
+  "diapos": [
+    {
+      "_key": "etape-1",
+      "_type": "diapo",
+      "image": { "_type": "image", "asset": { "_type": "reference", "_ref": "image-…-1080x1350-webp" } },
+      "legende": { "nko": "<N'Ko du fichier _2>", "fr": "Par un lien reçu sur WhatsApp" }
+    }
+  ]
+}
+```
+
+- `numero` : entier ≥ 1, **unique** (ordre sur la page, ancre `/tutoriels#video-1`). Pas de `slug` : une seule page.
+- `titre`, `resume`, chaque `legende` : **les deux langues obligatoires**. Le N'Ko est copié **par programme** du fichier `_2` validé (`NKO\Revue\Site\traduction\TUTO-…_2_NKO-valide-MckV.md`), le français du `_0`.
+- `youtubeId` : les **11 caractères** après `v=`, pas l'adresse entière. `duree` : `m:ss`. `publishedAt` : date de mise en ligne sur YouTube (Google l'exige).
+- `miniature` : l'image avant la lecture. Le mieux : **verticale, 1080 × 1920, sans texte entre 65 % et 85 % de la hauteur** (le bouton de lecture s'y pose). Une image en largeur reste acceptée : elle s'affiche entière au milieu du cadre.
+- `diapos` : **WebP de 1080 × 1350** (avertissement sinon), dans l'ordre des étapes, chacune avec son `_key`. La légende est du **texte**, sous l'image : ne pas compter sur un texte écrit dans l'image pour l'accessibilité. Pas de champ `alt` : la légende en tient lieu.
+- Pas de référence vers un autre document : l'ordre de publication des tutoriels est libre.
+- Images téléversées dans Sanity avant la vérification (les références sont contrôlées avec `--export` : refaire une sauvegarde après le téléversement).
+- Après la **première** fusion du schéma : `sanity deploy --external --schema-required`, sinon le Studio et les outils MCP ne connaissent pas le type.
+
 ## 5. Ce que vérifie `scripts/verifier-import.mts`
 
 - `_id` en `drafts.` · NFC (normalisation **automatique contrôlée**, copie `.nfc.json`, mots listés avec leurs codes Unicode) · marques tapées deux fois (**signalées**, jamais corrigées) · champs obligatoires · `slug` · catégorie autorisée · types de blocs et d'encadrés autorisés (lus dans le schéma) · `titleNko` des rubriques · `alt` des images · paires N'Ko/français du lexique · termes reliés plusieurs fois · termes en double dans le fichier.
 - **Rubriques** : titres obligatoires, N'Ko présent, `slug`, `ordre`, doublons dans le fichier. **Numéros** : numéro unique, lien « 003 » calculé, date, sommaire (non vide, sans doublon), édito et à la une dans le sommaire, couverture et son `alt`, longueurs SEO.
+- **Tutoriels** : numéro unique, `{ nko, fr }` complets et chaque langue à sa place (titre, résumé, légendes), identifiant YouTube de 11 caractères, durée `m:ss`, date, miniature, `_key` des diapositives, image WebP de 1080 × 1350 (avertissement).
 - **Avec `--export <sauvegarde.tar.gz>`** (la sauvegarde de l'étape 1, lue sans connexion) : chaque référence (auteur, terme, rubrique, article, image) **existe** et a le **bon type** ; une référence vers un document **seulement en brouillon** doit être **faible** (sinon erreur) ; un document qui **existe déjà** est signalé (l'import sera alors une **mise à jour** : remplacement ou modification, pas une création) ; un `slug` ou un numéro déjà pris par un autre document est une erreur.
 - Sans `--export`, les références absentes du fichier sont seulement signalées (avertissement).
 - **Code 0** = import possible. **Code 1** = corriger d'abord. S'il existe une copie `.nfc.json`, c'est **elle** qu'on importe.
