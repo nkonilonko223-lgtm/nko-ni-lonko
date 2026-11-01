@@ -34,7 +34,8 @@ export default function PredictiveProvider() {
               and: [
                 { href_matches: "/*" },
                 { not: { href_matches: "/studio/*" } },
-                { not: { href_matches: "/api/*" } }
+                { not: { href_matches: "/api/*" } },
+                { not: { selector_matches: "a.btn-lang" } } // l'autre langue n'est pas préparée à chaque toucher (garde-langue.ts)
               ]
             },
             eagerness: "moderate"
