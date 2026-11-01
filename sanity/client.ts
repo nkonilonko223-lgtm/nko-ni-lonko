@@ -30,6 +30,13 @@ const config: ClientConfig = {
   // pour la mise à jour par étiquettes ; Sanity n'est interrogé qu'à la fabrication des pages.
   useCdn: false,
 
+  // Sanity très lent ou muet (1er novembre 2026) : sans ces lignes, une page sans copie attendrait 5 minutes,
+  // puis Vercel couperait la fonction avec son propre message, en anglais. Ici, l'erreur arrive vite : le
+  // lecteur voit la page de secours de la revue, et une page déjà faite reste en place. Les réessais ne
+  // servent qu'aux coupures du réseau et aux réponses 429, 502 et 503, jamais à un délai dépassé.
+  timeout: 15_000,
+  maxRetries: 2,
+
   // --------------------------------------------------------------------------
   // ANTICIPATION CACHE NEXT.JS (App Router)
   // Préparation de l'infrastructure pour la revalidation ISR (Incremental Static Regeneration).
