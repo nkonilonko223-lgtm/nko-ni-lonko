@@ -70,6 +70,8 @@ export function TitreArticle({ titre, grand }: { titre: string; grand?: boolean 
       >
         {nko}
       </span>
+      {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+      {" "}
       {fr && <span lang="fr" dir="ltr" className={`mt-1 block text-white/70 ${grand ? "text-base" : "text-sm"}`}>{fr}</span>}
     </>
   );

@@ -35,6 +35,8 @@ function Carte({ t }: { t: TermeDictionnaire }) {
         className="block h-full rounded-xl border border-white/10 bg-white/[0.02] p-4 transition-colors hover:border-blue-400/50 hover:bg-blue-400/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-400"
       >
         <span lang="nqo" dir="rtl" className="block font-kigelia text-lg font-bold text-blue-300">{t.termeNko}</span>
+        {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+        {" "}
         <span lang="fr" dir="ltr" className="block font-sans text-sm text-white/80">{t.termeFr}</span>
         {t.domaine && (
           <span lang="nqo" dir="rtl" className="mt-2 block font-kigelia text-xs text-or/80">{t.domaine}</span>

@@ -106,11 +106,14 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
                     {numeroNko(numero.numero)}
                     {typeof numero.saison === "number" && ` · ${saisonNko(numero.saison)}`}
                   </span>
+                  {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+                  {" "}
                   <span lang="fr" dir="ltr" className="mt-1 block text-xs uppercase tracking-widest text-white/60">
                     {numeroFr(numero.numero)}
                     {typeof numero.saison === "number" && ` · ${saisonFr(numero.saison)}`}
                   </span>
                   {numero.titleNko && <span lang="nqo" dir="rtl" className="mt-3 block font-kigelia text-lg font-bold text-white">{numero.titleNko}</span>}
+                  {" "}
                   {numero.titleFr && <span lang="fr" dir="ltr" className="mt-1 block text-sm text-white/80">{numero.titleFr}</span>}
                   <span className="mt-3 block text-xs text-gray-500">
                     <span lang="nqo" dir="rtl" className="font-kigelia">{dateNko(numero.publishedAt)}</span>

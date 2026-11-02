@@ -247,6 +247,8 @@ export default function ArticleCard({ article, isPriority = false }: ArticleCard
               >
                 {titre.nko}
               </span>
+              {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+              {" "}
               {titre.fr && (
                 <span
                   lang="fr"
