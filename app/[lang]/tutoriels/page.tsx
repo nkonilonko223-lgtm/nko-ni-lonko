@@ -94,6 +94,8 @@ export default async function PageTutoriels({ params }: { params: Promise<{ lang
         </h1>
         <p className="mt-3 flex flex-col items-center gap-1">
           {SERIE.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-lg text-white/80">{SERIE.nko}</span>}
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           <span lang="fr" dir="ltr" className="text-sm text-white/70">{SERIE.fr}</span>
         </p>
       </header>
@@ -101,6 +103,8 @@ export default async function PageTutoriels({ params }: { params: Promise<{ lang
       {tutoriels.length === 0 ? (
         <p className="mx-auto flex max-w-xl flex-col items-center gap-2 text-center text-white/60">
           {AUCUN_TUTORIEL.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl">{AUCUN_TUTORIEL.nko}</span>}
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           <span lang="fr" dir="ltr">{AUCUN_TUTORIEL.fr}</span>
         </p>
       ) : (
