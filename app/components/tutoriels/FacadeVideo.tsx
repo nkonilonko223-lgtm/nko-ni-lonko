@@ -49,14 +49,16 @@ export default function FacadeVideo({ youtubeId, titre, libelle, langueLibelle, 
   return (
     // La largeur suit aussi la hauteur de l'écran : téléphone tourné ou petit portable, le lecteur tient en entier
     <div className="mx-auto w-full max-w-[min(420px,max(200px,calc(100svh*9/16)))] print:hidden">
-      <div data-video className={`relative aspect-[9/16] w-full overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-2xl ${lecture ? "z-[10000]" : ""}`}>
+      {/* Lecteur ouvert : même niveau que le bouton « Retour » (z-9999) mais placé après lui, donc par-dessus ;
+          le message « Aucune connexion », au même niveau et placé après la page, reste au-dessus du lecteur */}
+      <div data-video className={`relative aspect-[9/16] w-full overflow-hidden rounded-2xl border border-white/10 bg-surface shadow-2xl ${lecture ? "z-[9999]" : ""}`}>
         {miniature?.url && (
           <Image
             src={miniature.url}
             alt=""
             fill
             priority={prioritaire}
-            sizes="(min-width: 480px) 420px, 100vw"
+            sizes="(min-width: 480px) min(420px, max(200px, 56.25svh)), calc(100vw - 32px)"
             className={paysage ? "object-contain" : "object-cover"}
             style={paysage ? undefined : { objectPosition: positionDuCadrage(miniature.hotspot) }}
           />
