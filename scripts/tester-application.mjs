@@ -183,10 +183,11 @@ try {
         `${chemin} : icônes masquables, raccourcis, captures téléphone et ordinateur`, `${masquables} masquables, ${donnees.shortcuts?.length} raccourcis, ${donnees.screenshots?.length} captures`);
       const images = [...(donnees.icons || []), ...(donnees.screenshots || []), ...(donnees.shortcuts || []).flatMap((r) => r.icons)].map((i) => i.src);
       const absentes = [];
-      for (const src of new Set(images)) if (!(await fetch(site + src)).ok) absentes.push(src);
+      // Chaque réponse est lue en entier, même si seul son statut compte : sinon sa connexion reste ouverte
+      for (const src of new Set(images)) { const reponse = await fetch(site + src); await reponse.arrayBuffer(); if (!reponse.ok) absentes.push(src); }
       verifier(absentes.length === 0, `${chemin} : toutes les images du manifeste existent`, absentes.join(', ') || `${new Set(images).size} images`);
       const raccourcis = [];
-      for (const r of donnees.shortcuts || []) if (!(await fetch(site + r.url)).ok) raccourcis.push(r.url);
+      for (const r of donnees.shortcuts || []) { const reponse = await fetch(site + r.url); await reponse.arrayBuffer(); if (!reponse.ok) raccourcis.push(r.url); }
       verifier(raccourcis.length === 0, `${chemin} : chaque raccourci mène à une page`, raccourcis.join(', ') || (donnees.shortcuts || []).map((r) => r.url).join(', '));
       const { result: inst } = await envoyer('Page.getInstallabilityErrors', {}, l.s);
       const bloquants = (inst.installabilityErrors || []).map((e) => e.errorId);
@@ -195,7 +196,7 @@ try {
     const html = await (await fetch(site + '/')).text();
     const demarrage = [...html.matchAll(/<link[^>]+rel="apple-touch-startup-image"[^>]*>/g)].map(([t]) => (t.match(/href="([^"]+)"/) || [])[1]);
     const absents = [];
-    for (const href of demarrage) if (!(await fetch(site + href)).ok) absents.push(href);
+    for (const href of demarrage) { const reponse = await fetch(site + href); await reponse.arrayBuffer(); if (!reponse.ok) absents.push(href); }
     verifier(demarrage.length >= 20 && absents.length === 0, 'iPhone / iPad : écrans de démarrage présents', `${demarrage.length} images${absents.length ? `, absentes : ${absents.join(', ')}` : ''}`);
     verifier(/name="apple-mobile-web-app-status-bar-style" content="black"/.test(html), 'iPhone : barre d\'état noire opaque (rien sous l\'heure et la batterie)');
     await l.fermer();
