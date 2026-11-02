@@ -105,7 +105,7 @@ export default async function PageTutoriels({ params }: { params: Promise<{ lang
           {AUCUN_TUTORIEL.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-xl">{AUCUN_TUTORIEL.nko}</span>}
           {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
           {" "}
-          <span lang="fr" dir="ltr">{AUCUN_TUTORIEL.fr}</span>
+          <span lang="fr" dir="ltr" className="text-base">{AUCUN_TUTORIEL.fr}</span>
         </p>
       ) : (
         <ol role="list" className="mx-auto max-w-5xl space-y-14 [&>li+li]:border-t [&>li+li]:border-white/10 [&>li+li]:pt-14 md:space-y-20 md:[&>li+li]:pt-20">
