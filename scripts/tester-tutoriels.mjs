@@ -224,6 +224,18 @@ try {
     await o.toucher(`${GROUPE}.querySelector('ol').querySelectorAll('button')[0]`);
     e = await repos(o);
 
+    // Deux commandes rapprochées : la seconde part de la diapositive demandée, pas de celle qu'on quitte
+    const points = await o.evaluer(`(() => { const c = (b) => { const r = b.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }; const g = ${GROUPE}; return { dernier: c([...g.querySelector('ol').querySelectorAll('button')].at(-1)), avant: c(g.querySelectorAll('button[aria-disabled]')[0]) }; })()`);
+    for (const p of [points.dernier, points.avant]) {
+      await envoyer('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [p] }, o.s);
+      await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
+      await pause(60);
+    }
+    e = await repos(o);
+    verifier(e.i === e.nombre - 2 && e.point === e.nombre - 2, "Dernier point puis « précédente » aussitôt : l'avant-dernière", JSON.stringify({ i: e.i, point: e.point }));
+    await o.toucher(`${GROUPE}.querySelector('ol').querySelectorAll('button')[0]`);
+    e = await repos(o);
+
     // Le doigt : glisser vers le côté de la lecture (N'Ko : vers la droite, la suivante arrive de la gauche)
     const p = await o.evaluer(`(() => { const r = ${GROUPE}.querySelector('ul').getBoundingClientRect(); return { x: r.left + r.width / 2, y: Math.min(r.top + r.height / 3, innerHeight - 40) }; })()`);
     for (let pas = 0; pas <= 11; pas++) {
@@ -245,6 +257,14 @@ try {
     await envoyer('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] }, o.s);
     await pause(500);
     verifier((await o.evaluer('scrollY')) < avantVertical - 20, 'Glisser vers le bas sur une diapositive fait défiler la page');
+
+    // Téléphone tourné pendant l'usage : la même diapositive reste au milieu, le point suit
+    await envoyer('Emulation.setDeviceMetricsOverride', { width: 740, height: 360, deviceScaleFactor: 3, mobile: true }, o.s);
+    e = await repos(o);
+    const tourneDiapo = e;
+    await envoyer('Emulation.setDeviceMetricsOverride', { width: 360, height: 740, deviceScaleFactor: 3, mobile: true }, o.s);
+    e = await repos(o);
+    verifier(tourneDiapo.i === 1 && tourneDiapo.point === 1 && e.i === 1 && e.point === 1, 'Téléphone tourné puis redressé : la même diapositive au milieu, le bon point', JSON.stringify({ tourne: [tourneDiapo.i, tourneDiapo.point], redresse: [e.i, e.point] }));
 
     // Clavier
     await o.evaluer(`${GROUPE}.querySelector('ul').focus({ preventScroll: true })`);
@@ -273,11 +293,22 @@ try {
     verifier(/^https:\/\/www\.youtube-nocookie\.com\/embed\/[A-Za-z0-9_-]{11}\?/.test(lecteur.src), 'Lecteur youtube-nocookie.com', lecteur.src);
     verifier(!/autoplay/.test(lecteur.src), 'Pas de lecture automatique');
     verifier(!lecteur.lien, 'Le bouton a laissé la place au lecteur');
-    verifier(await o.evaluer(`getComputedStyle(document.querySelector('[data-video]')).zIndex === '10000' && !!document.querySelector('[data-video] + a[href*="youtube.com/watch"][aria-label]')`), 'Le lecteur passe au-dessus du bouton Retour ; le logo de YouTube reste sous le cadre');
+    verifier(await o.evaluer(`getComputedStyle(document.querySelector('[data-video]')).zIndex === '9999' && !!document.querySelector('[data-video] + a[href*="youtube.com/watch"][aria-label]')`), 'Le lecteur passe au-dessus du bouton Retour ; le logo de YouTube reste sous le cadre');
     await o.evaluer(`window.scrollTo({ top: document.querySelector('[data-video]').getBoundingClientRect().top + scrollY - 10, behavior: 'instant' })`);
     await pause(200);
     const sousLeDoigt = await o.evaluer(`(() => { const b = document.querySelector('main > button').getBoundingClientRect(); return document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2)?.tagName; })()`);
     verifier(sousLeDoigt === 'IFRAME', "Cadre en haut de l'écran : le doigt touche le lecteur, pas le bouton Retour", sousLeDoigt);
+    // Réseau coupé, lecteur ouvert : on touche le logo de YouTube, le message « Aucune connexion » s'ouvre
+    // (NetworkBoundary) et doit passer au-dessus du lecteur, bouton « Fermer » compris
+    await envoyer('Network.emulateNetworkConditions', { offline: true, latency: 0, downloadThroughput: -1, uploadThroughput: -1 }, o.s);
+    await pause(800);
+    await o.toucher(`document.querySelector('[data-video] + a')`);
+    await o.attendre(`!!document.querySelector('[role="alertdialog"]')`, 5000);
+    const dessus = await o.evaluer(`(() => { const d = document.querySelector('[role="alertdialog"]'); const f = d && [...d.querySelectorAll('button')].at(-1); const r = document.querySelector('[data-video]').getBoundingClientRect(); const point = (x, y) => document.elementFromPoint(x, y); const b = f && f.getBoundingClientRect(); return { message: !!d, cadre: d ? d.contains(point(r.left + r.width / 2, Math.min(Math.max(r.top, 0) + 60, innerHeight - 5))) : false, fermer: b ? f.contains(point(b.left + b.width / 2, b.top + b.height / 2)) : false }; })()`);
+    verifier(dessus.message && dessus.cadre && dessus.fermer, 'Réseau coupé : le message « Aucune connexion » passe au-dessus du lecteur, « Fermer » se touche', JSON.stringify(dessus));
+    await o.toucher(`[...document.querySelectorAll('[role="alertdialog"] button')].at(-1)`);
+    await envoyer('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 }, o.s);
+    await pause(800);
     verifier(lecteur.focus, 'Le clavier continue dans le lecteur');
     verifier(rtl ? contientNko(lecteur.titre) : !contientNko(lecteur.titre) && !!lecteur.titre, 'Titre du lecteur dans la langue de la page');
     verifier(Math.abs(lecteur.l - cadreAvant.l) < 1 && Math.abs(lecteur.h - cadreAvant.h) < 1 && Math.abs(lecteur.y - cadreAvant.y) < 2, 'Le cadre ne change ni de taille ni de place');
