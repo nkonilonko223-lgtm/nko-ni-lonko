@@ -36,6 +36,8 @@ export default function CiterTerme({ termeNko, termeFr, url }: { termeNko?: stri
         {TEXTES_LEXIQUE.citer.nko && (
           <span lang="nqo" dir="rtl" className="font-kigelia text-lg font-bold text-white">{TEXTES_LEXIQUE.citer.nko}</span>
         )}
+        {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+        {" "}
         <span lang="fr" className="font-sans text-xs uppercase tracking-widest text-gray-500">{TEXTES_LEXIQUE.citer.fr}</span>
       </h2>
       <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">

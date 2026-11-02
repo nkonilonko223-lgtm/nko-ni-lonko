@@ -58,6 +58,8 @@ export default function VueTutoriel({ tutoriel, langue, premier }: { tutoriel: T
         </span>
         <h2>
           {titre?.nko && <span lang="nqo" dir="rtl" className="block text-balance font-kigelia text-2xl font-bold text-white md:text-3xl md:leading-[1.75]">{titre.nko}</span>}
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           {titre?.fr && <span lang="fr" dir="ltr" className="mt-1 block text-balance font-fr text-base font-medium text-white/80 md:text-lg">{titre.fr}</span>}
         </h2>
         {resume?.nko && <p lang="nqo" dir="rtl" className="mt-4 text-balance font-kigelia text-lg text-white opacity-80">{resume.nko}</p>}

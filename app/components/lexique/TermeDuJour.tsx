@@ -25,6 +25,8 @@ export default function TermeDuJour({ termes }: { termes: TermeDictionnaire[] })
     <section aria-labelledby="terme-du-jour" className="mb-10 rounded-2xl border border-blue-400/30 bg-blue-500/[0.06] p-6 text-center">
       <h2 id="terme-du-jour" className="mb-3 flex flex-col items-center gap-0.5">
         {TERME_DU_JOUR.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-lg text-blue-300">{TERME_DU_JOUR.nko}</span>}
+        {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+        {" "}
         <span lang="fr" className="text-[11px] uppercase tracking-widest text-blue-200/70">{TERME_DU_JOUR.fr}</span>
       </h2>
       {t.termeNko && <p lang="nqo" dir="rtl" className="font-kigelia text-3xl font-bold text-white">{t.termeNko}</p>}

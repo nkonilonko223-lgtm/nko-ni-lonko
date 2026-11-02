@@ -54,6 +54,8 @@ export default function FenetreLangue() {
 
         <h2 id="fenetre-langue-titre" className="text-center flex flex-col gap-4 mb-16">
             <span lang="nqo" dir="rtl" className="font-kigelia text-4xl md:text-5xl text-or drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]">ߌ ߟߊ߫ ߞߊ߲ ߛߎߥߊ߲ߘߌ߫</span>
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             <span lang="fr" className="text-gray-500 text-xs md:text-sm uppercase tracking-[0.4em] border-t border-white/10 pt-4">
               Choisissez votre langue
             </span>

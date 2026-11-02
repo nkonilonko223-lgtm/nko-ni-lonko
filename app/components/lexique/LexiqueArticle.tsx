@@ -22,6 +22,8 @@ export default function LexiqueArticle({ termes }: { termes: TermeLexiqueData[] 
           <span lang="nqo" dir="rtl" className="font-kigelia text-2xl font-bold text-blue-300 print:text-black">
             {TEXTES_LEXIQUE.lexique.nko}
           </span>
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           <span lang="fr" dir="ltr" className="font-sans text-xs uppercase tracking-[0.3em] text-gray-500 print:text-gray-600">
             {TEXTES_LEXIQUE.lexique.fr}
           </span>

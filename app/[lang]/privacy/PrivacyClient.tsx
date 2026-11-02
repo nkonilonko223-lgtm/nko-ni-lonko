@@ -313,6 +313,8 @@ export default function PrivacyClient() {
                 <section id="intelligence-artificielle" className="scroll-mt-40 flex flex-col gap-4 rounded-2xl border border-or/30 bg-or/[0.04] p-6 print:border-black">
                     <h2 className="flex flex-col gap-1">
                         <span lang="nqo" dir="rtl" className="text-right font-kigelia text-2xl md:text-3xl font-bold text-or print:text-black">{IA.titre.nko}</span>
+                        {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+                        {" "}
                         <span lang="fr" dir="ltr" className="text-left text-base md:text-lg font-bold uppercase tracking-[0.15em] text-or print:text-black">{IA.titre.fr}</span>
                     </h2>
                     <p lang="nqo" dir="rtl" className="text-right font-kigelia text-xl md:text-2xl text-gray-200 leading-[1.9] print:text-black">
