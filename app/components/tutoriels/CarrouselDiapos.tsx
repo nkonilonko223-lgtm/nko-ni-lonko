@@ -30,6 +30,8 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
   const rtl = !fr;
   const cadre = useRef<HTMLUListElement>(null);
   const [active, setActive] = useState(0);
+  // Diapositive demandée, tant que le cadre défile vers elle : deux touchers rapides partent d'elle, pas de l'ancienne
+  const vise = useRef<number | null>(null);
   // Faux tant que le code n'est pas arrivé : les flèches restent éteintes, jamais de bouton mort
   const pret = useSyncExternalStore(rien, () => true, () => false);
 
@@ -39,12 +41,30 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
     const diapos = Array.from(el.children);
     const observateur = new IntersectionObserver(
       (entrees) => {
-        for (const e of entrees) if (e.intersectionRatio >= SEUIL_VISIBLE) setActive(diapos.indexOf(e.target));
+        for (const e of entrees) {
+          if (e.intersectionRatio < SEUIL_VISIBLE) continue;
+          const i = diapos.indexOf(e.target);
+          setActive(i);
+          if (i === vise.current) vise.current = null;
+        }
       },
       { root: el, threshold: SEUIL_VISIBLE },
     );
     diapos.forEach((d) => observateur.observe(d));
-    return () => observateur.disconnect();
+    // Fin de chaque défilement : si l'écran a changé de largeur pendant le mouvement (téléphone tourné),
+    // le navigateur recale au milieu la diapositive la plus proche
+    const auRepos = () => {
+      vise.current = null;
+      el.scrollTo({ left: el.scrollLeft });
+    };
+    const lacher = () => { vise.current = null; }; // le doigt reprend la main
+    el.addEventListener("scrollend", auRepos);
+    el.addEventListener("touchstart", lacher, { passive: true });
+    return () => {
+      observateur.disconnect();
+      el.removeEventListener("scrollend", auRepos);
+      el.removeEventListener("touchstart", lacher);
+    };
   }, []);
 
   const aller = (i: number) => {
@@ -53,6 +73,7 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
     if (!el || !cible) return;
     const a = cible.getBoundingClientRect();
     const b = el.getBoundingClientRect();
+    vise.current = i;
     // scrollTo et non scrollBy : avec snap-always, un scrollBy s'arrêterait à la diapositive voisine
     el.scrollTo({
       left: el.scrollLeft + (a.left + a.width / 2) - (b.left + b.width / 2),
@@ -62,9 +83,10 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
 
   const touche = (e: KeyboardEvent) => {
     if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return; // Alt+← et Ctrl+Fin restent au navigateur
+    const ici = vise.current ?? active;
     const cibles: Record<string, number> = {
-      [rtl ? "ArrowLeft" : "ArrowRight"]: Math.min(active + 1, nombre - 1),
-      [rtl ? "ArrowRight" : "ArrowLeft"]: Math.max(active - 1, 0),
+      [rtl ? "ArrowLeft" : "ArrowRight"]: Math.min(ici + 1, nombre - 1),
+      [rtl ? "ArrowRight" : "ArrowLeft"]: Math.max(ici - 1, 0),
       Home: 0,
       End: nombre - 1,
     };
@@ -84,7 +106,9 @@ export default function CarrouselDiapos({ nombre, libelle, langue, children }: P
       <button
         type="button"
         onClick={() => {
-          if (!eteinte) aller(active + (suivante ? 1 : -1));
+          const ici = vise.current ?? active;
+          const cible = ici + (suivante ? 1 : -1);
+          if (pret && cible >= 0 && cible < nombre) aller(cible);
         }}
         aria-disabled={eteinte}
         aria-label={!fr && texte.nko ? texte.nko : texte.fr}
