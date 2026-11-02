@@ -44,7 +44,7 @@ export default function VueTutoriel({ tutoriel, langue, premier }: { tutoriel: T
   const fr = langue === "fr";
   const nom = (fr ? titre?.fr || titre?.nko : titre?.nko || titre?.fr) ?? "";
   const etapes = (diapos ?? []).filter((d): d is Diapo & { image: { url: string } } => !!d?.image?.url);
-  // Lecteur d'écran : « Lire la vidéo : titre » ; le N'Ko de « Lire la vidéo » pas encore fourni : le titre seul
+  // Lecteur d'écran : « Lire la vidéo : titre », dans la langue de la version (sans ce texte : le titre seul)
   const lire = fr ? LIRE_VIDEO.fr : LIRE_VIDEO.nko;
 
   return (
