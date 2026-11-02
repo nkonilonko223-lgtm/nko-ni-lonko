@@ -88,6 +88,8 @@ export default async function PageTutoriels({ params }: { params: Promise<{ lang
       <header className="mx-auto mb-8 max-w-3xl text-center md:mb-12">
         <h1 className="flex flex-col items-center gap-1">
           {TUTORIELS.nko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{TUTORIELS.nko}</span>}
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           <span lang="fr" dir="ltr" className={TUTORIELS.nko ? "text-xs uppercase tracking-widest text-white/60" : "text-3xl font-bold text-or md:text-4xl"}>{TUTORIELS.fr}</span>
         </h1>
         <p className="mt-3 flex flex-col items-center gap-1">

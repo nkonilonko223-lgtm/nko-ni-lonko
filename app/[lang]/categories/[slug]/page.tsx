@@ -119,6 +119,8 @@ export default async function PageDiscipline({ params }: { params: Promise<{ lan
         <i className={`ph-bold ${d.discipline.icone} text-4xl text-or`} aria-hidden="true"></i>
         <h1 className="mt-3 flex flex-col items-center gap-1">
           <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{d.nko}</span>
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           <span lang="fr" className="text-xs uppercase tracking-widest text-white/60">{d.fr}</span>
         </h1>
         <p className="mt-4 flex items-center justify-center gap-2 text-sm text-white/60">

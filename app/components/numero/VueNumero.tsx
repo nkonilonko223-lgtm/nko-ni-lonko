@@ -143,6 +143,8 @@ export default function VueNumero({ numero, pdf, langue = "nqo" }: { numero: Num
           </p>
           <h1 className="mt-5">
             {numero.titleNko && <span lang="nqo" dir="rtl" className="block font-kigelia text-4xl font-bold md:text-6xl">{numero.titleNko}</span>}
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             {numero.titleFr && (
               <span lang="fr" dir="ltr" className={`block ${numero.titleNko ? "mt-2 text-xl text-white/80 md:text-2xl" : "text-4xl font-bold md:text-6xl"}`}>
                 {numero.titleFr}
@@ -151,6 +153,7 @@ export default function VueNumero({ numero, pdf, langue = "nqo" }: { numero: Num
             {!numero.titleNko && !numero.titleFr && (
               <>
                 <span lang="nqo" dir="rtl" className="block font-kigelia text-4xl font-bold md:text-6xl">{numeroNko(numero.numero)}</span>
+                {" "}
                 <span lang="fr" dir="ltr" className="mt-2 block text-xl text-white/80">{numeroFr(numero.numero)}</span>
               </>
             )}

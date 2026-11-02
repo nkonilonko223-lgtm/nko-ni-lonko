@@ -140,6 +140,8 @@ export default function AboutClient() {
 
         <h1 className="text-4xl md:text-7xl font-extrabold text-or mb-20 tracking-tight font-sans">
             <span lang="nqo" dir="rtl" className="block mb-4 md:mb-6 drop-shadow-lg font-kigelia">ߞߊ߲߬ߞߎߡߊ</span>
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 À Propos de nous
             </span>

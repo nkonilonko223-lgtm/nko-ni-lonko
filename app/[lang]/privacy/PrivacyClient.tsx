@@ -180,6 +180,8 @@ export default function PrivacyClient() {
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-8 tracking-tight flex flex-col items-center print:text-black print:mb-4">
                 <span lang="nqo" dir="rtl" className="block mb-4 drop-shadow-lg font-kigelia print:drop-shadow-none">ߜߎ߲߬ߘߏ߬ߦߊ ߞߎ߬ߙߎ߲߬ߘߎ</span>
+                {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+                {" "}
                 <span lang="fr" className="text-white/60 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block print:text-black print:border-black print:font-bold">
                     Politique de confidentialité
                 </span>

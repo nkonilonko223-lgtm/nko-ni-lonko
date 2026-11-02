@@ -104,6 +104,8 @@ export default async function PageAuteur({ params }: { params: Promise<{ lang: s
           )}
           <h1 className="flex flex-col items-center gap-1">
             {auteur.nameNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{auteur.nameNko}</span>}
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             <span lang="fr" dir="ltr" className={`font-fr ${auteur.nameNko ? "text-lg text-white/70" : "text-4xl font-bold text-or"}`}>{auteur.name}</span>
           </h1>
 

@@ -50,6 +50,8 @@ export default function VueRubrique({ rubrique, langue }: { rubrique: Rubrique; 
         </div>
         <h1 className="flex flex-col items-center gap-1">
           {rubrique.titleNko && <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{rubrique.titleNko}</span>}
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           {rubrique.titleFr && (
             <span lang="fr" className={rubrique.titleNko ? "text-xs uppercase tracking-widest text-white/60" : "text-3xl font-bold text-or md:text-4xl"}>{rubrique.titleFr}</span>
           )}

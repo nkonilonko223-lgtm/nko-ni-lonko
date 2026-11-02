@@ -257,6 +257,8 @@ export default function ContactClient() {
 
         <h1 className="text-4xl md:text-6xl font-extrabold text-or mb-16 tracking-tight font-sans text-center">
             <span lang="nqo" dir="rtl" className="block mb-2 md:mb-4 drop-shadow-lg font-kigelia">ߊ߲ ߟߊߛߐ߬ߘߐ߲߬</span>
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             <span className="text-white/80 text-base md:text-xl font-light uppercase tracking-[0.3em] border-y border-white/10 py-2 inline-block">
                 Contactez-nous
             </span>

@@ -486,6 +486,8 @@ export default function ArticleClient({ article, bandeau, surtitre, navigation, 
             <span {...sensDe(nkoTitle)} className={`block text-or print:text-black mb-2 text-balance ${contientNko(nkoTitle) ? 'font-kigelia' : '!leading-[1.6]'}`}>
                 {nkoTitle}
             </span>
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             {frTitle && (
                 <span lang="fr" dir="ltr" className="block leading-tight text-white/90 print:text-gray-800 text-xl md:text-3xl text-balance">
                     {frTitle}

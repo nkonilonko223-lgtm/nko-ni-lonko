@@ -69,6 +69,8 @@ export default async function PageNumeros({ params }: { params: Promise<{ lang: 
       <header className="mx-auto mb-12 max-w-5xl text-center">
         <h1 className="flex flex-col items-center gap-1">
           <span lang="nqo" dir="rtl" className="font-kigelia text-4xl font-bold text-or md:text-5xl">{TEXTES_NUMEROS.lesNumeros.nko}</span>
+          {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+          {" "}
           <span lang="fr" className="text-xs uppercase tracking-widest text-white/60">{TEXTES_NUMEROS.lesNumeros.fr}</span>
         </h1>
       </header>

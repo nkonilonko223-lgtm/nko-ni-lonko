@@ -81,6 +81,8 @@ export default async function PageLexique() {
             <span lang="nqo" dir="rtl" className="font-kigelia text-3xl md:text-4xl font-bold text-blue-300">
               {TEXTES_LEXIQUE.dictionnaire.nko}
             </span>
+            {/* Espace invisible à l'écran : sans lui, le texte brut repris par Google colle le N'Ko au français */}
+            {" "}
             <span lang="fr" dir="ltr" className="font-sans text-sm md:text-base uppercase tracking-[0.25em] text-white/60">
               {TEXTES_LEXIQUE.dictionnaire.fr}
             </span>
