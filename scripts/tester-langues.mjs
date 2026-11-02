@@ -26,7 +26,9 @@ const masquerNko = (t) => [...t].map((c) => (nko(c) ? "#" : c)).join("").replace
 const dec = (t) => t?.replace(/&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
 const meta = (h, k) => dec((h.match(new RegExp(`(?:property|name)="${k}" content="([^"]*)"`)) || [])[1]);
 const lien = (h, rel, attr = "") => (h.match(new RegExp(`<link rel="${rel}"${attr}[^>]*href="([^"]*)"`)) || h.match(new RegExp(`<link[^>]*rel="${rel}"[^>]*href="([^"]*)"`)) || [])[1];
-const get = async (p, h = UA, redirect = "manual") => { const r = await fetch(BASE + p, { headers: h, redirect }); return { r, h: r.status === 200 ? await r.text() : "" }; };
+// Toujours lire la réponse en entier, même quand seul le statut compte : sinon sa connexion reste
+// ouverte, et Node peut attendre près de 6 minutes avant de quitter, une fois les tests finis.
+const get = async (p, h = UA, redirect = "manual") => { const r = await fetch(BASE + p, { headers: h, redirect }); const t = await r.text(); return { r, h: r.status === 200 ? t : "" }; };
 const SITE = "https://www.nkonilonko.com".replace(/\/$/, "");
 
 // 1. Pages : les deux versions répondent, avec la bonne langue
@@ -82,7 +84,7 @@ for (const p of ["/manifest.json", "/apple-touch-icon.png", "/icon-192x192.png",
   const { r } = await get(p);
   ok(r.status === 200, `${p.padEnd(44)} → ${r.status} ${r.headers.get("content-type")}`);
 }
-const studio = await fetch(BASE + "/studio", { headers: UA });
+const { r: studio } = await get("/studio", UA, "follow");
 ok(studio.status === 200, `/studio${" ".repeat(38)} → ${studio.status}`);
 
 // 4. Plan du site : chaque page en deux versions, reliées
@@ -107,7 +109,7 @@ for (const c of chemins.filter((x) => x !== "/offline")) {
 }
 let casses = 0, melanges = [];
 for (const [href, pages] of vus) {
-  const r = await fetch(BASE + href, { headers: UA, redirect: "manual" });
+  const { r } = await get(href);
   if (r.status !== 200) { casses++; console.log(`   ⚠ ${href} → ${r.status} (depuis ${[...pages][0]})`); }
   const versFr = /^\/fr(\/|$|\?)/.test(href);
   for (const p of pages) {
