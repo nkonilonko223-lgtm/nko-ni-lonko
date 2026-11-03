@@ -43,17 +43,35 @@ const pageTelechargement = option('--telechargement');
 const dossierCaptures = option('--captures');
 if (dossierCaptures) mkdirSync(dossierCaptures, { recursive: true });
 
-// Trois articles publiés avec image (API publique de Sanity, lecture seule)
-const REQUETE = '*[_type == "article" && !(_id in path("drafts.**")) && defined(mainImage)] | order(publishedAt desc)[0...3].slug.current';
-const slugs = (await (await fetch(`https://yfsyhc2p.apicdn.sanity.io/v2025-02-19/data/query/production?query=${encodeURIComponent(REQUETE)}`)).json()).result;
-if (!Array.isArray(slugs) || slugs.length < 3) throw new Error('Il faut au moins 3 articles publiés avec image.');
-
 const pause = (ms) => new Promise((r) => setTimeout(r, ms));
 let defauts = 0;
 const verifier = (ok, texte, detail = '') => {
   console.log(`${ok ? 'OK    ' : 'DÉFAUT'} ${texte}${detail ? ` — ${detail}` : ''}`);
   if (!ok) defauts++;
 };
+// Chaque réponse est lue en entier, même si seul son statut compte : sinon sa connexion reste ouverte.
+// Une erreur de réseau (fetch failed : ECONNRESET, ETIMEDOUT, coupure pendant la lecture…) est réessayée
+// une fois, 2 s plus tard ; une réponse HTTP (404, 500…) ne l'est jamais. Deux échecs : un défaut, avec
+// l'adresse et l'erreur, et une réponse vide (ok = false).
+const demander = async (adresse) => {
+  const lisible = adresse.split('?')[0]; // affichage sans la requête (celle de Sanity fait 250 caractères)
+  for (const essai of [1, 2]) {
+    try { const r = await fetch(adresse); return { ok: r.ok, texte: await r.text() }; } catch (e) {
+      const erreur = `${e.message}${e.cause ? ` (${e.cause.message || e.cause.code})` : ''}`;
+      if (essai === 1) { console.log(`       ${lisible} : ${erreur} — nouvel essai dans 2 s`); await pause(2000); }
+      else verifier(false, `${lisible} : pas de réponse après 2 essais`, erreur);
+    }
+  }
+  return { ok: false, texte: '' };
+};
+
+// Trois articles publiés avec image (API publique de Sanity, lecture seule)
+const REQUETE = '*[_type == "article" && !(_id in path("drafts.**")) && defined(mainImage)] | order(publishedAt desc)[0...3].slug.current';
+const liste = await demander(`https://yfsyhc2p.apicdn.sanity.io/v2025-02-19/data/query/production?query=${encodeURIComponent(REQUETE)}`);
+// Sanity n'a pas répondu (le défaut est affiché juste au-dessus) : rien ne peut être testé
+if (!liste.texte) { console.log('\nSans la liste des articles, le test s\'arrête là.'); process.exit(1); }
+const slugs = JSON.parse(liste.texte).result;
+if (!Array.isArray(slugs) || slugs.length < 3) throw new Error('Il faut au moins 3 articles publiés avec image.');
 
 const PORT = 9400 + Math.floor(Math.random() * 400);
 const profil = mkdtempSync(join(tmpdir(), 'tester-application-'));
@@ -183,20 +201,19 @@ try {
         `${chemin} : icônes masquables, raccourcis, captures téléphone et ordinateur`, `${masquables} masquables, ${donnees.shortcuts?.length} raccourcis, ${donnees.screenshots?.length} captures`);
       const images = [...(donnees.icons || []), ...(donnees.screenshots || []), ...(donnees.shortcuts || []).flatMap((r) => r.icons)].map((i) => i.src);
       const absentes = [];
-      // Chaque réponse est lue en entier, même si seul son statut compte : sinon sa connexion reste ouverte
-      for (const src of new Set(images)) { const reponse = await fetch(site + src); await reponse.arrayBuffer(); if (!reponse.ok) absentes.push(src); }
+      for (const src of new Set(images)) { const reponse = await demander(site + src); if (!reponse.ok) absentes.push(src); }
       verifier(absentes.length === 0, `${chemin} : toutes les images du manifeste existent`, absentes.join(', ') || `${new Set(images).size} images`);
       const raccourcis = [];
-      for (const r of donnees.shortcuts || []) { const reponse = await fetch(site + r.url); await reponse.arrayBuffer(); if (!reponse.ok) raccourcis.push(r.url); }
+      for (const r of donnees.shortcuts || []) { const reponse = await demander(site + r.url); if (!reponse.ok) raccourcis.push(r.url); }
       verifier(raccourcis.length === 0, `${chemin} : chaque raccourci mène à une page`, raccourcis.join(', ') || (donnees.shortcuts || []).map((r) => r.url).join(', '));
       const { result: inst } = await envoyer('Page.getInstallabilityErrors', {}, l.s);
       const bloquants = (inst.installabilityErrors || []).map((e) => e.errorId);
       verifier(bloquants.length === 0, `${chemin} : installable (critères de Chrome)`, bloquants.join(', '));
     }
-    const html = await (await fetch(site + '/')).text();
+    const { texte: html } = await demander(site + '/');
     const demarrage = [...html.matchAll(/<link[^>]+rel="apple-touch-startup-image"[^>]*>/g)].map(([t]) => (t.match(/href="([^"]+)"/) || [])[1]);
     const absents = [];
-    for (const href of demarrage) { const reponse = await fetch(site + href); await reponse.arrayBuffer(); if (!reponse.ok) absents.push(href); }
+    for (const href of demarrage) { const reponse = await demander(site + href); if (!reponse.ok) absents.push(href); }
     verifier(demarrage.length >= 20 && absents.length === 0, 'iPhone / iPad : écrans de démarrage présents', `${demarrage.length} images${absents.length ? `, absentes : ${absents.join(', ')}` : ''}`);
     verifier(/name="apple-mobile-web-app-status-bar-style" content="black"/.test(html), 'iPhone : barre d\'état noire opaque (rien sous l\'heure et la batterie)');
     await l.fermer();
