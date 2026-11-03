@@ -37,7 +37,19 @@ const verifier = (ok, texte, detail = '') => {
 };
 const contientNko = (t = '') => [...t].some((c) => { const n = c.codePointAt(0); return n >= 0x07c0 && n <= 0x07ff; });
 const UA = { 'user-agent': 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/141.0 Mobile Safari/537.36' };
-const lire = async (chemin) => { const r = await fetch(site + chemin, { headers: UA }); return { statut: r.status, html: await r.text() }; };
+// Une erreur de réseau (fetch failed : ECONNRESET, ETIMEDOUT, coupure pendant la lecture…) est réessayée
+// une fois, 2 s plus tard ; une réponse HTTP (404, 500…) ne l'est jamais. Deux échecs : un défaut, avec
+// l'adresse et l'erreur, et une page vide (statut 0).
+const lire = async (chemin) => {
+  for (const essai of [1, 2]) {
+    try { const r = await fetch(site + chemin, { headers: UA }); return { statut: r.status, html: await r.text() }; } catch (e) {
+      const erreur = `${e.message}${e.cause ? ` (${e.cause.message || e.cause.code})` : ''}`;
+      if (essai === 1) { console.log(`       ${site + chemin} : ${erreur} — nouvel essai dans 2 s`); await pause(2000); }
+      else verifier(false, `${site + chemin} : pas de réponse après 2 essais`, erreur);
+    }
+  }
+  return { statut: 0, html: '' };
+};
 const VERSIONS = [
   { nom: "N'Ko", chemin: '/tutoriels', lang: 'nqo', dir: 'rtl', accueil: '/', langueInterface: 'nko' },
   { nom: 'français', chemin: '/fr/tutoriels', lang: 'fr', dir: 'ltr', accueil: '/fr', langueInterface: 'fr' },
