@@ -35,6 +35,8 @@ const verifier = (ok, texte, detail = '') => {
   console.log(`${ok ? 'OK    ' : 'DÉFAUT'} ${texte}${detail !== '' ? ` — ${detail}` : ''}`);
   if (!ok) defauts++;
 };
+// Page que Chrome n'a pas pu ouvrir, même au deuxième essai : le test s'arrête proprement (voir ouvrir)
+class PageInjoignable extends Error {}
 const contientNko = (t = '') => [...t].some((c) => { const n = c.codePointAt(0); return n >= 0x07c0 && n <= 0x07ff; });
 const UA = { 'user-agent': 'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 Chrome/141.0 Mobile Safari/537.36' };
 // Une erreur de réseau (fetch failed : ECONNRESET, ETIMEDOUT, coupure pendant la lecture…) est réessayée
@@ -142,14 +144,24 @@ try {
         window.__decalage = 0; try { new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) window.__decalage += e.value; }).observe({ type: 'layout-shift', buffered: true }); } catch (e) {}`,
     }, s);
     const evaluer = async (expression) => (await envoyer('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, s)).result?.result?.value;
+    // Coupure du réseau à l'ouverture (Chrome répond « net::ERR_… », par exemple ERR_SSL_PROTOCOL_ERROR) :
+    // un nouvel essai 2 s plus tard. Jamais pour une réponse HTTP (404, 500…) : Chrome l'affiche sans
+    // erreur, ou avec ERR_HTTP_RESPONSE_CODE_FAILURE si elle est vide. Deux échecs : un défaut, avec
+    // l'adresse et l'erreur, et le test s'arrête (la suite ne verrait que la page d'erreur de Chrome).
     const ouvrir = async (chemin) => {
-      const charge = new Promise((r) => {
-        const g = (m) => { if (m.sessionId === s && m.method === 'Page.loadEventFired') { ecouteurs.delete(g); r(); } };
-        ecouteurs.add(g);
-        setTimeout(() => { ecouteurs.delete(g); r(); }, 30000);
-      });
-      await envoyer('Page.navigate', { url: site + chemin }, s);
-      await charge;
+      for (const essai of [1, 2]) {
+        const charge = new Promise((r) => {
+          const g = (m) => { if (m.sessionId === s && m.method === 'Page.loadEventFired') { ecouteurs.delete(g); r(); } };
+          ecouteurs.add(g);
+          setTimeout(() => { ecouteurs.delete(g); r(); }, 30000);
+        });
+        const erreur = (await envoyer('Page.navigate', { url: site + chemin }, s)).result?.errorText;
+        await charge;
+        if (!erreur || erreur === 'net::ERR_HTTP_RESPONSE_CODE_FAILURE') break;
+        if (essai === 2) { verifier(false, `${site + chemin} : pas de réponse après 2 essais`, erreur); throw new PageInjoignable(); }
+        console.log(`       ${site + chemin} : ${erreur} — nouvel essai dans 2 s`);
+        await pause(2000);
+      }
       await pause(1500);
     };
     const attendre = async (expression, ms = 20000) => { for (let t = 0; t < ms; t += 200) { if (await evaluer(expression)) return true; await pause(200); } return false; };
@@ -381,6 +393,9 @@ try {
       await d.fermer();
     }
   }
+} catch (e) {
+  if (!(e instanceof PageInjoignable)) throw e;
+  console.log("\nTest arrêté là : Chrome n'a pas pu ouvrir la page, même au deuxième essai.");
 } finally {
   chrome.kill();
   await pause(500);
