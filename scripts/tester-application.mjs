@@ -49,6 +49,8 @@ const verifier = (ok, texte, detail = '') => {
   console.log(`${ok ? 'OK    ' : 'DÉFAUT'} ${texte}${detail ? ` — ${detail}` : ''}`);
   if (!ok) defauts++;
 };
+// Page que Chrome n'a pas pu ouvrir, même au deuxième essai : le test s'arrête proprement (voir ouvrir)
+class PageInjoignable extends Error {}
 // Chaque réponse est lue en entier, même si seul son statut compte : sinon sa connexion reste ouverte.
 // Une erreur de réseau (fetch failed : ECONNRESET, ETIMEDOUT, coupure pendant la lecture…) est réessayée
 // une fois, 2 s plus tard ; une réponse HTTP (404, 500…) ne l'est jamais. Deux échecs : un défaut, avec
@@ -131,14 +133,25 @@ try {
     }
     await envoyer('Page.addScriptToEvaluateOnNewDocument', { source: script }, s);
     const evaluer = async (expression) => (await envoyer('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true }, s)).result?.result?.value;
+    // Coupure du réseau à l'ouverture (Chrome répond « net::ERR_… », par exemple ERR_SSL_PROTOCOL_ERROR) :
+    // un nouvel essai 2 s plus tard, sauf quand le test a coupé le réseau lui-même (horsLigne). Jamais pour
+    // une réponse HTTP (404, 500…) : Chrome l'affiche sans erreur, ou avec ERR_HTTP_RESPONSE_CODE_FAILURE
+    // si elle est vide. Deux échecs : un défaut, avec l'adresse et l'erreur, et le test s'arrête (la suite
+    // ne verrait que la page d'erreur de Chrome).
     const ouvrir = async (chemin) => {
-      const charge = new Promise((r) => {
-        const f = (m) => { if (m.sessionId === s && m.method === 'Page.loadEventFired') { ecouteurs.delete(f); r(); } };
-        ecouteurs.add(f);
-        setTimeout(() => { ecouteurs.delete(f); r(); }, 30000);
-      });
-      await envoyer('Page.navigate', { url: site + chemin }, s);
-      await charge;
+      for (const essai of [1, 2]) {
+        const charge = new Promise((r) => {
+          const f = (m) => { if (m.sessionId === s && m.method === 'Page.loadEventFired') { ecouteurs.delete(f); r(); } };
+          ecouteurs.add(f);
+          setTimeout(() => { ecouteurs.delete(f); r(); }, 30000);
+        });
+        const erreur = (await envoyer('Page.navigate', { url: site + chemin }, s)).result?.errorText;
+        await charge;
+        if (!erreur || horsLigne || erreur === 'net::ERR_HTTP_RESPONSE_CODE_FAILURE') break;
+        if (essai === 2) { verifier(false, `${site + chemin} : pas de réponse après 2 essais`, erreur); throw new PageInjoignable(); }
+        console.log(`       ${site + chemin} : ${erreur} — nouvel essai dans 2 s`);
+        await pause(2000);
+      }
       await pause(1500);
       // Alarme générale : une page qui plante finit sur la page d'erreur de Next.js
       if (await evaluer('document.documentElement.id === "__next_error__"')) verifier(false, `La page plante : ${chemin}`);
@@ -338,6 +351,9 @@ try {
   }
 
   ws.close();
+} catch (e) {
+  if (!(e instanceof PageInjoignable)) throw e;
+  console.log('\nTest arrêté là : Chrome n\'a pas pu ouvrir la page, même au deuxième essai.');
 } finally {
   chrome.kill();
   await pause(500);
