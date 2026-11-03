@@ -28,7 +28,23 @@ const meta = (h, k) => dec((h.match(new RegExp(`(?:property|name)="${k}" content
 const lien = (h, rel, attr = "") => (h.match(new RegExp(`<link rel="${rel}"${attr}[^>]*href="([^"]*)"`)) || h.match(new RegExp(`<link[^>]*rel="${rel}"[^>]*href="([^"]*)"`)) || [])[1];
 // Toujours lire la réponse en entier, même quand seul le statut compte : sinon sa connexion reste
 // ouverte, et Node peut attendre près de 6 minutes avant de quitter, une fois les tests finis.
-const get = async (p, h = UA, redirect = "manual") => { const r = await fetch(BASE + p, { headers: h, redirect }); const t = await r.text(); return { r, h: r.status === 200 ? t : "" }; };
+// Une erreur de réseau (fetch failed : ECONNRESET, ETIMEDOUT, coupure pendant la lecture…) est
+// réessayée une fois, 2 s plus tard ; une réponse HTTP (404, 500…) ne l'est jamais. Deux échecs : un
+// test en échec, statut 0, et le test continue ; si le site n'a encore jamais répondu (serveur pas
+// lancé, mauvaise adresse), il s'arrête là.
+let repondu = false;
+const demander = async (p, options) => {
+  for (const essai of [1, 2]) {
+    try { const r = await fetch(BASE + p, options); const t = await r.text(); repondu = true; return { r, t }; } catch (e) {
+      const erreur = `${e.message}${e.cause ? ` (${e.cause.message || e.cause.code})` : ""}`;
+      if (essai === 1) { console.log(`   ⚠ ${BASE + p} : ${erreur} — nouvel essai dans 2 s`); await new Promise((fin) => setTimeout(fin, 2000)); }
+      else ok(false, `${BASE + p} : pas de réponse après 2 essais — ${erreur}`);
+    }
+  }
+  if (!repondu) { console.log("\nLe site ne répond pas : test arrêté."); process.exit(1); }
+  return { r: { status: 0, headers: new Headers() }, t: "" };
+};
+const get = async (p, h = UA, redirect = "manual") => { const { r, t } = await demander(p, { headers: h, redirect }); return { r, h: r.status === 200 ? t : "" }; };
 const SITE = "https://www.nkonilonko.com".replace(/\/$/, "");
 
 // 1. Pages : les deux versions répondent, avec la bonne langue
@@ -74,8 +90,7 @@ for (const p of ["/cette-page-n-existe-pas", "/fr/cette-page-n-existe-pas", "/ar
   // Une page 404 est lue en entier (get() ne lit que les réponses 200). Next.js la sert dans un
   // gabarit d'erreur sans attribut de langue (déjà le cas avant B6 pour un article inconnu) :
   // on vérifie le code 404, la page « introuvable » du site et le titre dans la langue de l'adresse.
-  const r = await fetch(BASE + p, { headers: UA, redirect: "manual" });
-  const t = await r.text();
+  const { r, t } = await demander(p, { headers: UA, redirect: "manual" });
   const titre = dec((t.match(/<title>([^<]*)<\/title>/) || [])[1]) || "";
   const titreJuste = p.startsWith("/fr") ? latin(titre) && !nko(titre) : nko(titre);
   ok(r.status === 404 && /Retour à la base/.test(t) && titreJuste, `${p.padEnd(44)} → ${r.status} · page « introuvable » du site · titre ${p.startsWith("/fr") ? "français" : "N'Ko"} ${titreJuste ? "ok" : "MAUVAIS"}`);
@@ -88,7 +103,7 @@ const { r: studio } = await get("/studio", UA, "follow");
 ok(studio.status === 200, `/studio${" ".repeat(38)} → ${studio.status}`);
 
 // 4. Plan du site : chaque page en deux versions, reliées
-const plan = await (await fetch(BASE + "/sitemap.xml", { headers: UA })).text();
+const { t: plan } = await demander("/sitemap.xml", { headers: UA });
 const urls = [...plan.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 const fr = urls.filter((u) => /\/fr(\/|$)/.test(new URL(u).pathname));
 ok(urls.length > 0 && fr.length * 2 === urls.length && (plan.match(/hreflang="nqo"/g) || []).length === urls.length, `plan du site : ${urls.length} adresses dont ${fr.length} françaises · hreflang nqo ${(plan.match(/hreflang="nqo"/g) || []).length} · fr ${(plan.match(/hreflang="fr"/g) || []).length} · x-default ${(plan.match(/hreflang="x-default"/g) || []).length}`);
